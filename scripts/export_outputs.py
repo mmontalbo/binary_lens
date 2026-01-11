@@ -1,11 +1,10 @@
 import json
 import os
 
+from export_collectors import collect_flow_summary, function_size
+from export_primitives import addr_filename, addr_str
 from ghidra.app.decompiler import DecompInterface
 from ghidra.framework import Application
-
-from export_primitives import addr_filename, addr_str
-from export_collectors import collect_flow_summary, function_size
 
 
 def ensure_dir(path):
@@ -81,7 +80,8 @@ def build_binary_info(program):
     return info, hashes
 
 
-def write_callsite_records(callsite_records, call_edges, evidence_callsites_dir):
+def write_callsite_records(callsite_records, call_edges, evidence_callsites_dir, extra_callsites=None):
+    # Only emit callsite evidence for selected edges plus explicitly requested extras.
     selected_callsite_records = {}
     for edge in call_edges:
         callsite = edge.get("callsite")
@@ -98,6 +98,20 @@ def write_callsite_records(callsite_records, call_edges, evidence_callsites_dir)
             }
             selected_callsite_records[callsite] = record
         record["targets"].append(edge.get("to"))
+
+    if extra_callsites:
+        for callsite in extra_callsites:
+            if callsite in selected_callsite_records:
+                continue
+            base_record = callsite_records.get(callsite)
+            if base_record is None:
+                continue
+            selected_callsite_records[callsite] = {
+                "callsite": base_record.get("callsite"),
+                "from": base_record.get("from"),
+                "instruction": base_record.get("instruction"),
+                "targets": list(base_record.get("targets") or []),
+            }
 
     callsite_paths = {}
     for callsite, record in selected_callsite_records.items():
@@ -121,6 +135,81 @@ def build_callgraph_payload(call_edges, total_edges, truncated_edges, options, c
         },
         "metrics": call_edge_stats,
         "edges": call_edges,
+    }
+
+
+def build_cli_options_payload(options_list, total_options, truncated, options):
+    return {
+        "total_options": total_options,
+        "selected_options": len(options_list),
+        "truncated": truncated,
+        "max_options": options.get("max_cli_options", 0),
+        "options": options_list,
+    }
+
+
+def build_cli_parse_loops_payload(parse_loops, total_parse_loops, truncated, options):
+    return {
+        "total_parse_loops": total_parse_loops,
+        "selected_parse_loops": len(parse_loops),
+        "truncated": truncated,
+        "max_parse_loops": options.get("max_cli_parse_loops", 0),
+        "parse_loops": parse_loops,
+    }
+
+
+def build_surface_map_payload(cli_surface, options):
+    cli_section = {}
+    parse_loops = cli_surface.get("parse_loops", [])
+    options_list = cli_surface.get("options", [])
+
+    # Provide a minimal "start here" map for CLI exploration.
+    primary_parse_loops = []
+    for entry in parse_loops[:3]:
+        primary_parse_loops.append({
+            "function": entry.get("function"),
+            "representative_callsite_id": entry.get("representative_callsite_id"),
+            "representative_callsite_ref": entry.get("representative_callsite_ref"),
+        })
+
+    table_candidates = {}
+    for entry in parse_loops:
+        longopts = entry.get("longopts") or {}
+        addr = longopts.get("address")
+        if not addr:
+            continue
+        count = longopts.get("entry_count", 0)
+        existing = table_candidates.get(addr, 0)
+        if count > existing:
+            table_candidates[addr] = count
+    option_tables = []
+    for addr, count in sorted(table_candidates.items(), key=lambda item: (-item[1], item[0])):
+        option_tables.append({
+            "address": addr,
+            "entry_count": count,
+        })
+        if len(option_tables) >= 3:
+            break
+
+    top_options = []
+    for entry in options_list[:10]:
+        top_options.append({
+            "id": entry.get("id"),
+            "long_name": entry.get("long_name"),
+            "short_name": entry.get("short_name"),
+            "parse_site_count": len(entry.get("parse_sites") or []),
+            "evidence_count": len(entry.get("evidence") or []),
+        })
+
+    if primary_parse_loops:
+        cli_section["primary_parse_loops"] = primary_parse_loops
+    if option_tables:
+        cli_section["option_tables"] = option_tables
+    if top_options:
+        cli_section["top_options"] = top_options
+
+    return {
+        "cli": cli_section,
     }
 
 
@@ -203,6 +292,7 @@ def write_function_exports(
         md_content += "Notes:\n\n- [ ] Observations\n- [ ] Questions\n"
         write_text(os.path.join(functions_dir, func_md_filename), md_content)
 
+        # Decompiler excerpts are bounded to keep evidence lightweight.
         result = decomp_interface.decompileFunction(func, 30, monitor)
         decomp_excerpt = {
             "function": {
@@ -243,6 +333,14 @@ def build_manifest(options, hashes, binary_lens_version, format_version):
             "max_call_edges": options["max_call_edges"],
             "max_calls_per_function": options["max_calls_per_function"],
             "max_decomp_lines": options["max_decomp_lines"],
+            "max_cli_options": options.get("max_cli_options"),
+            "max_cli_parse_loops": options.get("max_cli_parse_loops"),
+            "max_cli_option_evidence": options.get("max_cli_option_evidence"),
+            "max_cli_parse_sites_per_option": options.get("max_cli_parse_sites_per_option"),
+            "max_cli_longopt_entries": options.get("max_cli_longopt_entries"),
+            "max_cli_callsites_per_parse_loop": options.get("max_cli_callsites_per_parse_loop"),
+            "max_cli_flag_vars": options.get("max_cli_flag_vars"),
+            "max_cli_check_sites": options.get("max_cli_check_sites"),
         },
     }
     if hashes:
@@ -310,6 +408,9 @@ def build_pack_readme():
     pack_readme += "- callgraph.json\n"
     pack_readme += "- capabilities.json\n"
     pack_readme += "- subsystems.json\n"
+    pack_readme += "- surface_map.json\n"
+    pack_readme += "- cli/options.json\n"
+    pack_readme += "- cli/parse_loops.json\n"
     pack_readme += "- functions/index.json\n"
     pack_readme += "- functions/f_<addr>.json\n"
     pack_readme += "- evidence/decomp/f_<addr>.json\n"
