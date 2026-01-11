@@ -1,0 +1,113 @@
+#!/usr/bin/env python
+import os
+import shutil
+import sys
+from pathlib import Path
+
+from pyghidra import core as pyghidra_core
+
+
+def usage(exit_code=1):
+    print(
+        "Usage: binary_lens <binary> [-o <output_dir>] [key=value ...]",
+        file=sys.stderr,
+    )
+    print("Default output dir: out", file=sys.stderr)
+    raise SystemExit(exit_code)
+
+
+def parse_args(argv):
+    binary_path = None
+    # Default to a local out dir to keep the CLI terse for quick runs.
+    out_dir = "out"
+    script_args = []
+    idx = 0
+    count = len(argv)
+    while idx < count:
+        arg = argv[idx]
+        idx += 1
+        if arg in ("-h", "--help"):
+            usage(0)
+        if arg in ("-o", "--output"):
+            if idx >= count:
+                print("Missing value for -o/--output.", file=sys.stderr)
+                usage(1)
+            out_dir = argv[idx]
+            idx += 1
+            continue
+        if arg == "--":
+            script_args.extend(argv[idx:])
+            break
+        if arg.startswith("-"):
+            script_args.append(arg)
+            continue
+        if binary_path is None:
+            binary_path = arg
+        else:
+            script_args.append(arg)
+    if not binary_path:
+        usage(1)
+    return binary_path, out_dir, script_args
+
+
+def resolve_binary(binary_path):
+    binary_file = Path(binary_path)
+    if binary_file.is_file():
+        return binary_file
+    # Allow PATH-based resolution so `binary_lens ls` works inside nix shells.
+    resolved = shutil.which(binary_path)
+    if resolved:
+        resolved_path = Path(resolved)
+        if resolved_path.is_file():
+            return resolved_path
+    print(f"Binary not found: {binary_path}", file=sys.stderr)
+    print("Hint: provide a full path or a binary available in PATH.", file=sys.stderr)
+    raise SystemExit(1)
+
+
+def main(argv):
+    binary_path, out_dir, script_args = parse_args(argv)
+    binary_file = resolve_binary(binary_path)
+
+    install_dir = os.environ.get("GHIDRA_INSTALL_DIR")
+    if not install_dir:
+        # PyGhidra needs a concrete Ghidra install; nix develop wires this in.
+        print("GHIDRA_INSTALL_DIR is not set. Run inside nix develop.", file=sys.stderr)
+        raise SystemExit(1)
+
+    root_dir = Path(
+        os.environ.get("BINARY_LENS_ROOT", Path(__file__).resolve().parent.parent)
+    ).resolve()
+    script_path = root_dir / "scripts" / "binary_lens_export.py"
+    if not script_path.is_file():
+        print(
+            "Could not locate scripts/binary_lens_export.py. Run from repo root or set BINARY_LENS_ROOT.",
+            file=sys.stderr,
+        )
+        raise SystemExit(1)
+
+    # Ghidra's ProjectLocator requires an absolute path.
+    out_dir_path = Path(out_dir).resolve()
+    project_dir = out_dir_path / "ghidra_project"
+    project_name = binary_file.stem
+    program_name = binary_file.name
+
+    out_dir_path.mkdir(parents=True, exist_ok=True)
+
+    # Use PyGhidra's flat API to avoid the deprecated run_script helper and
+    # the open_project + ghidra_script path that hangs in headless runs.
+    with pyghidra_core._flat_api(
+        str(binary_file),
+        str(project_dir),
+        project_name,
+        analyze=True,
+        program_name=program_name,
+        # Keep a stable, non-nested project path under the output dir.
+        nested_project_location=False,
+        install_dir=Path(install_dir),
+    ) as script:
+        script.run(str(script_path), [str(out_dir_path)] + script_args)
+
+
+if __name__ == "__main__":
+    main(sys.argv[1:])
