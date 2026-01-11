@@ -1,0 +1,4 @@
+ghidra_projects/
+out/
+__pycache__/
+*.pyc
