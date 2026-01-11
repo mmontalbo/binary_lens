@@ -12,7 +12,6 @@ import re
 import sys
 from pathlib import Path
 
-
 MAX_CONTEXT_LINES = 8
 SUBJECT_COMPONENT_RE = re.compile(r"^[a-z][a-z0-9_]*$")
 

@@ -3,12 +3,11 @@ set -euo pipefail
 
 # Resolve the repository root even when invoked via a symlink.
 repo_root="$(git rev-parse --show-toplevel)"
-commit_msg_file="$1"
 
 cd "$repo_root"
 
 if [[ -z "${IN_NIX_SHELL-}" ]]; then
-    exec nix develop -c python tools/lint_commit.py --file "$commit_msg_file"
+    exec nix develop -c ruff check .
 else
-    exec python tools/lint_commit.py --file "$commit_msg_file"
+    exec ruff check .
 fi

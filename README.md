@@ -206,21 +206,6 @@ The exporter writes a context pack to `<out_dir>/binary.lens/`.
 
 ---
 
-## Development (Nix)
-
-Enter a reproducible dev environment:
-
-```sh
-nix develop
-```
-
-Notes:
-
-- Linux shells include the `ghidra` package; on other platforms, install Ghidra separately.
-- `nix fmt` runs the `alejandra` formatter for `flake.nix`.
-
----
-
 ## Roadmap
 
 ### v0 — Minimal viable lens
