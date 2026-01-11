@@ -6,6 +6,8 @@ This document defines near-term milestones for adding **LM-tailored interface le
 
 ## Milestone 1 — CLI Surface Lens
 
+Status: complete
+
 ### Goal
 Extract a **machine-readable model of the CLI surface** from the binary (coreutils multicall binary), including:
 - option names (long and short)
@@ -207,4 +209,3 @@ Both milestones must preserve Binary Lens invariants:
 - outputs are bounded and diffable
 
 These lenses exist to make downstream LM consumers *far easier to build*, not to replace runtime verification.
-
