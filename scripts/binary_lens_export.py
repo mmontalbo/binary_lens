@@ -23,7 +23,7 @@ from export_collectors import (
     collect_imports,
     collect_string_refs_by_func,
     collect_strings,
-    extract_call_args,
+    extract_call_args_for_callsites,
     parse_option_token,
     select_call_edges,
     select_full_functions,
@@ -67,10 +67,29 @@ def collect_cli_inputs(
 ):
     parse_sites, parse_groups = collect_cli_parse_sites(call_edges_all, function_meta_by_addr)
     parse_callsite_ids = [entry.get("callsite") for entry in parse_sites if entry.get("callsite")]
-    # Resolve call arguments at parse sites to recover optstrings/longopts.
-    call_args_by_callsite = {}
-    for callsite_id in parse_callsite_ids:
-        call_args_by_callsite[callsite_id] = extract_call_args(program, callsite_id, monitor)
+
+    # Restrict compare-site scanning to functions that reference option-like strings.
+    option_token_string_ids = set()
+    for entry in strings:
+        token = parse_option_token(entry.get("value"))
+        if token:
+            option_token_string_ids.add(entry.get("id"))
+    option_token_callers = set()
+    if option_token_string_ids:
+        for func_addr, string_ids in string_refs_by_func.items():
+            if string_ids & option_token_string_ids:
+                option_token_callers.add(func_addr)
+    compare_sites = collect_cli_option_compare_sites(
+        call_edges_all,
+        function_meta_by_addr,
+        option_token_callers if option_token_callers else None,
+    )
+    compare_callsite_ids = [entry.get("callsite") for entry in compare_sites if entry.get("callsite")]
+
+    callsite_ids = list(dict.fromkeys(parse_callsite_ids + compare_callsite_ids))
+    # Resolve call arguments in batches to avoid repeated per-callsite decompilation.
+    call_args_by_callsite = extract_call_args_for_callsites(program, callsite_ids, monitor)
+
     parse_details_by_callsite = build_cli_parse_details(
         program,
         parse_sites,
@@ -90,28 +109,6 @@ def collect_cli_inputs(
         sorted(flag_addresses),
         options.get("max_cli_check_sites", 0),
     )
-
-    # Restrict compare-site scanning to functions that reference option-like strings.
-    option_token_string_ids = set()
-    for entry in strings:
-        token = parse_option_token(entry.get("value"))
-        if token:
-            option_token_string_ids.add(entry.get("id"))
-    option_token_callers = set()
-    if option_token_string_ids:
-        for func_addr, string_ids in string_refs_by_func.items():
-            if string_ids & option_token_string_ids:
-                option_token_callers.add(func_addr)
-    compare_sites = collect_cli_option_compare_sites(
-        call_edges_all,
-        function_meta_by_addr,
-        option_token_callers if option_token_callers else None,
-    )
-    compare_callsite_ids = [entry.get("callsite") for entry in compare_sites if entry.get("callsite")]
-    for callsite_id in compare_callsite_ids:
-        if callsite_id in call_args_by_callsite:
-            continue
-        call_args_by_callsite[callsite_id] = extract_call_args(program, callsite_id, monitor)
     compare_details_by_callsite = build_cli_compare_details(
         compare_sites,
         call_args_by_callsite,
