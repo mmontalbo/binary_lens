@@ -1,6 +1,6 @@
 # Development Workflow
 
-This document captures the local dev workflow for Binary Lens. The flake is the source
+This document captures the local dev workflow for `binary_lens`. The flake is the source
 of truth for dependencies and the preferred way to run the exporter.
 
 ## Enter the dev shell
