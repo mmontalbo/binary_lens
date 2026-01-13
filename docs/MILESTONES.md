@@ -103,6 +103,8 @@ Add a `cli/` section to the context pack:
 
 ## Milestone 2 — Error & Exit Lens
 
+Status: complete
+
 ### Goal
 Extract an **evidence-linked taxonomy of errors and exits**, enabling LM consumers to:
 - enumerate likely error conditions
@@ -200,9 +202,125 @@ Add an `errors/` section to the context pack:
 
 ---
 
+## Milestone 3 — Dispatch & Mode Surface Lens
+
+Status: planned
+
+### Goal
+Extract an **evidence-linked model of behavioral modes and dispatch**, enabling LM consumers to:
+- discover “what modes exist?” (subcommands, verbs, applets, argv0-based multicall, etc.)
+- understand how the binary selects a mode (dispatch mechanism + decision sites)
+- scope other surfaces (CLI options, diagnostics, exits, outputs) to a selected mode
+- generate interaction plans/tests that are mode-aware (“invoke mode X with args Y”)
+
+This milestone should make it easy to answer:
+- “How many ‘commands’ live inside this binary, and what are their names?”
+- “Where does dispatch happen, and what does it dispatch on (argv0, argv[1], flags)?”
+- “If I care about mode X, what code regions should I focus on?”
+
+### Context
+Many real-world binaries multiplex behavior:
+- multicall binaries select behavior based on `argv[0]` (or a shim name)
+- subcommand CLIs dispatch on `argv[1]` (“verb” commands)
+- argument-driven mode selection uses string-compare chains or lookup tables
+- some binaries dispatch via tables (name → function pointer) or hash/switch patterns
+
+Binary Lens already exports call edges, strings, and evidence callsites, but it does not yet:
+- surface a stable inventory of modes/subcommands with evidence
+- localize dispatch decision sites and their mechanisms
+- provide a bounded, navigable “mode slice” to reduce context for consumers
+
+### Relationship to CLI Options
+This milestone is intentionally **orthogonal** to the CLI Surface Lens:
+- **Modes** describe *which behavior is selected* (subcommand/verb/applet/variant).
+- **Options** describe *parameters and toggles* that affect behavior.
+
+In multiplexing binaries, options may be:
+- **global** (parsed before mode selection or shared across many modes), or
+- **mode-scoped** (parsed/checked only within a specific mode’s implementation), or
+- **mode-selecting** (an option/flag that effectively selects a mode).
+
+Milestone 3 should not duplicate option extraction. Instead, it should enable consumers to **scope and route** existing CLI option artifacts to a selected mode, with explicit `derived/heuristic` labels.
+
+### Deliverables
+Add a `modes/` (or `dispatch/`) section to the context pack:
+
+1. `modes/index.json`
+   - Inventory of discovered modes with conservative metadata:
+     - `mode_id` (stable ID)
+     - `name` (string token, when discoverable)
+     - `kind` (e.g., `argv0`, `subcommand`, `verb`, `flag_mode`, `unknown`)
+     - `dispatch_roots` (best-effort function IDs that anchor the mode)
+     - `dispatch_sites` (callsite IDs + evidence refs where the mode token is tested/selected)
+     - `evidence` (strings/callsites/functions)
+     - `strength/confidence` tags for all non-trivial fields
+
+2. `modes/dispatch_sites.json` (optional, but recommended)
+   - A compact list of dispatch decision regions:
+     - function ID(s)
+     - representative compare/lookup callsites
+     - candidate tokens observed (bounded)
+     - notes like “strcmp-chain”, “table lookup”, “switch/jumptable” (heuristic)
+
+3. `modes/slices.json` (optional, but recommended)
+   - Bounded per-mode “start here” slices to make consumers efficient:
+     - `mode_id`
+     - `root_functions` (bounded list)
+     - `top_strings` / `top_messages` / `top_options` (bounded references into existing outputs)
+     - recommended: `option_scope` hints (global/mode_scoped/mode_selecting/unknown), explicitly labeled as derived/heuristic
+     - `top_exit_paths` (bounded references)
+     - explicit `selection_strategy` + bounds metadata
+
+4. Routing entry in `surface_map.json`
+   - “start here” pointers:
+     - top dispatch sites
+     - top N modes (by evidence strength / number of distinct sites)
+     - top N mode roots (functions)
+
+### Approach (static-first)
+- Identify dispatch signals (imports and patterns):
+  - string compare imports (`strcmp`, `strncmp`, `strcasecmp`, …)
+  - table-driven dispatch (string constants adjacent to function pointers)
+  - switch/jumptable patterns in functions that also reference many tokens
+- Extract candidate mode tokens conservatively:
+  - string constants observed as arguments to compare/lookup callsites
+  - string constants co-located in apparent mode tables
+- Link tokens → dispatch sites and best-effort roots:
+  - record callsite evidence where token is used
+  - heuristically associate nearby/internal calls as potential roots (explicitly labeled)
+- Export bounded slices:
+  - keep per-mode exports small and stable; prioritize high-salience evidence
+  - avoid full decompiler dumps; reference existing evidence files
+  - link to existing CLI artifacts where possible:
+    - include parse loops / options that are reachable from a mode root (derived, bounded)
+    - treat “global vs mode-scoped” as a best-effort hint, not a guarantee
+
+### Acceptance Criteria
+**A. Mode inventory**
+- `modes/index.json` contains a non-trivial set of modes (≥ 5) for a multiplexing binary.
+- Each mode includes:
+  - `name` (or explicit `unknown_name`) and at least one dispatch-site evidence reference.
+
+**B. Dispatch localization**
+- At least one dispatch decision site is exported with:
+  - function ID and representative callsite evidence
+  - token(s) involved (when discoverable) or explicit unknowns
+
+**C. Scope reduction**
+- Provide at least a minimal per-mode slice for the top few modes, containing:
+  - a bounded list of root functions and evidence-linked pointers into existing surfaces
+  - explicit `strength/confidence` tags for heuristic associations
+  - at least some mode → option references when options are discoverably scoped
+
+**D. Bounded output**
+- Cap counts (tokens, modes, sites, slice sizes) and include bounds metadata.
+- Ensure slices are diff-friendly and don’t explode pack size.
+
+---
+
 ## Notes on Epistemic Hygiene
 
-Both milestones must preserve Binary Lens invariants:
+All milestones must preserve Binary Lens invariants:
 - no narrative prose as “facts”
 - every extracted item is evidence-linked
 - derived/heuristic fields are explicitly labeled
