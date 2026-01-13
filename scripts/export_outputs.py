@@ -158,7 +158,7 @@ def build_cli_parse_loops_payload(parse_loops, total_parse_loops, truncated, opt
     }
 
 
-def build_surface_map_payload(cli_surface, options):
+def build_surface_map_payload(cli_surface, options, error_surface=None):
     cli_section = {}
     parse_loops = cli_surface.get("parse_loops", [])
     options_list = cli_surface.get("options", [])
@@ -208,9 +208,12 @@ def build_surface_map_payload(cli_surface, options):
     if top_options:
         cli_section["top_options"] = top_options
 
-    return {
+    surface_map = {
         "cli": cli_section,
     }
+    if error_surface:
+        surface_map["errors"] = error_surface
+    return surface_map
 
 
 def write_function_exports(
@@ -341,6 +344,14 @@ def build_manifest(options, hashes, binary_lens_version, format_version):
             "max_cli_callsites_per_parse_loop": options.get("max_cli_callsites_per_parse_loop"),
             "max_cli_flag_vars": options.get("max_cli_flag_vars"),
             "max_cli_check_sites": options.get("max_cli_check_sites"),
+            "max_error_messages": options.get("max_error_messages"),
+            "max_error_message_callsites": options.get("max_error_message_callsites"),
+            "max_error_message_functions": options.get("max_error_message_functions"),
+            "max_exit_paths": options.get("max_exit_paths"),
+            "max_exit_patterns": options.get("max_exit_patterns"),
+            "max_error_emitter_callsites": options.get("max_error_emitter_callsites"),
+            "max_error_sites": options.get("max_error_sites"),
+            "max_error_site_callsites": options.get("max_error_site_callsites"),
         },
     }
     if hashes:
@@ -409,6 +420,9 @@ def build_pack_readme():
     pack_readme += "- capabilities.json\n"
     pack_readme += "- subsystems.json\n"
     pack_readme += "- surface_map.json\n"
+    pack_readme += "- errors/messages.json\n"
+    pack_readme += "- errors/exit_paths.json\n"
+    pack_readme += "- errors/error_sites.json\n"
     pack_readme += "- cli/options.json\n"
     pack_readme += "- cli/parse_loops.json\n"
     pack_readme += "- functions/index.json\n"

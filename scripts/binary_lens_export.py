@@ -37,6 +37,14 @@ from export_derivations import (
     derive_cli_surface,
     derive_subsystems,
 )
+from export_errors import (
+    attach_callsite_refs,
+    build_error_surface,
+    collect_error_callsites,
+    derive_error_messages,
+    derive_error_sites,
+    derive_exit_paths,
+)
 from export_outputs import (
     build_binary_info,
     build_callgraph_payload,
@@ -129,10 +137,12 @@ def write_context_pack(pack_root, program, options):
     ensure_dir(pack_root)
     functions_dir = os.path.join(pack_root, "functions")
     cli_dir = os.path.join(pack_root, "cli")
+    errors_dir = os.path.join(pack_root, "errors")
     evidence_decomp_dir = os.path.join(pack_root, "evidence", "decomp")
     evidence_callsites_dir = os.path.join(pack_root, "evidence", "callsites")
     ensure_dir(functions_dir)
     ensure_dir(cli_dir)
+    ensure_dir(errors_dir)
     ensure_dir(evidence_decomp_dir)
     ensure_dir(evidence_callsites_dir)
 
@@ -180,6 +190,38 @@ def write_context_pack(pack_root, program, options):
     parse_callsite_ids = cli_inputs["parse_callsite_ids"]
     compare_callsite_ids = cli_inputs["compare_callsite_ids"]
 
+    error_messages_payload, emitter_callsites_by_func, call_args_cache = derive_error_messages(
+        program,
+        monitor,
+        strings,
+        string_addr_map_all,
+        string_refs_by_func,
+        call_edges_all,
+        function_meta_by_addr,
+        string_tags_by_id,
+        options,
+    )
+    exit_paths_payload, exit_callsites_by_func, call_args_cache = derive_exit_paths(
+        program,
+        monitor,
+        call_edges_all,
+        function_meta_by_addr,
+        options,
+        call_args_cache=call_args_cache,
+        emitter_callsites_by_func=emitter_callsites_by_func,
+    )
+    error_sites_payload = derive_error_sites(
+        error_messages_payload,
+        exit_callsites_by_func,
+        call_args_cache,
+        options,
+        function_meta_by_addr,
+    )
+    error_surface = build_error_surface(error_messages_payload, exit_paths_payload, error_sites_payload)
+    error_callsite_ids = collect_error_callsites(
+        error_messages_payload, exit_paths_payload, error_sites_payload
+    )
+
     metrics_by_addr = build_function_metrics(
         functions, call_edges_all, string_refs_by_func, string_tags_by_id
     )
@@ -202,12 +244,19 @@ def write_context_pack(pack_root, program, options):
         options["max_call_edges"],
     )
     # Ensure CLI evidence callsites are serialized even if they fall outside edge caps.
-    extra_callsites = parse_callsite_ids + compare_callsite_ids
+    extra_callsites = parse_callsite_ids + compare_callsite_ids + error_callsite_ids
     callsite_paths = write_callsite_records(
         callsite_records,
         call_edges,
         evidence_callsites_dir,
         extra_callsites=extra_callsites,
+    )
+    attach_callsite_refs(
+        error_messages_payload,
+        exit_paths_payload,
+        error_sites_payload,
+        error_surface,
+        callsite_paths,
     )
     callgraph = build_callgraph_payload(call_edges, total_edges, truncated_edges, options, call_edge_stats)
 
@@ -265,7 +314,7 @@ def write_context_pack(pack_root, program, options):
         cli_surface.get("parse_loops_truncated", False),
         options,
     )
-    surface_map_payload = build_surface_map_payload(cli_surface, options)
+    surface_map_payload = build_surface_map_payload(cli_surface, options, error_surface=error_surface)
 
     manifest = build_manifest(options, hashes, BINARY_LENS_VERSION, FORMAT_VERSION)
     strings_payload = build_strings_payload(
@@ -287,6 +336,9 @@ def write_context_pack(pack_root, program, options):
     write_json(os.path.join(pack_root, "capabilities.json"), capabilities)
     write_json(os.path.join(pack_root, "subsystems.json"), subsystems_payload)
     write_json(os.path.join(pack_root, "surface_map.json"), surface_map_payload)
+    write_json(os.path.join(errors_dir, "messages.json"), error_messages_payload)
+    write_json(os.path.join(errors_dir, "exit_paths.json"), exit_paths_payload)
+    write_json(os.path.join(errors_dir, "error_sites.json"), error_sites_payload)
     write_json(os.path.join(cli_dir, "options.json"), cli_options_payload)
     write_json(os.path.join(cli_dir, "parse_loops.json"), cli_parse_loops_payload)
     write_json(os.path.join(functions_dir, "index.json"), index_payload)

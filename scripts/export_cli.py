@@ -12,6 +12,14 @@ from export_config import (
     DEFAULT_MAX_CLI_PARSE_LOOPS,
     DEFAULT_MAX_CLI_PARSE_SITES_PER_OPTION,
     DEFAULT_MAX_DECOMP_LINES,
+    DEFAULT_MAX_ERROR_EMITTER_CALLSITES,
+    DEFAULT_MAX_ERROR_MESSAGE_CALLSITES,
+    DEFAULT_MAX_ERROR_MESSAGE_FUNCTIONS,
+    DEFAULT_MAX_ERROR_MESSAGES,
+    DEFAULT_MAX_ERROR_SITE_CALLSITES,
+    DEFAULT_MAX_ERROR_SITES,
+    DEFAULT_MAX_EXIT_PATHS,
+    DEFAULT_MAX_EXIT_PATTERNS,
     DEFAULT_MAX_FULL_FUNCTIONS,
     DEFAULT_MAX_FUNCTIONS_INDEX,
     DEFAULT_MAX_STRINGS,
@@ -34,6 +42,14 @@ def parse_args(args):
         "max_cli_callsites_per_parse_loop": DEFAULT_MAX_CLI_CALLSITES_PER_PARSE_LOOP,
         "max_cli_flag_vars": DEFAULT_MAX_CLI_FLAG_VARS,
         "max_cli_check_sites": DEFAULT_MAX_CLI_CHECK_SITES,
+        "max_error_messages": DEFAULT_MAX_ERROR_MESSAGES,
+        "max_error_message_callsites": DEFAULT_MAX_ERROR_MESSAGE_CALLSITES,
+        "max_error_message_functions": DEFAULT_MAX_ERROR_MESSAGE_FUNCTIONS,
+        "max_exit_paths": DEFAULT_MAX_EXIT_PATHS,
+        "max_exit_patterns": DEFAULT_MAX_EXIT_PATTERNS,
+        "max_error_emitter_callsites": DEFAULT_MAX_ERROR_EMITTER_CALLSITES,
+        "max_error_sites": DEFAULT_MAX_ERROR_SITES,
+        "max_error_site_callsites": DEFAULT_MAX_ERROR_SITE_CALLSITES,
     }
     out_dir = None
     show_help = False
@@ -85,6 +101,14 @@ def print_usage():
     print("  max_cli_callsites_per_parse_loop=%d" % DEFAULT_MAX_CLI_CALLSITES_PER_PARSE_LOOP)
     print("  max_cli_flag_vars=%d" % DEFAULT_MAX_CLI_FLAG_VARS)
     print("  max_cli_check_sites=%d" % DEFAULT_MAX_CLI_CHECK_SITES)
+    print("  max_error_messages=%d" % DEFAULT_MAX_ERROR_MESSAGES)
+    print("  max_error_message_callsites=%d" % DEFAULT_MAX_ERROR_MESSAGE_CALLSITES)
+    print("  max_error_message_functions=%d" % DEFAULT_MAX_ERROR_MESSAGE_FUNCTIONS)
+    print("  max_exit_paths=%d" % DEFAULT_MAX_EXIT_PATHS)
+    print("  max_exit_patterns=%d" % DEFAULT_MAX_EXIT_PATTERNS)
+    print("  max_error_emitter_callsites=%d" % DEFAULT_MAX_ERROR_EMITTER_CALLSITES)
+    print("  max_error_sites=%d" % DEFAULT_MAX_ERROR_SITES)
+    print("  max_error_site_callsites=%d" % DEFAULT_MAX_ERROR_SITE_CALLSITES)
 
 
 def resolve_pack_root(out_dir):
