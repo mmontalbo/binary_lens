@@ -1,0 +1,1044 @@
+{
+  "dispatch_sites": [
+    {
+      "callee_names": [
+        "strcmp"
+      ],
+      "callsite_ids": [
+        "001196f8",
+        "0011970f",
+        "00119726",
+        "0011973d",
+        "00119754",
+        "0011976b",
+        "00119782",
+        "00119799",
+        "001197b0",
+        "001197c7",
+        "001197de",
+        "001197f5",
+        "0011980c",
+        "00119823",
+        "0011983a",
+        "00119851",
+        "00119868",
+        "0011987f",
+        "00119896",
+        "001198ad"
+      ],
+      "callsite_refs": [
+        "evidence/callsites/cs_001196f8.json",
+        "evidence/callsites/cs_0011970f.json",
+        "evidence/callsites/cs_00119726.json",
+        "evidence/callsites/cs_0011973d.json",
+        "evidence/callsites/cs_00119754.json",
+        "evidence/callsites/cs_0011976b.json",
+        "evidence/callsites/cs_00119782.json",
+        "evidence/callsites/cs_00119799.json",
+        "evidence/callsites/cs_001197b0.json",
+        "evidence/callsites/cs_001197c7.json",
+        "evidence/callsites/cs_001197de.json",
+        "evidence/callsites/cs_001197f5.json",
+        "evidence/callsites/cs_0011980c.json",
+        "evidence/callsites/cs_00119823.json",
+        "evidence/callsites/cs_0011983a.json",
+        "evidence/callsites/cs_00119851.json",
+        "evidence/callsites/cs_00119868.json",
+        "evidence/callsites/cs_0011987f.json",
+        "evidence/callsites/cs_00119896.json",
+        "evidence/callsites/cs_001198ad.json"
+      ],
+      "callsite_status_counts": [
+        {
+          "count": 106,
+          "status": "ok"
+        }
+      ],
+      "callsites_truncated": true,
+      "compare_callsite_count": 106,
+      "confidence": "high",
+      "dispatch_kind": "argv0_compare_chain",
+      "dispatch_kind_basis": "handler_assignment_diversity",
+      "dispatch_kind_confidence": "high",
+      "dispatch_kind_strength": "derived",
+      "evidence": {
+        "callsites": [
+          "001196f8",
+          "0011970f",
+          "00119726",
+          "0011973d",
+          "00119754",
+          "0011976b",
+          "00119782",
+          "00119799",
+          "001197b0",
+          "001197c7",
+          "001197de",
+          "001197f5",
+          "0011980c",
+          "00119823",
+          "0011983a",
+          "00119851",
+          "00119868",
+          "0011987f",
+          "00119896",
+          "001198ad"
+        ],
+        "functions": [
+          "001196b0"
+        ],
+        "strings": [
+          "s_00207038",
+          "s_0020703e",
+          "s_00207045",
+          "s_0020704c",
+          "s_00207055",
+          "s_00207060",
+          "s_00207066",
+          "s_0020706c",
+          "s_00207072",
+          "s_00207078",
+          "s_0020707f",
+          "s_0020708a"
+        ]
+      },
+      "excluded_token_count": 0,
+      "function": {
+        "address": "001196b0",
+        "name": "launch_program"
+      },
+      "ignored_tokens": [],
+      "ignored_tokens_truncated": false,
+      "omitted_token_count": 86,
+      "omitted_token_occurrence_count": 0,
+      "representative_callsite_id": "001196f8",
+      "representative_callsite_ref": "evidence/callsites/cs_001196f8.json",
+      "strength": "observed",
+      "token_candidate_count": 106,
+      "token_candidate_occurrence_count": 106,
+      "token_candidate_total_count": 106,
+      "token_candidates": [
+        {
+          "address": "002091aa",
+          "confidence": "low",
+          "kind": "unknown",
+          "kind_confidence": "low",
+          "kind_strength": "heuristic",
+          "mode_id": "mode_002091aa",
+          "name": "[",
+          "occurrence_count": 1,
+          "strength": "observed",
+          "string_id": null
+        },
+        {
+          "address": "00207038",
+          "confidence": "low",
+          "kind": "unknown",
+          "kind_confidence": "low",
+          "kind_strength": "heuristic",
+          "mode_id": "s_00207038",
+          "name": "b2sum",
+          "occurrence_count": 1,
+          "strength": "observed",
+          "string_id": "s_00207038"
+        },
+        {
+          "address": "0020703e",
+          "confidence": "low",
+          "kind": "unknown",
+          "kind_confidence": "low",
+          "kind_strength": "heuristic",
+          "mode_id": "s_0020703e",
+          "name": "base32",
+          "occurrence_count": 1,
+          "strength": "observed",
+          "string_id": "s_0020703e"
+        },
+        {
+          "address": "00207045",
+          "confidence": "low",
+          "kind": "unknown",
+          "kind_confidence": "low",
+          "kind_strength": "heuristic",
+          "mode_id": "s_00207045",
+          "name": "base64",
+          "occurrence_count": 1,
+          "strength": "observed",
+          "string_id": "s_00207045"
+        },
+        {
+          "address": "0020704c",
+          "confidence": "low",
+          "kind": "unknown",
+          "kind_confidence": "low",
+          "kind_strength": "heuristic",
+          "mode_id": "s_0020704c",
+          "name": "basename",
+          "occurrence_count": 1,
+          "strength": "observed",
+          "string_id": "s_0020704c"
+        },
+        {
+          "address": "00207055",
+          "confidence": "low",
+          "kind": "unknown",
+          "kind_confidence": "low",
+          "kind_strength": "heuristic",
+          "mode_id": "s_00207055",
+          "name": "basenc",
+          "occurrence_count": 1,
+          "strength": "observed",
+          "string_id": "s_00207055"
+        },
+        {
+          "address": "0020705c",
+          "confidence": "low",
+          "kind": "unknown",
+          "kind_confidence": "low",
+          "kind_strength": "heuristic",
+          "mode_id": "mode_0020705c",
+          "name": "cat",
+          "occurrence_count": 1,
+          "strength": "observed",
+          "string_id": null
+        },
+        {
+          "address": "00207060",
+          "confidence": "low",
+          "kind": "unknown",
+          "kind_confidence": "low",
+          "kind_strength": "heuristic",
+          "mode_id": "s_00207060",
+          "name": "chcon",
+          "occurrence_count": 1,
+          "strength": "observed",
+          "string_id": "s_00207060"
+        },
+        {
+          "address": "00207066",
+          "confidence": "low",
+          "kind": "unknown",
+          "kind_confidence": "low",
+          "kind_strength": "heuristic",
+          "mode_id": "s_00207066",
+          "name": "chgrp",
+          "occurrence_count": 1,
+          "strength": "observed",
+          "string_id": "s_00207066"
+        },
+        {
+          "address": "0020706c",
+          "confidence": "low",
+          "kind": "unknown",
+          "kind_confidence": "low",
+          "kind_strength": "heuristic",
+          "mode_id": "s_0020706c",
+          "name": "chmod",
+          "occurrence_count": 1,
+          "strength": "observed",
+          "string_id": "s_0020706c"
+        },
+        {
+          "address": "00207072",
+          "confidence": "low",
+          "kind": "unknown",
+          "kind_confidence": "low",
+          "kind_strength": "heuristic",
+          "mode_id": "s_00207072",
+          "name": "chown",
+          "occurrence_count": 1,
+          "strength": "observed",
+          "string_id": "s_00207072"
+        },
+        {
+          "address": "00207078",
+          "confidence": "low",
+          "kind": "unknown",
+          "kind_confidence": "low",
+          "kind_strength": "heuristic",
+          "mode_id": "s_00207078",
+          "name": "chroot",
+          "occurrence_count": 1,
+          "strength": "observed",
+          "string_id": "s_00207078"
+        },
+        {
+          "address": "0020707f",
+          "confidence": "low",
+          "kind": "unknown",
+          "kind_confidence": "low",
+          "kind_strength": "heuristic",
+          "mode_id": "s_0020707f",
+          "name": "cksum",
+          "occurrence_count": 1,
+          "strength": "observed",
+          "string_id": "s_0020707f"
+        },
+        {
+          "address": "00207085",
+          "confidence": "low",
+          "kind": "unknown",
+          "kind_confidence": "low",
+          "kind_strength": "heuristic",
+          "mode_id": "mode_00207085",
+          "name": "comm",
+          "occurrence_count": 1,
+          "strength": "observed",
+          "string_id": null
+        },
+        {
+          "address": "00209228",
+          "confidence": "low",
+          "kind": "unknown",
+          "kind_confidence": "low",
+          "kind_strength": "heuristic",
+          "mode_id": "mode_00209228",
+          "name": "cp",
+          "occurrence_count": 1,
+          "strength": "observed",
+          "string_id": null
+        },
+        {
+          "address": "0020708a",
+          "confidence": "low",
+          "kind": "unknown",
+          "kind_confidence": "low",
+          "kind_strength": "heuristic",
+          "mode_id": "s_0020708a",
+          "name": "csplit",
+          "occurrence_count": 1,
+          "strength": "observed",
+          "string_id": "s_0020708a"
+        },
+        {
+          "address": "00207091",
+          "confidence": "low",
+          "kind": "unknown",
+          "kind_confidence": "low",
+          "kind_strength": "heuristic",
+          "mode_id": "mode_00207091",
+          "name": "cut",
+          "occurrence_count": 1,
+          "strength": "observed",
+          "string_id": null
+        },
+        {
+          "address": "00208f54",
+          "confidence": "low",
+          "kind": "unknown",
+          "kind_confidence": "low",
+          "kind_strength": "heuristic",
+          "mode_id": "mode_00208f54",
+          "name": "date",
+          "occurrence_count": 1,
+          "strength": "observed",
+          "string_id": null
+        },
+        {
+          "address": "002076da",
+          "confidence": "low",
+          "kind": "unknown",
+          "kind_confidence": "low",
+          "kind_strength": "heuristic",
+          "mode_id": "mode_002076da",
+          "name": "dd",
+          "occurrence_count": 1,
+          "strength": "observed",
+          "string_id": null
+        },
+        {
+          "address": "0020b9f3",
+          "confidence": "low",
+          "kind": "unknown",
+          "kind_confidence": "low",
+          "kind_strength": "heuristic",
+          "mode_id": "mode_0020b9f3",
+          "name": "df",
+          "occurrence_count": 1,
+          "strength": "observed",
+          "string_id": null
+        }
+      ],
+      "token_candidates_truncated": true
+    },
+    {
+      "callee_names": [
+        "strcmp",
+        "strncmp"
+      ],
+      "callsite_ids": [
+        "00125d07",
+        "001261f8",
+        "00126227",
+        "0012626e",
+        "00126377",
+        "0012687c",
+        "001269c8",
+        "00126b86",
+        "00126cc6",
+        "00126d98",
+        "00126ed9",
+        "00126ef0"
+      ],
+      "callsite_refs": [
+        "evidence/callsites/cs_00125d07.json",
+        "evidence/callsites/cs_001261f8.json",
+        "evidence/callsites/cs_00126227.json",
+        "evidence/callsites/cs_0012626e.json",
+        "evidence/callsites/cs_00126377.json",
+        "evidence/callsites/cs_0012687c.json",
+        "evidence/callsites/cs_001269c8.json",
+        "evidence/callsites/cs_00126b86.json",
+        "evidence/callsites/cs_00126cc6.json",
+        "evidence/callsites/cs_00126d98.json",
+        "evidence/callsites/cs_00126ed9.json",
+        "evidence/callsites/cs_00126ef0.json"
+      ],
+      "callsite_status_counts": [
+        {
+          "count": 10,
+          "status": "no_resolved_args"
+        },
+        {
+          "count": 2,
+          "status": "ok"
+        }
+      ],
+      "callsites_truncated": false,
+      "compare_callsite_count": 12,
+      "confidence": "unknown",
+      "dispatch_kind": "string_compare_chain",
+      "dispatch_kind_basis": "compare_callsite_count",
+      "dispatch_kind_confidence": "low",
+      "dispatch_kind_strength": "heuristic",
+      "evidence": {
+        "callsites": [
+          "00125d07",
+          "001261f8",
+          "00126227",
+          "0012626e",
+          "00126377",
+          "0012687c",
+          "001269c8",
+          "00126b86",
+          "00126cc6",
+          "00126d98",
+          "00126ed9",
+          "00126ef0"
+        ],
+        "functions": [
+          "001258d0"
+        ],
+        "strings": []
+      },
+      "excluded_token_count": 1,
+      "function": {
+        "address": "001258d0",
+        "name": "single_binary_main_df"
+      },
+      "ignored_tokens": [],
+      "ignored_tokens_truncated": false,
+      "omitted_token_count": 0,
+      "omitted_token_occurrence_count": 0,
+      "representative_callsite_id": "00125d07",
+      "representative_callsite_ref": "evidence/callsites/cs_00125d07.json",
+      "strength": "heuristic",
+      "token_candidate_count": 0,
+      "token_candidate_occurrence_count": 2,
+      "token_candidate_total_count": 1,
+      "token_candidates": [],
+      "token_candidates_truncated": false
+    },
+    {
+      "callee_names": [
+        "strcmp",
+        "strncmp"
+      ],
+      "callsite_ids": [
+        "00118069",
+        "001180a1",
+        "001180bd",
+        "001181a9"
+      ],
+      "callsite_refs": [
+        "evidence/callsites/cs_00118069.json",
+        "evidence/callsites/cs_001180a1.json",
+        "evidence/callsites/cs_001180bd.json",
+        "evidence/callsites/cs_001181a9.json"
+      ],
+      "callsite_status_counts": [
+        {
+          "count": 4,
+          "status": "ok"
+        }
+      ],
+      "callsites_truncated": false,
+      "compare_callsite_count": 4,
+      "confidence": "unknown",
+      "dispatch_kind": "string_compare_chain",
+      "dispatch_kind_basis": "compare_callsite_count",
+      "dispatch_kind_confidence": "low",
+      "dispatch_kind_strength": "heuristic",
+      "evidence": {
+        "callsites": [
+          "00118069",
+          "001180a1",
+          "001180bd",
+          "001181a9"
+        ],
+        "functions": [
+          "00118020"
+        ],
+        "strings": []
+      },
+      "excluded_token_count": 4,
+      "function": {
+        "address": "00118020",
+        "name": "main"
+      },
+      "ignored_tokens": [],
+      "ignored_tokens_truncated": false,
+      "omitted_token_count": 0,
+      "omitted_token_occurrence_count": 0,
+      "representative_callsite_id": "00118069",
+      "representative_callsite_ref": "evidence/callsites/cs_00118069.json",
+      "strength": "heuristic",
+      "token_candidate_count": 0,
+      "token_candidate_occurrence_count": 4,
+      "token_candidate_total_count": 4,
+      "token_candidates": [],
+      "token_candidates_truncated": false
+    },
+    {
+      "callee_names": [
+        "c_strncasecmp",
+        "strncmp"
+      ],
+      "callsite_ids": [
+        "001720e3",
+        "001731f9",
+        "0017337a",
+        "00173a5e"
+      ],
+      "callsite_refs": [
+        "evidence/callsites/cs_001720e3.json",
+        "evidence/callsites/cs_001731f9.json",
+        "evidence/callsites/cs_0017337a.json",
+        "evidence/callsites/cs_00173a5e.json"
+      ],
+      "callsite_status_counts": [
+        {
+          "count": 3,
+          "status": "ok"
+        },
+        {
+          "count": 1,
+          "status": "no_resolved_args"
+        }
+      ],
+      "callsites_truncated": false,
+      "compare_callsite_count": 4,
+      "confidence": "unknown",
+      "dispatch_kind": "string_compare_chain",
+      "dispatch_kind_basis": "compare_callsite_count",
+      "dispatch_kind_confidence": "low",
+      "dispatch_kind_strength": "heuristic",
+      "evidence": {
+        "callsites": [
+          "001720e3",
+          "001731f9",
+          "0017337a",
+          "00173a5e"
+        ],
+        "functions": [
+          "00171d70"
+        ],
+        "strings": []
+      },
+      "excluded_token_count": 2,
+      "function": {
+        "address": "00171d70",
+        "name": "single_binary_main_ls"
+      },
+      "ignored_tokens": [
+        {
+          "count": 1,
+          "preview": "# Configuration file for dircolors, a utility to help you set the",
+          "reason": "too_long"
+        },
+        {
+          "count": 1,
+          "preview": "TERM ",
+          "reason": "whitespace"
+        }
+      ],
+      "ignored_tokens_truncated": false,
+      "omitted_token_count": 0,
+      "omitted_token_occurrence_count": 0,
+      "representative_callsite_id": "001720e3",
+      "representative_callsite_ref": "evidence/callsites/cs_001720e3.json",
+      "strength": "heuristic",
+      "token_candidate_count": 0,
+      "token_candidate_occurrence_count": 2,
+      "token_candidate_total_count": 2,
+      "token_candidates": [],
+      "token_candidates_truncated": false
+    },
+    {
+      "callee_names": [
+        "strcmp"
+      ],
+      "callsite_ids": [
+        "001a736c",
+        "001a7679",
+        "001a7794"
+      ],
+      "callsite_refs": [
+        "evidence/callsites/cs_001a736c.json",
+        "evidence/callsites/cs_001a7679.json",
+        "evidence/callsites/cs_001a7794.json"
+      ],
+      "callsite_status_counts": [
+        {
+          "count": 2,
+          "status": "ok"
+        },
+        {
+          "count": 1,
+          "status": "no_resolved_args"
+        }
+      ],
+      "callsites_truncated": false,
+      "compare_callsite_count": 3,
+      "confidence": "unknown",
+      "dispatch_kind": "string_compare_chain",
+      "dispatch_kind_basis": "compare_callsite_count",
+      "dispatch_kind_confidence": "low",
+      "dispatch_kind_strength": "heuristic",
+      "evidence": {
+        "callsites": [
+          "001a736c",
+          "001a7679",
+          "001a7794"
+        ],
+        "functions": [
+          "001a65b0"
+        ],
+        "strings": []
+      },
+      "excluded_token_count": 0,
+      "function": {
+        "address": "001a65b0",
+        "name": "single_binary_main_sort"
+      },
+      "ignored_tokens": [],
+      "ignored_tokens_truncated": false,
+      "omitted_token_count": 0,
+      "omitted_token_occurrence_count": 0,
+      "representative_callsite_id": "001a736c",
+      "representative_callsite_ref": "evidence/callsites/cs_001a736c.json",
+      "strength": "heuristic",
+      "token_candidate_count": 0,
+      "token_candidate_occurrence_count": 0,
+      "token_candidate_total_count": 0,
+      "token_candidates": [],
+      "token_candidates_truncated": false
+    },
+    {
+      "callee_names": [
+        "strcmp",
+        "strncmp"
+      ],
+      "callsite_ids": [
+        "0011a7bc",
+        "0011a7f7"
+      ],
+      "callsite_refs": [
+        "evidence/callsites/cs_0011a7bc.json",
+        "evidence/callsites/cs_0011a7f7.json"
+      ],
+      "callsite_status_counts": [
+        {
+          "count": 2,
+          "status": "ok"
+        }
+      ],
+      "callsites_truncated": false,
+      "compare_callsite_count": 2,
+      "confidence": "low",
+      "dispatch_kind": "string_compare_chain",
+      "dispatch_kind_basis": "compare_callsite_count",
+      "dispatch_kind_confidence": "low",
+      "dispatch_kind_strength": "heuristic",
+      "evidence": {
+        "callsites": [
+          "0011a7bc",
+          "0011a7f7"
+        ],
+        "functions": [
+          "0011a5d0"
+        ],
+        "strings": []
+      },
+      "excluded_token_count": 2,
+      "function": {
+        "address": "0011a5d0",
+        "name": "usage"
+      },
+      "ignored_tokens": [],
+      "ignored_tokens_truncated": false,
+      "omitted_token_count": 0,
+      "omitted_token_occurrence_count": 0,
+      "representative_callsite_id": "0011a7bc",
+      "representative_callsite_ref": "evidence/callsites/cs_0011a7bc.json",
+      "strength": "observed",
+      "token_candidate_count": 1,
+      "token_candidate_occurrence_count": 3,
+      "token_candidate_total_count": 3,
+      "token_candidates": [
+        {
+          "address": "002091aa",
+          "confidence": "low",
+          "kind": "unknown",
+          "kind_confidence": "low",
+          "kind_strength": "heuristic",
+          "mode_id": "mode_002091aa",
+          "name": "[",
+          "occurrence_count": 1,
+          "strength": "observed",
+          "string_id": null
+        }
+      ],
+      "token_candidates_truncated": false
+    },
+    {
+      "callee_names": [
+        "strcmp",
+        "strncmp"
+      ],
+      "callsite_ids": [
+        "0013902b",
+        "00139067"
+      ],
+      "callsite_refs": [
+        "evidence/callsites/cs_0013902b.json",
+        "evidence/callsites/cs_00139067.json"
+      ],
+      "callsite_status_counts": [
+        {
+          "count": 2,
+          "status": "no_resolved_args"
+        }
+      ],
+      "callsites_truncated": false,
+      "compare_callsite_count": 2,
+      "confidence": "unknown",
+      "dispatch_kind": "string_compare_chain",
+      "dispatch_kind_basis": "compare_callsite_count",
+      "dispatch_kind_confidence": "low",
+      "dispatch_kind_strength": "heuristic",
+      "evidence": {
+        "callsites": [
+          "0013902b",
+          "00139067"
+        ],
+        "functions": [
+          "00138990"
+        ],
+        "strings": []
+      },
+      "excluded_token_count": 0,
+      "function": {
+        "address": "00138990",
+        "name": "single_binary_main_cksum"
+      },
+      "ignored_tokens": [],
+      "ignored_tokens_truncated": false,
+      "omitted_token_count": 0,
+      "omitted_token_occurrence_count": 0,
+      "representative_callsite_id": "0013902b",
+      "representative_callsite_ref": "evidence/callsites/cs_0013902b.json",
+      "strength": "heuristic",
+      "token_candidate_count": 0,
+      "token_candidate_occurrence_count": 0,
+      "token_candidate_total_count": 0,
+      "token_candidates": [],
+      "token_candidates_truncated": false
+    },
+    {
+      "callee_names": [
+        "strcmp"
+      ],
+      "callsite_ids": [
+        "00141425",
+        "00142a4b"
+      ],
+      "callsite_refs": [
+        "evidence/callsites/cs_00141425.json",
+        "evidence/callsites/cs_00142a4b.json"
+      ],
+      "callsite_status_counts": [
+        {
+          "count": 2,
+          "status": null
+        }
+      ],
+      "callsites_truncated": false,
+      "compare_callsite_count": 2,
+      "confidence": "unknown",
+      "dispatch_kind": "string_compare_chain",
+      "dispatch_kind_basis": "compare_callsite_count",
+      "dispatch_kind_confidence": "low",
+      "dispatch_kind_strength": "heuristic",
+      "evidence": {
+        "callsites": [
+          "00141425",
+          "00142a4b"
+        ],
+        "functions": [
+          "0013f040"
+        ],
+        "strings": []
+      },
+      "excluded_token_count": 0,
+      "function": {
+        "address": "0013f040",
+        "name": "copy_internal"
+      },
+      "ignored_tokens": [],
+      "ignored_tokens_truncated": false,
+      "omitted_token_count": 0,
+      "omitted_token_occurrence_count": 0,
+      "representative_callsite_id": "00141425",
+      "representative_callsite_ref": "evidence/callsites/cs_00141425.json",
+      "strength": "heuristic",
+      "token_candidate_count": 0,
+      "token_candidate_occurrence_count": 0,
+      "token_candidate_total_count": 0,
+      "token_candidates": [],
+      "token_candidates_truncated": false
+    },
+    {
+      "callee_names": [
+        "strcmp",
+        "strncmp"
+      ],
+      "callsite_ids": [
+        "00151b09",
+        "00151b3d"
+      ],
+      "callsite_refs": [
+        "evidence/callsites/cs_00151b09.json",
+        "evidence/callsites/cs_00151b3d.json"
+      ],
+      "callsite_status_counts": [
+        {
+          "count": 2,
+          "status": "ok"
+        }
+      ],
+      "callsites_truncated": false,
+      "compare_callsite_count": 2,
+      "confidence": "unknown",
+      "dispatch_kind": "string_compare_chain",
+      "dispatch_kind_basis": "compare_callsite_count",
+      "dispatch_kind_confidence": "low",
+      "dispatch_kind_strength": "heuristic",
+      "evidence": {
+        "callsites": [
+          "00151b09",
+          "00151b3d"
+        ],
+        "functions": [
+          "00150650"
+        ],
+        "strings": []
+      },
+      "excluded_token_count": 2,
+      "function": {
+        "address": "00150650",
+        "name": "single_binary_main_du"
+      },
+      "ignored_tokens": [],
+      "ignored_tokens_truncated": false,
+      "omitted_token_count": 0,
+      "omitted_token_occurrence_count": 0,
+      "representative_callsite_id": "00151b09",
+      "representative_callsite_ref": "evidence/callsites/cs_00151b09.json",
+      "strength": "heuristic",
+      "token_candidate_count": 0,
+      "token_candidate_occurrence_count": 2,
+      "token_candidate_total_count": 2,
+      "token_candidates": [],
+      "token_candidates_truncated": false
+    },
+    {
+      "callee_names": [
+        "strcmp"
+      ],
+      "callsite_ids": [
+        "001657c0",
+        "0016587e"
+      ],
+      "callsite_refs": [
+        "evidence/callsites/cs_001657c0.json",
+        "evidence/callsites/cs_0016587e.json"
+      ],
+      "callsite_status_counts": [
+        {
+          "count": 1,
+          "status": "no_resolved_args"
+        },
+        {
+          "count": 1,
+          "status": "ok"
+        }
+      ],
+      "callsites_truncated": false,
+      "compare_callsite_count": 2,
+      "confidence": "unknown",
+      "dispatch_kind": "string_compare_chain",
+      "dispatch_kind_basis": "compare_callsite_count",
+      "dispatch_kind_confidence": "low",
+      "dispatch_kind_strength": "heuristic",
+      "evidence": {
+        "callsites": [
+          "001657c0",
+          "0016587e"
+        ],
+        "functions": [
+          "00165510"
+        ],
+        "strings": []
+      },
+      "excluded_token_count": 1,
+      "function": {
+        "address": "00165510",
+        "name": "single_binary_main_join"
+      },
+      "ignored_tokens": [],
+      "ignored_tokens_truncated": false,
+      "omitted_token_count": 0,
+      "omitted_token_occurrence_count": 0,
+      "representative_callsite_id": "001657c0",
+      "representative_callsite_ref": "evidence/callsites/cs_001657c0.json",
+      "strength": "heuristic",
+      "token_candidate_count": 0,
+      "token_candidate_occurrence_count": 1,
+      "token_candidate_total_count": 1,
+      "token_candidates": [],
+      "token_candidates_truncated": false
+    },
+    {
+      "callee_names": [
+        "strcmp"
+      ],
+      "callsite_ids": [
+        "0019efbc",
+        "0019effd"
+      ],
+      "callsite_refs": [
+        "evidence/callsites/cs_0019efbc.json",
+        "evidence/callsites/cs_0019effd.json"
+      ],
+      "callsite_status_counts": [
+        {
+          "count": 2,
+          "status": "ok"
+        }
+      ],
+      "callsites_truncated": false,
+      "compare_callsite_count": 2,
+      "confidence": "unknown",
+      "dispatch_kind": "string_compare_chain",
+      "dispatch_kind_basis": "compare_callsite_count",
+      "dispatch_kind_confidence": "low",
+      "dispatch_kind_strength": "heuristic",
+      "evidence": {
+        "callsites": [
+          "0019efbc",
+          "0019effd"
+        ],
+        "functions": [
+          "0019ee80"
+        ],
+        "strings": []
+      },
+      "excluded_token_count": 0,
+      "function": {
+        "address": "0019ee80",
+        "name": "single_binary_main_shuf"
+      },
+      "ignored_tokens": [],
+      "ignored_tokens_truncated": false,
+      "omitted_token_count": 0,
+      "omitted_token_occurrence_count": 0,
+      "representative_callsite_id": "0019efbc",
+      "representative_callsite_ref": "evidence/callsites/cs_0019efbc.json",
+      "strength": "heuristic",
+      "token_candidate_count": 0,
+      "token_candidate_occurrence_count": 0,
+      "token_candidate_total_count": 0,
+      "token_candidates": [],
+      "token_candidates_truncated": false
+    },
+    {
+      "callee_names": [
+        "strcmp"
+      ],
+      "callsite_ids": [
+        "001b68a1"
+      ],
+      "callsite_refs": [
+        "evidence/callsites/cs_001b68a1.json"
+      ],
+      "callsite_status_counts": [
+        {
+          "count": 1,
+          "status": "no_resolved_args"
+        }
+      ],
+      "callsites_truncated": false,
+      "compare_callsite_count": 1,
+      "confidence": "unknown",
+      "dispatch_kind": "string_compare",
+      "dispatch_kind_basis": "compare_callsite_count",
+      "dispatch_kind_confidence": "low",
+      "dispatch_kind_strength": "heuristic",
+      "evidence": {
+        "callsites": [
+          "001b68a1"
+        ],
+        "functions": [
+          "001b4a60"
+        ],
+        "strings": []
+      },
+      "excluded_token_count": 0,
+      "function": {
+        "address": "001b4a60",
+        "name": "single_binary_main_tail"
+      },
+      "ignored_tokens": [],
+      "ignored_tokens_truncated": false,
+      "omitted_token_count": 0,
+      "omitted_token_occurrence_count": 0,
+      "representative_callsite_id": "001b68a1",
+      "representative_callsite_ref": "evidence/callsites/cs_001b68a1.json",
+      "strength": "heuristic",
+      "token_candidate_count": 0,
+      "token_candidate_occurrence_count": 0,
+      "token_candidate_total_count": 0,
+      "token_candidates": [],
+      "token_candidates_truncated": false
+    }
+  ],
+  "max_dispatch_site_callsites": 20,
+  "max_dispatch_site_ignored_tokens": 6,
+  "max_dispatch_site_tokens": 20,
+  "max_dispatch_sites": 12,
+  "selected_dispatch_sites": 12,
+  "selection_strategy": "top_compare_callers_then_token_counts",
+  "total_dispatch_sites": 183,
+  "truncated": true
+}

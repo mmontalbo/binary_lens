@@ -1,0 +1,344 @@
+{
+  "cli": {
+    "top_options": [
+      {
+        "evidence_count": 4,
+        "id": "opt_001",
+        "long_name": "all",
+        "parse_site_count": 4,
+        "short_name": null
+      },
+      {
+        "evidence_count": 4,
+        "id": "opt_002",
+        "long_name": "merge-base",
+        "parse_site_count": 4,
+        "short_name": null
+      },
+      {
+        "evidence_count": 4,
+        "id": "opt_003",
+        "long_name": "stdin",
+        "parse_site_count": 4,
+        "short_name": null
+      },
+      {
+        "evidence_count": 3,
+        "id": "opt_004",
+        "long_name": "cached",
+        "parse_site_count": 3,
+        "short_name": null
+      },
+      {
+        "evidence_count": 3,
+        "id": "opt_005",
+        "long_name": "end-of-options",
+        "parse_site_count": 3,
+        "short_name": null
+      },
+      {
+        "evidence_count": 2,
+        "id": "opt_006",
+        "long_name": "check-self-contained-and-connected",
+        "parse_site_count": 2,
+        "short_name": null
+      },
+      {
+        "evidence_count": 2,
+        "id": "opt_007",
+        "long_name": "quiet",
+        "parse_site_count": 2,
+        "short_name": null
+      },
+      {
+        "evidence_count": 2,
+        "id": "opt_008",
+        "long_name": "staged",
+        "parse_site_count": 2,
+        "short_name": null
+      },
+      {
+        "evidence_count": 2,
+        "id": "opt_009",
+        "long_name": "verify",
+        "parse_site_count": 2,
+        "short_name": null
+      },
+      {
+        "evidence_count": 1,
+        "id": "opt_010",
+        "long_name": "absolute-git-dir",
+        "parse_site_count": 1,
+        "short_name": null
+      }
+    ]
+  },
+  "errors": {
+    "top_emitting_functions": [
+      {
+        "emit_callsite_count": 8,
+        "function": {
+          "address": "00444f40",
+          "name": "cmd_difftool"
+        }
+      },
+      {
+        "emit_callsite_count": 8,
+        "function": {
+          "address": "00502530",
+          "name": "apply_fragments"
+        }
+      },
+      {
+        "emit_callsite_count": 8,
+        "function": {
+          "address": "006531c0",
+          "name": "read_author_script"
+        }
+      },
+      {
+        "emit_callsite_count": 7,
+        "function": {
+          "address": "0045f9e0",
+          "name": "cmd_fsck"
+        }
+      },
+      {
+        "emit_callsite_count": 5,
+        "function": {
+          "address": "00407640",
+          "name": "cmd_main"
+        }
+      }
+    ],
+    "top_exit_paths": [
+      {
+        "callsite_id": "00406088",
+        "callsite_ref": "evidence/callsites/cs_00406088.json",
+        "exit_code": null,
+        "exit_code_strength": "unknown",
+        "function": {
+          "address": "00406068",
+          "name": "safe_create_dir.cold"
+        },
+        "target": {
+          "address": "EXTERNAL:0000002b",
+          "external": true,
+          "library": "<EXTERNAL>",
+          "name": "exit"
+        }
+      },
+      {
+        "callsite_id": "004060b2",
+        "callsite_ref": "evidence/callsites/cs_004060b2.json",
+        "exit_code": null,
+        "exit_code_strength": "unknown",
+        "function": {
+          "address": "004060b1",
+          "name": "reftable_record_key.cold"
+        },
+        "target": {
+          "address": "EXTERNAL:0000001c",
+          "external": true,
+          "library": "<EXTERNAL>",
+          "name": "abort"
+        }
+      },
+      {
+        "callsite_id": "004060b8",
+        "callsite_ref": "evidence/callsites/cs_004060b8.json",
+        "exit_code": null,
+        "exit_code_strength": "unknown",
+        "function": {
+          "address": "004060b7",
+          "name": "reftable_record_encode.cold"
+        },
+        "target": {
+          "address": "EXTERNAL:0000001c",
+          "external": true,
+          "library": "<EXTERNAL>",
+          "name": "abort"
+        }
+      },
+      {
+        "callsite_id": "004060c3",
+        "callsite_ref": "evidence/callsites/cs_004060c3.json",
+        "exit_code": null,
+        "exit_code_strength": "unknown",
+        "function": {
+          "address": "004060c2",
+          "name": "reftable_record_val_type.cold"
+        },
+        "target": {
+          "address": "EXTERNAL:0000001c",
+          "external": true,
+          "library": "<EXTERNAL>",
+          "name": "abort"
+        }
+      },
+      {
+        "callsite_id": "004060c9",
+        "callsite_ref": "evidence/callsites/cs_004060c9.json",
+        "exit_code": null,
+        "exit_code_strength": "unknown",
+        "function": {
+          "address": "004060c8",
+          "name": "reftable_record_decode.cold"
+        },
+        "target": {
+          "address": "EXTERNAL:0000001c",
+          "external": true,
+          "library": "<EXTERNAL>",
+          "name": "abort"
+        }
+      }
+    ],
+    "top_message_templates": [
+      {
+        "bucket": "error",
+        "preview": "invalid value for '%s': '%s'",
+        "representative_callsite_id": "0040be3b",
+        "representative_callsite_ref": "evidence/callsites/cs_0040be3b.json",
+        "string_id": "s_006df7ef"
+      },
+      {
+        "bucket": "usage",
+        "preview": "git [-v | --version] [-h | --help] [-C <path>] [-c <name>=<value>]\\n           [--exec-path[=<path>]] [--html-path] [--man-path] [--info-path]\\n           [-...",
+        "representative_callsite_id": "00408229",
+        "representative_callsite_ref": "evidence/callsites/cs_00408229.json",
+        "string_id": "s_007490a0"
+      },
+      {
+        "bucket": "error",
+        "preview": "could not write index",
+        "representative_callsite_id": "004d68ea",
+        "representative_callsite_ref": "evidence/callsites/cs_004d68ea.json",
+        "string_id": "s_006ef86f"
+      },
+      {
+        "bucket": "usage",
+        "preview": "usage: %s%s",
+        "representative_callsite_id": "0046d857",
+        "representative_callsite_ref": "evidence/callsites/cs_0046d857.json",
+        "string_id": "s_006e64d4"
+      },
+      {
+        "bucket": "error",
+        "preview": "options '%s' and '%s' cannot be used together",
+        "representative_callsite_id": "0050496d",
+        "representative_callsite_ref": "evidence/callsites/cs_0050496d.json",
+        "string_id": "s_00701a48"
+      }
+    ]
+  },
+  "modes": {
+    "dispatch_sites_ref": "modes/dispatch_sites.json",
+    "index_ref": "modes/index.json",
+    "slices_ref": "modes/slices.json",
+    "top_dispatch_roots": [
+      {
+        "dispatch_site_count": 145,
+        "function": {
+          "address": "00406280",
+          "name": "handle_builtin"
+        },
+        "mode_count": 143
+      },
+      {
+        "dispatch_site_count": 144,
+        "function": {
+          "address": "00407640",
+          "name": "cmd_main"
+        },
+        "mode_count": 143
+      },
+      {
+        "dispatch_site_count": 143,
+        "function": {
+          "address": "00407530",
+          "name": "is_builtin"
+        },
+        "mode_count": 143
+      }
+    ],
+    "top_dispatch_sites": [
+      {
+        "compare_callsite_count": 4,
+        "function": {
+          "address": "00407640",
+          "name": "cmd_main"
+        },
+        "representative_callsite_id": "00407763",
+        "representative_callsite_ref": "evidence/callsites/cs_00407763.json",
+        "token_candidate_count": 143
+      },
+      {
+        "compare_callsite_count": 2,
+        "function": {
+          "address": "00406280",
+          "name": "handle_builtin"
+        },
+        "representative_callsite_id": "004062bf",
+        "representative_callsite_ref": "evidence/callsites/cs_004062bf.json",
+        "token_candidate_count": 143
+      },
+      {
+        "compare_callsite_count": 1,
+        "function": {
+          "address": "00407530",
+          "name": "is_builtin"
+        },
+        "representative_callsite_id": "0040755f",
+        "representative_callsite_ref": "evidence/callsites/cs_0040755f.json",
+        "token_candidate_count": 143
+      }
+    ],
+    "top_modes": [
+      {
+        "dispatch_cluster_score": 7,
+        "dispatch_root_count": 3,
+        "dispatch_site_count": 5,
+        "mode_id": "mode_006edd66",
+        "name": "add",
+        "representative_callsite_id": "004062bf",
+        "representative_callsite_ref": "evidence/callsites/cs_004062bf.json"
+      },
+      {
+        "dispatch_cluster_score": 7,
+        "dispatch_root_count": 3,
+        "dispatch_site_count": 4,
+        "mode_id": "mode_006df012",
+        "name": "help",
+        "representative_callsite_id": "004062bf",
+        "representative_callsite_ref": "evidence/callsites/cs_004062bf.json"
+      },
+      {
+        "dispatch_cluster_score": 7,
+        "dispatch_root_count": 3,
+        "dispatch_site_count": 3,
+        "mode_id": "mode_006df829",
+        "name": "am",
+        "representative_callsite_id": "004062bf",
+        "representative_callsite_ref": "evidence/callsites/cs_004062bf.json"
+      },
+      {
+        "dispatch_cluster_score": 7,
+        "dispatch_root_count": 3,
+        "dispatch_site_count": 3,
+        "mode_id": "mode_006f745c",
+        "name": "annotate",
+        "representative_callsite_id": "004062bf",
+        "representative_callsite_ref": "evidence/callsites/cs_004062bf.json"
+      },
+      {
+        "dispatch_cluster_score": 7,
+        "dispatch_root_count": 3,
+        "dispatch_site_count": 3,
+        "mode_id": "mode_006df77f",
+        "name": "apply",
+        "representative_callsite_id": "004062bf",
+        "representative_callsite_ref": "evidence/callsites/cs_004062bf.json"
+      }
+    ]
+  }
+}

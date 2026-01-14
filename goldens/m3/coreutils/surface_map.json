@@ -1,0 +1,366 @@
+{
+  "cli": {
+    "option_tables": [
+      {
+        "address": "00259a00",
+        "entry_count": 17
+      },
+      {
+        "address": "0025aba0",
+        "entry_count": 16
+      },
+      {
+        "address": "0025af00",
+        "entry_count": 13
+      }
+    ],
+    "primary_parse_loops": [
+      {
+        "function": {
+          "address": "001c2fe0",
+          "name": "single_binary_main_uname"
+        },
+        "representative_callsite_id": "001c3087",
+        "representative_callsite_ref": "evidence/callsites/cs_001c3087.json"
+      },
+      {
+        "function": {
+          "address": "00118020",
+          "name": "main"
+        },
+        "representative_callsite_id": "00118125",
+        "representative_callsite_ref": "evidence/callsites/cs_00118125.json"
+      },
+      {
+        "function": {
+          "address": "0011afd0",
+          "name": "single_binary_main_chroot"
+        },
+        "representative_callsite_id": "0011b083",
+        "representative_callsite_ref": "evidence/callsites/cs_0011b083.json"
+      }
+    ],
+    "top_options": [
+      {
+        "evidence_count": 8,
+        "id": "opt_001",
+        "long_name": null,
+        "parse_site_count": 6,
+        "short_name": "0"
+      },
+      {
+        "evidence_count": 8,
+        "id": "opt_002",
+        "long_name": null,
+        "parse_site_count": 6,
+        "short_name": "1"
+      },
+      {
+        "evidence_count": 8,
+        "id": "opt_003",
+        "long_name": null,
+        "parse_site_count": 6,
+        "short_name": "2"
+      },
+      {
+        "evidence_count": 8,
+        "id": "opt_004",
+        "long_name": null,
+        "parse_site_count": 6,
+        "short_name": "3"
+      },
+      {
+        "evidence_count": 8,
+        "id": "opt_005",
+        "long_name": null,
+        "parse_site_count": 6,
+        "short_name": "H"
+      },
+      {
+        "evidence_count": 8,
+        "id": "opt_006",
+        "long_name": null,
+        "parse_site_count": 6,
+        "short_name": "L"
+      },
+      {
+        "evidence_count": 8,
+        "id": "opt_007",
+        "long_name": null,
+        "parse_site_count": 6,
+        "short_name": "P"
+      },
+      {
+        "evidence_count": 8,
+        "id": "opt_008",
+        "long_name": null,
+        "parse_site_count": 6,
+        "short_name": "R"
+      },
+      {
+        "evidence_count": 8,
+        "id": "opt_009",
+        "long_name": null,
+        "parse_site_count": 6,
+        "short_name": "T"
+      },
+      {
+        "evidence_count": 8,
+        "id": "opt_010",
+        "long_name": null,
+        "parse_site_count": 6,
+        "short_name": "Z"
+      }
+    ]
+  },
+  "errors": {
+    "top_emitting_functions": [
+      {
+        "emit_callsite_count": 7,
+        "function": {
+          "address": "0011abb0",
+          "name": "_usage_chroot"
+        }
+      },
+      {
+        "emit_callsite_count": 6,
+        "function": {
+          "address": "0011a5d0",
+          "name": "usage"
+        }
+      },
+      {
+        "emit_callsite_count": 6,
+        "function": {
+          "address": "001274a0",
+          "name": "_usage_stdbuf"
+        }
+      },
+      {
+        "emit_callsite_count": 6,
+        "function": {
+          "address": "0015bd00",
+          "name": "_usage_false"
+        }
+      },
+      {
+        "emit_callsite_count": 5,
+        "function": {
+          "address": "0011afd0",
+          "name": "single_binary_main_chroot"
+        }
+      }
+    ],
+    "top_exit_paths": [
+      {
+        "callsite_id": "0011789f",
+        "callsite_ref": "evidence/callsites/cs_0011789f.json",
+        "exit_code": 2,
+        "exit_code_strength": "observed",
+        "function": {
+          "address": "001177f6",
+          "name": "test_syntax_error"
+        },
+        "target": {
+          "address": "EXTERNAL:00000150",
+          "external": true,
+          "library": "<EXTERNAL>",
+          "name": "exit"
+        }
+      },
+      {
+        "callsite_id": "00117b40",
+        "callsite_ref": "evidence/callsites/cs_00117b40.json",
+        "exit_code": 2,
+        "exit_code_strength": "observed",
+        "function": {
+          "address": "00117a97",
+          "name": "test_syntax_error"
+        },
+        "target": {
+          "address": "EXTERNAL:00000150",
+          "external": true,
+          "library": "<EXTERNAL>",
+          "name": "exit"
+        }
+      },
+      {
+        "callsite_id": "00117c3a",
+        "callsite_ref": "evidence/callsites/cs_00117c3a.json",
+        "exit_code": null,
+        "exit_code_strength": "unknown",
+        "function": {
+          "address": "00117bcb",
+          "name": "error_tail"
+        },
+        "target": {
+          "address": "EXTERNAL:00000150",
+          "external": true,
+          "library": "<EXTERNAL>",
+          "name": "exit"
+        }
+      },
+      {
+        "callsite_id": "00117f92",
+        "callsite_ref": "evidence/callsites/cs_00117f92.json",
+        "exit_code": null,
+        "exit_code_strength": "unknown",
+        "function": {
+          "address": "00117f8e",
+          "name": "hash_get_first.cold"
+        },
+        "target": {
+          "address": "EXTERNAL:00000018",
+          "external": true,
+          "library": "<EXTERNAL>",
+          "name": "abort"
+        }
+      },
+      {
+        "callsite_id": "00117fb4",
+        "callsite_ref": "evidence/callsites/cs_00117fb4.json",
+        "exit_code": null,
+        "exit_code_strength": "unknown",
+        "function": {
+          "address": "00117fb0",
+          "name": "gl_locale_name_posix_unsafe.cold"
+        },
+        "target": {
+          "address": "EXTERNAL:00000018",
+          "external": true,
+          "library": "<EXTERNAL>",
+          "name": "abort"
+        }
+      }
+    ],
+    "top_message_templates": [
+      {
+        "bucket": "error",
+        "preview": "%s: %s",
+        "representative_callsite_id": "00136351",
+        "representative_callsite_ref": "evidence/callsites/cs_00136351.json",
+        "string_id": "s_00208192"
+      },
+      {
+        "bucket": "usage",
+        "preview": "Usage: test EXPRESSION\\n  or:  test\\n  or:  [ EXPRESSION ]\\n  or:  [ ]\\n  or:  [ OPTION\\n",
+        "representative_callsite_id": "001297a8",
+        "representative_callsite_ref": "evidence/callsites/cs_001297a8.json",
+        "string_id": "s_00211dc0"
+      },
+      {
+        "bucket": "warn",
+        "preview": "warning: ignoring --context; it requires an SELinux/SMACK-enabled kernel",
+        "representative_callsite_id": "001762ad",
+        "representative_callsite_ref": "evidence/callsites/cs_001762ad.json",
+        "string_id": "s_00222fa8"
+      },
+      {
+        "bucket": "unknown",
+        "preview": "https://www.gnu.org/software/coreutils/",
+        "representative_callsite_id": "0011a836",
+        "representative_callsite_ref": "evidence/callsites/cs_0011a836.json",
+        "string_id": "s_0020d780"
+      },
+      {
+        "bucket": "error",
+        "preview": "bug-coreutils@gnu.org",
+        "representative_callsite_id": "00179f2a",
+        "representative_callsite_ref": "evidence/callsites/cs_00179f2a.json",
+        "string_id": "s_0020a311"
+      }
+    ]
+  },
+  "modes": {
+    "dispatch_sites_ref": "modes/dispatch_sites.json",
+    "index_ref": "modes/index.json",
+    "slices_ref": "modes/slices.json",
+    "top_dispatch_roots": [
+      {
+        "dispatch_site_count": 106,
+        "function": {
+          "address": "001196b0",
+          "name": "launch_program"
+        },
+        "mode_count": 106
+      },
+      {
+        "dispatch_site_count": 1,
+        "function": {
+          "address": "0011a5d0",
+          "name": "usage"
+        },
+        "mode_count": 1
+      }
+    ],
+    "top_dispatch_sites": [
+      {
+        "compare_callsite_count": 106,
+        "function": {
+          "address": "001196b0",
+          "name": "launch_program"
+        },
+        "representative_callsite_id": "001196f8",
+        "representative_callsite_ref": "evidence/callsites/cs_001196f8.json",
+        "token_candidate_count": 106
+      },
+      {
+        "compare_callsite_count": 2,
+        "function": {
+          "address": "0011a5d0",
+          "name": "usage"
+        },
+        "representative_callsite_id": "0011a7bc",
+        "representative_callsite_ref": "evidence/callsites/cs_0011a7bc.json",
+        "token_candidate_count": 1
+      }
+    ],
+    "top_modes": [
+      {
+        "dispatch_cluster_score": 108,
+        "dispatch_root_count": 2,
+        "dispatch_site_count": 2,
+        "mode_id": "mode_002091aa",
+        "name": "[",
+        "representative_callsite_id": "001196f8",
+        "representative_callsite_ref": "evidence/callsites/cs_001196f8.json"
+      },
+      {
+        "dispatch_cluster_score": 106,
+        "dispatch_root_count": 1,
+        "dispatch_site_count": 1,
+        "mode_id": "s_00207038",
+        "name": "b2sum",
+        "representative_callsite_id": "0011970f",
+        "representative_callsite_ref": "evidence/callsites/cs_0011970f.json"
+      },
+      {
+        "dispatch_cluster_score": 106,
+        "dispatch_root_count": 1,
+        "dispatch_site_count": 1,
+        "mode_id": "s_0020703e",
+        "name": "base32",
+        "representative_callsite_id": "00119726",
+        "representative_callsite_ref": "evidence/callsites/cs_00119726.json"
+      },
+      {
+        "dispatch_cluster_score": 106,
+        "dispatch_root_count": 1,
+        "dispatch_site_count": 1,
+        "mode_id": "s_00207045",
+        "name": "base64",
+        "representative_callsite_id": "0011973d",
+        "representative_callsite_ref": "evidence/callsites/cs_0011973d.json"
+      },
+      {
+        "dispatch_cluster_score": 106,
+        "dispatch_root_count": 1,
+        "dispatch_site_count": 1,
+        "mode_id": "s_0020704c",
+        "name": "basename",
+        "representative_callsite_id": "00119754",
+        "representative_callsite_ref": "evidence/callsites/cs_00119754.json"
+      }
+    ]
+  }
+}

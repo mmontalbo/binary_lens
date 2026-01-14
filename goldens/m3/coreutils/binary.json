@@ -1,0 +1,20 @@
+{
+  "address_range": {
+    "max": "_elfSectionHeaders::000007ff",
+    "min": "00100000"
+  },
+  "compiler_spec": "gcc",
+  "default_pointer_size": 8,
+  "executable_format": "Executable and Linking Format (ELF)",
+  "hashes": {
+    "md5": "33dd3053dc14028e3aa5ac0424502a97",
+    "sha256": "0e9328553363dc05d6de50c9d420b6b791f5e634454baf6f3a070a5e752ba722"
+  },
+  "image_base": "00100000",
+  "language": {
+    "endian": "little",
+    "id": "x86:LE:64:default",
+    "processor": "x86"
+  },
+  "name": "coreutils"
+}

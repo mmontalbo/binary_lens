@@ -1,0 +1,856 @@
+{
+  "max_slices": 8,
+  "selected_slices": 8,
+  "selection_strategy": "top_modes_by_dispatch_cluster_score",
+  "slices": [
+    {
+      "dispatch_cluster_score": 7,
+      "dispatch_sites": [
+        {
+          "callee": "strcmp",
+          "caller": {
+            "address": "00406280",
+            "name": "handle_builtin"
+          },
+          "callsite_id": "004062bf",
+          "callsite_ref": "evidence/callsites/cs_004062bf.json",
+          "confidence": "medium",
+          "strength": "derived"
+        },
+        {
+          "callee": "strcmp",
+          "caller": {
+            "address": "00406280",
+            "name": "handle_builtin"
+          },
+          "callsite_id": "004062f3",
+          "callsite_ref": "evidence/callsites/cs_004062f3.json",
+          "confidence": "high",
+          "strength": "observed"
+        },
+        {
+          "callee": "strcmp",
+          "caller": {
+            "address": "00407530",
+            "name": "is_builtin"
+          },
+          "callsite_id": "0040755f",
+          "callsite_ref": "evidence/callsites/cs_0040755f.json",
+          "confidence": "high",
+          "strength": "observed"
+        },
+        {
+          "callee": "strcmp",
+          "caller": {
+            "address": "00407640",
+            "name": "cmd_main"
+          },
+          "callsite_id": "00407763",
+          "callsite_ref": "evidence/callsites/cs_00407763.json",
+          "confidence": "medium",
+          "strength": "derived"
+        },
+        {
+          "callee": "strcmp",
+          "caller": {
+            "address": "00407640",
+            "name": "cmd_main"
+          },
+          "callsite_id": "00407cc9",
+          "callsite_ref": "evidence/callsites/cs_00407cc9.json",
+          "confidence": "high",
+          "strength": "observed"
+        }
+      ],
+      "mode_id": "mode_006edd66",
+      "name": "add",
+      "option_scope": {
+        "basis": "shared_parse_loops",
+        "confidence": "low",
+        "kind": "global",
+        "option_ids": [
+          "opt_001",
+          "opt_002",
+          "opt_003",
+          "opt_004",
+          "opt_005",
+          "opt_006",
+          "opt_007",
+          "opt_008",
+          "opt_009",
+          "opt_010"
+        ],
+        "options_ref": "cli/options.json",
+        "parse_loop_ids": [],
+        "parse_loops_ref": "cli/parse_loops.json",
+        "strength": "heuristic"
+      },
+      "root_functions": [
+        {
+          "confidence": "medium",
+          "evidence": {
+            "string_addresses": [
+              "006edd66"
+            ],
+            "table_entry_addresses": [
+              "007bd020"
+            ]
+          },
+          "function_id": "004084c0",
+          "function_name": "cmd_add",
+          "sources": [
+            "table_dispatch"
+          ],
+          "strength": "derived"
+        }
+      ],
+      "root_kind": "implementation",
+      "selection_strategy": "table_dispatch_roots_then_cli_scope",
+      "top_exit_paths": [
+        "00408be4",
+        "004096f7"
+      ],
+      "top_exit_paths_ref": "errors/exit_paths.json",
+      "top_messages": [
+        "s_006df5a8"
+      ],
+      "top_messages_ref": "errors/messages.json",
+      "top_options": [
+        "opt_001",
+        "opt_002",
+        "opt_003",
+        "opt_004",
+        "opt_005",
+        "opt_006",
+        "opt_007",
+        "opt_008",
+        "opt_009",
+        "opt_010"
+      ],
+      "top_options_ref": "cli/options.json",
+      "top_strings": [
+        "s_006df5de",
+        "s_006df660",
+        "s_006df68b",
+        "s_006df6ce",
+        "s_006df6e1",
+        "s_006df6f6",
+        "s_006df714",
+        "s_00701a48"
+      ],
+      "top_strings_ref": "strings.json"
+    },
+    {
+      "dispatch_cluster_score": 7,
+      "dispatch_sites": [
+        {
+          "callee": "strcmp",
+          "caller": {
+            "address": "00406280",
+            "name": "handle_builtin"
+          },
+          "callsite_id": "004062bf",
+          "callsite_ref": "evidence/callsites/cs_004062bf.json",
+          "confidence": "medium",
+          "strength": "derived"
+        },
+        {
+          "callee": "strcmp",
+          "caller": {
+            "address": "00406280",
+            "name": "handle_builtin"
+          },
+          "callsite_id": "004062f3",
+          "callsite_ref": "evidence/callsites/cs_004062f3.json",
+          "confidence": "high",
+          "strength": "observed"
+        },
+        {
+          "callee": "strcmp",
+          "caller": {
+            "address": "00407530",
+            "name": "is_builtin"
+          },
+          "callsite_id": "0040755f",
+          "callsite_ref": "evidence/callsites/cs_0040755f.json",
+          "confidence": "medium",
+          "strength": "derived"
+        },
+        {
+          "callee": "strcmp",
+          "caller": {
+            "address": "00407640",
+            "name": "cmd_main"
+          },
+          "callsite_id": "00407763",
+          "callsite_ref": "evidence/callsites/cs_00407763.json",
+          "confidence": "medium",
+          "strength": "derived"
+        }
+      ],
+      "mode_id": "mode_006df012",
+      "name": "help",
+      "option_scope": {
+        "basis": "shared_parse_loops",
+        "confidence": "low",
+        "kind": "global",
+        "option_ids": [
+          "opt_001",
+          "opt_002",
+          "opt_003",
+          "opt_004",
+          "opt_005",
+          "opt_006",
+          "opt_007",
+          "opt_008",
+          "opt_009",
+          "opt_010"
+        ],
+        "options_ref": "cli/options.json",
+        "parse_loop_ids": [],
+        "parse_loops_ref": "cli/parse_loops.json",
+        "strength": "heuristic"
+      },
+      "root_functions": [
+        {
+          "confidence": "medium",
+          "evidence": {
+            "string_addresses": [
+              "006df012"
+            ],
+            "table_entry_addresses": [
+              "007bd560"
+            ]
+          },
+          "function_id": "0046d740",
+          "function_name": "cmd_help",
+          "sources": [
+            "table_dispatch"
+          ],
+          "strength": "derived"
+        }
+      ],
+      "root_kind": "implementation",
+      "selection_strategy": "table_dispatch_roots_then_cli_scope",
+      "top_exit_paths": [
+        "0046dfbf"
+      ],
+      "top_exit_paths_ref": "errors/exit_paths.json",
+      "top_messages": [
+        "s_006e64d4",
+        "s_007490a0"
+      ],
+      "top_messages_ref": "errors/messages.json",
+      "top_options": [
+        "opt_001",
+        "opt_002",
+        "opt_003",
+        "opt_004",
+        "opt_005",
+        "opt_006",
+        "opt_007",
+        "opt_008",
+        "opt_009",
+        "opt_010"
+      ],
+      "top_options_ref": "cli/options.json",
+      "top_strings": [
+        "s_006e64d4",
+        "s_007490a0"
+      ],
+      "top_strings_ref": "strings.json"
+    },
+    {
+      "dispatch_cluster_score": 7,
+      "dispatch_sites": [
+        {
+          "callee": "strcmp",
+          "caller": {
+            "address": "00406280",
+            "name": "handle_builtin"
+          },
+          "callsite_id": "004062bf",
+          "callsite_ref": "evidence/callsites/cs_004062bf.json",
+          "confidence": "medium",
+          "strength": "derived"
+        },
+        {
+          "callee": "strcmp",
+          "caller": {
+            "address": "00407530",
+            "name": "is_builtin"
+          },
+          "callsite_id": "0040755f",
+          "callsite_ref": "evidence/callsites/cs_0040755f.json",
+          "confidence": "medium",
+          "strength": "derived"
+        },
+        {
+          "callee": "strcmp",
+          "caller": {
+            "address": "00407640",
+            "name": "cmd_main"
+          },
+          "callsite_id": "00407763",
+          "callsite_ref": "evidence/callsites/cs_00407763.json",
+          "confidence": "medium",
+          "strength": "derived"
+        }
+      ],
+      "mode_id": "mode_006df829",
+      "name": "am",
+      "option_scope": {
+        "basis": "shared_parse_loops",
+        "confidence": "low",
+        "kind": "global",
+        "option_ids": [
+          "opt_001",
+          "opt_002",
+          "opt_003",
+          "opt_004",
+          "opt_005",
+          "opt_006",
+          "opt_007",
+          "opt_008",
+          "opt_009",
+          "opt_010"
+        ],
+        "options_ref": "cli/options.json",
+        "parse_loop_ids": [],
+        "parse_loops_ref": "cli/parse_loops.json",
+        "strength": "heuristic"
+      },
+      "root_functions": [
+        {
+          "confidence": "medium",
+          "evidence": {
+            "string_addresses": [
+              "006df829"
+            ],
+            "table_entry_addresses": [
+              "007bd038"
+            ]
+          },
+          "function_id": "0040ddb0",
+          "function_name": "cmd_am",
+          "sources": [
+            "table_dispatch"
+          ],
+          "strength": "derived"
+        }
+      ],
+      "root_kind": "implementation",
+      "selection_strategy": "table_dispatch_roots_then_cli_scope",
+      "top_exit_paths": [
+        "0040ff56"
+      ],
+      "top_exit_paths_ref": "errors/exit_paths.json",
+      "top_options": [
+        "opt_001",
+        "opt_002",
+        "opt_003",
+        "opt_004",
+        "opt_005",
+        "opt_006",
+        "opt_007",
+        "opt_008",
+        "opt_009",
+        "opt_010"
+      ],
+      "top_options_ref": "cli/options.json",
+      "top_strings": [
+        "s_006df82c",
+        "s_006df94b",
+        "s_006df998",
+        "s_007020e8"
+      ],
+      "top_strings_ref": "strings.json"
+    },
+    {
+      "dispatch_cluster_score": 7,
+      "dispatch_sites": [
+        {
+          "callee": "strcmp",
+          "caller": {
+            "address": "00406280",
+            "name": "handle_builtin"
+          },
+          "callsite_id": "004062bf",
+          "callsite_ref": "evidence/callsites/cs_004062bf.json",
+          "confidence": "medium",
+          "strength": "derived"
+        },
+        {
+          "callee": "strcmp",
+          "caller": {
+            "address": "00407530",
+            "name": "is_builtin"
+          },
+          "callsite_id": "0040755f",
+          "callsite_ref": "evidence/callsites/cs_0040755f.json",
+          "confidence": "medium",
+          "strength": "derived"
+        },
+        {
+          "callee": "strcmp",
+          "caller": {
+            "address": "00407640",
+            "name": "cmd_main"
+          },
+          "callsite_id": "00407763",
+          "callsite_ref": "evidence/callsites/cs_00407763.json",
+          "confidence": "medium",
+          "strength": "derived"
+        }
+      ],
+      "mode_id": "mode_006f745c",
+      "name": "annotate",
+      "option_scope": {
+        "basis": "shared_parse_loops",
+        "confidence": "low",
+        "kind": "global",
+        "option_ids": [
+          "opt_001",
+          "opt_002",
+          "opt_003",
+          "opt_004",
+          "opt_005",
+          "opt_006",
+          "opt_007",
+          "opt_008",
+          "opt_009",
+          "opt_010"
+        ],
+        "options_ref": "cli/options.json",
+        "parse_loop_ids": [],
+        "parse_loops_ref": "cli/parse_loops.json",
+        "strength": "heuristic"
+      },
+      "root_functions": [
+        {
+          "confidence": "medium",
+          "evidence": {
+            "string_addresses": [
+              "006f745c"
+            ],
+            "table_entry_addresses": [
+              "007bd050"
+            ]
+          },
+          "function_id": "00410880",
+          "function_name": "cmd_annotate",
+          "sources": [
+            "table_dispatch"
+          ],
+          "strength": "derived"
+        }
+      ],
+      "root_kind": "implementation",
+      "selection_strategy": "table_dispatch_roots_then_cli_scope",
+      "top_options": [
+        "opt_001",
+        "opt_002",
+        "opt_003",
+        "opt_004",
+        "opt_005",
+        "opt_006",
+        "opt_007",
+        "opt_008",
+        "opt_009",
+        "opt_010"
+      ],
+      "top_options_ref": "cli/options.json",
+      "top_strings": [
+        "s_006df028"
+      ],
+      "top_strings_ref": "strings.json"
+    },
+    {
+      "dispatch_cluster_score": 7,
+      "dispatch_sites": [
+        {
+          "callee": "strcmp",
+          "caller": {
+            "address": "00406280",
+            "name": "handle_builtin"
+          },
+          "callsite_id": "004062bf",
+          "callsite_ref": "evidence/callsites/cs_004062bf.json",
+          "confidence": "medium",
+          "strength": "derived"
+        },
+        {
+          "callee": "strcmp",
+          "caller": {
+            "address": "00407530",
+            "name": "is_builtin"
+          },
+          "callsite_id": "0040755f",
+          "callsite_ref": "evidence/callsites/cs_0040755f.json",
+          "confidence": "medium",
+          "strength": "derived"
+        },
+        {
+          "callee": "strcmp",
+          "caller": {
+            "address": "00407640",
+            "name": "cmd_main"
+          },
+          "callsite_id": "00407763",
+          "callsite_ref": "evidence/callsites/cs_00407763.json",
+          "confidence": "medium",
+          "strength": "derived"
+        }
+      ],
+      "mode_id": "mode_006df77f",
+      "name": "apply",
+      "option_scope": {
+        "basis": "shared_parse_loops",
+        "confidence": "low",
+        "kind": "global",
+        "option_ids": [
+          "opt_001",
+          "opt_002",
+          "opt_003",
+          "opt_004",
+          "opt_005",
+          "opt_006",
+          "opt_007",
+          "opt_008",
+          "opt_009",
+          "opt_010"
+        ],
+        "options_ref": "cli/options.json",
+        "parse_loop_ids": [],
+        "parse_loops_ref": "cli/parse_loops.json",
+        "strength": "heuristic"
+      },
+      "root_functions": [
+        {
+          "confidence": "medium",
+          "evidence": {
+            "string_addresses": [
+              "006df77f"
+            ],
+            "table_entry_addresses": [
+              "007bd068"
+            ]
+          },
+          "function_id": "004109b0",
+          "function_name": "cmd_apply",
+          "sources": [
+            "table_dispatch"
+          ],
+          "strength": "derived"
+        }
+      ],
+      "root_kind": "implementation",
+      "selection_strategy": "table_dispatch_roots_then_cli_scope",
+      "top_exit_paths": [
+        "00410adf",
+        "00410afc"
+      ],
+      "top_exit_paths_ref": "errors/exit_paths.json",
+      "top_options": [
+        "opt_001",
+        "opt_002",
+        "opt_003",
+        "opt_004",
+        "opt_005",
+        "opt_006",
+        "opt_007",
+        "opt_008",
+        "opt_009",
+        "opt_010"
+      ],
+      "top_options_ref": "cli/options.json"
+    },
+    {
+      "dispatch_cluster_score": 7,
+      "dispatch_sites": [
+        {
+          "callee": "strcmp",
+          "caller": {
+            "address": "00406280",
+            "name": "handle_builtin"
+          },
+          "callsite_id": "004062bf",
+          "callsite_ref": "evidence/callsites/cs_004062bf.json",
+          "confidence": "medium",
+          "strength": "derived"
+        },
+        {
+          "callee": "strcmp",
+          "caller": {
+            "address": "00407530",
+            "name": "is_builtin"
+          },
+          "callsite_id": "0040755f",
+          "callsite_ref": "evidence/callsites/cs_0040755f.json",
+          "confidence": "medium",
+          "strength": "derived"
+        },
+        {
+          "callee": "strcmp",
+          "caller": {
+            "address": "00407640",
+            "name": "cmd_main"
+          },
+          "callsite_id": "00407763",
+          "callsite_ref": "evidence/callsites/cs_00407763.json",
+          "confidence": "medium",
+          "strength": "derived"
+        }
+      ],
+      "mode_id": "mode_006f4684",
+      "name": "archive",
+      "option_scope": {
+        "basis": "shared_parse_loops",
+        "confidence": "low",
+        "kind": "global",
+        "option_ids": [
+          "opt_001",
+          "opt_002",
+          "opt_003",
+          "opt_004",
+          "opt_005",
+          "opt_006",
+          "opt_007",
+          "opt_008",
+          "opt_009",
+          "opt_010"
+        ],
+        "options_ref": "cli/options.json",
+        "parse_loop_ids": [],
+        "parse_loops_ref": "cli/parse_loops.json",
+        "strength": "heuristic"
+      },
+      "root_functions": [
+        {
+          "confidence": "medium",
+          "evidence": {
+            "string_addresses": [
+              "006f4684"
+            ],
+            "table_entry_addresses": [
+              "007bd080"
+            ]
+          },
+          "function_id": "00410b50",
+          "function_name": "cmd_archive",
+          "sources": [
+            "table_dispatch"
+          ],
+          "strength": "derived"
+        }
+      ],
+      "root_kind": "implementation",
+      "selection_strategy": "table_dispatch_roots_then_cli_scope",
+      "top_options": [
+        "opt_001",
+        "opt_002",
+        "opt_003",
+        "opt_004",
+        "opt_005",
+        "opt_006",
+        "opt_007",
+        "opt_008",
+        "opt_009",
+        "opt_010"
+      ],
+      "top_options_ref": "cli/options.json"
+    },
+    {
+      "dispatch_cluster_score": 7,
+      "dispatch_sites": [
+        {
+          "callee": "strcmp",
+          "caller": {
+            "address": "00406280",
+            "name": "handle_builtin"
+          },
+          "callsite_id": "004062bf",
+          "callsite_ref": "evidence/callsites/cs_004062bf.json",
+          "confidence": "medium",
+          "strength": "derived"
+        },
+        {
+          "callee": "strcmp",
+          "caller": {
+            "address": "00407530",
+            "name": "is_builtin"
+          },
+          "callsite_id": "0040755f",
+          "callsite_ref": "evidence/callsites/cs_0040755f.json",
+          "confidence": "medium",
+          "strength": "derived"
+        },
+        {
+          "callee": "strcmp",
+          "caller": {
+            "address": "00407640",
+            "name": "cmd_main"
+          },
+          "callsite_id": "00407763",
+          "callsite_ref": "evidence/callsites/cs_00407763.json",
+          "confidence": "medium",
+          "strength": "derived"
+        }
+      ],
+      "mode_id": "mode_006f7484",
+      "name": "backfill",
+      "option_scope": {
+        "basis": "shared_parse_loops",
+        "confidence": "low",
+        "kind": "global",
+        "option_ids": [
+          "opt_001",
+          "opt_002",
+          "opt_003",
+          "opt_004",
+          "opt_005",
+          "opt_006",
+          "opt_007",
+          "opt_008",
+          "opt_009",
+          "opt_010"
+        ],
+        "options_ref": "cli/options.json",
+        "parse_loop_ids": [],
+        "parse_loops_ref": "cli/parse_loops.json",
+        "strength": "heuristic"
+      },
+      "root_functions": [
+        {
+          "confidence": "medium",
+          "evidence": {
+            "string_addresses": [
+              "006f7484"
+            ],
+            "table_entry_addresses": [
+              "007bd098"
+            ]
+          },
+          "function_id": "004110d0",
+          "function_name": "cmd_backfill",
+          "sources": [
+            "table_dispatch"
+          ],
+          "strength": "derived"
+        }
+      ],
+      "root_kind": "implementation",
+      "selection_strategy": "table_dispatch_roots_then_cli_scope",
+      "top_options": [
+        "opt_001",
+        "opt_002",
+        "opt_003",
+        "opt_004",
+        "opt_005",
+        "opt_006",
+        "opt_007",
+        "opt_008",
+        "opt_009",
+        "opt_010"
+      ],
+      "top_options_ref": "cli/options.json"
+    },
+    {
+      "dispatch_cluster_score": 7,
+      "dispatch_sites": [
+        {
+          "callee": "strcmp",
+          "caller": {
+            "address": "00406280",
+            "name": "handle_builtin"
+          },
+          "callsite_id": "004062bf",
+          "callsite_ref": "evidence/callsites/cs_004062bf.json",
+          "confidence": "medium",
+          "strength": "derived"
+        },
+        {
+          "callee": "strcmp",
+          "caller": {
+            "address": "00407530",
+            "name": "is_builtin"
+          },
+          "callsite_id": "0040755f",
+          "callsite_ref": "evidence/callsites/cs_0040755f.json",
+          "confidence": "medium",
+          "strength": "derived"
+        },
+        {
+          "callee": "strcmp",
+          "caller": {
+            "address": "00407640",
+            "name": "cmd_main"
+          },
+          "callsite_id": "00407763",
+          "callsite_ref": "evidence/callsites/cs_00407763.json",
+          "confidence": "medium",
+          "strength": "derived"
+        }
+      ],
+      "mode_id": "mode_006e058d",
+      "name": "bisect",
+      "option_scope": {
+        "basis": "shared_parse_loops",
+        "confidence": "low",
+        "kind": "global",
+        "option_ids": [
+          "opt_001",
+          "opt_002",
+          "opt_003",
+          "opt_004",
+          "opt_005",
+          "opt_006",
+          "opt_007",
+          "opt_008",
+          "opt_009",
+          "opt_010"
+        ],
+        "options_ref": "cli/options.json",
+        "parse_loop_ids": [],
+        "parse_loops_ref": "cli/parse_loops.json",
+        "strength": "heuristic"
+      },
+      "root_functions": [
+        {
+          "confidence": "medium",
+          "evidence": {
+            "string_addresses": [
+              "006e058d"
+            ],
+            "table_entry_addresses": [
+              "007bd0b0"
+            ]
+          },
+          "function_id": "004154c0",
+          "function_name": "cmd_bisect",
+          "sources": [
+            "table_dispatch"
+          ],
+          "strength": "derived"
+        }
+      ],
+      "root_kind": "implementation",
+      "selection_strategy": "table_dispatch_roots_then_cli_scope",
+      "top_options": [
+        "opt_001",
+        "opt_002",
+        "opt_003",
+        "opt_004",
+        "opt_005",
+        "opt_006",
+        "opt_007",
+        "opt_008",
+        "opt_009",
+        "opt_010"
+      ],
+      "top_options_ref": "cli/options.json"
+    }
+  ],
+  "total_modes": 143,
+  "truncated": true
+}
