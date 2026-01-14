@@ -90,3 +90,43 @@ ruff check --fix .
 - `binary.lens/manifest.json`: export bounds + versions
 - `binary.lens/capabilities.json`: evidence-backed capabilities
 - `binary.lens/cli/options.json`: CLI option inventory
+
+## Golden M3 baselines
+
+Milestone 3 ("modes") output is regression-guarded via small committed goldens (since `out/`
+is ignored).
+
+Goldens live in:
+- `goldens/m3/git/`
+- `goldens/m3/coreutils/`
+
+Each golden includes only these M3-relevant JSON files:
+- `binary.json`
+- `manifest.json`
+- `surface_map.json`
+- `modes/index.json`
+- `modes/dispatch_sites.json`
+- `modes/slices.json`
+
+Binary SHA256s (from `manifest.json`):
+- `git`: `4a8111d4fc1e89663de3418f19bb132f5c9a619c9a2d418001d2d1ae0834e3f2`
+- `coreutils`: `0e9328553363dc05d6de50c9d420b6b791f5e634454baf6f3a070a5e752ba722`
+
+Regenerate the packs used for these goldens:
+
+```sh
+nix develop -c binary_lens /etc/profiles/per-user/mmontalbo/bin/git -o out/profile_git_m3_modes12 profile=1 analysis_profile=full
+nix develop -c binary_lens coreutils -o out/profile_coreutils_m3_modes6 profile=1 analysis_profile=full
+```
+
+Run the fast checker (no Ghidra):
+
+```sh
+python tools/check_m3_goldens.py out/profile_git_m3_modes12/binary.lens --diff
+python tools/check_m3_goldens.py out/profile_coreutils_m3_modes6/binary.lens --diff
+```
+
+When changing the modes exporter:
+- Regenerate git + coreutils packs.
+- Run `python tools/check_m3_goldens.py out/.../binary.lens` (use `--diff` for golden diffs).
+- Update `goldens/m3/...` only for intentional behavior changes.
