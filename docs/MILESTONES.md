@@ -6,7 +6,10 @@ This document defines near-term milestones for adding **LM-tailored interface le
 
 ## Milestone 3 — Dispatch & Mode Surface Lens
 
-Status: in progress
+Status: complete
+
+Acceptance snapshot:
+- `goldens/m3/git/` + `goldens/m3/coreutils/` (see `tools/check_m3_goldens.py`)
 
 ### Goal
 Extract an **evidence-linked model of behavioral modes and dispatch**, enabling LM consumers to:
