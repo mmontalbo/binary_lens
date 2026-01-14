@@ -3,6 +3,7 @@ from export_collectors import (
     is_printf_format_string,
     is_usage_marker,
 )
+from export_config import DEFAULT_MAX_DECOMPILE_FUNCTION_SIZE
 from export_primitives import addr_to_int, normalize_symbol_name
 
 try:
@@ -358,72 +359,197 @@ def derive_error_messages(
     if max_emitters and len(considered_callsites) > max_emitters:
         considered_callsites = considered_callsites[:max_emitters]
         truncated_emitters = True
-    callsite_ids = [entry.get("callsite_id") for entry in considered_callsites if entry.get("callsite_id")]
-    missing_callsites = [callsite_id for callsite_id in callsite_ids if callsite_id not in call_args_cache]
-    if missing_callsites:
-        call_args_cache.update(
-            extract_call_args_for_callsites(program, missing_callsites, monitor)
-        )
     links_by_string = {}
     observed_strings = set()
     observed_emitter_bucket = {}
-    for callsite in considered_callsites:
-        callsite_id = callsite["callsite_id"]
-        args = call_args_cache.get(callsite_id) or {}
-        emitter_import = callsite.get("emitter_import")
-        emitter_bucket = bucket_for_emitter(emitter_import)
-        for arg in args.get("string_args", []):
-            string_id = string_addr_map_all.get(arg.get("address"))
-            if not string_id:
-                continue
-            value = arg.get("value")
-            tags = string_tags_by_id.get(string_id) or set()
-            if string_id not in candidates:
-                meta_entry = string_meta_by_id.get(string_id)
-                if meta_entry:
-                    value = meta_entry.get("value") or value
-                    candidate = build_candidate_entry(
-                        string_id,
-                        value,
-                        tags,
-                        ref_count=meta_entry.get("ref_count", 0),
-                        address=meta_entry.get("address"),
-                    )
-                else:
-                    if emitter_bucket not in ("error", "warn"):
-                        continue
-                    if not value:
-                        continue
-                    candidate = build_candidate_entry(
-                        string_id,
-                        value,
-                        tags,
-                        ref_count=0,
-                        address=arg.get("address"),
-                    )
-                if candidate:
-                    candidates[string_id] = candidate
-            meta = candidates.get(string_id)
-            if not meta:
-                continue
-            value = meta.get("value") or value
-            record_observed_emitter_bucket(
-                observed_emitter_bucket,
-                string_id,
-                emitter_bucket,
-                value,
-                tags,
+    observed_scan = None
+
+    def _process_observed_callsites(callsite_entries):
+        if not callsite_entries:
+            return
+        callsite_ids = [entry.get("callsite_id") for entry in callsite_entries if entry.get("callsite_id")]
+        missing_callsites = [callsite_id for callsite_id in callsite_ids if callsite_id not in call_args_cache]
+        if missing_callsites:
+            call_args_cache.update(
+                extract_call_args_for_callsites(
+                    program,
+                    missing_callsites,
+                    monitor,
+                    purpose="export_errors.derive_error_messages",
+                )
             )
-            entry = {
-                "callsite_id": callsite_id,
-                "function_id": callsite["function_id"],
-                "function_name": callsite.get("function_name"),
-                "emitter_import": callsite["emitter_import"],
-                "link_strength": "observed",
-                "confidence": "high",
+        for callsite in callsite_entries:
+            callsite_id = callsite.get("callsite_id")
+            if not callsite_id:
+                continue
+            args = call_args_cache.get(callsite_id) or {}
+            emitter_import = callsite.get("emitter_import")
+            emitter_bucket = bucket_for_emitter(emitter_import)
+            for arg in args.get("string_args", []):
+                string_id = string_addr_map_all.get(arg.get("address"))
+                if not string_id:
+                    continue
+                value = arg.get("value")
+                tags = string_tags_by_id.get(string_id) or set()
+                if string_id not in candidates:
+                    meta_entry = string_meta_by_id.get(string_id)
+                    if meta_entry:
+                        value = meta_entry.get("value") or value
+                        candidate = build_candidate_entry(
+                            string_id,
+                            value,
+                            tags,
+                            ref_count=meta_entry.get("ref_count", 0),
+                            address=meta_entry.get("address"),
+                        )
+                    else:
+                        if emitter_bucket not in ("error", "warn"):
+                            continue
+                        if not value:
+                            continue
+                        candidate = build_candidate_entry(
+                            string_id,
+                            value,
+                            tags,
+                            ref_count=0,
+                            address=arg.get("address"),
+                        )
+                    if candidate:
+                        candidates[string_id] = candidate
+                meta = candidates.get(string_id)
+                if not meta:
+                    continue
+                value = meta.get("value") or value
+                record_observed_emitter_bucket(
+                    observed_emitter_bucket,
+                    string_id,
+                    emitter_bucket,
+                    value,
+                    tags,
+                )
+                entry = {
+                    "callsite_id": callsite_id,
+                    "function_id": callsite.get("function_id"),
+                    "function_name": callsite.get("function_name"),
+                    "emitter_import": callsite.get("emitter_import"),
+                    "link_strength": "observed",
+                    "confidence": "high",
+                }
+                append_link(links_by_string, string_id, entry)
+                observed_strings.add(string_id)
+
+    max_observed_strings = 0
+    max_observed_callsites = 0
+    max_observed_functions = 0
+    try:
+        max_observed_strings = int(options.get("max_error_observed_strings") or 0)
+    except Exception:
+        max_observed_strings = 0
+    try:
+        max_observed_callsites = int(options.get("max_error_observed_callsites") or 0)
+    except Exception:
+        max_observed_callsites = 0
+    try:
+        max_observed_functions = int(options.get("max_error_observed_functions") or 0)
+    except Exception:
+        max_observed_functions = 0
+
+    auto_observed_limits = False
+    if not (max_observed_strings or max_observed_callsites or max_observed_functions):
+        if len(considered_callsites) >= 1500:
+            auto_observed_limits = True
+            max_messages_budget = options.get("max_error_messages", 0)
+            if max_messages_budget:
+                max_observed_strings = int(max_messages_budget)
+                max_observed_callsites = max(200, int(max_observed_strings * 4))
+                max_observed_functions = max(50, int(max_observed_strings * 1.25))
+            else:
+                max_observed_callsites = 800
+                max_observed_functions = 250
+
+    apply_observed_limits = bool(max_observed_strings or max_observed_callsites or max_observed_functions)
+    if not apply_observed_limits:
+        _process_observed_callsites(considered_callsites)
+    else:
+        callsites_by_func = {}
+        func_order = []
+        seen_funcs = set()
+        considered_callsite_count = 0
+        for callsite in considered_callsites:
+            callsite_id = callsite.get("callsite_id")
+            func_id = callsite.get("function_id")
+            if not callsite_id or not func_id:
+                continue
+            considered_callsite_count += 1
+            bucket = callsites_by_func.get(func_id)
+            if bucket is None:
+                bucket = []
+                callsites_by_func[func_id] = bucket
+            bucket.append(callsite)
+            if func_id not in seen_funcs:
+                seen_funcs.add(func_id)
+                func_order.append(func_id)
+
+        if func_order:
+            def func_sort_key(func_id):
+                priority = 0 if func_id in candidate_func_ids else 1
+                meta = function_meta_by_addr.get(func_id) if function_meta_by_addr else None
+                size = (meta or {}).get("size")
+                try:
+                    size = int(size)
+                except Exception:
+                    size = 0
+                return (priority, size, addr_to_int(func_id))
+
+            func_order.sort(key=func_sort_key)
+
+        if max_observed_callsites and max_observed_callsites > considered_callsite_count:
+            max_observed_callsites = considered_callsite_count
+        if max_observed_functions and max_observed_functions > len(func_order):
+            max_observed_functions = len(func_order)
+
+        observed_callsites_scanned = 0
+        observed_functions_scanned = 0
+        batch = []
+        batch_callsite_limit = 100
+        stop_reason = None
+        for func_id in func_order:
+            if max_observed_functions and observed_functions_scanned >= max_observed_functions:
+                stop_reason = "max_observed_functions"
+                break
+            callsites = callsites_by_func.get(func_id) or []
+            if not callsites:
+                continue
+            if max_observed_callsites:
+                remaining = max_observed_callsites - observed_callsites_scanned
+                if remaining <= 0:
+                    stop_reason = "max_observed_callsites"
+                    break
+                if len(callsites) > remaining:
+                    callsites = callsites[:remaining]
+            observed_functions_scanned += 1
+            observed_callsites_scanned += len(callsites)
+            batch.extend(callsites)
+            if len(batch) >= batch_callsite_limit:
+                _process_observed_callsites(batch)
+                batch = []
+                if max_observed_strings and len(observed_strings) >= max_observed_strings:
+                    stop_reason = "max_observed_strings"
+                    break
+
+        if batch and stop_reason != "max_observed_strings":
+            _process_observed_callsites(batch)
+        if stop_reason is None and max_observed_strings and len(observed_strings) >= max_observed_strings:
+            stop_reason = "max_observed_strings"
+
+        if auto_observed_limits or stop_reason is not None:
+            observed_scan = {
+                "callsites_scanned": observed_callsites_scanned,
+                "functions_scanned": observed_functions_scanned,
+                "unique_strings_found": len(observed_strings),
+                "stop_reason": stop_reason or "complete",
+                "auto_limits": bool(auto_observed_limits),
             }
-            append_link(links_by_string, string_id, entry)
-            observed_strings.add(string_id)
 
     for string_id, bucket in observed_emitter_bucket.items():
         meta = candidates.get(string_id)
@@ -538,6 +664,8 @@ def derive_error_messages(
         "selection_strategy": "heuristic_candidates_then_callsite_linked",
         "messages": messages,
     }
+    if observed_scan is not None:
+        payload["observed_scan"] = observed_scan
     return payload, emitter_callsites_by_func, call_args_cache
 
 
@@ -558,11 +686,34 @@ def derive_exit_paths(
         EXIT_CALL_NAMES,
     )
     direct_calls = []
-    exit_callsite_ids = [entry.get("callsite_id") for entry in exit_callsites if entry.get("callsite_id")]
-    missing_exit_callsites = [callsite_id for callsite_id in exit_callsite_ids if callsite_id not in call_args_cache]
+    max_exit_call_arg_function_size = DEFAULT_MAX_DECOMPILE_FUNCTION_SIZE
+    skipped_large_exit_call_args = 0
+    missing_exit_callsites = []
+    for callsite in exit_callsites:
+        callsite_id = callsite.get("callsite_id")
+        if not callsite_id or callsite_id in call_args_cache:
+            continue
+        if callsite.get("emitter_import") not in ("exit",):
+            continue
+        func_id = callsite.get("function_id")
+        meta = function_meta_by_addr.get(func_id, {}) if function_meta_by_addr else {}
+        size = meta.get("size")
+        try:
+            size = int(size)
+        except Exception:
+            size = 0
+        if size and size > max_exit_call_arg_function_size:
+            skipped_large_exit_call_args += 1
+            continue
+        missing_exit_callsites.append(callsite_id)
     if missing_exit_callsites:
         call_args_cache.update(
-            extract_call_args_for_callsites(program, missing_exit_callsites, monitor)
+            extract_call_args_for_callsites(
+                program,
+                missing_exit_callsites,
+                monitor,
+                purpose="export_errors.derive_exit_paths",
+            )
         )
     for callsite in exit_callsites:
         callsite_id = callsite["callsite_id"]
@@ -632,6 +783,8 @@ def derive_exit_paths(
         "direct_calls": direct_calls,
         "likely_fatal_patterns": likely_fatal,
     }
+    if skipped_large_exit_call_args:
+        payload["exit_code_call_args_skipped_due_to_size"] = skipped_large_exit_call_args
     return payload, exit_callsites_by_func, call_args_cache
 
 

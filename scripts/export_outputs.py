@@ -2,7 +2,9 @@ import json
 import os
 
 from export_collectors import collect_flow_summary, function_size
+from export_config import DEFAULT_MAX_DECOMPILE_FUNCTION_SIZE
 from export_primitives import addr_filename, addr_str
+from export_profile import profiled_decompile
 from ghidra.app.decompiler import DecompInterface
 from ghidra.framework import Application
 
@@ -158,7 +160,7 @@ def build_cli_parse_loops_payload(parse_loops, total_parse_loops, truncated, opt
     }
 
 
-def build_surface_map_payload(cli_surface, options, error_surface=None):
+def build_surface_map_payload(cli_surface, options, error_surface=None, modes_surface=None):
     cli_section = {}
     parse_loops = cli_surface.get("parse_loops", [])
     options_list = cli_surface.get("options", [])
@@ -213,6 +215,8 @@ def build_surface_map_payload(cli_surface, options, error_surface=None):
     }
     if error_surface:
         surface_map["errors"] = error_surface
+    if modes_surface:
+        surface_map["modes"] = modes_surface
     return surface_map
 
 
@@ -296,7 +300,16 @@ def write_function_exports(
         write_text(os.path.join(functions_dir, func_md_filename), md_content)
 
         # Decompiler excerpts are bounded to keep evidence lightweight.
-        result = decomp_interface.decompileFunction(func, 30, monitor)
+        timeout_seconds = 30
+        if detail.get("size", 0) > DEFAULT_MAX_DECOMPILE_FUNCTION_SIZE:
+            timeout_seconds = 1
+        result = profiled_decompile(
+            decomp_interface,
+            func,
+            timeout_seconds,
+            monitor,
+            purpose="export_outputs.write_function_exports",
+        )
         decomp_excerpt = {
             "function": {
                 "name": func.getName(),
@@ -352,6 +365,25 @@ def build_manifest(options, hashes, binary_lens_version, format_version):
             "max_error_emitter_callsites": options.get("max_error_emitter_callsites"),
             "max_error_sites": options.get("max_error_sites"),
             "max_error_site_callsites": options.get("max_error_site_callsites"),
+            "max_mode_dispatch_functions": options.get("max_mode_dispatch_functions"),
+            "max_mode_callsites_per_function": options.get("max_mode_callsites_per_function"),
+            "max_mode_tokens_per_callsite": options.get("max_mode_tokens_per_callsite"),
+            "max_mode_token_length": options.get("max_mode_token_length"),
+            "max_modes": options.get("max_modes"),
+            "max_mode_dispatch_sites_per_mode": options.get("max_mode_dispatch_sites_per_mode"),
+            "max_mode_dispatch_roots_per_mode": options.get("max_mode_dispatch_roots_per_mode"),
+            "max_mode_dispatch_site_callsites": options.get("max_mode_dispatch_site_callsites"),
+            "max_mode_dispatch_site_tokens": options.get("max_mode_dispatch_site_tokens"),
+            "max_mode_dispatch_site_ignored_tokens": options.get("max_mode_dispatch_site_ignored_tokens"),
+            "max_mode_low_confidence_candidates": options.get("max_mode_low_confidence_candidates"),
+            "max_mode_slices": options.get("max_mode_slices"),
+            "max_mode_slice_roots": options.get("max_mode_slice_roots"),
+            "max_mode_slice_dispatch_sites": options.get("max_mode_slice_dispatch_sites"),
+            "max_mode_slice_options": options.get("max_mode_slice_options"),
+            "max_mode_slice_strings": options.get("max_mode_slice_strings"),
+            "max_mode_slice_messages": options.get("max_mode_slice_messages"),
+            "max_mode_slice_exit_paths": options.get("max_mode_slice_exit_paths"),
+            "max_mode_surface_entries": options.get("max_mode_surface_entries"),
         },
     }
     if hashes:
@@ -423,6 +455,9 @@ def build_pack_readme():
     pack_readme += "- errors/messages.json\n"
     pack_readme += "- errors/exit_paths.json\n"
     pack_readme += "- errors/error_sites.json\n"
+    pack_readme += "- modes/index.json\n"
+    pack_readme += "- modes/dispatch_sites.json\n"
+    pack_readme += "- modes/slices.json\n"
     pack_readme += "- cli/options.json\n"
     pack_readme += "- cli/parse_loops.json\n"
     pack_readme += "- functions/index.json\n"

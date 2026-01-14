@@ -4,6 +4,7 @@ import shutil
 import sys
 from pathlib import Path
 
+from export_cli import resolve_pack_root
 from pyghidra import core as pyghidra_core
 
 
@@ -93,6 +94,29 @@ def main(argv):
     program_name = binary_file.name
 
     out_dir_path.mkdir(parents=True, exist_ok=True)
+    pack_root = Path(resolve_pack_root(str(out_dir_path)))
+    manifest_path = pack_root / "manifest.json"
+    error_path = pack_root / "export_error.txt"
+    for path in (manifest_path, error_path):
+        try:
+            path.unlink()
+        except FileNotFoundError:
+            pass
+
+    profile_enabled = False
+    analysis_profile = None
+    for arg in script_args:
+        if arg.startswith("profile="):
+            value = arg.split("=", 1)[1].strip().lower()
+            profile_enabled = value in ("1", "true", "yes", "on")
+        if arg.startswith("analysis_profile="):
+            analysis_profile = arg.split("=", 1)[1].strip().lower()
+
+    analyze = True
+    if profile_enabled:
+        analyze = False
+    elif analysis_profile and analysis_profile != "full":
+        analyze = False
 
     # Use PyGhidra's flat API to avoid the deprecated run_script helper and
     # the open_project + ghidra_script path that hangs in headless runs.
@@ -100,13 +124,20 @@ def main(argv):
         str(binary_file),
         str(project_dir),
         project_name,
-        analyze=True,
+        analyze=analyze,
         program_name=program_name,
         # Keep a stable, non-nested project path under the output dir.
         nested_project_location=False,
         install_dir=Path(install_dir),
     ) as script:
         script.run(str(script_path), [str(out_dir_path)] + script_args)
+
+    if error_path.is_file():
+        print(f"Binary Lens export failed; see {error_path}", file=sys.stderr)
+        raise SystemExit(1)
+    if not manifest_path.is_file():
+        print(f"Binary Lens export failed; missing {manifest_path}", file=sys.stderr)
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":

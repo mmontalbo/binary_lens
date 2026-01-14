@@ -1,6 +1,7 @@
 import re
 
 from export_primitives import SALIENCE_TAGS, addr_id, addr_str, addr_to_int, normalize_symbol_name
+from export_profile import profiled_decompile
 from ghidra.app.decompiler import DecompInterface
 from ghidra.program.model.data import StringDataInstance
 from ghidra.program.model.pcode import PcodeOp
@@ -561,8 +562,8 @@ def _resolve_varnode_addr(program, varnode, max_depth=6):
     return addr
 
 
-def extract_call_args(program, callsite_addr, monitor=None):
-    results = extract_call_args_for_callsites(program, [callsite_addr], monitor)
+def extract_call_args(program, callsite_addr, monitor=None, purpose=None):
+    results = extract_call_args_for_callsites(program, [callsite_addr], monitor, purpose=purpose)
     if callsite_addr in results:
         return results[callsite_addr]
     return {
@@ -576,10 +577,12 @@ def extract_call_args(program, callsite_addr, monitor=None):
     }
 
 
-def extract_call_args_for_callsites(program, callsite_addrs, monitor=None):
+def extract_call_args_for_callsites(program, callsite_addrs, monitor=None, purpose=None):
     results = {}
     if not callsite_addrs:
         return results
+    if not purpose:
+        purpose = "export_collectors.extract_call_args_for_callsites"
 
     func_manager = program.getFunctionManager()
     groups = {}
@@ -628,7 +631,13 @@ def extract_call_args_for_callsites(program, callsite_addrs, monitor=None):
         func = group["function"]
         callsites = sorted(set(group["callsites"]), key=addr_to_int)
         callsite_set = set(callsites)
-        decomp_result = decomp.decompileFunction(func, 30, monitor)
+        decomp_result = profiled_decompile(
+            decomp,
+            func,
+            30,
+            monitor,
+            purpose=purpose,
+        )
         if not decomp_result or not decomp_result.decompileCompleted():
             for callsite_id in callsites:
                 if results.get(callsite_id, {}).get("status") == "unresolved":
@@ -716,18 +725,43 @@ def _align_offset(offset, alignment):
 
 
 def _read_int(memory, addr, size, big_endian):
-    data = bytearray(size)
+    if memory is None or addr is None:
+        return None
     try:
-        memory.getBytes(addr, data)
+        size = int(size)
     except Exception:
         return None
+    if size <= 0:
+        return None
+
+    # Prefer the typed accessors (avoids JPype buffer conversion edge cases).
+    try:
+        if size == 8 and hasattr(memory, "getLong"):
+            return int(memory.getLong(addr)) & 0xFFFFFFFFFFFFFFFF
+        if size == 4 and hasattr(memory, "getInt"):
+            return int(memory.getInt(addr)) & 0xFFFFFFFF
+        if size == 2 and hasattr(memory, "getShort"):
+            return int(memory.getShort(addr)) & 0xFFFF
+        if size == 1 and hasattr(memory, "getByte"):
+            return int(memory.getByte(addr)) & 0xFF
+    except Exception:
+        pass
+
     value = 0
     if big_endian:
-        for b in data:
-            value = (value << 8) | (b & 0xFF)
-    else:
-        for idx in range(size - 1, -1, -1):
-            value = (value << 8) | (data[idx] & 0xFF)
+        for idx in range(size):
+            try:
+                b = int(memory.getByte(addr.add(idx))) & 0xFF
+            except Exception:
+                return None
+            value = (value << 8) | b
+        return value
+    for idx in range(size):
+        try:
+            b = int(memory.getByte(addr.add(idx))) & 0xFF
+        except Exception:
+            return None
+        value |= b << (8 * idx)
     return value
 
 
@@ -787,13 +821,16 @@ def _read_ptr_with_reloc(program, addr, ptr_size, big_endian):
 
 def _read_c_string(program, addr, max_len=128):
     memory = program.getMemory()
-    data = bytearray(max_len)
-    try:
-        memory.getBytes(addr, data)
-    except Exception:
-        return None
     chars = []
-    for b in data:
+    for idx in range(max(0, int(max_len))):
+        try:
+            cur = addr.add(idx)
+        except Exception:
+            return None
+        try:
+            b = int(memory.getByte(cur)) & 0xFF
+        except Exception:
+            return None
         if b == 0:
             break
         if b < 32 or b > 126:
@@ -1588,6 +1625,7 @@ def build_function_meta(functions):
             "address": addr,
             "is_external": func.isExternal(),
             "is_thunk": func.isThunk(),
+            "size": function_size(func),
         }
     return meta
 
