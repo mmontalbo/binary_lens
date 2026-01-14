@@ -33,11 +33,11 @@ Key files (high level):
 
 - `binary.lens/manifest.json`: export metadata and bounds
 - `binary.lens/surface_map.json`: “start here” routing pointers
-- `binary.lens/cli/options.json`: CLI option inventory (Milestone 1)
-- `binary.lens/errors/messages.json`: error message catalog (Milestone 2)
-- `binary.lens/errors/exit_paths.json`: exit/abort inventory (Milestone 2)
-- `binary.lens/modes/index.json`: mode inventory (Milestone 3, in progress)
-- `binary.lens/modes/slices.json`: per-mode “start here” slices (Milestone 3, in progress)
+- `binary.lens/cli/options.json`: CLI option inventory
+- `binary.lens/errors/messages.json`: error message catalog
+- `binary.lens/errors/exit_paths.json`: exit/abort inventory
+- `binary.lens/modes/index.json`: mode inventory
+- `binary.lens/modes/slices.json`: per-mode “start here” slices
 - `binary.lens/functions/index.json`: function index plus selected function exports
 - `binary.lens/evidence/…`: evidence callsites + decompiler excerpts
 
@@ -49,10 +49,7 @@ Key files (high level):
 
 ## Project status
 
-- Milestone 3 (Dispatch & Mode Surface Lens): in progress (`docs/MILESTONES.md`)
-  - Current focus: generalize mode detection beyond coreutils-style multicall patterns and improve mode-scoped routing.
-- Milestone 2 (Error & Exit Lens): complete (`docs/MILESTONES.md`)
-- Milestone 1 (CLI Surface Lens): complete (`docs/MILESTONES.md`)
+See `docs/MILESTONES.md` for milestone goals and current status.
 
 ## Development
 
