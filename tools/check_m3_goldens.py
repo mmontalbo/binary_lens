@@ -11,6 +11,7 @@ import argparse
 import difflib
 import json
 import sys
+from copy import deepcopy
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Iterable
@@ -157,6 +158,39 @@ def unified_json_diff(label: str, golden: Any, candidate: Any) -> str:
     return "".join(diff)
 
 
+def normalize_for_diff(rel_path: Path, value: Any) -> Any:
+    """Normalize JSON objects for golden diffs.
+
+    Some pack fields are intentionally *environment- or build-specific* (for example,
+    tool revisions and local filesystem paths). The M3 golden diff is intended to
+    guard output structure and selection behavior, not these volatile metadata fields.
+    """
+
+    if rel_path == Path("manifest.json") and isinstance(value, dict):
+        cleaned = deepcopy(value)
+        for key in (
+            "binary_path",
+            "created_at",
+            "created_at_epoch_seconds",
+            "created_at_source",
+            "export_platform",
+        ):
+            cleaned.pop(key, None)
+        tool = cleaned.get("tool")
+        if isinstance(tool, dict):
+            normalized_tool = dict(tool)
+            normalized_tool.pop("revision", None)
+            cleaned["tool"] = normalized_tool
+        return cleaned
+
+    if rel_path == Path("binary.json") and isinstance(value, dict):
+        cleaned = deepcopy(value)
+        cleaned.pop("executable_path", None)
+        return cleaned
+
+    return value
+
+
 def check_required_files(pack_root: Path) -> list[str]:
     missing = []
     for rel_path in M3_RELATIVE_JSON_FILES:
@@ -275,7 +309,11 @@ def diff_against_golden(pack_root: Path, golden_root: Path) -> tuple[list[str], 
 
         pack_json = load_json(pack_path)
         golden_json = load_json(golden_path)
-        diff = unified_json_diff(str(rel_path), golden_json, pack_json)
+        diff = unified_json_diff(
+            str(rel_path),
+            normalize_for_diff(rel_path, golden_json),
+            normalize_for_diff(rel_path, pack_json),
+        )
         if diff:
             chunks.append(diff)
 
@@ -336,4 +374,3 @@ def main(argv: list[str]) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main(sys.argv[1:]))
-
