@@ -1,0 +1,168 @@
+import os
+
+from export_collectors import collect_flow_summary, function_size
+from export_config import DEFAULT_MAX_DECOMPILE_FUNCTION_SIZE
+from export_primitives import addr_filename, addr_str
+from export_profile import profiled_decompile
+from ghidra.app.decompiler import DecompInterface
+
+from .io import pack_path, write_json, write_text
+
+
+def write_callsite_records(callsite_records, call_edges, evidence_callsites_dir, extra_callsites=None):
+    # Only emit callsite evidence for selected edges plus explicitly requested extras.
+    selected_callsite_records = {}
+    for edge in call_edges:
+        callsite = edge.get("callsite")
+        base_record = callsite_records.get(callsite)
+        if base_record is None:
+            continue
+        record = selected_callsite_records.get(callsite)
+        if record is None:
+            record = {
+                "callsite": base_record.get("callsite"),
+                "from": base_record.get("from"),
+                "instruction": base_record.get("instruction"),
+                "targets": [],
+            }
+            selected_callsite_records[callsite] = record
+        record["targets"].append(edge.get("to"))
+
+    if extra_callsites:
+        for callsite in extra_callsites:
+            if callsite in selected_callsite_records:
+                continue
+            base_record = callsite_records.get(callsite)
+            if base_record is None:
+                continue
+            selected_callsite_records[callsite] = {
+                "callsite": base_record.get("callsite"),
+                "from": base_record.get("from"),
+                "instruction": base_record.get("instruction"),
+                "targets": list(base_record.get("targets") or []),
+            }
+
+    callsite_paths = {}
+    for callsite, record in selected_callsite_records.items():
+        filename = addr_filename("cs", callsite, "json")
+        callsite_paths[callsite] = pack_path("evidence", "callsites", filename)
+        write_json(os.path.join(evidence_callsites_dir, filename), record)
+    return callsite_paths
+
+
+def write_function_exports(
+    program,
+    full_functions,
+    options,
+    string_refs_by_func,
+    selected_string_ids,
+    calls_by_func,
+    functions_dir,
+    evidence_decomp_dir,
+    monitor,
+):
+    listing = program.getListing()
+    decomp_interface = DecompInterface()
+    decomp_interface.openProgram(program)
+
+    for func in full_functions:
+        entry_addr = addr_str(func.getEntryPoint())
+        func_filename = addr_filename("f", entry_addr, "json")
+        func_md_filename = addr_filename("f", entry_addr, "md")
+        decomp_filename = addr_filename("f", entry_addr, "json")
+        decomp_ref = pack_path("evidence", "decomp", decomp_filename)
+
+        params = []
+        try:
+            for param in func.getParameters():
+                params.append({
+                    "name": param.getName(),
+                    "data_type": param.getDataType().getDisplayName(),
+                    "storage": str(param.getVariableStorage()),
+                })
+        except Exception:
+            params = []
+
+        try:
+            return_type = func.getReturnType().getDisplayName()
+        except Exception:
+            return_type = None
+
+        calls = calls_by_func.get(entry_addr, [])
+        if len(calls) > options["max_calls_per_function"]:
+            calls = calls[: options["max_calls_per_function"]]
+            calls_truncated = True
+        else:
+            calls_truncated = False
+
+        string_refs = []
+        raw_refs = string_refs_by_func.get(entry_addr, set())
+        for string_id in raw_refs:
+            if string_id in selected_string_ids:
+                string_refs.append(string_id)
+
+        flow_summary = collect_flow_summary(listing, func)
+
+        detail = {
+            "name": func.getName(),
+            "address": entry_addr,
+            "size": function_size(func),
+            "is_external": func.isExternal(),
+            "is_thunk": func.isThunk(),
+            "signature": func.getSignature().toString(),
+            "calling_convention": func.getCallingConventionName(),
+            "return_type": return_type,
+            "parameters": params,
+            "strings": sorted(string_refs),
+            "calls": calls,
+            "calls_truncated": calls_truncated,
+            "control_flow": flow_summary,
+            "decompiler_excerpt": decomp_ref,
+        }
+
+        write_json(os.path.join(functions_dir, func_filename), detail)
+
+        md_content = "# Function %s (%s)\n\n" % (func.getName(), entry_addr)
+        md_content += "Evidence:\n\n"
+        md_content += "- JSON: %s\n" % pack_path("functions", func_filename)
+        md_content += "- Decompiler excerpt: %s\n\n" % decomp_ref
+        md_content += "Notes:\n\n- [ ] Observations\n- [ ] Questions\n"
+        write_text(os.path.join(functions_dir, func_md_filename), md_content)
+
+        # Decompiler excerpts are bounded to keep evidence lightweight.
+        timeout_seconds = 30
+        if detail.get("size", 0) > DEFAULT_MAX_DECOMPILE_FUNCTION_SIZE:
+            timeout_seconds = 1
+        result = profiled_decompile(
+            decomp_interface,
+            func,
+            timeout_seconds,
+            monitor,
+            purpose="export_outputs.write_function_exports",
+        )
+        decomp_excerpt = {
+            "function": {
+                "name": func.getName(),
+                "address": entry_addr,
+            },
+            "truncated": False,
+            "line_count": 0,
+            "lines": [],
+        }
+        if result and result.decompileCompleted():
+            try:
+                decomp_text = result.getDecompiledFunction().getC()
+            except Exception:
+                decomp_text = None
+            if decomp_text:
+                lines = decomp_text.splitlines()
+                decomp_excerpt["line_count"] = len(lines)
+                if len(lines) > options["max_decomp_lines"]:
+                    decomp_excerpt["lines"] = lines[: options["max_decomp_lines"]]
+                    decomp_excerpt["truncated"] = True
+                else:
+                    decomp_excerpt["lines"] = lines
+        else:
+            decomp_excerpt["error"] = "decompile_failed"
+        write_json(os.path.join(evidence_decomp_dir, decomp_filename), decomp_excerpt)
+
