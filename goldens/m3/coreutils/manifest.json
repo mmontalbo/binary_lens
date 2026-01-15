@@ -4,6 +4,8 @@
     "sha256": "0e9328553363dc05d6de50c9d420b6b791f5e634454baf6f3a070a5e752ba722"
   },
   "binary_lens_version": "0.1.0-dev",
+  "binary_name": "coreutils",
+  "binary_path": "/nix/store/d75200gb22v7p0703h5jrkgg8bqydk5q-coreutils-9.8/bin/coreutils",
   "bounds": {
     "max_call_edges": 2000,
     "max_calls_per_function": 200,
@@ -47,6 +49,99 @@
     "max_modes": 200,
     "max_strings": 200
   },
+  "compiler_spec": "gcc",
+  "coverage_summary": {
+    "callgraph_edges": {
+      "max": 2000,
+      "selected": 2000,
+      "total": 17756,
+      "truncated": true
+    },
+    "cli_options": {
+      "max": 400,
+      "selected": 400,
+      "total": 576,
+      "truncated": true
+    },
+    "cli_parse_loops": {
+      "max": 12,
+      "selected": 12,
+      "total": 88,
+      "truncated": true
+    },
+    "error_messages": {
+      "max": 200,
+      "selected": 93,
+      "total": 98,
+      "truncated": false
+    },
+    "error_sites": {
+      "max": 200,
+      "selected": 63,
+      "total": 63,
+      "truncated": false
+    },
+    "exit_calls": {
+      "max": 400,
+      "selected": 227,
+      "total": 227,
+      "truncated": false
+    },
+    "full_functions": {
+      "max": 50,
+      "selected": 50,
+      "truncated": true
+    },
+    "functions_index": {
+      "max": 2000,
+      "selected": 2000,
+      "total": 2330,
+      "truncated": true
+    },
+    "mode_dispatch_sites": {
+      "max": 12,
+      "selected": 12,
+      "total": 183,
+      "truncated": true
+    },
+    "mode_slices": {
+      "max": 8,
+      "selected": 8,
+      "total": 106,
+      "truncated": true
+    },
+    "modes_index": {
+      "max": 200,
+      "selected": 106,
+      "total": 106,
+      "truncated": false
+    },
+    "strings": {
+      "max": 200,
+      "selected": 200,
+      "total": 2459,
+      "truncated": true
+    }
+  },
+  "created_at": "1980-01-01T00:00:00Z",
+  "created_at_epoch_seconds": 315532800,
+  "created_at_source": "source_date_epoch",
+  "executable_format": "Executable and Linking Format (ELF)",
+  "export_platform": {
+    "arch": "x86_64",
+    "os": "linux"
+  },
   "format_version": "0.1",
-  "ghidra_version": "12.0"
+  "ghidra_version": "12.0",
+  "schema": {
+    "name": "binary_lens",
+    "version": "0.1"
+  },
+  "target_arch": "x86",
+  "target_endian": "little",
+  "tool": {
+    "name": "binary_lens",
+    "revision": "7b9db1b9f16bcf6c2f9ebffb32322045bd095008",
+    "version": "0.1.0-dev"
+  }
 }

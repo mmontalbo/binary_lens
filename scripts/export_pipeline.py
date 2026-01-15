@@ -54,6 +54,7 @@ from export_outputs import (
     build_cli_parse_loops_payload,
     build_index_payload,
     build_manifest,
+    build_pack_index_payload,
     build_pack_readme,
     build_strings_payload,
     build_surface_map_payload,
@@ -330,7 +331,6 @@ def write_context_pack(
             modes_surface=modes_surface,
         )
 
-    manifest = build_manifest(options, hashes, BINARY_LENS_VERSION, FORMAT_VERSION)
     strings_payload = build_strings_payload(
         strings,
         total_strings,
@@ -340,9 +340,93 @@ def write_context_pack(
         string_bucket_limits,
     )
     index_payload = build_index_payload(functions, full_functions, index_functions, summaries, options)
+    coverage_summary = {
+        "strings": {
+            "total": strings_payload.get("total_strings"),
+            "selected": len(strings_payload.get("strings") or []),
+            "truncated": strings_payload.get("truncated"),
+            "max": strings_payload.get("max_strings"),
+        },
+        "functions_index": {
+            "total": index_payload.get("total_functions"),
+            "selected": len(index_payload.get("functions") or []),
+            "truncated": index_payload.get("truncated"),
+            "max": index_payload.get("max_functions"),
+        },
+        "full_functions": {
+            "selected": len(index_payload.get("full_functions") or []),
+            "truncated": len(functions) > options.get("max_full_functions", 0),
+            "max": options.get("max_full_functions", 0),
+        },
+        "callgraph_edges": {
+            "total": callgraph.get("total_edges"),
+            "selected": callgraph.get("selected_edges"),
+            "truncated": callgraph.get("truncated"),
+            "max": callgraph.get("max_edges"),
+        },
+        "cli_options": {
+            "total": cli_options_payload.get("total_options"),
+            "selected": cli_options_payload.get("selected_options"),
+            "truncated": cli_options_payload.get("truncated"),
+            "max": cli_options_payload.get("max_options"),
+        },
+        "cli_parse_loops": {
+            "total": cli_parse_loops_payload.get("total_parse_loops"),
+            "selected": cli_parse_loops_payload.get("selected_parse_loops"),
+            "truncated": cli_parse_loops_payload.get("truncated"),
+            "max": cli_parse_loops_payload.get("max_parse_loops"),
+        },
+        "modes_index": {
+            "total": modes_payload.get("total_modes"),
+            "selected": modes_payload.get("selected_modes"),
+            "truncated": modes_payload.get("truncated"),
+            "max": modes_payload.get("max_modes"),
+        },
+        "mode_dispatch_sites": {
+            "total": dispatch_sites_payload.get("total_dispatch_sites"),
+            "selected": dispatch_sites_payload.get("selected_dispatch_sites"),
+            "truncated": dispatch_sites_payload.get("truncated"),
+            "max": dispatch_sites_payload.get("max_dispatch_sites"),
+        },
+        "mode_slices": {
+            "total": modes_slices_payload.get("total_modes"),
+            "selected": modes_slices_payload.get("selected_slices"),
+            "truncated": modes_slices_payload.get("truncated"),
+            "max": modes_slices_payload.get("max_slices"),
+        },
+        "error_messages": {
+            "total": error_messages_payload.get("total_candidates"),
+            "selected": error_messages_payload.get("selected_messages"),
+            "truncated": error_messages_payload.get("truncated"),
+            "max": error_messages_payload.get("max_messages"),
+        },
+        "error_sites": {
+            "total": error_sites_payload.get("total_sites"),
+            "selected": error_sites_payload.get("selected_sites"),
+            "truncated": error_sites_payload.get("truncated"),
+            "max": error_sites_payload.get("max_sites"),
+        },
+        "exit_calls": {
+            "total": exit_paths_payload.get("total_exit_calls"),
+            "selected": exit_paths_payload.get("selected_exit_calls"),
+            "truncated": exit_paths_payload.get("truncated"),
+            "max": exit_paths_payload.get("max_exit_calls"),
+        },
+    }
+
+    manifest = build_manifest(
+        options,
+        hashes,
+        BINARY_LENS_VERSION,
+        FORMAT_VERSION,
+        binary_info=binary_info,
+        coverage_summary=coverage_summary,
+    )
+    pack_index_payload = build_pack_index_payload(FORMAT_VERSION)
     pack_readme = build_pack_readme()
 
     with _phase(profiler, "write_outputs"):
+        write_json(layout.root / "index.json", pack_index_payload)
         write_json(layout.root / "manifest.json", manifest)
         write_json(layout.root / "binary.json", binary_info)
         write_json(layout.root / "imports.json", imports)

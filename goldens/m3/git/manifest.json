@@ -4,6 +4,8 @@
     "sha256": "4a8111d4fc1e89663de3418f19bb132f5c9a619c9a2d418001d2d1ae0834e3f2"
   },
   "binary_lens_version": "0.1.0-dev",
+  "binary_name": "git",
+  "binary_path": "/etc/profiles/per-user/mmontalbo/bin/git",
   "bounds": {
     "max_call_edges": 2000,
     "max_calls_per_function": 200,
@@ -47,6 +49,99 @@
     "max_modes": 200,
     "max_strings": 200
   },
+  "compiler_spec": "gcc",
+  "coverage_summary": {
+    "callgraph_edges": {
+      "max": 2000,
+      "selected": 2000,
+      "total": 62278,
+      "truncated": true
+    },
+    "cli_options": {
+      "max": 400,
+      "selected": 63,
+      "total": 63,
+      "truncated": false
+    },
+    "cli_parse_loops": {
+      "max": 12,
+      "selected": 0,
+      "total": 0,
+      "truncated": false
+    },
+    "error_messages": {
+      "max": 200,
+      "selected": 200,
+      "total": 262,
+      "truncated": true
+    },
+    "error_sites": {
+      "max": 200,
+      "selected": 113,
+      "total": 113,
+      "truncated": false
+    },
+    "exit_calls": {
+      "max": 400,
+      "selected": 187,
+      "total": 187,
+      "truncated": false
+    },
+    "full_functions": {
+      "max": 50,
+      "selected": 50,
+      "truncated": true
+    },
+    "functions_index": {
+      "max": 2000,
+      "selected": 2000,
+      "total": 7025,
+      "truncated": true
+    },
+    "mode_dispatch_sites": {
+      "max": 12,
+      "selected": 12,
+      "total": 675,
+      "truncated": true
+    },
+    "mode_slices": {
+      "max": 8,
+      "selected": 8,
+      "total": 143,
+      "truncated": true
+    },
+    "modes_index": {
+      "max": 200,
+      "selected": 143,
+      "total": 143,
+      "truncated": false
+    },
+    "strings": {
+      "max": 200,
+      "selected": 200,
+      "total": 12565,
+      "truncated": true
+    }
+  },
+  "created_at": "1980-01-01T00:00:00Z",
+  "created_at_epoch_seconds": 315532800,
+  "created_at_source": "source_date_epoch",
+  "executable_format": "Executable and Linking Format (ELF)",
+  "export_platform": {
+    "arch": "x86_64",
+    "os": "linux"
+  },
   "format_version": "0.1",
-  "ghidra_version": "12.0"
+  "ghidra_version": "12.0",
+  "schema": {
+    "name": "binary_lens",
+    "version": "0.1"
+  },
+  "target_arch": "x86",
+  "target_endian": "little",
+  "tool": {
+    "name": "binary_lens",
+    "revision": "7b9db1b9f16bcf6c2f9ebffb32322045bd095008",
+    "version": "0.1.0-dev"
+  }
 }

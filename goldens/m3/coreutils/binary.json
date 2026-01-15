@@ -6,6 +6,7 @@
   "compiler_spec": "gcc",
   "default_pointer_size": 8,
   "executable_format": "Executable and Linking Format (ELF)",
+  "executable_path": "/nix/store/d75200gb22v7p0703h5jrkgg8bqydk5q-coreutils-9.8/bin/coreutils",
   "hashes": {
     "md5": "33dd3053dc14028e3aa5ac0424502a97",
     "sha256": "0e9328553363dc05d6de50c9d420b6b791f5e634454baf6f3a070a5e752ba722"

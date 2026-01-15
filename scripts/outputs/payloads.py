@@ -1,3 +1,11 @@
+from __future__ import annotations
+
+import os
+import platform
+from dataclasses import dataclass
+from datetime import datetime, timezone
+from pathlib import Path
+
 from export_primitives import addr_str
 from ghidra.framework import Application
 
@@ -43,6 +51,9 @@ def build_binary_info(program):
             "max": addr_str(program.getMaxAddress()),
         },
     }
+    executable_path = maybe_call(program, "getExecutablePath")
+    if executable_path:
+        info["executable_path"] = str(executable_path)
     hashes = get_program_hashes(program)
     if hashes:
         info["hashes"] = hashes
@@ -146,11 +157,138 @@ def build_surface_map_payload(cli_surface, options, error_surface=None, modes_su
     return surface_map
 
 
-def build_manifest(options, hashes, binary_lens_version, format_version):
+@dataclass(frozen=True)
+class ExportCreatedAt:
+    iso8601: str
+    epoch_seconds: int
+    source: str
+
+
+def _resolve_created_at() -> ExportCreatedAt:
+    epoch_raw = os.environ.get("SOURCE_DATE_EPOCH")
+    if epoch_raw:
+        try:
+            epoch = int(epoch_raw)
+            dt = datetime.fromtimestamp(epoch, tz=timezone.utc)
+            return ExportCreatedAt(
+                iso8601=dt.isoformat().replace("+00:00", "Z"),
+                epoch_seconds=epoch,
+                source="source_date_epoch",
+            )
+        except Exception:
+            pass
+    epoch = int(datetime.now(tz=timezone.utc).timestamp())
+    dt = datetime.fromtimestamp(epoch, tz=timezone.utc)
+    return ExportCreatedAt(
+        iso8601=dt.isoformat().replace("+00:00", "Z"),
+        epoch_seconds=epoch,
+        source="runtime_utc_now",
+    )
+
+
+def _maybe_read_git_revision(root: Path) -> str | None:
+    head_path = root / ".git" / "HEAD"
+    try:
+        head = head_path.read_text().strip()
+    except OSError:
+        return None
+    if head.startswith("ref:"):
+        ref = head.split(":", 1)[1].strip()
+        if ref:
+            ref_path = root / ".git" / ref
+            try:
+                revision = ref_path.read_text().strip()
+            except OSError:
+                revision = None
+            if revision:
+                return revision
+        return None
+    if head:
+        return head
+    return None
+
+
+def build_pack_index_payload(format_version: str) -> dict[str, object]:
+    """Build a consumer-facing pack root index.
+
+    This is a pure convenience layer: it points at canonical entry files and
+    documents a few navigation conventions without changing any extracted data.
+    """
+
+    return {
+        "schema": {
+            "name": "binary_lens",
+            "version": format_version,
+        },
+        "start_here": {
+            "surface_map_ref": "surface_map.json",
+            "manifest_ref": "manifest.json",
+        },
+        "entrypoints": {
+            "binary_ref": "binary.json",
+            "manifest_ref": "manifest.json",
+            "surface_map_ref": "surface_map.json",
+            "modes_index_ref": "modes/index.json",
+            "modes_dispatch_sites_ref": "modes/dispatch_sites.json",
+            "modes_slices_ref": "modes/slices.json",
+            "cli_options_ref": "cli/options.json",
+            "cli_parse_loops_ref": "cli/parse_loops.json",
+            "errors_messages_ref": "errors/messages.json",
+            "errors_exit_paths_ref": "errors/exit_paths.json",
+            "errors_error_sites_ref": "errors/error_sites.json",
+            "strings_ref": "strings.json",
+            "functions_index_ref": "functions/index.json",
+            "imports_ref": "imports.json",
+            "callgraph_ref": "callgraph.json",
+            "capabilities_ref": "capabilities.json",
+            "subsystems_ref": "subsystems.json",
+        },
+        "conventions": {
+            "refs": "Paths in *_ref / *_refs are relative to the pack root.",
+            "truncation": (
+                "Most lists include truncated + max_*; truncated=true means the export was bounded "
+                "(missing entries may exist)."
+            ),
+            "unknowns": (
+                "When a field carries *_confidence / *_strength, the value 'unknown' means the exporter "
+                "did not establish it (not 'false')."
+            ),
+        },
+    }
+
+
+def build_manifest(
+    options,
+    hashes,
+    binary_lens_version,
+    format_version,
+    *,
+    binary_info: dict[str, object] | None = None,
+    coverage_summary: dict[str, object] | None = None,
+) -> dict[str, object]:
+    repo_root = Path(__file__).resolve().parents[2]
+    created_at = _resolve_created_at()
+    tool_revision = (
+        os.environ.get("BINARY_LENS_REVISION")
+        or _maybe_read_git_revision(repo_root)
+    )
+
     manifest = {
+        "schema": {
+            "name": "binary_lens",
+            "version": format_version,
+        },
         "binary_lens_version": binary_lens_version,
         "format_version": format_version,
         "ghidra_version": str(Application.getApplicationVersion()),
+        "created_at": created_at.iso8601,
+        "created_at_epoch_seconds": created_at.epoch_seconds,
+        "created_at_source": created_at.source,
+        "tool": {
+            "name": "binary_lens",
+            "version": binary_lens_version,
+            "revision": tool_revision,
+        },
         "bounds": {
             "max_full_functions": options["max_full_functions"],
             "max_functions_index": options["max_functions_index"],
@@ -197,6 +335,30 @@ def build_manifest(options, hashes, binary_lens_version, format_version):
     }
     if hashes:
         manifest["binary_hashes"] = hashes
+    if binary_info:
+        name = binary_info.get("name")
+        if isinstance(name, str) and name.strip():
+            manifest["binary_name"] = name.strip()
+        executable_path = binary_info.get("executable_path")
+        if isinstance(executable_path, str) and executable_path.strip():
+            manifest["binary_path"] = executable_path.strip()
+        language = binary_info.get("language")
+        if isinstance(language, dict):
+            manifest["target_arch"] = language.get("processor")
+            manifest["target_endian"] = language.get("endian")
+        executable_format = binary_info.get("executable_format")
+        if isinstance(executable_format, str) and executable_format.strip():
+            manifest["executable_format"] = executable_format.strip()
+        compiler_spec = binary_info.get("compiler_spec")
+        if isinstance(compiler_spec, str) and compiler_spec.strip():
+            manifest["compiler_spec"] = compiler_spec.strip()
+
+    manifest["export_platform"] = {
+        "os": platform.system().lower() or None,
+        "arch": platform.machine() or None,
+    }
+    if coverage_summary:
+        manifest["coverage_summary"] = coverage_summary
     return manifest
 
 
@@ -252,7 +414,11 @@ def build_pack_readme():
     pack_readme = "# Binary Lens Context Pack\n\n"
     pack_readme += "This pack contains observed facts and mechanically derived capabilities.\n"
     pack_readme += "JSON files are authoritative; evidence files are bounded excerpts.\n\n"
+    pack_readme += "Start here:\n\n"
+    pack_readme += "- index.json\n"
+    pack_readme += "- surface_map.json\n\n"
     pack_readme += "Files:\n\n"
+    pack_readme += "- index.json\n"
     pack_readme += "- manifest.json\n"
     pack_readme += "- binary.json\n"
     pack_readme += "- imports.json\n"
@@ -274,4 +440,3 @@ def build_pack_readme():
     pack_readme += "- evidence/decomp/f_<addr>.json\n"
     pack_readme += "- evidence/callsites/cs_<addr>.json\n"
     return pack_readme
-
