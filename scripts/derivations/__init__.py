@@ -1,0 +1,8 @@
+"""Derivation subsystems for `binary_lens`.
+
+This package contains the logic that turns collected facts (call edges, strings,
+callsites) into higher-level lenses like capabilities, subsystems, and CLI
+surfaces. `scripts/export_derivations.py` remains as a thin shim to preserve
+historical import paths.
+"""
+
