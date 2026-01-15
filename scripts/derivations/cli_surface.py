@@ -1,7 +1,35 @@
 """Derive CLI surface artifacts (options + parse loops)."""
 
+from __future__ import annotations
+
+from dataclasses import dataclass
+from typing import Any
+
 from derivations.constants import INT_TYPES
 from export_primitives import addr_to_int
+
+
+@dataclass(frozen=True)
+class CliSurfaceBounds:
+    max_options: int
+    max_parse_loops: int
+    max_evidence: int
+    max_parse_sites: int
+    max_callsites_per_loop: int
+    max_flag_vars: int
+    max_check_sites: int
+
+    @classmethod
+    def from_options(cls, options: dict[str, Any]) -> CliSurfaceBounds:
+        return cls(
+            max_options=options.get("max_cli_options", 0),
+            max_parse_loops=options.get("max_cli_parse_loops", 0),
+            max_evidence=options.get("max_cli_option_evidence", 0),
+            max_parse_sites=options.get("max_cli_parse_sites_per_option", 0),
+            max_callsites_per_loop=options.get("max_cli_callsites_per_parse_loop", 0),
+            max_flag_vars=options.get("max_cli_flag_vars", 0),
+            max_check_sites=options.get("max_cli_check_sites", 0),
+        )
 
 
 def _merge_has_arg(current, new):
@@ -422,60 +450,7 @@ def _build_parse_loops(
     return parse_loops
 
 
-def derive_cli_surface(
-    parse_groups,
-    parse_details_by_callsite,
-    compare_details_by_callsite,
-    callsite_paths,
-    options,
-    check_sites_by_flag_addr,
-):
-    max_options = options.get("max_cli_options", 0)
-    max_parse_loops = options.get("max_cli_parse_loops", 0)
-    max_evidence = options.get("max_cli_option_evidence", 0)
-    max_parse_sites = options.get("max_cli_parse_sites_per_option", 0)
-    max_callsites_per_loop = options.get("max_cli_callsites_per_parse_loop", 0)
-    max_flag_vars = options.get("max_cli_flag_vars", 0)
-    max_check_sites = options.get("max_cli_check_sites", 0)
-
-    parse_loop_id_by_callsite, parse_loop_id_by_function = _build_parse_loop_lookup(parse_groups)
-
-    raw_options = _collect_parse_option_entries(
-        parse_details_by_callsite,
-        parse_loop_id_by_callsite,
-        callsite_paths,
-        max_parse_sites,
-        max_evidence,
-        max_flag_vars,
-        max_check_sites,
-        check_sites_by_flag_addr,
-    )
-    raw_options.extend(
-        _collect_compare_option_entries(
-            compare_details_by_callsite,
-            parse_loop_id_by_callsite,
-            callsite_paths,
-            max_parse_sites,
-            max_evidence,
-        )
-    )
-
-    options_list = _merge_option_entries(
-        raw_options,
-        max_parse_sites,
-        max_evidence,
-        max_flag_vars,
-        max_check_sites,
-    )
-    options_list, total_options, truncated_options = _finalize_option_entries(options_list, max_options)
-
-    parse_loops = _build_parse_loops(
-        parse_groups,
-        parse_details_by_callsite,
-        callsite_paths,
-        parse_loop_id_by_function,
-        max_callsites_per_loop,
-    )
+def _finalize_parse_loops(parse_loops, max_parse_loops):
     parse_loops.sort(
         key=lambda item: (
             -item.get("callsite_count", 0),
@@ -487,13 +462,97 @@ def derive_cli_surface(
     if max_parse_loops > 0 and total_parse_loops > max_parse_loops:
         parse_loops = parse_loops[:max_parse_loops]
         truncated_parse_loops = True
+    return parse_loops, total_parse_loops, truncated_parse_loops
 
-    return {
-        "options": options_list,
-        "total_options": total_options,
-        "options_truncated": truncated_options,
-        "parse_loops": parse_loops,
-        "total_parse_loops": total_parse_loops,
-        "parse_loops_truncated": truncated_parse_loops,
-    }
 
+@dataclass(frozen=True)
+class _CliSurfaceDeriver:
+    parse_groups: list[dict[str, Any]]
+    parse_details_by_callsite: dict[str, Any]
+    compare_details_by_callsite: dict[str, Any]
+    callsite_paths: dict[str, Any]
+    check_sites_by_flag_addr: dict[str, Any]
+    bounds: CliSurfaceBounds
+
+    def derive(self) -> dict[str, Any]:
+        parse_loop_id_by_callsite, parse_loop_id_by_function = _build_parse_loop_lookup(self.parse_groups)
+
+        raw_options = _collect_parse_option_entries(
+            self.parse_details_by_callsite,
+            parse_loop_id_by_callsite,
+            self.callsite_paths,
+            self.bounds.max_parse_sites,
+            self.bounds.max_evidence,
+            self.bounds.max_flag_vars,
+            self.bounds.max_check_sites,
+            self.check_sites_by_flag_addr,
+        )
+        raw_options.extend(
+            _collect_compare_option_entries(
+                self.compare_details_by_callsite,
+                parse_loop_id_by_callsite,
+                self.callsite_paths,
+                self.bounds.max_parse_sites,
+                self.bounds.max_evidence,
+            )
+        )
+
+        options_list = _merge_option_entries(
+            raw_options,
+            self.bounds.max_parse_sites,
+            self.bounds.max_evidence,
+            self.bounds.max_flag_vars,
+            self.bounds.max_check_sites,
+        )
+        options_list, total_options, truncated_options = _finalize_option_entries(
+            options_list,
+            self.bounds.max_options,
+        )
+
+        parse_loops = _build_parse_loops(
+            self.parse_groups,
+            self.parse_details_by_callsite,
+            self.callsite_paths,
+            parse_loop_id_by_function,
+            self.bounds.max_callsites_per_loop,
+        )
+        parse_loops, total_parse_loops, truncated_parse_loops = _finalize_parse_loops(
+            parse_loops,
+            self.bounds.max_parse_loops,
+        )
+
+        return {
+            "options": options_list,
+            "total_options": total_options,
+            "options_truncated": truncated_options,
+            "parse_loops": parse_loops,
+            "total_parse_loops": total_parse_loops,
+            "parse_loops_truncated": truncated_parse_loops,
+        }
+
+
+def derive_cli_surface(
+    parse_groups,
+    parse_details_by_callsite,
+    compare_details_by_callsite,
+    callsite_paths,
+    options,
+    check_sites_by_flag_addr,
+):
+    """Derive CLI surface artifacts.
+
+    Invariants:
+    - Options are merged across parse sites (multi-call binaries) and then sorted by a small
+      score (parse-site + evidence count), with stable tie-breakers.
+    - `truncated` flags indicate exporter bounds were hit; missing entries may exist.
+    """
+
+    bounds = CliSurfaceBounds.from_options(options or {})
+    return _CliSurfaceDeriver(
+        parse_groups=parse_groups or [],
+        parse_details_by_callsite=parse_details_by_callsite or {},
+        compare_details_by_callsite=compare_details_by_callsite or {},
+        callsite_paths=callsite_paths or {},
+        check_sites_by_flag_addr=check_sites_by_flag_addr or {},
+        bounds=bounds,
+    ).derive()
