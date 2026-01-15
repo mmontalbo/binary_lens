@@ -1,7 +1,17 @@
+"""Profiling helpers for the exporter.
+
+When `profile=1` is passed, the exporter writes timing + decompiler statistics
+under `binary.lens/profile/`. This output is not part of the milestone goldens,
+but is useful for debugging headless runs and tracking exporter hotspots.
+"""
+
+from __future__ import annotations
+
 import json
 import os
 import time
 from contextlib import contextmanager
+from typing import Any
 
 try:
     from export_primitives import addr_str
@@ -9,8 +19,8 @@ except Exception:  # pragma: no cover
     addr_str = None
 
 
-_ACTIVE_PROFILER = None
-_DECOMPILE_CACHE = {}
+_ACTIVE_PROFILER: ExportProfiler | None = None
+_DECOMPILE_CACHE: dict[str, dict[str, Any]] = {}
 
 def _env_flag(name, default=True):
     value = os.environ.get(name)
@@ -55,11 +65,11 @@ def ensure_profiler(pack_root=None, enabled=False):
 class ExportProfiler:
     def __init__(self, pack_root=None):
         self.pack_root = pack_root
-        self.timings = {}
-        self.metadata = {}
-        self.analysis = {}
-        self._decompile_events = []
-        self._decompile_requests = []
+        self.timings: dict[str, dict[str, Any]] = {}
+        self.metadata: dict[str, Any] = {}
+        self.analysis: dict[str, Any] = {}
+        self._decompile_events: list[dict[str, Any]] = []
+        self._decompile_requests: list[dict[str, Any]] = []
 
     def _function_payload(self, func):
         func_name = None
