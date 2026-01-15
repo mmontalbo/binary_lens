@@ -230,165 +230,321 @@ def derive_error_messages(
     emitter_callsites_total = len(emitter_callsites)
     candidate_ids = set(candidates.keys())
     candidate_func_ids = set()
-    for func_id, refs in string_refs_by_func.items():
-        for string_id in refs:
-            if string_id in candidate_ids:
+    if candidate_ids:
+        for func_id, string_ids in string_refs_by_func.items():
+            if not string_ids:
+                continue
+            if not candidate_ids.isdisjoint(string_ids):
                 candidate_func_ids.add(func_id)
-                break
 
-    candidate_callsites = []
-    for callsite in emitter_callsites:
-        func_id = callsite.get("function_id")
-        if func_id not in candidate_func_ids:
-            continue
-        candidate_callsites.append(callsite)
+    max_emitters = options.get("max_error_emitter_callsites", 0)
+    if candidate_func_ids:
+        preferred_callsites = []
+        other_callsites = []
+        for callsite in emitter_callsites:
+            if callsite.get("function_id") in candidate_func_ids:
+                preferred_callsites.append(callsite)
+            else:
+                other_callsites.append(callsite)
+        considered_callsites = preferred_callsites + other_callsites
+    else:
+        considered_callsites = emitter_callsites
 
-    max_callsites = options.get("max_error_message_callsites", 0)
-    considered_callsites = candidate_callsites
     truncated_emitters = False
-    if max_callsites and len(considered_callsites) > max_callsites:
-        considered_callsites = considered_callsites[:max_callsites]
+    if max_emitters and len(considered_callsites) > max_emitters:
+        considered_callsites = considered_callsites[:max_emitters]
         truncated_emitters = True
 
-    callsite_ids = []
-    for entry in considered_callsites:
-        callsite_id = entry.get("callsite_id")
-        if callsite_id and callsite_id not in call_args_cache:
-            callsite_ids.append(callsite_id)
-
-    if callsite_ids:
-        call_args_cache.update(
-            extract_call_args_for_callsites(
-                program,
-                callsite_ids,
-                monitor,
-                purpose="export_errors.derive_error_messages",
-            )
-        )
-
-    observed = {}
     links_by_string = {}
-    for callsite in considered_callsites:
-        callsite_id = callsite.get("callsite_id")
-        if not callsite_id:
-            continue
-        args = call_args_cache.get(callsite_id) or {}
-        string_args = args.get("string_args", [])
-        if not string_args:
-            continue
-        emitter_bucket = bucket_for_emitter(callsite.get("emitter_import"))
-        for entry in string_args:
-            address = entry.get("address")
-            if not address:
-                continue
-            string_id = string_addr_map_all.get(address)
-            if not string_id or string_id not in candidate_ids:
-                continue
-            meta = string_meta_by_id.get(string_id, {})
-            value = meta.get("value") or entry.get("value")
-            tags = string_tags_by_id.get(string_id) or set()
-            record_observed_emitter_bucket(observed, string_id, emitter_bucket, value, tags)
-            append_link(links_by_string, string_id, {
-                "callsite_id": callsite_id,
-                "function_id": callsite.get("function_id"),
-                "function_name": callsite.get("function_name"),
-                "emitter_import": callsite.get("emitter_import"),
-                "link_strength": "observed",
-                "confidence": "high",
-            })
+    observed_strings = set()
+    observed_emitter_bucket = {}
+    observed_scan = None
 
-    xrefs = _build_string_xrefs(string_refs_by_func)
-    for string_id in candidate_ids:
-        if string_id in links_by_string:
-            continue
-        funcs = sorted(xrefs.get(string_id, []), key=addr_to_int)
-        if not funcs:
-            continue
-        func_id = funcs[0]
-        callsites = emitter_callsites_by_func.get(func_id) or []
-        for callsite in callsites[:1]:
-            append_link(links_by_string, string_id, {
-                "callsite_id": callsite.get("callsite_id"),
-                "function_id": callsite.get("function_id"),
-                "function_name": callsite.get("function_name"),
-                "emitter_import": callsite.get("emitter_import"),
-                "link_strength": "xref",
-                "confidence": "low",
-            })
+    def _process_observed_callsites(callsite_entries):
+        if not callsite_entries:
+            return
+        callsite_ids = [
+            entry.get("callsite_id") for entry in callsite_entries if entry.get("callsite_id")
+        ]
+        missing_callsites = [
+            callsite_id for callsite_id in callsite_ids if callsite_id not in call_args_cache
+        ]
+        if missing_callsites:
+            call_args_cache.update(
+                extract_call_args_for_callsites(
+                    program,
+                    missing_callsites,
+                    monitor,
+                    purpose="export_errors.derive_error_messages",
+                )
+            )
+        for callsite in callsite_entries:
+            callsite_id = callsite.get("callsite_id")
+            if not callsite_id:
+                continue
+            args = call_args_cache.get(callsite_id) or {}
+            emitter_import = callsite.get("emitter_import")
+            emitter_bucket = bucket_for_emitter(emitter_import)
+            for arg in args.get("string_args", []):
+                string_id = string_addr_map_all.get(arg.get("address"))
+                if not string_id:
+                    continue
+                value = arg.get("value")
+                tags = string_tags_by_id.get(string_id) or set()
+                if string_id not in candidates:
+                    meta_entry = string_meta_by_id.get(string_id)
+                    if meta_entry:
+                        value = meta_entry.get("value") or value
+                        candidate = build_candidate_entry(
+                            string_id,
+                            value,
+                            tags,
+                            ref_count=meta_entry.get("ref_count", 0),
+                            address=meta_entry.get("address"),
+                        )
+                    else:
+                        if emitter_bucket not in ("error", "warn"):
+                            continue
+                        if not value:
+                            continue
+                        candidate = build_candidate_entry(
+                            string_id,
+                            value,
+                            tags,
+                            ref_count=0,
+                            address=arg.get("address"),
+                        )
+                    if candidate:
+                        candidates[string_id] = candidate
+                meta = candidates.get(string_id)
+                if not meta:
+                    continue
+                value = meta.get("value") or value
+                record_observed_emitter_bucket(
+                    observed_emitter_bucket,
+                    string_id,
+                    emitter_bucket,
+                    value,
+                    tags,
+                )
+                entry = {
+                    "callsite_id": callsite_id,
+                    "function_id": callsite.get("function_id"),
+                    "function_name": callsite.get("function_name"),
+                    "emitter_import": callsite.get("emitter_import"),
+                    "link_strength": "observed",
+                    "confidence": "high",
+                }
+                append_link(links_by_string, string_id, entry)
+                observed_strings.add(string_id)
 
-    messages = []
-    max_functions = options.get("max_error_message_functions", 10)
-    for string_id, candidate in candidates.items():
-        value = candidate.get("value")
-        tags = string_tags_by_id.get(string_id) or set()
-        links = links_by_string.get(string_id, [])
-        links = dedupe_links(links)
-        links = sort_links(links, max_callsites)
-        if not links:
-            continue
-        emitting_funcs = []
+    max_observed_strings = 0
+    max_observed_callsites = 0
+    max_observed_functions = 0
+    try:
+        max_observed_strings = int(options.get("max_error_observed_strings") or 0)
+    except Exception:
+        max_observed_strings = 0
+    try:
+        max_observed_callsites = int(options.get("max_error_observed_callsites") or 0)
+    except Exception:
+        max_observed_callsites = 0
+    try:
+        max_observed_functions = int(options.get("max_error_observed_functions") or 0)
+    except Exception:
+        max_observed_functions = 0
+
+    auto_observed_limits = False
+    if not (max_observed_strings or max_observed_callsites or max_observed_functions):
+        if len(considered_callsites) >= 1500:
+            auto_observed_limits = True
+            max_messages_budget = options.get("max_error_messages", 0)
+            if max_messages_budget:
+                max_observed_strings = int(max_messages_budget)
+                max_observed_callsites = max(200, int(max_observed_strings * 4))
+                max_observed_functions = max(50, int(max_observed_strings * 1.25))
+            else:
+                max_observed_callsites = 800
+                max_observed_functions = 250
+
+    apply_observed_limits = bool(max_observed_strings or max_observed_callsites or max_observed_functions)
+    if not apply_observed_limits:
+        _process_observed_callsites(considered_callsites)
+    else:
+        callsites_by_func = {}
+        func_order = []
         seen_funcs = set()
-        for link in links:
-            func_id = link.get("function_id")
-            if not func_id or func_id in seen_funcs:
+        considered_callsite_count = 0
+        for callsite in considered_callsites:
+            callsite_id = callsite.get("callsite_id")
+            func_id = callsite.get("function_id")
+            if not callsite_id or not func_id:
                 continue
-            emitting_funcs.append({
-                "function_id": func_id,
-                "function_name": link.get("function_name"),
-            })
-            seen_funcs.add(func_id)
-            if max_functions and len(emitting_funcs) >= max_functions:
+            considered_callsite_count += 1
+            bucket = callsites_by_func.get(func_id)
+            if bucket is None:
+                bucket = []
+                callsites_by_func[func_id] = bucket
+            bucket.append(callsite)
+            if func_id not in seen_funcs:
+                seen_funcs.add(func_id)
+                func_order.append(func_id)
+
+        if func_order:
+
+            def func_sort_key(func_id):
+                priority = 0 if func_id in candidate_func_ids else 1
+                meta = function_meta_by_addr.get(func_id) if function_meta_by_addr else None
+                size = (meta or {}).get("size")
+                try:
+                    size = int(size)
+                except Exception:
+                    size = 0
+                return (priority, size, addr_to_int(func_id))
+
+            func_order.sort(key=func_sort_key)
+
+        if max_observed_callsites and max_observed_callsites > considered_callsite_count:
+            max_observed_callsites = considered_callsite_count
+        if max_observed_functions and max_observed_functions > len(func_order):
+            max_observed_functions = len(func_order)
+
+        observed_callsites_scanned = 0
+        observed_functions_scanned = 0
+        batch = []
+        batch_callsite_limit = 100
+        stop_reason = None
+        for func_id in func_order:
+            if max_observed_functions and observed_functions_scanned >= max_observed_functions:
+                stop_reason = "max_observed_functions"
+                break
+            callsites = callsites_by_func.get(func_id) or []
+            if not callsites:
+                continue
+            if max_observed_callsites:
+                remaining = max_observed_callsites - observed_callsites_scanned
+                if remaining <= 0:
+                    stop_reason = "max_observed_callsites"
+                    break
+                if len(callsites) > remaining:
+                    callsites = callsites[:remaining]
+            observed_functions_scanned += 1
+            observed_callsites_scanned += len(callsites)
+            batch.extend(callsites)
+            if len(batch) >= batch_callsite_limit:
+                _process_observed_callsites(batch)
+                batch = []
+                if max_observed_strings and len(observed_strings) >= max_observed_strings:
+                    stop_reason = "max_observed_strings"
+                    break
+
+        if batch and stop_reason != "max_observed_strings":
+            _process_observed_callsites(batch)
+        if stop_reason is None and max_observed_strings and len(observed_strings) >= max_observed_strings:
+            stop_reason = "max_observed_strings"
+
+        if auto_observed_limits or stop_reason is not None:
+            observed_scan = {
+                "callsites_scanned": observed_callsites_scanned,
+                "functions_scanned": observed_functions_scanned,
+                "unique_strings_found": len(observed_strings),
+                "stop_reason": stop_reason or "complete",
+                "auto_limits": bool(auto_observed_limits),
+            }
+
+    for string_id, bucket in observed_emitter_bucket.items():
+        meta = candidates.get(string_id)
+        if not meta:
+            continue
+        value = meta.get("value")
+        tags = string_tags_by_id.get(string_id) or set()
+        if is_usage_message(value, tags):
+            continue
+        meta["bucket"] = bucket
+
+    string_xrefs = _build_string_xrefs(string_refs_by_func)
+    max_callsites = options.get("max_error_message_callsites", 5)
+    for string_id, meta in candidates.items():
+        if string_id in observed_strings:
+            continue
+        if meta.get("bucket") not in ("error", "warn", "usage"):
+            continue
+        for func_id in sorted(string_xrefs.get(string_id, []), key=addr_to_int):
+            callsites = emitter_callsites_by_func.get(func_id)
+            if not callsites:
+                continue
+            for callsite in callsites:
+                append_link(
+                    links_by_string,
+                    string_id,
+                    {
+                        "callsite_id": callsite["callsite_id"],
+                        "function_id": callsite["function_id"],
+                        "function_name": callsite.get("function_name"),
+                        "emitter_import": callsite["emitter_import"],
+                        "link_strength": "heuristic",
+                        "confidence": "low",
+                    },
+                )
+                if len(links_by_string.get(string_id, [])) >= max_callsites:
+                    break
+            if len(links_by_string.get(string_id, [])) >= max_callsites:
                 break
 
-        callsite_entries = []
+    messages = []
+    for string_id, meta in candidates.items():
+        links = links_by_string.get(string_id) or []
+        links = dedupe_links(links)
+        if not links:
+            continue
+        observed = any(link.get("link_strength") == "observed" for link in links)
+        strength = "observed" if observed else "heuristic"
+        confidence = "high" if observed else "low"
+        imports = set()
+        function_counts = {}
         for link in links:
-            callsite_entries.append({
-                "callsite_id": link.get("callsite_id"),
-                "function_id": link.get("function_id"),
-                "function_name": link.get("function_name"),
-                "emitter_import": link.get("emitter_import"),
-                "link_strength": link.get("link_strength"),
-                "confidence": link.get("confidence"),
-            })
-
-        emitter_bucket = observed.get(string_id)
-        strength = "heuristic"
-        confidence = "low"
-        if emitter_bucket:
-            strength = "observed"
-            confidence = "high"
-
-        bucket = classify_message_bucket(value, tags)
-        if emitter_bucket and bucket != "usage":
-            bucket = merge_emitter_bucket(bucket, emitter_bucket)
-
-        messages.append({
-            "string_id": string_id,
-            "string_address": candidate.get("address"),
-            "preview": candidate.get("preview"),
-            "bucket": bucket,
-            "strength": strength,
-            "confidence": confidence,
-            "ref_count": candidate.get("ref_count", 0),
-            "emitter_bucket": emitter_bucket,
-            "emitting_functions": emitting_funcs,
-            "emitting_callsites": callsite_entries,
-            "tags": sorted(tags),
-            "evidence": {
-                "strings": [string_id],
-                "callsites": [entry.get("callsite_id") for entry in callsite_entries if entry.get("callsite_id")],
-                "functions": [entry.get("function_id") for entry in emitting_funcs if entry.get("function_id")],
-            },
-        })
-
-    observed_scan = None
-    if observed:
-        observed_scan = {
-            "observed_bucket_counts": {
-                bucket: sum(1 for value in observed.values() if value == bucket)
-                for bucket in sorted(set(observed.values()))
-            },
-        }
+            imports.add(link.get("emitter_import"))
+            func_id = link.get("function_id")
+            if not func_id:
+                continue
+            function_counts[func_id] = function_counts.get(func_id, 0) + 1
+        functions = []
+        for func_id, count in function_counts.items():
+            func_meta = function_meta_by_addr.get(func_id, {})
+            functions.append(
+                {
+                    "function_id": func_id,
+                    "function_name": func_meta.get("name"),
+                    "callsite_count": count,
+                }
+            )
+        functions.sort(
+            key=lambda item: (-item.get("callsite_count", 0), addr_to_int(item.get("function_id")))
+        )
+        max_funcs = options.get("max_error_message_functions", 10)
+        if max_funcs:
+            functions = functions[:max_funcs]
+        links_sorted = sort_links(links, max_callsites)
+        messages.append(
+            {
+                "string_id": string_id,
+                "string_address": meta.get("address"),
+                "preview": meta.get("preview"),
+                "bucket": meta.get("bucket"),
+                "related_imports": sorted(imports),
+                "emitting_functions": functions,
+                "emitting_callsites": links_sorted,
+                "strength": strength,
+                "confidence": confidence,
+                "evidence": {
+                    "strings": [string_id],
+                    "callsites": sorted(
+                        {link.get("callsite_id") for link in links if link.get("callsite_id")}
+                    ),
+                    "functions": sorted(function_counts.keys(), key=addr_to_int),
+                },
+            }
+        )
 
     def message_sort_key(item):
         return (
