@@ -4,6 +4,83 @@ This document defines near-term milestones for adding **LM-tailored interface le
 
 ---
 
+## Milestone 4 — Contract Anchors (Callsites + Tables + Strings)
+
+Status: planned
+
+### Goal
+Expand the context pack with **evidence-backed contract anchors** beyond modes/errors/options: stable, bounded surfaces derived from callsites + constant/table arguments that help consumers understand what the binary *interacts with* (filesystem, env, subprocesses, network, stdout/stderr) without relying on narrative decompiler output.
+
+This milestone should make it easy to answer:
+- “What external interfaces does this binary touch (files, env vars, subprocesses, sockets)?”
+- “What user-visible text/output templates exist, and where are they emitted?”
+- “Which constants/strings participate in those interfaces (paths, env var names, argv tokens)?”
+
+### Context
+Many binaries encode “user contracts” through:
+- calls into stable APIs (`getenv`, `open`, `execve`, `connect`, `fprintf`, …)
+- constant arguments and static tables (string keys, path templates, format strings)
+
+`binary_lens` already exports call edges, strings, and evidence callsites, plus focused lenses (errors, modes). This milestone adds **generic interface surfaces** that scale beyond the current test binaries and remain useful to non-LM reverse engineering workflows (triage, auditing, diffing).
+
+### Deliverables
+Add a new top-level `interfaces/` section to the context pack. Keep the section cohesive, and treat its JSON schemas as stable once introduced.
+
+1. `interfaces/index.json`
+   - Index of available interface surfaces, with refs + bounded counts/truncation metadata.
+
+2. `interfaces/env.json`
+   - Environment-variable interactions anchored to callsites:
+     - `getenv`/`setenv`/`unsetenv`/`putenv` callsites (bounded)
+     - resolved constant env var names when visible (string IDs + addresses)
+     - explicit “unknown name” when not recoverable
+
+3. `interfaces/fs.json`
+   - Filesystem interactions anchored to callsites:
+     - `open/openat/fopen/stat/lstat/access/unlink/rename/mkdir/opendir/...` callsites (bounded)
+     - resolved constant path-like strings when visible (string IDs + addresses)
+     - flags/modes when statically visible (constant ints) with explicit unknowns otherwise
+
+4. `interfaces/process.json`
+   - Subprocess interactions anchored to callsites:
+     - `exec*`, `posix_spawn`, `system`, `popen` callsites (bounded)
+     - resolved constant argv0/command strings when visible
+
+5. `interfaces/net.json`
+   - Network interactions anchored to callsites:
+     - `socket/connect/bind/listen/send/recv/getaddrinfo/...` callsites (bounded)
+     - resolved constant protocol/port/host strings when visible (explicit unknowns otherwise)
+
+6. `interfaces/output.json`
+   - User-visible output templates anchored to callsites:
+     - `printf/fprintf/dprintf/write/puts/fputs/...` callsites (bounded)
+     - resolved constant format strings and/or message templates when visible
+     - best-effort output channel hints when statically visible (e.g., fd=1/2, stderr) with explicit unknowns otherwise
+
+### Implementation hygiene (required)
+To keep the pack generic and reduce future churn while adding new pattern families:
+- Factor shared “signal-driven callsite scan” logic into reusable helpers (CLI/errors/capabilities should not each re-implement the same walk-and-filter loop).
+- Centralize symbol/import normalization and make matching policy explicit (casefolding, `_chk`/version suffix stripping, substring vs exact matches).
+- Isolate name-convention heuristics (e.g., `cmd_*`/`cmd_main`) behind clearly-labeled modules/flags so they don’t become the generic story.
+
+### Approach (static-first)
+- Prefer **import-signal anchors** + existing callgraph/callsite evidence to localize sites.
+- Recover constant-ish arguments using existing bounded argument-resolution helpers; degrade gracefully when decompilation fails.
+- Emit **atomic, evidence-linked records** with explicit `status`/`unknown` fields rather than narrative claims.
+- Enforce bounds and stable ordering; include totals + truncation flags so consumers can distinguish “absent” vs “not exported”.
+
+### Acceptance Criteria
+**A. Non-trivial surfaces**
+- On at least two diverse binaries, each `interfaces/*.json` surface contains meaningful anchored evidence (not just empty shells), with explicit `truncated`/bounds metadata.
+- `git` and `coreutils` remain primary validation targets, but the exporter should avoid tailoring heuristics specifically to them.
+
+**B. Generic-first**
+- Core functionality does not depend on binary-specific symbol naming conventions; any name-based shortcuts are optional and labeled as heuristic.
+
+**C. Bounded + auditable**
+- Records are diff-friendly and bounded.
+- Every entry links back to evidence (callsites, functions, string IDs/addresses), and missing data is represented explicitly (unknown vs truncated).
+
 ## Milestone 3 — Dispatch & Mode Surface Lens
 
 Status: complete
