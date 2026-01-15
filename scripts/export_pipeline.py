@@ -7,28 +7,20 @@ area small and reduce cognitive overhead.
 
 from __future__ import annotations
 
-import os
 from contextlib import nullcontext
 from typing import Any, Callable
 
 from export_collectors import (
-    build_cli_compare_details,
-    build_cli_parse_details,
     build_function_import_sets,
     build_function_meta,
     build_function_metrics,
     build_signal_set,
     collect_call_edges,
-    collect_cli_option_compare_sites,
-    collect_cli_parse_sites,
-    collect_flag_check_sites,
     collect_function_calls,
     collect_functions,
     collect_imports,
     collect_string_refs_by_func,
     collect_strings,
-    extract_call_args_for_callsites,
-    parse_option_token,
     select_call_edges,
     select_full_functions,
     select_index_functions,
@@ -72,6 +64,8 @@ from export_outputs import (
     write_text,
 )
 from ghidra_analysis import run_program_analysis
+from pipeline.cli import collect_cli_inputs
+from pipeline.layout import PackLayout
 
 
 def _phase(profiler: Any, name: str):
@@ -102,81 +96,6 @@ def ensure_profiler_enabled(pack_root: str, options: dict[str, Any]):
     return ensure_profiler(pack_root, enabled=True)
 
 
-def collect_cli_inputs(
-    program: Any,
-    options: dict[str, Any],
-    call_edges_all: list[dict[str, Any]],
-    function_meta_by_addr: dict[str, Any],
-    string_addr_map_all: dict[str, Any],
-    string_refs_by_func: dict[str, set[str]],
-    strings: list[dict[str, Any]],
-    monitor: Any,
-) -> dict[str, Any]:
-    parse_sites, parse_groups = collect_cli_parse_sites(call_edges_all, function_meta_by_addr)
-    parse_callsite_ids = [entry.get("callsite") for entry in parse_sites if entry.get("callsite")]
-
-    # Restrict compare-site scanning to functions that reference option-like strings.
-    option_token_string_ids = set()
-    for entry in strings:
-        token = parse_option_token(entry.get("value"))
-        if token:
-            option_token_string_ids.add(entry.get("id"))
-    option_token_callers = set()
-    if option_token_string_ids:
-        for func_addr, string_ids in string_refs_by_func.items():
-            if string_ids & option_token_string_ids:
-                option_token_callers.add(func_addr)
-    compare_sites = collect_cli_option_compare_sites(
-        call_edges_all,
-        function_meta_by_addr,
-        option_token_callers if option_token_callers else None,
-    )
-    compare_callsite_ids = [entry.get("callsite") for entry in compare_sites if entry.get("callsite")]
-
-    callsite_ids = list(dict.fromkeys(parse_callsite_ids + compare_callsite_ids))
-    # Resolve call arguments in batches to avoid repeated per-callsite decompilation.
-    call_args_by_callsite = extract_call_args_for_callsites(
-        program,
-        callsite_ids,
-        monitor,
-        purpose="binary_lens_export.collect_cli_inputs",
-    )
-
-    parse_details_by_callsite = build_cli_parse_details(
-        program,
-        parse_sites,
-        call_args_by_callsite,
-        string_addr_map_all,
-        options.get("max_cli_longopt_entries", 0),
-    )
-    flag_addresses = set()
-    for detail in parse_details_by_callsite.values():
-        longopts = detail.get("longopts") or {}
-        for entry in longopts.get("entries", []):
-            flag_addr = entry.get("flag_address")
-            if flag_addr:
-                flag_addresses.add(flag_addr)
-    check_sites_by_flag_addr = collect_flag_check_sites(
-        program,
-        sorted(flag_addresses),
-        options.get("max_cli_check_sites", 0),
-    )
-    compare_details_by_callsite = build_cli_compare_details(
-        compare_sites,
-        call_args_by_callsite,
-        string_addr_map_all,
-    )
-
-    return {
-        "parse_groups": parse_groups,
-        "parse_details_by_callsite": parse_details_by_callsite,
-        "compare_details_by_callsite": compare_details_by_callsite,
-        "check_sites_by_flag_addr": check_sites_by_flag_addr,
-        "parse_callsite_ids": parse_callsite_ids,
-        "compare_callsite_ids": compare_callsite_ids,
-    }
-
-
 def write_context_pack(
     pack_root: str,
     program: Any,
@@ -190,19 +109,9 @@ def write_context_pack(
         profiler = ensure_profiler_enabled(pack_root, options)
     profile_enabled = is_profiling_enabled(options)
 
-    ensure_dir(pack_root)
-    functions_dir = os.path.join(pack_root, "functions")
-    cli_dir = os.path.join(pack_root, "cli")
-    errors_dir = os.path.join(pack_root, "errors")
-    modes_dir = os.path.join(pack_root, "modes")
-    evidence_decomp_dir = os.path.join(pack_root, "evidence", "decomp")
-    evidence_callsites_dir = os.path.join(pack_root, "evidence", "callsites")
-    ensure_dir(functions_dir)
-    ensure_dir(cli_dir)
-    ensure_dir(errors_dir)
-    ensure_dir(modes_dir)
-    ensure_dir(evidence_decomp_dir)
-    ensure_dir(evidence_callsites_dir)
+    layout = PackLayout.from_root(pack_root)
+    for dir_path in layout.iter_dirs():
+        ensure_dir(dir_path)
 
     analysis_profile = (options.get("analysis_profile") or "full").strip().lower()
     if profile_enabled or analysis_profile != "full":
@@ -257,12 +166,12 @@ def write_context_pack(
             strings,
             monitor,
         )
-    parse_groups = cli_inputs["parse_groups"]
-    parse_details_by_callsite = cli_inputs["parse_details_by_callsite"]
-    compare_details_by_callsite = cli_inputs["compare_details_by_callsite"]
-    check_sites_by_flag_addr = cli_inputs["check_sites_by_flag_addr"]
-    parse_callsite_ids = cli_inputs["parse_callsite_ids"]
-    compare_callsite_ids = cli_inputs["compare_callsite_ids"]
+    parse_groups = cli_inputs.parse_groups
+    parse_details_by_callsite = cli_inputs.parse_details_by_callsite
+    compare_details_by_callsite = cli_inputs.compare_details_by_callsite
+    check_sites_by_flag_addr = cli_inputs.check_sites_by_flag_addr
+    parse_callsite_ids = cli_inputs.parse_callsite_ids
+    compare_callsite_ids = cli_inputs.compare_callsite_ids
 
     with _phase(profiler, "collect_errors"):
         error_messages_payload, emitter_callsites_by_func, call_args_cache = derive_error_messages(
@@ -333,7 +242,7 @@ def write_context_pack(
     callsite_paths = write_callsite_records(
         callsite_records,
         call_edges,
-        evidence_callsites_dir,
+        layout.evidence_callsites_dir,
         extra_callsites=extra_callsites,
     )
     attach_callsite_refs(
@@ -356,8 +265,8 @@ def write_context_pack(
             string_refs_by_func,
             selected_string_ids,
             calls_by_func,
-            functions_dir,
-            evidence_decomp_dir,
+            layout.functions_dir,
+            layout.evidence_decomp_dir,
             monitor,
         )
 
@@ -434,25 +343,24 @@ def write_context_pack(
     pack_readme = build_pack_readme()
 
     with _phase(profiler, "write_outputs"):
-        write_json(os.path.join(pack_root, "manifest.json"), manifest)
-        write_json(os.path.join(pack_root, "binary.json"), binary_info)
-        write_json(os.path.join(pack_root, "imports.json"), imports)
-        write_json(os.path.join(pack_root, "strings.json"), strings_payload)
-        write_json(os.path.join(pack_root, "callgraph.json"), callgraph)
-        write_json(os.path.join(pack_root, "capabilities.json"), capabilities)
-        write_json(os.path.join(pack_root, "subsystems.json"), subsystems_payload)
-        write_json(os.path.join(pack_root, "surface_map.json"), surface_map_payload)
-        write_json(os.path.join(errors_dir, "messages.json"), error_messages_payload)
-        write_json(os.path.join(errors_dir, "exit_paths.json"), exit_paths_payload)
-        write_json(os.path.join(errors_dir, "error_sites.json"), error_sites_payload)
-        write_json(os.path.join(modes_dir, "index.json"), modes_payload)
-        write_json(os.path.join(modes_dir, "dispatch_sites.json"), dispatch_sites_payload)
-        write_json(os.path.join(modes_dir, "slices.json"), modes_slices_payload)
-        write_json(os.path.join(cli_dir, "options.json"), cli_options_payload)
-        write_json(os.path.join(cli_dir, "parse_loops.json"), cli_parse_loops_payload)
-        write_json(os.path.join(functions_dir, "index.json"), index_payload)
-        write_text(os.path.join(pack_root, "README.md"), pack_readme)
+        write_json(layout.root / "manifest.json", manifest)
+        write_json(layout.root / "binary.json", binary_info)
+        write_json(layout.root / "imports.json", imports)
+        write_json(layout.root / "strings.json", strings_payload)
+        write_json(layout.root / "callgraph.json", callgraph)
+        write_json(layout.root / "capabilities.json", capabilities)
+        write_json(layout.root / "subsystems.json", subsystems_payload)
+        write_json(layout.root / "surface_map.json", surface_map_payload)
+        write_json(layout.errors_dir / "messages.json", error_messages_payload)
+        write_json(layout.errors_dir / "exit_paths.json", exit_paths_payload)
+        write_json(layout.errors_dir / "error_sites.json", error_sites_payload)
+        write_json(layout.modes_dir / "index.json", modes_payload)
+        write_json(layout.modes_dir / "dispatch_sites.json", dispatch_sites_payload)
+        write_json(layout.modes_dir / "slices.json", modes_slices_payload)
+        write_json(layout.cli_dir / "options.json", cli_options_payload)
+        write_json(layout.cli_dir / "parse_loops.json", cli_parse_loops_payload)
+        write_json(layout.functions_dir / "index.json", index_payload)
+        write_text(layout.root / "README.md", pack_readme)
 
     if profiler is not None:
         profiler.write_profile()
-
