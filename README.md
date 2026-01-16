@@ -29,11 +29,12 @@ binary_lens /path/to/binary -o out/ max_full_functions=50 max_strings=200
 `binary_lens` writes a context pack to `out/binary.lens/` (or your chosen `-o` directory).
 JSON files are authoritative; evidence files are bounded excerpts.
 
-Consumer docs: see `docs/CONSUMER_QUICKSTART.md`.
+Consumer docs are embedded in each generated pack: see `binary.lens/README.md` and `binary.lens/docs/`.
 
 Key files (high level):
 
 - `binary.lens/manifest.json`: export metadata and bounds
+- `binary.lens/docs/overview.md`: pack overview (tailored to the target binary)
 - `binary.lens/surface_map.json`: “start here” routing pointers
 - `binary.lens/cli/options.json`: CLI option inventory
 - `binary.lens/errors/messages.json`: error message catalog
