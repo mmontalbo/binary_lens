@@ -28,6 +28,11 @@
     "max_exit_patterns": 100,
     "max_full_functions": 50,
     "max_functions_index": 2000,
+    "max_interface_env": 200,
+    "max_interface_fs": 200,
+    "max_interface_net": 200,
+    "max_interface_output": 200,
+    "max_interface_process": 200,
     "max_mode_callsites_per_function": 160,
     "max_mode_dispatch_functions": 12,
     "max_mode_dispatch_roots_per_mode": 6,
@@ -77,8 +82,8 @@
     },
     "error_sites": {
       "max": 200,
-      "selected": 113,
-      "total": 113,
+      "selected": 114,
+      "total": 114,
       "truncated": false
     },
     "exit_calls": {
@@ -97,6 +102,36 @@
       "selected": 2000,
       "total": 7025,
       "truncated": true
+    },
+    "interfaces_env": {
+      "max": 200,
+      "selected": 200,
+      "total": 222,
+      "truncated": true
+    },
+    "interfaces_fs": {
+      "max": 200,
+      "selected": 200,
+      "total": 486,
+      "truncated": true
+    },
+    "interfaces_net": {
+      "max": 200,
+      "selected": 16,
+      "total": 16,
+      "truncated": false
+    },
+    "interfaces_output": {
+      "max": 200,
+      "selected": 200,
+      "total": 1156,
+      "truncated": true
+    },
+    "interfaces_process": {
+      "max": 200,
+      "selected": 7,
+      "total": 7,
+      "truncated": false
     },
     "mode_dispatch_sites": {
       "max": 12,
@@ -141,7 +176,7 @@
   "target_endian": "little",
   "tool": {
     "name": "binary_lens",
-    "revision": "7b9db1b9f16bcf6c2f9ebffb32322045bd095008",
+    "revision": "0ad4f210faa7e43e5ee93d06b7e974b98421a9e5",
     "version": "0.1.0-dev"
   }
 }

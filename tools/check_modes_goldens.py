@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check Milestone 3 ("modes") invariants for a generated `binary_lens` pack.
+"""Check the `modes/` lens invariants for a generated `binary_lens` pack.
 
 This is a lightweight regression guardrail that operates purely on the exported JSON pack
 (`out/.../binary.lens`) and does not invoke Ghidra.
@@ -16,7 +16,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Iterable
 
-M3_RELATIVE_JSON_FILES = (
+MODES_RELATIVE_JSON_FILES = (
     Path("binary.json"),
     Path("manifest.json"),
     Path("surface_map.json"),
@@ -60,13 +60,13 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument(
         "--diff",
         action="store_true",
-        help="Diff M3 JSON files against committed goldens",
+        help="Diff modes-lens JSON files against committed goldens",
     )
     parser.add_argument(
         "--golden",
         type=Path,
         default=None,
-        help="Golden root (e.g. goldens/m3/git). If omitted, inferred for git/coreutils",
+        help="Golden root (e.g. goldens/modes/git). If omitted, inferred for git/coreutils",
     )
     return parser.parse_args(argv)
 
@@ -162,7 +162,7 @@ def normalize_for_diff(rel_path: Path, value: Any) -> Any:
     """Normalize JSON objects for golden diffs.
 
     Some pack fields are intentionally *environment- or build-specific* (for example,
-    tool revisions and local filesystem paths). The M3 golden diff is intended to
+    tool revisions and local filesystem paths). The modes golden diff is intended to
     guard output structure and selection behavior, not these volatile metadata fields.
     """
 
@@ -193,7 +193,7 @@ def normalize_for_diff(rel_path: Path, value: Any) -> Any:
 
 def check_required_files(pack_root: Path) -> list[str]:
     missing = []
-    for rel_path in M3_RELATIVE_JSON_FILES:
+    for rel_path in MODES_RELATIVE_JSON_FILES:
         path = pack_root / rel_path
         if not path.is_file():
             missing.append(str(rel_path))
@@ -287,9 +287,9 @@ def default_min_modes(mode: str) -> int:
 
 def infer_golden_root(mode: str) -> Path | None:
     if mode == "git":
-        return Path("goldens/m3/git")
+        return Path("goldens/modes/git")
     if mode == "coreutils":
-        return Path("goldens/m3/coreutils")
+        return Path("goldens/modes/coreutils")
     return None
 
 
@@ -297,7 +297,7 @@ def diff_against_golden(pack_root: Path, golden_root: Path) -> tuple[list[str], 
     errors: list[str] = []
     chunks: list[str] = []
 
-    for rel_path in M3_RELATIVE_JSON_FILES:
+    for rel_path in MODES_RELATIVE_JSON_FILES:
         pack_path = pack_root / rel_path
         golden_path = golden_root / rel_path
         if not pack_path.is_file():

@@ -116,38 +116,38 @@
   "errors": {
     "top_emitting_functions": [
       {
-        "emit_callsite_count": 7,
+        "emit_callsite_count": 8,
         "function": {
-          "address": "0011abb0",
-          "name": "_usage_chroot"
+          "address": "00134930",
+          "name": "process_file"
         }
       },
       {
-        "emit_callsite_count": 6,
+        "emit_callsite_count": 8,
+        "function": {
+          "address": "00176e90",
+          "name": "single_binary_main_mknod"
+        }
+      },
+      {
+        "emit_callsite_count": 8,
+        "function": {
+          "address": "00179940",
+          "name": "rm"
+        }
+      },
+      {
+        "emit_callsite_count": 8,
+        "function": {
+          "address": "001af030",
+          "name": "print_stat"
+        }
+      },
+      {
+        "emit_callsite_count": 7,
         "function": {
           "address": "0011a5d0",
           "name": "usage"
-        }
-      },
-      {
-        "emit_callsite_count": 6,
-        "function": {
-          "address": "001274a0",
-          "name": "_usage_stdbuf"
-        }
-      },
-      {
-        "emit_callsite_count": 6,
-        "function": {
-          "address": "0015bd00",
-          "name": "_usage_false"
-        }
-      },
-      {
-        "emit_callsite_count": 5,
-        "function": {
-          "address": "0011afd0",
-          "name": "single_binary_main_chroot"
         }
       }
     ],
@@ -236,24 +236,31 @@
     "top_message_templates": [
       {
         "bucket": "error",
-        "preview": "%s: %s",
-        "representative_callsite_id": "00136351",
-        "representative_callsite_ref": "evidence/callsites/cs_00136351.json",
-        "string_id": "s_00208192"
+        "preview": "missing operand",
+        "representative_callsite_id": "0011b660",
+        "representative_callsite_ref": "evidence/callsites/cs_0011b660.json",
+        "string_id": "s_0020732a"
       },
       {
         "bucket": "usage",
-        "preview": "Usage: test EXPRESSION\\n  or:  test\\n  or:  [ EXPRESSION ]\\n  or:  [ ]\\n  or:  [ OPTION\\n",
-        "representative_callsite_id": "001297a8",
-        "representative_callsite_ref": "evidence/callsites/cs_001297a8.json",
-        "string_id": "s_00211dc0"
+        "preview": "Try '%s --help' for more information.\\n",
+        "representative_callsite_id": "0011a627",
+        "representative_callsite_ref": "evidence/callsites/cs_0011a627.json",
+        "string_id": "s_0020d358"
       },
       {
         "bucket": "warn",
-        "preview": "warning: ignoring --context; it requires an SELinux/SMACK-enabled kernel",
-        "representative_callsite_id": "001762ad",
-        "representative_callsite_ref": "evidence/callsites/cs_001762ad.json",
-        "string_id": "s_00222fa8"
+        "preview": "WARNING: %ju lines are improperly formatted",
+        "representative_callsite_id": "0012ab62",
+        "representative_callsite_ref": "evidence/callsites/cs_0012ab62.json",
+        "string_id": "s_00213228"
+      },
+      {
+        "bucket": "diagnostic",
+        "preview": "Full documentation <%s%s>\\n",
+        "representative_callsite_id": "0011a836",
+        "representative_callsite_ref": "evidence/callsites/cs_0011a836.json",
+        "string_id": "s_00207277"
       },
       {
         "bucket": "unknown",
@@ -261,13 +268,6 @@
         "representative_callsite_id": "0011a836",
         "representative_callsite_ref": "evidence/callsites/cs_0011a836.json",
         "string_id": "s_0020d780"
-      },
-      {
-        "bucket": "error",
-        "preview": "bug-coreutils@gnu.org",
-        "representative_callsite_id": "00179f2a",
-        "representative_callsite_ref": "evidence/callsites/cs_00179f2a.json",
-        "string_id": "s_0020a311"
       }
     ]
   },

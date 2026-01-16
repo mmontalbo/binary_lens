@@ -86,7 +86,7 @@ To keep the pack generic and reduce future churn while adding new pattern famili
 Status: complete
 
 Acceptance snapshot:
-- `goldens/m3/git/` + `goldens/m3/coreutils/` (see `tools/check_m3_goldens.py`)
+- `goldens/modes/git/` + `goldens/modes/coreutils/` (see `tools/check_modes_goldens.py`)
 
 ### Goal
 Extract an **evidence-linked model of behavioral modes and dispatch**, enabling LM consumers to:

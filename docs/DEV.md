@@ -91,16 +91,16 @@ ruff check --fix .
 - `binary.lens/capabilities.json`: evidence-backed capabilities
 - `binary.lens/cli/options.json`: CLI option inventory
 
-## Golden M3 baselines
+## Modes goldens
 
-Milestone 3 ("modes") output is regression-guarded via small committed goldens (since `out/`
+The `modes/` lens output is regression-guarded via small committed goldens (since `out/`
 is ignored).
 
 Goldens live in:
-- `goldens/m3/git/`
-- `goldens/m3/coreutils/`
+- `goldens/modes/git/`
+- `goldens/modes/coreutils/`
 
-Each golden includes only these M3-relevant JSON files:
+Each golden includes only these modes-relevant JSON files:
 - `binary.json`
 - `manifest.json`
 - `surface_map.json`
@@ -115,18 +115,18 @@ Binary SHA256s (from `manifest.json`):
 Regenerate the packs used for these goldens:
 
 ```sh
-nix develop -c binary_lens /etc/profiles/per-user/mmontalbo/bin/git -o out/profile_git_m3_modes12 profile=1 analysis_profile=full
-nix develop -c binary_lens coreutils -o out/profile_coreutils_m3_modes6 profile=1 analysis_profile=full
+nix develop -c binary_lens /etc/profiles/per-user/mmontalbo/bin/git -o out/profile_git_modes profile=1 analysis_profile=full
+nix develop -c binary_lens coreutils -o out/profile_coreutils_modes profile=1 analysis_profile=full
 ```
 
 Run the fast checker (no Ghidra):
 
 ```sh
-python tools/check_m3_goldens.py out/profile_git_m3_modes12/binary.lens --diff
-python tools/check_m3_goldens.py out/profile_coreutils_m3_modes6/binary.lens --diff
+python tools/check_modes_goldens.py out/profile_git_modes/binary.lens --diff
+python tools/check_modes_goldens.py out/profile_coreutils_modes/binary.lens --diff
 ```
 
 When changing the modes exporter:
 - Regenerate git + coreutils packs.
-- Run `python tools/check_m3_goldens.py out/.../binary.lens` (use `--diff` for golden diffs).
-- Update `goldens/m3/...` only for intentional behavior changes.
+- Run `python tools/check_modes_goldens.py out/.../binary.lens` (use `--diff` for golden diffs).
+- Update `goldens/modes/...` only for intentional behavior changes.

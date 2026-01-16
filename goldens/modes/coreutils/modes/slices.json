@@ -193,12 +193,12 @@
         "s_002080ca",
         "s_002080ea",
         "s_002080fe",
-        "s_00208108",
         "s_00213228",
         "s_00213258",
         "s_00213288",
         "s_002132b8",
-        "s_002132e8"
+        "s_002132e8",
+        "s_00213318"
       ],
       "top_messages_ref": "errors/messages.json",
       "top_options": [
@@ -442,6 +442,11 @@
         "00132583"
       ],
       "top_exit_paths_ref": "errors/exit_paths.json",
+      "top_messages": [
+        "s_0020732a",
+        "s_002073a7"
+      ],
+      "top_messages_ref": "errors/messages.json",
       "top_options": [
         "opt_011",
         "opt_025",
@@ -690,10 +695,8 @@
       ],
       "top_exit_paths_ref": "errors/exit_paths.json",
       "top_messages": [
-        "s_00208394",
-        "s_002083bd",
-        "s_00214658",
-        "s_00214720"
+        "s_00214678",
+        "s_00214840"
       ],
       "top_messages_ref": "errors/messages.json",
       "top_options": [
