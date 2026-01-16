@@ -12,6 +12,8 @@ class PackLayout:
     """Computed paths for a `binary.lens` pack on disk."""
 
     root: Path
+    docs_dir: Path
+    schema_dir: Path
     functions_dir: Path
     cli_dir: Path
     errors_dir: Path
@@ -26,6 +28,8 @@ class PackLayout:
         evidence_dir = root / "evidence"
         return cls(
             root=root,
+            docs_dir=root / "docs",
+            schema_dir=root / "schema",
             functions_dir=root / "functions",
             cli_dir=root / "cli",
             errors_dir=root / "errors",
@@ -38,6 +42,8 @@ class PackLayout:
     def iter_dirs(self) -> Iterable[Path]:
         return (
             self.root,
+            self.docs_dir,
+            self.schema_dir,
             self.functions_dir,
             self.cli_dir,
             self.errors_dir,

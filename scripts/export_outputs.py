@@ -6,6 +6,7 @@ while preserving the original import path used by the exporter.
 """
 
 from outputs.io import ensure_dir, pack_path, write_json, write_text
+from outputs.pack_docs import build_pack_markdown_docs
 from outputs.payloads import (
     build_binary_info,
     build_callgraph_payload,
@@ -30,6 +31,7 @@ __all__ = [
     "build_index_payload",
     "build_manifest",
     "build_pack_index_payload",
+    "build_pack_markdown_docs",
     "build_pack_readme",
     "build_strings_payload",
     "build_surface_map_payload",

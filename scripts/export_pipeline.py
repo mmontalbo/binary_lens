@@ -60,6 +60,7 @@ from export_outputs import (
     build_index_payload,
     build_manifest,
     build_pack_index_payload,
+    build_pack_markdown_docs,
     build_pack_readme,
     build_strings_payload,
     build_surface_map_payload,
@@ -478,6 +479,17 @@ def write_context_pack(
     )
     pack_index_payload = build_pack_index_payload(FORMAT_VERSION)
     pack_readme = build_pack_readme()
+    pack_docs = build_pack_markdown_docs(
+        pack_index=pack_index_payload,
+        manifest=manifest,
+        binary_info=binary_info,
+        surface_map=surface_map_payload,
+        modes=modes_payload,
+        interfaces_index=interfaces_index_payload,
+        interfaces=interfaces_payloads,
+        cli_options=cli_options_payload,
+        error_messages=error_messages_payload,
+    )
 
     with _phase(profiler, "write_outputs"):
         write_json(layout.root / "index.json", pack_index_payload)
@@ -505,6 +517,8 @@ def write_context_pack(
         write_json(layout.cli_dir / "parse_loops.json", cli_parse_loops_payload)
         write_json(layout.functions_dir / "index.json", index_payload)
         write_text(layout.root / "README.md", pack_readme)
+        for rel_path, content in pack_docs.items():
+            write_text(layout.root / rel_path, content)
 
     if profiler is not None:
         profiler.write_profile()

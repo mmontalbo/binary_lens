@@ -221,10 +221,18 @@ def build_pack_index_payload(format_version: str) -> dict[str, object]:
             "version": format_version,
         },
         "start_here": {
+            "docs_overview_ref": "docs/overview.md",
             "surface_map_ref": "surface_map.json",
             "manifest_ref": "manifest.json",
         },
         "entrypoints": {
+            "docs_readme_ref": "docs/README.md",
+            "docs_overview_ref": "docs/overview.md",
+            "docs_navigation_ref": "docs/navigation.md",
+            "docs_surfaces_ref": "docs/surfaces.md",
+            "docs_field_guide_ref": "docs/field_guide.md",
+            "docs_examples_ref": "docs/examples.md",
+            "schema_readme_ref": "schema/README.md",
             "binary_ref": "binary.json",
             "manifest_ref": "manifest.json",
             "surface_map_ref": "surface_map.json",
@@ -422,38 +430,24 @@ def build_index_payload(functions, full_functions, index_functions, summaries, o
 
 
 def build_pack_readme():
-    pack_readme = "# Binary Lens Context Pack\n\n"
-    pack_readme += "This pack contains observed facts and mechanically derived capabilities.\n"
-    pack_readme += "JSON files are authoritative; evidence files are bounded excerpts.\n\n"
-    pack_readme += "Start here:\n\n"
-    pack_readme += "- index.json\n"
-    pack_readme += "- surface_map.json\n\n"
-    pack_readme += "Files:\n\n"
-    pack_readme += "- index.json\n"
-    pack_readme += "- manifest.json\n"
-    pack_readme += "- binary.json\n"
-    pack_readme += "- imports.json\n"
-    pack_readme += "- strings.json\n"
-    pack_readme += "- callgraph.json\n"
-    pack_readme += "- capabilities.json\n"
-    pack_readme += "- subsystems.json\n"
-    pack_readme += "- surface_map.json\n"
-    pack_readme += "- errors/messages.json\n"
-    pack_readme += "- errors/exit_paths.json\n"
-    pack_readme += "- errors/error_sites.json\n"
-    pack_readme += "- modes/index.json\n"
-    pack_readme += "- modes/dispatch_sites.json\n"
-    pack_readme += "- modes/slices.json\n"
-    pack_readme += "- interfaces/index.json\n"
-    pack_readme += "- interfaces/env.json\n"
-    pack_readme += "- interfaces/fs.json\n"
-    pack_readme += "- interfaces/process.json\n"
-    pack_readme += "- interfaces/net.json\n"
-    pack_readme += "- interfaces/output.json\n"
-    pack_readme += "- cli/options.json\n"
-    pack_readme += "- cli/parse_loops.json\n"
-    pack_readme += "- functions/index.json\n"
-    pack_readme += "- functions/f_<addr>.json\n"
-    pack_readme += "- evidence/decomp/f_<addr>.json\n"
-    pack_readme += "- evidence/callsites/cs_<addr>.json\n"
-    return pack_readme
+    return (
+        "# `binary_lens` context pack\n\n"
+        "This pack contains observed facts and mechanically derived structure.\n"
+        "JSON files are authoritative; evidence files are bounded excerpts.\n\n"
+        "Start here:\n\n"
+        "- docs/overview.md\n"
+        "- docs/navigation.md\n"
+        "- docs/field_guide.md\n"
+        "- docs/examples.md\n"
+        "- index.json\n"
+        "- surface_map.json\n\n"
+        "Key sections:\n\n"
+        "- modes/\n"
+        "- interfaces/\n"
+        "- cli/\n"
+        "- errors/\n"
+        "- functions/\n"
+        "- evidence/\n\n"
+        "Pack format notes:\n\n"
+        "- schema/README.md\n"
+    )
