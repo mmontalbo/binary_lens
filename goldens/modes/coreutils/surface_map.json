@@ -2,16 +2,16 @@
   "cli": {
     "option_tables": [
       {
-        "address": "00259a00",
-        "entry_count": 17
+        "address": "0025eb20",
+        "entry_count": 44
       },
       {
-        "address": "0025aba0",
-        "entry_count": 16
+        "address": "0025c2a0",
+        "entry_count": 31
       },
       {
-        "address": "0025af00",
-        "entry_count": 13
+        "address": "00262240",
+        "entry_count": 30
       }
     ],
     "primary_parse_loops": [

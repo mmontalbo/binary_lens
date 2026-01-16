@@ -1,856 +1,730 @@
 {
+  "format": "sharded_list/v1",
+  "item_kind": "mode_slices",
+  "list_key": "slices",
   "max_slices": 8,
-  "selected_slices": 8,
+  "selected_slices": 143,
   "selection_strategy": "top_modes_by_dispatch_cluster_score",
-  "slices": [
+  "shard_count": 143,
+  "shard_strategy": "by_id",
+  "shards": [
     {
-      "dispatch_cluster_score": 7,
-      "dispatch_sites": [
-        {
-          "callee": "strcmp",
-          "caller": {
-            "address": "00406280",
-            "name": "handle_builtin"
-          },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json",
-          "confidence": "medium",
-          "strength": "derived"
-        },
-        {
-          "callee": "strcmp",
-          "caller": {
-            "address": "00406280",
-            "name": "handle_builtin"
-          },
-          "callsite_id": "004062f3",
-          "callsite_ref": "evidence/callsites/cs_004062f3.json",
-          "confidence": "high",
-          "strength": "observed"
-        },
-        {
-          "callee": "strcmp",
-          "caller": {
-            "address": "00407530",
-            "name": "is_builtin"
-          },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json",
-          "confidence": "high",
-          "strength": "observed"
-        },
-        {
-          "callee": "strcmp",
-          "caller": {
-            "address": "00407640",
-            "name": "cmd_main"
-          },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json",
-          "confidence": "medium",
-          "strength": "derived"
-        },
-        {
-          "callee": "strcmp",
-          "caller": {
-            "address": "00407640",
-            "name": "cmd_main"
-          },
-          "callsite_id": "00407cc9",
-          "callsite_ref": "evidence/callsites/cs_00407cc9.json",
-          "confidence": "high",
-          "strength": "observed"
-        }
-      ],
-      "mode_id": "mode_006edd66",
-      "name": "add",
-      "option_scope": {
-        "basis": "shared_parse_loops",
-        "confidence": "low",
-        "kind": "global",
-        "option_ids": [
-          "opt_001",
-          "opt_002",
-          "opt_003",
-          "opt_004",
-          "opt_005",
-          "opt_006",
-          "opt_007",
-          "opt_008",
-          "opt_009",
-          "opt_010"
-        ],
-        "options_ref": "cli/options.json",
-        "parse_loop_ids": [],
-        "parse_loops_ref": "cli/parse_loops.json",
-        "strength": "heuristic"
-      },
-      "root_functions": [
-        {
-          "confidence": "medium",
-          "evidence": {
-            "string_addresses": [
-              "006edd66"
-            ],
-            "table_entry_addresses": [
-              "007bd020"
-            ]
-          },
-          "function_id": "004084c0",
-          "function_name": "cmd_add",
-          "sources": [
-            "table_dispatch"
-          ],
-          "strength": "derived"
-        }
-      ],
-      "root_kind": "implementation",
-      "selection_strategy": "table_dispatch_roots_then_cli_scope",
-      "top_exit_paths": [
-        "00408be4",
-        "004096f7"
-      ],
-      "top_exit_paths_ref": "errors/exit_paths.json",
-      "top_messages": [
-        "s_006df5a8"
-      ],
-      "top_messages_ref": "errors/messages.json",
-      "top_options": [
-        "opt_001",
-        "opt_002",
-        "opt_003",
-        "opt_004",
-        "opt_005",
-        "opt_006",
-        "opt_007",
-        "opt_008",
-        "opt_009",
-        "opt_010"
-      ],
-      "top_options_ref": "cli/options.json",
-      "top_strings": [
-        "s_006df5de",
-        "s_006df660",
-        "s_006df68b",
-        "s_006df6ce",
-        "s_006df6e1",
-        "s_006df6f6",
-        "s_006df714",
-        "s_00701a48"
-      ],
-      "top_strings_ref": "strings.json"
+      "count": 1,
+      "id": "mode_006edd66",
+      "path": "modes/slices/mode_006edd66.json"
     },
     {
-      "dispatch_cluster_score": 7,
-      "dispatch_sites": [
-        {
-          "callee": "strcmp",
-          "caller": {
-            "address": "00406280",
-            "name": "handle_builtin"
-          },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json",
-          "confidence": "medium",
-          "strength": "derived"
-        },
-        {
-          "callee": "strcmp",
-          "caller": {
-            "address": "00406280",
-            "name": "handle_builtin"
-          },
-          "callsite_id": "004062f3",
-          "callsite_ref": "evidence/callsites/cs_004062f3.json",
-          "confidence": "high",
-          "strength": "observed"
-        },
-        {
-          "callee": "strcmp",
-          "caller": {
-            "address": "00407530",
-            "name": "is_builtin"
-          },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json",
-          "confidence": "medium",
-          "strength": "derived"
-        },
-        {
-          "callee": "strcmp",
-          "caller": {
-            "address": "00407640",
-            "name": "cmd_main"
-          },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json",
-          "confidence": "medium",
-          "strength": "derived"
-        }
-      ],
-      "mode_id": "mode_006df012",
-      "name": "help",
-      "option_scope": {
-        "basis": "shared_parse_loops",
-        "confidence": "low",
-        "kind": "global",
-        "option_ids": [
-          "opt_001",
-          "opt_002",
-          "opt_003",
-          "opt_004",
-          "opt_005",
-          "opt_006",
-          "opt_007",
-          "opt_008",
-          "opt_009",
-          "opt_010"
-        ],
-        "options_ref": "cli/options.json",
-        "parse_loop_ids": [],
-        "parse_loops_ref": "cli/parse_loops.json",
-        "strength": "heuristic"
-      },
-      "root_functions": [
-        {
-          "confidence": "medium",
-          "evidence": {
-            "string_addresses": [
-              "006df012"
-            ],
-            "table_entry_addresses": [
-              "007bd560"
-            ]
-          },
-          "function_id": "0046d740",
-          "function_name": "cmd_help",
-          "sources": [
-            "table_dispatch"
-          ],
-          "strength": "derived"
-        }
-      ],
-      "root_kind": "implementation",
-      "selection_strategy": "table_dispatch_roots_then_cli_scope",
-      "top_exit_paths": [
-        "0046dfbf"
-      ],
-      "top_exit_paths_ref": "errors/exit_paths.json",
-      "top_messages": [
-        "s_006e64d4",
-        "s_007490a0"
-      ],
-      "top_messages_ref": "errors/messages.json",
-      "top_options": [
-        "opt_001",
-        "opt_002",
-        "opt_003",
-        "opt_004",
-        "opt_005",
-        "opt_006",
-        "opt_007",
-        "opt_008",
-        "opt_009",
-        "opt_010"
-      ],
-      "top_options_ref": "cli/options.json",
-      "top_strings": [
-        "s_006e64d4",
-        "s_007490a0"
-      ],
-      "top_strings_ref": "strings.json"
+      "count": 1,
+      "id": "mode_006df012",
+      "path": "modes/slices/mode_006df012.json"
     },
     {
-      "dispatch_cluster_score": 7,
-      "dispatch_sites": [
-        {
-          "callee": "strcmp",
-          "caller": {
-            "address": "00406280",
-            "name": "handle_builtin"
-          },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json",
-          "confidence": "medium",
-          "strength": "derived"
-        },
-        {
-          "callee": "strcmp",
-          "caller": {
-            "address": "00407530",
-            "name": "is_builtin"
-          },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json",
-          "confidence": "medium",
-          "strength": "derived"
-        },
-        {
-          "callee": "strcmp",
-          "caller": {
-            "address": "00407640",
-            "name": "cmd_main"
-          },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json",
-          "confidence": "medium",
-          "strength": "derived"
-        }
-      ],
-      "mode_id": "mode_006df829",
-      "name": "am",
-      "option_scope": {
-        "basis": "shared_parse_loops",
-        "confidence": "low",
-        "kind": "global",
-        "option_ids": [
-          "opt_001",
-          "opt_002",
-          "opt_003",
-          "opt_004",
-          "opt_005",
-          "opt_006",
-          "opt_007",
-          "opt_008",
-          "opt_009",
-          "opt_010"
-        ],
-        "options_ref": "cli/options.json",
-        "parse_loop_ids": [],
-        "parse_loops_ref": "cli/parse_loops.json",
-        "strength": "heuristic"
-      },
-      "root_functions": [
-        {
-          "confidence": "medium",
-          "evidence": {
-            "string_addresses": [
-              "006df829"
-            ],
-            "table_entry_addresses": [
-              "007bd038"
-            ]
-          },
-          "function_id": "0040ddb0",
-          "function_name": "cmd_am",
-          "sources": [
-            "table_dispatch"
-          ],
-          "strength": "derived"
-        }
-      ],
-      "root_kind": "implementation",
-      "selection_strategy": "table_dispatch_roots_then_cli_scope",
-      "top_exit_paths": [
-        "0040ff56"
-      ],
-      "top_exit_paths_ref": "errors/exit_paths.json",
-      "top_options": [
-        "opt_001",
-        "opt_002",
-        "opt_003",
-        "opt_004",
-        "opt_005",
-        "opt_006",
-        "opt_007",
-        "opt_008",
-        "opt_009",
-        "opt_010"
-      ],
-      "top_options_ref": "cli/options.json",
-      "top_strings": [
-        "s_006df82c",
-        "s_006df94b",
-        "s_006df998",
-        "s_007020e8"
-      ],
-      "top_strings_ref": "strings.json"
+      "count": 1,
+      "id": "mode_006df829",
+      "path": "modes/slices/mode_006df829.json"
     },
     {
-      "dispatch_cluster_score": 7,
-      "dispatch_sites": [
-        {
-          "callee": "strcmp",
-          "caller": {
-            "address": "00406280",
-            "name": "handle_builtin"
-          },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json",
-          "confidence": "medium",
-          "strength": "derived"
-        },
-        {
-          "callee": "strcmp",
-          "caller": {
-            "address": "00407530",
-            "name": "is_builtin"
-          },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json",
-          "confidence": "medium",
-          "strength": "derived"
-        },
-        {
-          "callee": "strcmp",
-          "caller": {
-            "address": "00407640",
-            "name": "cmd_main"
-          },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json",
-          "confidence": "medium",
-          "strength": "derived"
-        }
-      ],
-      "mode_id": "mode_006f745c",
-      "name": "annotate",
-      "option_scope": {
-        "basis": "shared_parse_loops",
-        "confidence": "low",
-        "kind": "global",
-        "option_ids": [
-          "opt_001",
-          "opt_002",
-          "opt_003",
-          "opt_004",
-          "opt_005",
-          "opt_006",
-          "opt_007",
-          "opt_008",
-          "opt_009",
-          "opt_010"
-        ],
-        "options_ref": "cli/options.json",
-        "parse_loop_ids": [],
-        "parse_loops_ref": "cli/parse_loops.json",
-        "strength": "heuristic"
-      },
-      "root_functions": [
-        {
-          "confidence": "medium",
-          "evidence": {
-            "string_addresses": [
-              "006f745c"
-            ],
-            "table_entry_addresses": [
-              "007bd050"
-            ]
-          },
-          "function_id": "00410880",
-          "function_name": "cmd_annotate",
-          "sources": [
-            "table_dispatch"
-          ],
-          "strength": "derived"
-        }
-      ],
-      "root_kind": "implementation",
-      "selection_strategy": "table_dispatch_roots_then_cli_scope",
-      "top_options": [
-        "opt_001",
-        "opt_002",
-        "opt_003",
-        "opt_004",
-        "opt_005",
-        "opt_006",
-        "opt_007",
-        "opt_008",
-        "opt_009",
-        "opt_010"
-      ],
-      "top_options_ref": "cli/options.json",
-      "top_strings": [
-        "s_006df028"
-      ],
-      "top_strings_ref": "strings.json"
+      "count": 1,
+      "id": "mode_006f745c",
+      "path": "modes/slices/mode_006f745c.json"
     },
     {
-      "dispatch_cluster_score": 7,
-      "dispatch_sites": [
-        {
-          "callee": "strcmp",
-          "caller": {
-            "address": "00406280",
-            "name": "handle_builtin"
-          },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json",
-          "confidence": "medium",
-          "strength": "derived"
-        },
-        {
-          "callee": "strcmp",
-          "caller": {
-            "address": "00407530",
-            "name": "is_builtin"
-          },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json",
-          "confidence": "medium",
-          "strength": "derived"
-        },
-        {
-          "callee": "strcmp",
-          "caller": {
-            "address": "00407640",
-            "name": "cmd_main"
-          },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json",
-          "confidence": "medium",
-          "strength": "derived"
-        }
-      ],
-      "mode_id": "mode_006df77f",
-      "name": "apply",
-      "option_scope": {
-        "basis": "shared_parse_loops",
-        "confidence": "low",
-        "kind": "global",
-        "option_ids": [
-          "opt_001",
-          "opt_002",
-          "opt_003",
-          "opt_004",
-          "opt_005",
-          "opt_006",
-          "opt_007",
-          "opt_008",
-          "opt_009",
-          "opt_010"
-        ],
-        "options_ref": "cli/options.json",
-        "parse_loop_ids": [],
-        "parse_loops_ref": "cli/parse_loops.json",
-        "strength": "heuristic"
-      },
-      "root_functions": [
-        {
-          "confidence": "medium",
-          "evidence": {
-            "string_addresses": [
-              "006df77f"
-            ],
-            "table_entry_addresses": [
-              "007bd068"
-            ]
-          },
-          "function_id": "004109b0",
-          "function_name": "cmd_apply",
-          "sources": [
-            "table_dispatch"
-          ],
-          "strength": "derived"
-        }
-      ],
-      "root_kind": "implementation",
-      "selection_strategy": "table_dispatch_roots_then_cli_scope",
-      "top_exit_paths": [
-        "00410adf",
-        "00410afc"
-      ],
-      "top_exit_paths_ref": "errors/exit_paths.json",
-      "top_options": [
-        "opt_001",
-        "opt_002",
-        "opt_003",
-        "opt_004",
-        "opt_005",
-        "opt_006",
-        "opt_007",
-        "opt_008",
-        "opt_009",
-        "opt_010"
-      ],
-      "top_options_ref": "cli/options.json"
+      "count": 1,
+      "id": "mode_006df77f",
+      "path": "modes/slices/mode_006df77f.json"
     },
     {
-      "dispatch_cluster_score": 7,
-      "dispatch_sites": [
-        {
-          "callee": "strcmp",
-          "caller": {
-            "address": "00406280",
-            "name": "handle_builtin"
-          },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json",
-          "confidence": "medium",
-          "strength": "derived"
-        },
-        {
-          "callee": "strcmp",
-          "caller": {
-            "address": "00407530",
-            "name": "is_builtin"
-          },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json",
-          "confidence": "medium",
-          "strength": "derived"
-        },
-        {
-          "callee": "strcmp",
-          "caller": {
-            "address": "00407640",
-            "name": "cmd_main"
-          },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json",
-          "confidence": "medium",
-          "strength": "derived"
-        }
-      ],
-      "mode_id": "mode_006f4684",
-      "name": "archive",
-      "option_scope": {
-        "basis": "shared_parse_loops",
-        "confidence": "low",
-        "kind": "global",
-        "option_ids": [
-          "opt_001",
-          "opt_002",
-          "opt_003",
-          "opt_004",
-          "opt_005",
-          "opt_006",
-          "opt_007",
-          "opt_008",
-          "opt_009",
-          "opt_010"
-        ],
-        "options_ref": "cli/options.json",
-        "parse_loop_ids": [],
-        "parse_loops_ref": "cli/parse_loops.json",
-        "strength": "heuristic"
-      },
-      "root_functions": [
-        {
-          "confidence": "medium",
-          "evidence": {
-            "string_addresses": [
-              "006f4684"
-            ],
-            "table_entry_addresses": [
-              "007bd080"
-            ]
-          },
-          "function_id": "00410b50",
-          "function_name": "cmd_archive",
-          "sources": [
-            "table_dispatch"
-          ],
-          "strength": "derived"
-        }
-      ],
-      "root_kind": "implementation",
-      "selection_strategy": "table_dispatch_roots_then_cli_scope",
-      "top_options": [
-        "opt_001",
-        "opt_002",
-        "opt_003",
-        "opt_004",
-        "opt_005",
-        "opt_006",
-        "opt_007",
-        "opt_008",
-        "opt_009",
-        "opt_010"
-      ],
-      "top_options_ref": "cli/options.json"
+      "count": 1,
+      "id": "mode_006f4684",
+      "path": "modes/slices/mode_006f4684.json"
     },
     {
-      "dispatch_cluster_score": 7,
-      "dispatch_sites": [
-        {
-          "callee": "strcmp",
-          "caller": {
-            "address": "00406280",
-            "name": "handle_builtin"
-          },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json",
-          "confidence": "medium",
-          "strength": "derived"
-        },
-        {
-          "callee": "strcmp",
-          "caller": {
-            "address": "00407530",
-            "name": "is_builtin"
-          },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json",
-          "confidence": "medium",
-          "strength": "derived"
-        },
-        {
-          "callee": "strcmp",
-          "caller": {
-            "address": "00407640",
-            "name": "cmd_main"
-          },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json",
-          "confidence": "medium",
-          "strength": "derived"
-        }
-      ],
-      "mode_id": "mode_006f7484",
-      "name": "backfill",
-      "option_scope": {
-        "basis": "shared_parse_loops",
-        "confidence": "low",
-        "kind": "global",
-        "option_ids": [
-          "opt_001",
-          "opt_002",
-          "opt_003",
-          "opt_004",
-          "opt_005",
-          "opt_006",
-          "opt_007",
-          "opt_008",
-          "opt_009",
-          "opt_010"
-        ],
-        "options_ref": "cli/options.json",
-        "parse_loop_ids": [],
-        "parse_loops_ref": "cli/parse_loops.json",
-        "strength": "heuristic"
-      },
-      "root_functions": [
-        {
-          "confidence": "medium",
-          "evidence": {
-            "string_addresses": [
-              "006f7484"
-            ],
-            "table_entry_addresses": [
-              "007bd098"
-            ]
-          },
-          "function_id": "004110d0",
-          "function_name": "cmd_backfill",
-          "sources": [
-            "table_dispatch"
-          ],
-          "strength": "derived"
-        }
-      ],
-      "root_kind": "implementation",
-      "selection_strategy": "table_dispatch_roots_then_cli_scope",
-      "top_options": [
-        "opt_001",
-        "opt_002",
-        "opt_003",
-        "opt_004",
-        "opt_005",
-        "opt_006",
-        "opt_007",
-        "opt_008",
-        "opt_009",
-        "opt_010"
-      ],
-      "top_options_ref": "cli/options.json"
+      "count": 1,
+      "id": "mode_006f7484",
+      "path": "modes/slices/mode_006f7484.json"
     },
     {
-      "dispatch_cluster_score": 7,
-      "dispatch_sites": [
-        {
-          "callee": "strcmp",
-          "caller": {
-            "address": "00406280",
-            "name": "handle_builtin"
-          },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json",
-          "confidence": "medium",
-          "strength": "derived"
-        },
-        {
-          "callee": "strcmp",
-          "caller": {
-            "address": "00407530",
-            "name": "is_builtin"
-          },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json",
-          "confidence": "medium",
-          "strength": "derived"
-        },
-        {
-          "callee": "strcmp",
-          "caller": {
-            "address": "00407640",
-            "name": "cmd_main"
-          },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json",
-          "confidence": "medium",
-          "strength": "derived"
-        }
-      ],
-      "mode_id": "mode_006e058d",
-      "name": "bisect",
-      "option_scope": {
-        "basis": "shared_parse_loops",
-        "confidence": "low",
-        "kind": "global",
-        "option_ids": [
-          "opt_001",
-          "opt_002",
-          "opt_003",
-          "opt_004",
-          "opt_005",
-          "opt_006",
-          "opt_007",
-          "opt_008",
-          "opt_009",
-          "opt_010"
-        ],
-        "options_ref": "cli/options.json",
-        "parse_loop_ids": [],
-        "parse_loops_ref": "cli/parse_loops.json",
-        "strength": "heuristic"
-      },
-      "root_functions": [
-        {
-          "confidence": "medium",
-          "evidence": {
-            "string_addresses": [
-              "006e058d"
-            ],
-            "table_entry_addresses": [
-              "007bd0b0"
-            ]
-          },
-          "function_id": "004154c0",
-          "function_name": "cmd_bisect",
-          "sources": [
-            "table_dispatch"
-          ],
-          "strength": "derived"
-        }
-      ],
-      "root_kind": "implementation",
-      "selection_strategy": "table_dispatch_roots_then_cli_scope",
-      "top_options": [
-        "opt_001",
-        "opt_002",
-        "opt_003",
-        "opt_004",
-        "opt_005",
-        "opt_006",
-        "opt_007",
-        "opt_008",
-        "opt_009",
-        "opt_010"
-      ],
-      "top_options_ref": "cli/options.json"
+      "count": 1,
+      "id": "mode_006e058d",
+      "path": "modes/slices/mode_006e058d.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006e0a09",
+      "path": "modes/slices/mode_006e0a09.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f10f4",
+      "path": "modes/slices/mode_006f10f4.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006e0f6c",
+      "path": "modes/slices/mode_006e0f6c.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f2a79",
+      "path": "modes/slices/mode_006f2a79.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f74b1",
+      "path": "modes/slices/mode_006f74b1.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f74be",
+      "path": "modes/slices/mode_006f74be.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f74cd",
+      "path": "modes/slices/mode_006f74cd.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f74de",
+      "path": "modes/slices/mode_006f74de.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f74f0",
+      "path": "modes/slices/mode_006f74f0.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006e21c7",
+      "path": "modes/slices/mode_006e21c7.json"
+    },
+    {
+      "count": 1,
+      "id": "s_006df48c",
+      "path": "modes/slices/s_006df48c.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f7512",
+      "path": "modes/slices/mode_006f7512.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006fd08f",
+      "path": "modes/slices/mode_006fd08f.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006ecc6c",
+      "path": "modes/slices/mode_006ecc6c.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f754b",
+      "path": "modes/slices/mode_006f754b.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f7555",
+      "path": "modes/slices/mode_006f7555.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006e0df0",
+      "path": "modes/slices/mode_006e0df0.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006e2ac8",
+      "path": "modes/slices/mode_006e2ac8.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f3040",
+      "path": "modes/slices/mode_006f3040.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f759e",
+      "path": "modes/slices/mode_006f759e.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f75d4",
+      "path": "modes/slices/mode_006f75d4.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006e361f",
+      "path": "modes/slices/mode_006e361f.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006e358f",
+      "path": "modes/slices/mode_006e358f.json"
+    },
+    {
+      "count": 1,
+      "id": "s_006df49d",
+      "path": "modes/slices/s_006df49d.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f75f5",
+      "path": "modes/slices/mode_006f75f5.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006face5",
+      "path": "modes/slices/mode_006face5.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f46ce",
+      "path": "modes/slices/mode_006f46ce.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f1732",
+      "path": "modes/slices/mode_006f1732.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f7679",
+      "path": "modes/slices/mode_006f7679.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f7688",
+      "path": "modes/slices/mode_006f7688.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f7697",
+      "path": "modes/slices/mode_006f7697.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f76a6",
+      "path": "modes/slices/mode_006f76a6.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f76b4",
+      "path": "modes/slices/mode_006f76b4.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006ffdc9",
+      "path": "modes/slices/mode_006ffdc9.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006ffcc0",
+      "path": "modes/slices/mode_006ffcc0.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006e2552",
+      "path": "modes/slices/mode_006e2552.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f76fd",
+      "path": "modes/slices/mode_006f76fd.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f772f",
+      "path": "modes/slices/mode_006f772f.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f7741",
+      "path": "modes/slices/mode_006f7741.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f7752",
+      "path": "modes/slices/mode_006f7752.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f7764",
+      "path": "modes/slices/mode_006f7764.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f6406",
+      "path": "modes/slices/mode_006f6406.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006e9937",
+      "path": "modes/slices/mode_006e9937.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006df4b6",
+      "path": "modes/slices/mode_006df4b6.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006e6048",
+      "path": "modes/slices/mode_006e6048.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f7785",
+      "path": "modes/slices/mode_006f7785.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f779b",
+      "path": "modes/slices/mode_006f779b.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f77ac",
+      "path": "modes/slices/mode_006f77ac.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006e2f34",
+      "path": "modes/slices/mode_006e2f34.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f780f",
+      "path": "modes/slices/mode_006f780f.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006eff60",
+      "path": "modes/slices/mode_006eff60.json"
+    },
+    {
+      "count": 1,
+      "id": "s_006df4c8",
+      "path": "modes/slices/s_006df4c8.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f7834",
+      "path": "modes/slices/mode_006f7834.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006e061c",
+      "path": "modes/slices/mode_006e061c.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f7864",
+      "path": "modes/slices/mode_006f7864.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f7871",
+      "path": "modes/slices/mode_006f7871.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f787f",
+      "path": "modes/slices/mode_006f787f.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006dfe17",
+      "path": "modes/slices/mode_006dfe17.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f788b",
+      "path": "modes/slices/mode_006f788b.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006e5146",
+      "path": "modes/slices/mode_006e5146.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006eaa37",
+      "path": "modes/slices/mode_006eaa37.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006e383b",
+      "path": "modes/slices/mode_006e383b.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f78c2",
+      "path": "modes/slices/mode_006f78c2.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006dfcde",
+      "path": "modes/slices/mode_006dfcde.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006df4d0",
+      "path": "modes/slices/mode_006df4d0.json"
+    },
+    {
+      "count": 1,
+      "id": "s_006df4db",
+      "path": "modes/slices/s_006df4db.json"
+    },
+    {
+      "count": 1,
+      "id": "s_006df4eb",
+      "path": "modes/slices/s_006df4eb.json"
+    },
+    {
+      "count": 1,
+      "id": "s_006df500",
+      "path": "modes/slices/s_006df500.json"
+    },
+    {
+      "count": 1,
+      "id": "s_006df517",
+      "path": "modes/slices/s_006df517.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f790f",
+      "path": "modes/slices/mode_006f790f.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006eb125",
+      "path": "modes/slices/mode_006eb125.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006ee402",
+      "path": "modes/slices/mode_006ee402.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f7941",
+      "path": "modes/slices/mode_006f7941.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f7956",
+      "path": "modes/slices/mode_006f7956.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f795d",
+      "path": "modes/slices/mode_006f795d.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006eb4d5",
+      "path": "modes/slices/mode_006eb4d5.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f936b",
+      "path": "modes/slices/mode_006f936b.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f79a8",
+      "path": "modes/slices/mode_006f79a8.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f79d5",
+      "path": "modes/slices/mode_006f79d5.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f79e3",
+      "path": "modes/slices/mode_006f79e3.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006e78fd",
+      "path": "modes/slices/mode_006e78fd.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006edbcb",
+      "path": "modes/slices/mode_006edbcb.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f7a18",
+      "path": "modes/slices/mode_006f7a18.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006eb012",
+      "path": "modes/slices/mode_006eb012.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006ec3da",
+      "path": "modes/slices/mode_006ec3da.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006ea358",
+      "path": "modes/slices/mode_006ea358.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f7a5a",
+      "path": "modes/slices/mode_006f7a5a.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006fe3f1",
+      "path": "modes/slices/mode_006fe3f1.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006ef092",
+      "path": "modes/slices/mode_006ef092.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f01f8",
+      "path": "modes/slices/mode_006f01f8.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006e538a",
+      "path": "modes/slices/mode_006e538a.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006eac55",
+      "path": "modes/slices/mode_006eac55.json"
+    },
+    {
+      "count": 1,
+      "id": "s_006df525",
+      "path": "modes/slices/s_006df525.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006df530",
+      "path": "modes/slices/mode_006df530.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006e601d",
+      "path": "modes/slices/mode_006e601d.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f7ad0",
+      "path": "modes/slices/mode_006f7ad0.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006ee5f5",
+      "path": "modes/slices/mode_006ee5f5.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f7af8",
+      "path": "modes/slices/mode_006f7af8.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006e0252",
+      "path": "modes/slices/mode_006e0252.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f7b0d",
+      "path": "modes/slices/mode_006f7b0d.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f3e50",
+      "path": "modes/slices/mode_006f3e50.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f7b41",
+      "path": "modes/slices/mode_006f7b41.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f7b4f",
+      "path": "modes/slices/mode_006f7b4f.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f7b77",
+      "path": "modes/slices/mode_006f7b77.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f7b8d",
+      "path": "modes/slices/mode_006f7b8d.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f7bbe",
+      "path": "modes/slices/mode_006f7bbe.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f7be6",
+      "path": "modes/slices/mode_006f7be6.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f7c0d",
+      "path": "modes/slices/mode_006f7c0d.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f7c1d",
+      "path": "modes/slices/mode_006f7c1d.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f7c46",
+      "path": "modes/slices/mode_006f7c46.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006ec586",
+      "path": "modes/slices/mode_006ec586.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006ff008",
+      "path": "modes/slices/mode_006ff008.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006ef952",
+      "path": "modes/slices/mode_006ef952.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f7c98",
+      "path": "modes/slices/mode_006f7c98.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f7ca3",
+      "path": "modes/slices/mode_006f7ca3.json"
+    },
+    {
+      "count": 1,
+      "id": "s_006df53a",
+      "path": "modes/slices/s_006df53a.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f7ce6",
+      "path": "modes/slices/mode_006f7ce6.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f7d01",
+      "path": "modes/slices/mode_006f7d01.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006ff11a",
+      "path": "modes/slices/mode_006ff11a.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f7d1a",
+      "path": "modes/slices/mode_006f7d1a.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f7d2a",
+      "path": "modes/slices/mode_006f7d2a.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f7d3d",
+      "path": "modes/slices/mode_006f7d3d.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f7d4e",
+      "path": "modes/slices/mode_006f7d4e.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f7d5d",
+      "path": "modes/slices/mode_006f7d5d.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006e00bc",
+      "path": "modes/slices/mode_006e00bc.json"
+    },
+    {
+      "count": 1,
+      "id": "s_006df54c",
+      "path": "modes/slices/s_006df54c.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006e217f",
+      "path": "modes/slices/mode_006e217f.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f7d74",
+      "path": "modes/slices/mode_006f7d74.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f7d98",
+      "path": "modes/slices/mode_006f7d98.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f7daa",
+      "path": "modes/slices/mode_006f7daa.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f7dba",
+      "path": "modes/slices/mode_006f7dba.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f94c1",
+      "path": "modes/slices/mode_006f94c1.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f7dd5",
+      "path": "modes/slices/mode_006f7dd5.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_00700879",
+      "path": "modes/slices/mode_00700879.json"
+    },
+    {
+      "count": 1,
+      "id": "mode_006f1205",
+      "path": "modes/slices/mode_006f1205.json"
     }
   ],
+  "total_items": 143,
   "total_modes": 143,
-  "truncated": true
+  "truncated": false
 }
