@@ -6,6 +6,7 @@ Ghidra APIs so it remains easy to read and mechanically refactor.
 """
 
 from export_primitives import addr_to_int
+from modes.name_heuristics import prefer_cmd_table_roots
 
 
 def _collect_option_ids_from_parse_sites(options_list, func_ids, max_options):
@@ -99,9 +100,7 @@ def build_mode_slices(
             table_roots = [
                 root for root in roots_sorted if "table_dispatch" in (root.get("sources") or [])
             ]
-            if table_roots and any(
-                (root.get("function_name") or "").startswith("cmd_") for root in table_roots
-            ):
+            if table_roots and prefer_cmd_table_roots(table_roots, options):
                 roots_sorted = table_roots
                 selection_strategy = "table_dispatch_roots_then_cli_scope"
         else:
@@ -316,4 +315,3 @@ def build_mode_slices(
         "selection_strategy": "top_modes_by_dispatch_cluster_score",
         "slices": slices,
     }
-

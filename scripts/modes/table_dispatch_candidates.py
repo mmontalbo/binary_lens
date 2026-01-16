@@ -20,6 +20,7 @@ from modes.common import (
     _mode_id,
     _token_candidate,
 )
+from modes.name_heuristics import is_cmd_handler_name, use_name_heuristics
 from modes.table_dispatch_scan import (
     _build_func_ptr_map,
     _collect_table_dispatch_targets,
@@ -85,6 +86,8 @@ def _lookup_symbols_by_name(symbol_table, name, max_symbols=None):
 def _collect_table_dispatch_mode_candidates_from_symbols(
     program, function_meta_by_addr, string_addr_map_all, options, monitor=None
 ):
+    if not use_name_heuristics(options):
+        return {}
     if program is None:
         return {}
     max_token_len = options.get("max_mode_token_length", 0) or 32
@@ -416,6 +419,8 @@ def _collect_table_dispatch_mode_candidates_from_memory(
 def _collect_table_dispatch_mode_candidates_from_handlers(
     program, function_meta_by_addr, string_addr_map_all, options, monitor=None
 ):
+    if not use_name_heuristics(options):
+        return {}
     if program is None or not function_meta_by_addr:
         return {}
     max_token_len = options.get("max_mode_token_length", 0) or 32
@@ -426,9 +431,7 @@ def _collect_table_dispatch_mode_candidates_from_handlers(
     handler_ids = []
     for func_id, meta in (function_meta_by_addr or {}).items():
         name = (meta or {}).get("name") or ""
-        if not name.startswith("cmd_"):
-            continue
-        if name == "cmd_main":
+        if not is_cmd_handler_name(name):
             continue
         handler_ids.append(func_id)
     handler_ids.sort(key=addr_to_int)
@@ -609,24 +612,25 @@ def _collect_table_dispatch_mode_candidates_from_strings(
 def _collect_table_dispatch_mode_candidates(
     program, function_meta_by_addr, string_addr_map_all, options, monitor=None
 ):
-    mode_candidates = _collect_table_dispatch_mode_candidates_from_symbols(
-        program,
-        function_meta_by_addr,
-        string_addr_map_all,
-        options,
-        monitor=monitor,
-    )
-    if mode_candidates:
-        return mode_candidates
-    mode_candidates = _collect_table_dispatch_mode_candidates_from_handlers(
-        program,
-        function_meta_by_addr,
-        string_addr_map_all,
-        options,
-        monitor=monitor,
-    )
-    if mode_candidates:
-        return mode_candidates
+    if use_name_heuristics(options):
+        mode_candidates = _collect_table_dispatch_mode_candidates_from_symbols(
+            program,
+            function_meta_by_addr,
+            string_addr_map_all,
+            options,
+            monitor=monitor,
+        )
+        if mode_candidates:
+            return mode_candidates
+        mode_candidates = _collect_table_dispatch_mode_candidates_from_handlers(
+            program,
+            function_meta_by_addr,
+            string_addr_map_all,
+            options,
+            monitor=monitor,
+        )
+        if mode_candidates:
+            return mode_candidates
     mode_candidates = _collect_table_dispatch_mode_candidates_from_strings(
         program,
         string_addr_map_all,
@@ -642,4 +646,3 @@ def _collect_table_dispatch_mode_candidates(
         options,
         monitor=monitor,
     )
-

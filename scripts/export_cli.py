@@ -13,6 +13,7 @@ import os
 from typing import Any
 
 from export_config import (
+    DEFAULT_ENABLE_MODE_NAME_HEURISTICS,
     DEFAULT_MAX_CALL_EDGES,
     DEFAULT_MAX_CALLS_PER_FUNCTION,
     DEFAULT_MAX_CLI_CALLSITES_PER_PARSE_LOOP,
@@ -34,6 +35,11 @@ from export_config import (
     DEFAULT_MAX_EXIT_PATTERNS,
     DEFAULT_MAX_FULL_FUNCTIONS,
     DEFAULT_MAX_FUNCTIONS_INDEX,
+    DEFAULT_MAX_INTERFACE_ENV,
+    DEFAULT_MAX_INTERFACE_FS,
+    DEFAULT_MAX_INTERFACE_NET,
+    DEFAULT_MAX_INTERFACE_OUTPUT,
+    DEFAULT_MAX_INTERFACE_PROCESS,
     DEFAULT_MAX_MODE_CALLSITES_PER_FUNCTION,
     DEFAULT_MAX_MODE_DISPATCH_FUNCTIONS,
     DEFAULT_MAX_MODE_DISPATCH_ROOTS_PER_MODE,
@@ -98,6 +104,12 @@ BOUND_OPTION_DEFAULTS: tuple[tuple[str, int], ...] = (
     ("max_mode_slice_messages", DEFAULT_MAX_MODE_SLICE_MESSAGES),
     ("max_mode_slice_exit_paths", DEFAULT_MAX_MODE_SLICE_EXIT_PATHS),
     ("max_mode_surface_entries", DEFAULT_MAX_MODE_SURFACE_ENTRIES),
+    ("enable_mode_name_heuristics", DEFAULT_ENABLE_MODE_NAME_HEURISTICS),
+    ("max_interface_env", DEFAULT_MAX_INTERFACE_ENV),
+    ("max_interface_fs", DEFAULT_MAX_INTERFACE_FS),
+    ("max_interface_process", DEFAULT_MAX_INTERFACE_PROCESS),
+    ("max_interface_net", DEFAULT_MAX_INTERFACE_NET),
+    ("max_interface_output", DEFAULT_MAX_INTERFACE_OUTPUT),
 )
 
 

@@ -41,6 +41,11 @@ from export_errors import (
     derive_error_sites,
     derive_exit_paths,
 )
+from export_interfaces import (
+    attach_interface_callsite_refs,
+    build_interfaces_index_payload,
+    collect_interfaces,
+)
 from export_modes import (
     attach_mode_callsite_refs,
     build_mode_slices,
@@ -207,6 +212,18 @@ def write_context_pack(
         error_messages_payload, exit_paths_payload, error_sites_payload
     )
 
+    with _phase(profiler, "collect_interfaces"):
+        interfaces_payloads, interface_callsite_ids, call_args_cache = collect_interfaces(
+            program,
+            call_edges_all,
+            function_meta_by_addr,
+            string_addr_map_all,
+            options,
+            monitor,
+            call_args_cache=call_args_cache,
+        )
+        interfaces_index_payload = build_interfaces_index_payload(interfaces_payloads)
+
     with _phase(profiler, "collect_modes"):
         modes_payload, dispatch_sites_payload, mode_callsite_ids = collect_mode_candidates(
             program,
@@ -239,7 +256,13 @@ def write_context_pack(
         options["max_call_edges"],
     )
     # Ensure CLI evidence callsites are serialized even if they fall outside edge caps.
-    extra_callsites = parse_callsite_ids + compare_callsite_ids + error_callsite_ids + mode_callsite_ids
+    extra_callsites = (
+        parse_callsite_ids
+        + compare_callsite_ids
+        + error_callsite_ids
+        + mode_callsite_ids
+        + interface_callsite_ids
+    )
     callsite_paths = write_callsite_records(
         callsite_records,
         call_edges,
@@ -254,6 +277,7 @@ def write_context_pack(
         callsite_paths,
     )
     attach_mode_callsite_refs(modes_payload, dispatch_sites_payload, callsite_paths)
+    attach_interface_callsite_refs(interfaces_payloads, callsite_paths)
     callgraph = build_callgraph_payload(call_edges, total_edges, truncated_edges, options, call_edge_stats)
 
     calls_by_func = collect_function_calls(call_edges)
@@ -394,6 +418,36 @@ def write_context_pack(
             "truncated": modes_slices_payload.get("truncated"),
             "max": modes_slices_payload.get("max_slices"),
         },
+        "interfaces_env": {
+            "total": interfaces_payloads.get("env", {}).get("total_candidates"),
+            "selected": len(interfaces_payloads.get("env", {}).get("entries") or []),
+            "truncated": interfaces_payloads.get("env", {}).get("truncated"),
+            "max": interfaces_payloads.get("env", {}).get("max_entries"),
+        },
+        "interfaces_fs": {
+            "total": interfaces_payloads.get("fs", {}).get("total_candidates"),
+            "selected": len(interfaces_payloads.get("fs", {}).get("entries") or []),
+            "truncated": interfaces_payloads.get("fs", {}).get("truncated"),
+            "max": interfaces_payloads.get("fs", {}).get("max_entries"),
+        },
+        "interfaces_process": {
+            "total": interfaces_payloads.get("process", {}).get("total_candidates"),
+            "selected": len(interfaces_payloads.get("process", {}).get("entries") or []),
+            "truncated": interfaces_payloads.get("process", {}).get("truncated"),
+            "max": interfaces_payloads.get("process", {}).get("max_entries"),
+        },
+        "interfaces_net": {
+            "total": interfaces_payloads.get("net", {}).get("total_candidates"),
+            "selected": len(interfaces_payloads.get("net", {}).get("entries") or []),
+            "truncated": interfaces_payloads.get("net", {}).get("truncated"),
+            "max": interfaces_payloads.get("net", {}).get("max_entries"),
+        },
+        "interfaces_output": {
+            "total": interfaces_payloads.get("output", {}).get("total_candidates"),
+            "selected": len(interfaces_payloads.get("output", {}).get("entries") or []),
+            "truncated": interfaces_payloads.get("output", {}).get("truncated"),
+            "max": interfaces_payloads.get("output", {}).get("max_entries"),
+        },
         "error_messages": {
             "total": error_messages_payload.get("total_candidates"),
             "selected": error_messages_payload.get("selected_messages"),
@@ -441,6 +495,12 @@ def write_context_pack(
         write_json(layout.modes_dir / "index.json", modes_payload)
         write_json(layout.modes_dir / "dispatch_sites.json", dispatch_sites_payload)
         write_json(layout.modes_dir / "slices.json", modes_slices_payload)
+        write_json(layout.interfaces_dir / "index.json", interfaces_index_payload)
+        write_json(layout.interfaces_dir / "env.json", interfaces_payloads.get("env", {}))
+        write_json(layout.interfaces_dir / "fs.json", interfaces_payloads.get("fs", {}))
+        write_json(layout.interfaces_dir / "process.json", interfaces_payloads.get("process", {}))
+        write_json(layout.interfaces_dir / "net.json", interfaces_payloads.get("net", {}))
+        write_json(layout.interfaces_dir / "output.json", interfaces_payloads.get("output", {}))
         write_json(layout.cli_dir / "options.json", cli_options_payload)
         write_json(layout.cli_dir / "parse_loops.json", cli_parse_loops_payload)
         write_json(layout.functions_dir / "index.json", index_payload)

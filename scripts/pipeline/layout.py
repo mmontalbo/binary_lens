@@ -16,6 +16,7 @@ class PackLayout:
     cli_dir: Path
     errors_dir: Path
     modes_dir: Path
+    interfaces_dir: Path
     evidence_decomp_dir: Path
     evidence_callsites_dir: Path
 
@@ -29,6 +30,7 @@ class PackLayout:
             cli_dir=root / "cli",
             errors_dir=root / "errors",
             modes_dir=root / "modes",
+            interfaces_dir=root / "interfaces",
             evidence_decomp_dir=evidence_dir / "decomp",
             evidence_callsites_dir=evidence_dir / "callsites",
         )
@@ -40,7 +42,7 @@ class PackLayout:
             self.cli_dir,
             self.errors_dir,
             self.modes_dir,
+            self.interfaces_dir,
             self.evidence_decomp_dir,
             self.evidence_callsites_dir,
         )
-

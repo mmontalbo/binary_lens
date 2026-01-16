@@ -22,6 +22,7 @@ from modes.dispatch_groups import (
 )
 from modes.implementation_roots import _attach_implementation_roots
 from modes.mode_candidates import _build_mode_candidates
+from modes.name_heuristics import entry_name_candidates
 from modes.payloads import _build_dispatch_sites_payload, _build_modes_index_payload
 from modes.table_dispatch import (
     _attach_table_dispatch_sites,
@@ -48,7 +49,7 @@ def collect_mode_candidates(
     total_dispatch_sites = len(groups)
 
     callgraph_callees_by_func, out_degree_by_func = _build_callgraph_out_degree(call_edges)
-    entry_names = set(["main", "cmd_main"])
+    entry_names = entry_name_candidates(options)
     entry_func_ids = []
     for func_id, meta in (function_meta_by_addr or {}).items():
         name = (meta or {}).get("name")
@@ -187,4 +188,3 @@ def collect_mode_candidates(
 
     all_callsite_ids = sorted(set(callsite_ids) | set(handler_callsite_ids), key=addr_to_int)
     return modes_payload, dispatch_sites_payload, all_callsite_ids
-

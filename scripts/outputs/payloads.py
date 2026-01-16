@@ -231,6 +231,12 @@ def build_pack_index_payload(format_version: str) -> dict[str, object]:
             "modes_index_ref": "modes/index.json",
             "modes_dispatch_sites_ref": "modes/dispatch_sites.json",
             "modes_slices_ref": "modes/slices.json",
+            "interfaces_index_ref": "interfaces/index.json",
+            "interfaces_env_ref": "interfaces/env.json",
+            "interfaces_fs_ref": "interfaces/fs.json",
+            "interfaces_process_ref": "interfaces/process.json",
+            "interfaces_net_ref": "interfaces/net.json",
+            "interfaces_output_ref": "interfaces/output.json",
             "cli_options_ref": "cli/options.json",
             "cli_parse_loops_ref": "cli/parse_loops.json",
             "errors_messages_ref": "errors/messages.json",
@@ -331,6 +337,11 @@ def build_manifest(
             "max_mode_slice_messages": options.get("max_mode_slice_messages"),
             "max_mode_slice_exit_paths": options.get("max_mode_slice_exit_paths"),
             "max_mode_surface_entries": options.get("max_mode_surface_entries"),
+            "max_interface_env": options.get("max_interface_env"),
+            "max_interface_fs": options.get("max_interface_fs"),
+            "max_interface_process": options.get("max_interface_process"),
+            "max_interface_net": options.get("max_interface_net"),
+            "max_interface_output": options.get("max_interface_output"),
         },
     }
     if hashes:
@@ -433,6 +444,12 @@ def build_pack_readme():
     pack_readme += "- modes/index.json\n"
     pack_readme += "- modes/dispatch_sites.json\n"
     pack_readme += "- modes/slices.json\n"
+    pack_readme += "- interfaces/index.json\n"
+    pack_readme += "- interfaces/env.json\n"
+    pack_readme += "- interfaces/fs.json\n"
+    pack_readme += "- interfaces/process.json\n"
+    pack_readme += "- interfaces/net.json\n"
+    pack_readme += "- interfaces/output.json\n"
     pack_readme += "- cli/options.json\n"
     pack_readme += "- cli/parse_loops.json\n"
     pack_readme += "- functions/index.json\n"
