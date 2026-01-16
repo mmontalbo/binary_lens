@@ -1,6 +1,15 @@
 """Shared helpers/constants for the error/exit lens."""
 
-from export_primitives import addr_to_int, normalize_symbol_name
+from export_collectors import collect_callsite_matches
+from export_primitives import addr_to_int
+from symbols import (
+    IMPORT_SYMBOL_POLICY,
+    match_signal,
+    normalize_name_set,
+)
+from symbols import (
+    normalize_import_name as _normalize_import_name,
+)
 
 try:
     INT_TYPES = (int, long)
@@ -70,49 +79,39 @@ EXIT_CALL_NAMES = set([
 
 
 def normalize_import_name(name):
-    base = normalize_symbol_name(name)
-    if not base:
-        return None
-    base = base.lstrip("_")
-    if base.startswith("GI_"):
-        base = base[3:]
-    if base.endswith("_chk"):
-        base = base[:-4]
-    return base.lower()
+    return _normalize_import_name(name)
 
 
 def _collect_callsites(call_edges, function_meta_by_addr, name_set):
+    normalized = normalize_name_set(name_set, policy=IMPORT_SYMBOL_POLICY)
+    name_map = {name: name for name in normalized}
+
+    def _match(name):
+        return match_signal(name, name_map=name_map, policy=IMPORT_SYMBOL_POLICY)
+
+    matches, _matches_by_func = collect_callsite_matches(
+        call_edges,
+        function_meta_by_addr,
+        _match,
+        require_external=False,
+    )
     callsites = []
     callsites_by_func = {}
-    for edge in call_edges:
-        callsite_id = edge.get("callsite")
-        if not callsite_id:
-            continue
-        target = edge.get("to") or {}
-        name_norm = normalize_import_name(target.get("name"))
-        if not name_norm or name_norm not in name_set:
-            continue
-        from_addr = (edge.get("from") or {}).get("address")
-        if not from_addr:
-            continue
-        meta = function_meta_by_addr.get(from_addr, {})
-        if meta.get("is_external") or meta.get("is_thunk"):
-            continue
+    for match in matches:
         entry = {
-            "callsite_id": callsite_id,
-            "function_id": from_addr,
-            "function_name": meta.get("name") or (edge.get("from") or {}).get("function"),
-            "emitter_import": name_norm,
-            "target": target,
+            "callsite_id": match.callsite_id,
+            "function_id": match.function_id,
+            "function_name": match.function_name,
+            "emitter_import": match.match_key or match.callee_normalized,
+            "target": match.target,
         }
         callsites.append(entry)
-        bucket = callsites_by_func.get(from_addr)
+        bucket = callsites_by_func.get(match.function_id)
         if bucket is None:
             bucket = []
-            callsites_by_func[from_addr] = bucket
+            callsites_by_func[match.function_id] = bucket
         bucket.append(entry)
     for bucket in callsites_by_func.values():
         bucket.sort(key=lambda item: addr_to_int(item.get("callsite_id")))
     callsites.sort(key=lambda item: addr_to_int(item.get("callsite_id")))
     return callsites, callsites_by_func
-

@@ -27,6 +27,7 @@ from collectors.callgraph import (
     select_index_functions,
     summarize_functions,
 )
+from collectors.callsites import CallsiteMatch, collect_callsite_matches
 from collectors.cli import (
     CLI_COMPARE_MNEMONICS,
     CLI_COMPARE_SIGNAL_NAMES,
@@ -102,6 +103,7 @@ __all__ = [
     "collect_functions",
     "collect_imports",
     "collect_string_refs_by_func",
+    "collect_callsite_matches",
     "collect_strings",
     "decode_longopt_table",
     "decode_short_opt_string",
@@ -120,5 +122,5 @@ __all__ = [
     "select_full_functions",
     "select_index_functions",
     "summarize_functions",
+    "CallsiteMatch",
 ]
-

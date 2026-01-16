@@ -9,6 +9,9 @@ from __future__ import annotations
 
 from typing import Any
 
+from symbols import DEFAULT_SYMBOL_POLICY
+from symbols import normalize_symbol_name as _normalize_symbol_name
+
 SALIENCE_TAGS: set[str] = {"env_var", "usage", "format", "path"}
 
 
@@ -51,11 +54,4 @@ def addr_filename(prefix: str, addr_text: str | None, ext: str) -> str:
 
 
 def normalize_symbol_name(name: str | None) -> str | None:
-    if name is None:
-        return None
-    base = name
-    if "@" in base:
-        base = base.split("@")[0]
-    if base.startswith("_"):
-        base = base[1:]
-    return base
+    return _normalize_symbol_name(name, policy=DEFAULT_SYMBOL_POLICY)
