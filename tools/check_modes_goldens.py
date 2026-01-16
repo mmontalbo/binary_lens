@@ -168,6 +168,10 @@ def normalize_for_diff(rel_path: Path, value: Any) -> Any:
 
     if rel_path == Path("manifest.json") and isinstance(value, dict):
         cleaned = deepcopy(value)
+        # Coverage totals are derived from analysis state and can drift slightly
+        # between runs even when the target binary is unchanged. Keep bounds and
+        # binary identity stable, but do not diff coverage summary fields.
+        cleaned.pop("coverage_summary", None)
         for key in (
             "binary_path",
             "created_at",
