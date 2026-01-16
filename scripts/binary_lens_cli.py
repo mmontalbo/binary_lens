@@ -1,7 +1,9 @@
 #!/usr/bin/env python
+import json
 import os
 import shutil
 import sys
+import time
 from pathlib import Path
 
 from export_cli import resolve_pack_root
@@ -66,6 +68,40 @@ def resolve_binary(binary_path):
     raise SystemExit(1)
 
 
+def _parse_script_options(script_args):
+    profile_enabled = False
+    analysis_profile = None
+    for arg in script_args:
+        if arg.startswith("profile="):
+            value = arg.split("=", 1)[1].strip().lower()
+            profile_enabled = value in ("1", "true", "yes", "on")
+        elif arg.startswith("analysis_profile="):
+            analysis_profile = arg.split("=", 1)[1].strip().lower()
+    return profile_enabled, analysis_profile
+
+
+def _should_analyze(profile_enabled, analysis_profile):
+    if profile_enabled:
+        return False
+    if analysis_profile and analysis_profile != "full":
+        return False
+    return True
+
+
+def _write_cli_timings(profile_dir, enter_seconds, run_seconds, exit_seconds):
+    payload = {
+        "version": 1,
+        "unit": "seconds",
+        "enter_seconds": enter_seconds,
+        "run_seconds": run_seconds,
+        "exit_seconds": exit_seconds,
+    }
+    try:
+        (profile_dir / "cli_timings.json").write_text(json.dumps(payload, indent=2, sort_keys=True))
+    except Exception:
+        pass
+
+
 def main(argv):
     binary_path, out_dir, script_args = parse_args(argv)
     binary_file = resolve_binary(binary_path)
@@ -103,23 +139,17 @@ def main(argv):
         except FileNotFoundError:
             pass
 
-    profile_enabled = False
-    analysis_profile = None
-    for arg in script_args:
-        if arg.startswith("profile="):
-            value = arg.split("=", 1)[1].strip().lower()
-            profile_enabled = value in ("1", "true", "yes", "on")
-        if arg.startswith("analysis_profile="):
-            analysis_profile = arg.split("=", 1)[1].strip().lower()
+    profile_enabled, analysis_profile = _parse_script_options(script_args)
+    analyze = _should_analyze(profile_enabled, analysis_profile)
 
-    analyze = True
-    if profile_enabled:
-        analyze = False
-    elif analysis_profile and analysis_profile != "full":
-        analyze = False
+    enter_seconds = None
+    run_seconds = None
+    exit_seconds = None
+    exit_start = None
 
     # Use PyGhidra's flat API to avoid the deprecated run_script helper and
     # the open_project + ghidra_script path that hangs in headless runs.
+    enter_start = time.perf_counter()
     with pyghidra_core._flat_api(
         str(binary_file),
         str(project_dir),
@@ -130,7 +160,22 @@ def main(argv):
         nested_project_location=False,
         install_dir=Path(install_dir),
     ) as script:
+        enter_seconds = time.perf_counter() - enter_start
+        run_start = time.perf_counter()
         script.run(str(script_path), [str(out_dir_path)] + script_args)
+        run_seconds = time.perf_counter() - run_start
+        exit_start = time.perf_counter()
+    if exit_start is not None:
+        exit_seconds = time.perf_counter() - exit_start
+
+    if profile_enabled:
+        profile_dir = pack_root / "profile"
+        try:
+            profile_dir.mkdir(parents=True, exist_ok=True)
+        except Exception:
+            profile_dir = None
+        if profile_dir is not None:
+            _write_cli_timings(profile_dir, enter_seconds, run_seconds, exit_seconds)
 
     if error_path.is_file():
         print(f"Binary Lens export failed; see {error_path}", file=sys.stderr)

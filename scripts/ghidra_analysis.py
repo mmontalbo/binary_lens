@@ -124,6 +124,75 @@ def _snapshot_task_analyzers(program: Any) -> list[str]:
     return sorted(discovered)
 
 
+def _prime_analysis_tasks(manager: Any) -> None:
+    """Seed Ghidra's analysis task list.
+
+    AutoAnalysisManager.reAnalyzeAll expects an AddressSetView; passing None
+    signals "entire program" in both GUI and headless contexts.
+    """
+
+    try:
+        manager.reAnalyzeAll(None)
+    except Exception:
+        pass
+
+
+def _start_auto_analysis(manager: Any, monitor: Any) -> None:
+    try:
+        if hasattr(manager, "startBackgroundAnalysis"):
+            manager.startBackgroundAnalysis()
+    except Exception:
+        pass
+    try:
+        manager.startAnalysis(monitor, True)
+    except Exception:
+        try:
+            manager.startAnalysis(monitor)
+        except Exception:
+            pass
+    try:
+        if hasattr(manager, "waitForAnalysis"):
+            try:
+                manager.waitForAnalysis(None, monitor)
+            except Exception:
+                pass
+        while manager.isAnalyzing():
+            if monitor is not None and monitor.isCancelled():
+                break
+            time.sleep(0.05)
+    except Exception:
+        pass
+
+
+def _try_analyze_all(program: Any, analyze_all: AnalyzeAllFn | None, run_method: str) -> str | None:
+    if analyze_all is None:
+        return None
+    try:
+        analyze_all(program)
+        return run_method
+    except Exception:
+        return None
+
+
+def _run_analysis_flow(
+    program: Any,
+    manager: Any,
+    monitor: Any,
+    analyze_all: AnalyzeAllFn | None,
+    run_method_all: str,
+    run_method_manager: str,
+    *,
+    reanalyze_before_manager: bool,
+) -> str | None:
+    run_method = _try_analyze_all(program, analyze_all, run_method_all)
+    if run_method is not None:
+        return run_method
+    if reanalyze_before_manager:
+        _prime_analysis_tasks(manager)
+    _start_auto_analysis(manager, monitor)
+    return run_method_manager
+
+
 def snapshot_analyzers(program: Any) -> dict[str, Any]:
     """Best-effort snapshot of Ghidra analyzers and their enablement state."""
 
@@ -352,10 +421,7 @@ def run_program_analysis(
     }
 
     if analysis_profile == "minimal" and not skip_run:
-        try:
-            manager.reAnalyzeAll(monitor)
-        except Exception:
-            pass
+        _prime_analysis_tasks(manager)
         if profiler is not None:
             config["before"] = snapshot_analyzers(program)
         minimal_config = configure_minimal_analysis(program)
@@ -377,67 +443,25 @@ def run_program_analysis(
     run_method = None
     try:
         if analysis_profile == "minimal":
-            if analyze_all is not None:
-                try:
-                    analyze_all(program)
-                    run_method = "analyzeAll_pruned"
-                except Exception:
-                    run_method = None
-            if run_method is None:
-                run_method = "auto_analysis_manager_pruned"
-                try:
-                    if hasattr(manager, "startBackgroundAnalysis"):
-                        manager.startBackgroundAnalysis()
-                except Exception:
-                    pass
-                try:
-                    manager.startAnalysis(monitor, True)
-                except Exception:
-                    try:
-                        manager.startAnalysis(monitor)
-                    except Exception:
-                        pass
-                try:
-                    if hasattr(manager, "waitForAnalysis"):
-                        try:
-                            manager.waitForAnalysis(None, monitor)
-                        except Exception:
-                            pass
-                    while manager.isAnalyzing():
-                        if monitor is not None and monitor.isCancelled():
-                            break
-                        time.sleep(0.05)
-                except Exception:
-                    pass
+            run_method = _run_analysis_flow(
+                program,
+                manager,
+                monitor,
+                analyze_all,
+                "analyzeAll_pruned",
+                "auto_analysis_manager_pruned",
+                reanalyze_before_manager=False,
+            )
         else:
-            if analyze_all is not None:
-                try:
-                    analyze_all(program)
-                    run_method = "analyzeAll"
-                except Exception:
-                    run_method = None
-            if run_method is None:
-                run_method = "auto_analysis_manager"
-                try:
-                    manager.reAnalyzeAll(monitor)
-                except Exception:
-                    pass
-                try:
-                    manager.startAnalysis(monitor)
-                except Exception:
-                    pass
-                try:
-                    if hasattr(manager, "waitForAnalysis"):
-                        try:
-                            manager.waitForAnalysis(None, monitor)
-                        except Exception:
-                            pass
-                    while manager.isAnalyzing():
-                        if monitor is not None and monitor.isCancelled():
-                            break
-                        time.sleep(0.05)
-                except Exception:
-                    pass
+            run_method = _run_analysis_flow(
+                program,
+                manager,
+                monitor,
+                analyze_all,
+                "analyzeAll",
+                "auto_analysis_manager",
+                reanalyze_before_manager=True,
+            )
     finally:
         if profiler is not None:
             profiler.add_timing("analysis", time.perf_counter() - start)
@@ -448,4 +472,3 @@ def run_program_analysis(
         except Exception:
             pass
     return config
-
