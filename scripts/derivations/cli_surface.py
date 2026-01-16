@@ -459,9 +459,6 @@ def _finalize_parse_loops(parse_loops, max_parse_loops):
     )
     total_parse_loops = len(parse_loops)
     truncated_parse_loops = False
-    if max_parse_loops > 0 and total_parse_loops > max_parse_loops:
-        parse_loops = parse_loops[:max_parse_loops]
-        truncated_parse_loops = True
     return parse_loops, total_parse_loops, truncated_parse_loops
 
 

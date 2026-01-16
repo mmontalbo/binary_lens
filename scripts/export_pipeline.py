@@ -71,6 +71,7 @@ from export_outputs import (
     write_text,
 )
 from ghidra_analysis import run_program_analysis
+from outputs.sharding import build_sharded_list_index
 from pipeline.cli import collect_cli_inputs
 from pipeline.layout import PackLayout
 
@@ -337,6 +338,13 @@ def write_context_pack(
         cli_surface.get("parse_loops_truncated", False),
         options,
     )
+    cli_parse_loops_index, cli_parse_loops_shards = build_sharded_list_index(
+        cli_parse_loops_payload,
+        list_key="parse_loops",
+        shard_dir="cli/parse_loops",
+        item_id_key="id",
+        item_kind="cli_parse_loops",
+    )
     with _phase(profiler, "build_mode_slices"):
         modes_slices_payload = build_mode_slices(
             modes_payload,
@@ -347,6 +355,13 @@ def write_context_pack(
             error_messages_payload=error_messages_payload,
             exit_paths_payload=exit_paths_payload,
         )
+    modes_slices_index, modes_slices_shards = build_sharded_list_index(
+        modes_slices_payload,
+        list_key="slices",
+        shard_dir="modes/slices",
+        item_id_key="mode_id",
+        item_kind="mode_slices",
+    )
     with _phase(profiler, "build_surface_map"):
         modes_surface = build_modes_surface(modes_payload, dispatch_sites_payload, callsite_paths, options)
         surface_map_payload = build_surface_map_payload(
@@ -492,6 +507,8 @@ def write_context_pack(
     )
 
     with _phase(profiler, "write_outputs"):
+        ensure_dir(layout.modes_dir / "slices")
+        ensure_dir(layout.cli_dir / "parse_loops")
         write_json(layout.root / "index.json", pack_index_payload)
         write_json(layout.root / "manifest.json", manifest)
         write_json(layout.root / "binary.json", binary_info)
@@ -506,7 +523,7 @@ def write_context_pack(
         write_json(layout.errors_dir / "error_sites.json", error_sites_payload)
         write_json(layout.modes_dir / "index.json", modes_payload)
         write_json(layout.modes_dir / "dispatch_sites.json", dispatch_sites_payload)
-        write_json(layout.modes_dir / "slices.json", modes_slices_payload)
+        write_json(layout.modes_dir / "slices.json", modes_slices_index)
         write_json(layout.interfaces_dir / "index.json", interfaces_index_payload)
         write_json(layout.interfaces_dir / "env.json", interfaces_payloads.get("env", {}))
         write_json(layout.interfaces_dir / "fs.json", interfaces_payloads.get("fs", {}))
@@ -514,7 +531,11 @@ def write_context_pack(
         write_json(layout.interfaces_dir / "net.json", interfaces_payloads.get("net", {}))
         write_json(layout.interfaces_dir / "output.json", interfaces_payloads.get("output", {}))
         write_json(layout.cli_dir / "options.json", cli_options_payload)
-        write_json(layout.cli_dir / "parse_loops.json", cli_parse_loops_payload)
+        write_json(layout.cli_dir / "parse_loops.json", cli_parse_loops_index)
+        for rel_path, content in modes_slices_shards.items():
+            write_json(layout.root / rel_path, content)
+        for rel_path, content in cli_parse_loops_shards.items():
+            write_json(layout.root / rel_path, content)
         write_json(layout.functions_dir / "index.json", index_payload)
         write_text(layout.root / "README.md", pack_readme)
         for rel_path, content in pack_docs.items():

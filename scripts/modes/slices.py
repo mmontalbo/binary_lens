@@ -303,13 +303,10 @@ def build_mode_slices(
 
     total_slices = len(slices)
     truncated = False
-    if max_slices and total_slices > max_slices:
-        slices = slices[:max_slices]
-        truncated = True
 
     return {
         "total_modes": len(modes),
-        "selected_slices": len(slices),
+        "selected_slices": total_slices,
         "truncated": truncated,
         "max_slices": max_slices,
         "selection_strategy": "top_modes_by_dispatch_cluster_score",

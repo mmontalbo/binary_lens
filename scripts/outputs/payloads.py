@@ -88,10 +88,13 @@ def build_cli_options_payload(options_list, total_options, truncated, options):
 
 
 def build_cli_parse_loops_payload(parse_loops, total_parse_loops, truncated, options):
+    selected = len(parse_loops)
+    if not isinstance(total_parse_loops, int) or total_parse_loops < selected:
+        total_parse_loops = selected
     return {
         "total_parse_loops": total_parse_loops,
-        "selected_parse_loops": len(parse_loops),
-        "truncated": truncated,
+        "selected_parse_loops": selected,
+        "truncated": False,
         "max_parse_loops": options.get("max_cli_parse_loops", 0),
         "parse_loops": parse_loops,
     }
