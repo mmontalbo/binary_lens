@@ -14,12 +14,11 @@ import sys
 from copy import deepcopy
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any
 
 MODES_RELATIVE_JSON_FILES = (
     Path("binary.json"),
     Path("manifest.json"),
-    Path("surface_map.json"),
     Path("modes/index.json"),
     Path("modes/dispatch_sites.json"),
     Path("modes/slices.json"),
@@ -126,22 +125,6 @@ def infer_mode(identity: PackIdentity) -> str:
     return "generic"
 
 
-def iter_ref_paths(value: Any) -> Iterable[str]:
-    if isinstance(value, dict):
-        for key, entry in value.items():
-            if key.endswith("_ref") and isinstance(entry, str):
-                yield entry
-            elif key.endswith("_refs") and isinstance(entry, list):
-                for item in entry:
-                    if isinstance(item, str):
-                        yield item
-            yield from iter_ref_paths(entry)
-        return
-    if isinstance(value, list):
-        for item in value:
-            yield from iter_ref_paths(item)
-
-
 def normalize_json(value: Any) -> str:
     return json.dumps(value, indent=2, sort_keys=True, ensure_ascii=False) + "\n"
 
@@ -243,46 +226,6 @@ def check_modes_index(modes_index: Any, *, mode: str, min_modes: int, min_covera
     return errors
 
 
-def check_surface_map(surface_map: Any, pack_root: Path) -> list[str]:
-    errors: list[str] = []
-    if not isinstance(surface_map, dict):
-        return ["surface_map.json must be an object"]
-
-    modes_section = surface_map.get("modes")
-    if not isinstance(modes_section, dict):
-        return ["surface_map.json must contain modes section"]
-
-    for key in ("index_ref", "dispatch_sites_ref", "slices_ref"):
-        ref = modes_section.get(key)
-        if not isinstance(ref, str) or not ref.strip():
-            errors.append(f"surface_map.json modes.{key} must be a non-empty string")
-            continue
-        path = pack_root / ref
-        if not path.is_file():
-            errors.append(f"surface_map.json modes.{key} missing file: {ref}")
-
-    top_sites = modes_section.get("top_dispatch_sites")
-    if not isinstance(top_sites, list) or not top_sites:
-        errors.append("surface_map.json modes.top_dispatch_sites must be a non-empty list")
-        return errors
-
-    for idx, entry in enumerate(top_sites):
-        if not isinstance(entry, dict):
-            errors.append(f"surface_map.json modes.top_dispatch_sites[{idx}] must be an object")
-            continue
-        count = entry.get("token_candidate_count")
-        if not isinstance(count, int) or count <= 0:
-            errors.append(
-                f"surface_map.json modes.top_dispatch_sites[{idx}].token_candidate_count must be > 0"
-            )
-
-    missing_refs = sorted({ref for ref in iter_ref_paths(surface_map) if not (pack_root / ref).is_file()})
-    for ref in missing_refs:
-        errors.append(f"surface_map.json references missing file: {ref}")
-
-    return errors
-
-
 def default_min_modes(mode: str) -> int:
     if mode in ("git", "coreutils"):
         return 50
@@ -341,11 +284,9 @@ def main(argv: list[str]) -> int:
     min_modes = args.min_modes if args.min_modes is not None else default_min_modes(selected_mode)
 
     modes_index = load_json(pack_root / "modes/index.json")
-    surface_map = load_json(pack_root / "surface_map.json")
 
     errors = []
     errors.extend(check_modes_index(modes_index, mode=selected_mode, min_modes=min_modes, min_coverage=args.min_coverage))
-    errors.extend(check_surface_map(surface_map, pack_root))
 
     diff_output = ""
     if args.diff:
