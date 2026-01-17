@@ -35,7 +35,6 @@ Key files (high level):
 
 - `binary.lens/manifest.json`: export metadata and bounds
 - `binary.lens/docs/overview.md`: pack overview (tailored to the target binary)
-- `binary.lens/surface_map.json`: “start here” routing pointers
 - `binary.lens/cli/options.json`: CLI option inventory
 - `binary.lens/errors/messages.json`: error message catalog
 - `binary.lens/errors/exit_paths.json`: exit/abort inventory

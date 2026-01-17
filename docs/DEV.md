@@ -88,7 +88,6 @@ ruff check --fix .
 ## Output layout (high level)
 
 - `binary.lens/manifest.json`: export bounds + versions
-- `binary.lens/capabilities.json`: evidence-backed capabilities
 - `binary.lens/cli/options.json`: CLI option inventory
 
 ## Modes goldens
@@ -103,7 +102,6 @@ Goldens live in:
 Each golden includes only these modes-relevant JSON files:
 - `binary.json`
 - `manifest.json`
-- `surface_map.json`
 - `modes/index.json`
 - `modes/dispatch_sites.json`
 - `modes/slices.json`

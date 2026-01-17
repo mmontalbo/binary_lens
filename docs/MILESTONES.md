@@ -1,6 +1,6 @@
 # `binary_lens` milestones
 
-This document defines near-term milestones for adding **LM-tailored interface lenses** on top of `binary_lens`'s existing facts/capabilities/subsystems output. These milestones are **static-first**, evidence-linked, and designed to help many downstream LM consumers (documentation, test generation, indexing, analysis), without centering any single consumer.
+This document defines near-term milestones for adding **LM-tailored interface lenses** on top of `binary_lens`'s existing facts and evidence-linked outputs. These milestones are **static-first**, evidence-linked, and designed to help many downstream LM consumers (documentation, test generation, indexing, analysis), without centering any single consumer.
 
 ---
 
@@ -52,7 +52,7 @@ For `interfaces/*` specifics, keep the existing surface split (`env`, `fs`, `pro
 
 ### Implementation hygiene (required)
 To keep the pack generic and reduce future churn while adding new pattern families:
-- Factor shared “signal-driven callsite scan” logic into reusable helpers (CLI/errors/capabilities should not each re-implement the same walk-and-filter loop).
+- Factor shared “signal-driven callsite scan” logic into reusable helpers (CLI/errors/interfaces should not each re-implement the same walk-and-filter loop).
 - Centralize symbol/import normalization and make matching policy explicit (casefolding, `_chk`/version suffix stripping, substring vs exact matches).
 - Isolate name-convention heuristics (e.g., `cmd_*`/`cmd_main`) behind clearly-labeled modules/flags so they don’t become the generic story.
 
@@ -147,7 +147,7 @@ Add a `modes/` (or `dispatch/`) section to the context pack:
      - `top_exit_paths` (bounded references)
      - explicit `selection_strategy` + bounds metadata
 
-4. Routing entry in `surface_map.json`
+4. Routing entry in `index.json`
    - “start here” pointers:
      - top dispatch sites
      - top N modes (by evidence strength / number of distinct sites)
@@ -248,7 +248,7 @@ Add an `errors/` section to the context pack:
      - imports used (error/perror/fprintf)
      - whether followed by exit/return propagation
 
-4. Routing entry in `surface_map.json`
+4. Routing entry in `index.json`
    - “start here” pointers:
      - top emitting functions
      - top fatal exit paths
@@ -342,7 +342,7 @@ Add a `cli/` section to the context pack:
      - notes like “uses getopt_long”, “uses getopt”
      - discovered option table references (addresses / data symbols)
 
-3. Minimal routing entry in `surface_map.json` (or equivalent index)
+3. Minimal routing entry in `index.json`
    - “start here” pointers:
      - primary parse loop(s)
      - top option table(s)

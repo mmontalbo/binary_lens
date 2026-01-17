@@ -231,7 +231,6 @@ def build_pack_index_payload(format_version: str) -> dict[str, object]:
         },
         "start_here": {
             "docs_overview_ref": "docs/overview.md",
-            "surface_map_ref": "surface_map.json",
             "manifest_ref": "manifest.json",
             "contracts_index_ref": "contracts/index.json",
         },
@@ -245,7 +244,6 @@ def build_pack_index_payload(format_version: str) -> dict[str, object]:
             "schema_readme_ref": "schema/README.md",
             "binary_ref": "binary.json",
             "manifest_ref": "manifest.json",
-            "surface_map_ref": "surface_map.json",
             "modes_index_ref": "modes/index.json",
             "modes_dispatch_sites_ref": "modes/dispatch_sites.json",
             "modes_slices_ref": "modes/slices.json",
@@ -265,8 +263,6 @@ def build_pack_index_payload(format_version: str) -> dict[str, object]:
             "functions_index_ref": "functions/index.json",
             "imports_ref": "imports.json",
             "callgraph_ref": "callgraph.json",
-            "capabilities_ref": "capabilities.json",
-            "subsystems_ref": "subsystems.json",
         },
         "conventions": {
             "refs": "Paths in *_ref / *_refs are relative to the pack root.",
@@ -419,7 +415,7 @@ def build_pack_readme():
         "- docs/examples.md\n"
         "- contracts/index.json\n"
         "- index.json\n"
-        "- surface_map.json\n\n"
+        "\n"
         "Key sections:\n\n"
         "- contracts/\n"
         "- modes/\n"
