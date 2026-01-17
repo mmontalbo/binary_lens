@@ -124,6 +124,8 @@ Run the fast checker (no Ghidra):
 ```sh
 python tools/check_modes_goldens.py out/profile_git_modes/binary.lens --diff
 python tools/check_modes_goldens.py out/profile_coreutils_modes/binary.lens --diff
+python tools/check_pack_refs.py out/profile_git_modes/binary.lens
+python tools/check_pack_refs.py out/profile_coreutils_modes/binary.lens
 ```
 
 When changing the modes exporter:
