@@ -61,12 +61,21 @@ def build_binary_info(program):
 
 
 def build_callgraph_payload(call_edges, total_edges, truncated_edges, options, call_edge_stats):
+    raw_max_edges = options.get("max_call_edges", 0)
+    try:
+        max_edges = int(raw_max_edges)
+    except Exception:
+        max_edges = 0
     return {
         "total_edges": total_edges,
         "selected_edges": len(call_edges),
         "truncated": truncated_edges,
-        "max_edges": options["max_call_edges"],
-        "selection_strategy": "capability_signals_then_sorted_internal_calls",
+        "max_edges": max_edges if max_edges > 0 else None,
+        "selection_strategy": (
+            "capability_signals_then_sorted_internal_calls"
+            if max_edges > 0
+            else "all_internal_calls_sorted_by_address"
+        ),
         "filters": {
             "exclude_external_callers": True,
             "exclude_thunk_callers": True,
@@ -78,11 +87,16 @@ def build_callgraph_payload(call_edges, total_edges, truncated_edges, options, c
 
 
 def build_cli_options_payload(options_list, total_options, truncated, options):
+    raw_max_options = options.get("max_cli_options", 0)
+    try:
+        max_options = int(raw_max_options)
+    except Exception:
+        max_options = 0
     return {
         "total_options": total_options,
         "selected_options": len(options_list),
         "truncated": truncated,
-        "max_options": options.get("max_cli_options", 0),
+        "max_options": max_options if max_options > 0 else None,
         "options": options_list,
     }
 
@@ -91,11 +105,16 @@ def build_cli_parse_loops_payload(parse_loops, total_parse_loops, truncated, opt
     selected = len(parse_loops)
     if not isinstance(total_parse_loops, int) or total_parse_loops < selected:
         total_parse_loops = selected
+    raw_max_parse_loops = options.get("max_cli_parse_loops", 0)
+    try:
+        max_parse_loops = int(raw_max_parse_loops)
+    except Exception:
+        max_parse_loops = 0
     return {
         "total_parse_loops": total_parse_loops,
         "selected_parse_loops": selected,
         "truncated": False,
-        "max_parse_loops": options.get("max_cli_parse_loops", 0),
+        "max_parse_loops": max_parse_loops if max_parse_loops > 0 else None,
         "parse_loops": parse_loops,
     }
 
@@ -264,10 +283,10 @@ def build_pack_index_payload(format_version: str) -> dict[str, object]:
         },
         "conventions": {
             "refs": "Paths in *_ref / *_refs are relative to the pack root.",
-            "truncation": (
-                "Most lists include truncated + max_*; truncated=true means the export was bounded "
-                "(missing entries may exist)."
+            "sharding": (
+                "Large inventories use format=sharded_list/v1; follow shards[*].path to enumerate the full list."
             ),
+            "truncation": "truncated=true means that record/list was bounded; missing entries may exist.",
             "unknowns": (
                 "When a field carries *_confidence / *_strength, the value 'unknown' means the exporter "
                 "did not establish it (not 'false')."
@@ -292,6 +311,13 @@ def build_manifest(
         or _maybe_read_git_revision(repo_root)
     )
 
+    def _unbounded_int(raw: object) -> int | None:
+        try:
+            value = int(raw)  # type: ignore[arg-type]
+        except Exception:
+            return None
+        return value if value > 0 else None
+
     manifest = {
         "schema": {
             "name": "binary_lens",
@@ -310,39 +336,39 @@ def build_manifest(
         },
         "bounds": {
             "max_full_functions": options["max_full_functions"],
-            "max_functions_index": options["max_functions_index"],
-            "max_strings": options["max_strings"],
-            "max_call_edges": options["max_call_edges"],
+            "max_functions_index": _unbounded_int(options.get("max_functions_index")),
+            "max_strings": _unbounded_int(options.get("max_strings")),
+            "max_call_edges": _unbounded_int(options.get("max_call_edges")),
             "max_calls_per_function": options["max_calls_per_function"],
             "max_decomp_lines": options["max_decomp_lines"],
-            "max_cli_options": options.get("max_cli_options"),
-            "max_cli_parse_loops": options.get("max_cli_parse_loops"),
+            "max_cli_options": _unbounded_int(options.get("max_cli_options")),
+            "max_cli_parse_loops": _unbounded_int(options.get("max_cli_parse_loops")),
             "max_cli_option_evidence": options.get("max_cli_option_evidence"),
             "max_cli_parse_sites_per_option": options.get("max_cli_parse_sites_per_option"),
             "max_cli_longopt_entries": options.get("max_cli_longopt_entries"),
             "max_cli_callsites_per_parse_loop": options.get("max_cli_callsites_per_parse_loop"),
             "max_cli_flag_vars": options.get("max_cli_flag_vars"),
             "max_cli_check_sites": options.get("max_cli_check_sites"),
-            "max_error_messages": options.get("max_error_messages"),
+            "max_error_messages": _unbounded_int(options.get("max_error_messages")),
             "max_error_message_callsites": options.get("max_error_message_callsites"),
             "max_error_message_functions": options.get("max_error_message_functions"),
-            "max_exit_paths": options.get("max_exit_paths"),
+            "max_exit_paths": _unbounded_int(options.get("max_exit_paths")),
             "max_exit_patterns": options.get("max_exit_patterns"),
             "max_error_emitter_callsites": options.get("max_error_emitter_callsites"),
-            "max_error_sites": options.get("max_error_sites"),
+            "max_error_sites": _unbounded_int(options.get("max_error_sites")),
             "max_error_site_callsites": options.get("max_error_site_callsites"),
             "max_mode_dispatch_functions": options.get("max_mode_dispatch_functions"),
             "max_mode_callsites_per_function": options.get("max_mode_callsites_per_function"),
             "max_mode_tokens_per_callsite": options.get("max_mode_tokens_per_callsite"),
             "max_mode_token_length": options.get("max_mode_token_length"),
-            "max_modes": options.get("max_modes"),
+            "max_modes": _unbounded_int(options.get("max_modes")),
             "max_mode_dispatch_sites_per_mode": options.get("max_mode_dispatch_sites_per_mode"),
             "max_mode_dispatch_roots_per_mode": options.get("max_mode_dispatch_roots_per_mode"),
             "max_mode_dispatch_site_callsites": options.get("max_mode_dispatch_site_callsites"),
             "max_mode_dispatch_site_tokens": options.get("max_mode_dispatch_site_tokens"),
             "max_mode_dispatch_site_ignored_tokens": options.get("max_mode_dispatch_site_ignored_tokens"),
             "max_mode_low_confidence_candidates": options.get("max_mode_low_confidence_candidates"),
-            "max_mode_slices": options.get("max_mode_slices"),
+            "max_mode_slices": _unbounded_int(options.get("max_mode_slices")),
             "max_mode_slice_roots": options.get("max_mode_slice_roots"),
             "max_mode_slice_dispatch_sites": options.get("max_mode_slice_dispatch_sites"),
             "max_mode_slice_options": options.get("max_mode_slice_options"),
@@ -350,11 +376,11 @@ def build_manifest(
             "max_mode_slice_messages": options.get("max_mode_slice_messages"),
             "max_mode_slice_exit_paths": options.get("max_mode_slice_exit_paths"),
             "max_mode_surface_entries": options.get("max_mode_surface_entries"),
-            "max_interface_env": options.get("max_interface_env"),
-            "max_interface_fs": options.get("max_interface_fs"),
-            "max_interface_process": options.get("max_interface_process"),
-            "max_interface_net": options.get("max_interface_net"),
-            "max_interface_output": options.get("max_interface_output"),
+            "max_interface_env": _unbounded_int(options.get("max_interface_env")),
+            "max_interface_fs": _unbounded_int(options.get("max_interface_fs")),
+            "max_interface_process": _unbounded_int(options.get("max_interface_process")),
+            "max_interface_net": _unbounded_int(options.get("max_interface_net")),
+            "max_interface_output": _unbounded_int(options.get("max_interface_output")),
         },
     }
     if hashes:
@@ -387,26 +413,34 @@ def build_manifest(
 
 
 def build_strings_payload(strings, total_strings, strings_truncated, options, string_bucket_counts, string_bucket_limits):
+    raw_max = options.get("max_strings", 0)
+    try:
+        max_strings = int(raw_max)
+    except Exception:
+        max_strings = 0
+    selection_strategy = "bucketed_then_most_referenced"
+    if max_strings <= 0 or not strings_truncated:
+        selection_strategy = "all_defined_strings_with_refs"
     return {
         "total_strings": total_strings,
         "truncated": strings_truncated,
-        "max_strings": options["max_strings"],
-        "selection_strategy": "bucketed_then_most_referenced",
+        "max_strings": max_strings if max_strings > 0 else None,
+        "selection_strategy": selection_strategy,
         "buckets": {
             "env_vars": {
-                "limit": string_bucket_limits.get("env_vars", 0),
+                "limit": string_bucket_limits.get("env_vars"),
                 "selected": string_bucket_counts.get("env_vars", 0),
             },
             "usage": {
-                "limit": string_bucket_limits.get("usage", 0),
+                "limit": string_bucket_limits.get("usage"),
                 "selected": string_bucket_counts.get("usage", 0),
             },
             "format": {
-                "limit": string_bucket_limits.get("format", 0),
+                "limit": string_bucket_limits.get("format"),
                 "selected": string_bucket_counts.get("format", 0),
             },
             "path": {
-                "limit": string_bucket_limits.get("path", 0),
+                "limit": string_bucket_limits.get("path"),
                 "selected": string_bucket_counts.get("path", 0),
             },
         },
@@ -415,10 +449,16 @@ def build_strings_payload(strings, total_strings, strings_truncated, options, st
 
 
 def build_index_payload(functions, full_functions, index_functions, summaries, options):
+    raw_max = options.get("max_functions_index", 0)
+    try:
+        max_functions = int(raw_max)
+    except Exception:
+        max_functions = 0
+    truncated = bool(max_functions > 0 and len(functions) > max_functions)
     return {
         "total_functions": len(functions),
-        "max_functions": options["max_functions_index"],
-        "truncated": len(functions) > options["max_functions_index"],
+        "max_functions": max_functions if max_functions > 0 else None,
+        "truncated": truncated,
         "full_function_selection": "mixed_relevance",
         "full_function_selection_metrics": [
             "import_calls",
@@ -438,7 +478,8 @@ def build_pack_readme():
     return (
         "# `binary_lens` context pack\n\n"
         "This pack contains observed facts and mechanically derived structure.\n"
-        "JSON files are authoritative; evidence files are bounded excerpts.\n\n"
+        "JSON files are authoritative; evidence files are bounded excerpts.\n"
+        "Large inventories are sharded (see `docs/navigation.md`).\n\n"
         "Start here:\n\n"
         "- docs/overview.md\n"
         "- docs/navigation.md\n"

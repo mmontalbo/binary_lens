@@ -159,8 +159,8 @@ def parse_args(args: list[str]) -> tuple[str | None, dict[str, Any], bool]:
             if out_dir is None:
                 out_dir = arg
 
-    # Ensure the index always includes all fully exported functions.
-    if options["max_full_functions"] > options["max_functions_index"]:
+    # Ensure the index always includes all fully exported functions when an index cap is applied.
+    if options["max_functions_index"] and options["max_full_functions"] > options["max_functions_index"]:
         options["max_functions_index"] = options["max_full_functions"]
 
     return out_dir, options, show_help

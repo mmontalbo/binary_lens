@@ -132,8 +132,13 @@ def collect_strings(program, max_strings):
 
     strings.sort(key=lambda item: (-item.get("ref_count", 0), addr_to_int(item.get("address"))))
     total = len(strings)
+    try:
+        max_strings = int(max_strings)
+    except Exception:
+        max_strings = 0
+
     # Bucket selection preserves salient CLI/format/path strings even when boilerplate dominates.
-    bucket_limit = min(max_strings // 5, 40)
+    bucket_limit = min(max_strings // 5, 40) if max_strings > 0 else 0
     bucket_limits = {
         "env_vars": bucket_limit,
         "usage": bucket_limit,
@@ -157,39 +162,47 @@ def collect_strings(program, max_strings):
         if "path" in tags:
             buckets["path"].append(entry)
 
-    selected = []
-    selected_ids = set()
-    bucket_counts = {}
+    bucket_counts = {name: len(entries) for name, entries in buckets.items()}
+    if max_strings <= 0 or total <= max_strings:
+        selected = list(strings)
+        selected_ids = {entry.get("id") for entry in selected if entry.get("id")}
+        truncated = False
+        # Preserve schema fields while signaling "unbounded" selection.
+        bucket_limits = {name: None for name in bucket_limits}
+    else:
+        selected = []
+        selected_ids = set()
+        bucket_counts = {}
 
-    def add_bucket(name):
-        limit = bucket_limits.get(name, 0)
-        count = 0
-        for entry in buckets.get(name, []):
-            if len(selected) >= max_strings or count >= limit:
+        def add_bucket(name):
+            limit = bucket_limits.get(name, 0)
+            count = 0
+            for entry in buckets.get(name, []):
+                if len(selected) >= max_strings or count >= limit:
+                    break
+                entry_id = entry["id"]
+                if entry_id in selected_ids:
+                    continue
+                selected.append(entry)
+                selected_ids.add(entry_id)
+                count += 1
+            bucket_counts[name] = count
+
+        add_bucket("env_vars")
+        add_bucket("usage")
+        add_bucket("format")
+        add_bucket("path")
+
+        for entry in strings:
+            if len(selected) >= max_strings:
                 break
             entry_id = entry["id"]
             if entry_id in selected_ids:
                 continue
             selected.append(entry)
             selected_ids.add(entry_id)
-            count += 1
-        bucket_counts[name] = count
 
-    add_bucket("env_vars")
-    add_bucket("usage")
-    add_bucket("format")
-    add_bucket("path")
-
-    for entry in strings:
-        if len(selected) >= max_strings:
-            break
-        entry_id = entry["id"]
-        if entry_id in selected_ids:
-            continue
-        selected.append(entry)
-        selected_ids.add(entry_id)
-
-    truncated = total > len(selected)
+        truncated = total > len(selected)
 
     string_addr_map_selected = {}
     for entry in selected:

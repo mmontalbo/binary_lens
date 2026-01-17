@@ -114,7 +114,13 @@ def derive_error_sites(messages_payload, exit_callsites_by_func, call_args_cache
         })
 
     results.sort(key=lambda item: addr_to_int(item.get("function_id")))
-    max_sites = options.get("max_error_sites", 0)
+    raw_max_sites = options.get("max_error_sites", 0)
+    try:
+        max_sites = int(raw_max_sites)
+    except Exception:
+        max_sites = 0
+    if max_sites <= 0:
+        max_sites = None
     truncated = False
     if max_sites and len(results) > max_sites:
         results = results[:max_sites]

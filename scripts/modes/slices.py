@@ -38,7 +38,13 @@ def build_mode_slices(
     error_messages_payload=None,
     exit_paths_payload=None,
 ):
-    max_slices = options.get("max_mode_slices", 0)
+    raw_max_slices = options.get("max_mode_slices", 0)
+    try:
+        max_slices = int(raw_max_slices)
+    except Exception:
+        max_slices = 0
+    if max_slices <= 0:
+        max_slices = None
     max_roots = options.get("max_mode_slice_roots", 0)
     max_sites = options.get("max_mode_slice_dispatch_sites", 0)
     max_options = options.get("max_mode_slice_options", 0)

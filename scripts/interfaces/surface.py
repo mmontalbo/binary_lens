@@ -336,7 +336,7 @@ def _resolve_call_args(
     return call_args_cache
 
 
-def _surface_payload(entries, total_candidates: int, max_entries: int) -> dict[str, Any]:
+def _surface_payload(entries, total_candidates: int, max_entries: int | None) -> dict[str, Any]:
     truncated = False
     selected = entries
     if max_entries is not None and max_entries >= 0:
@@ -372,10 +372,15 @@ def collect_interfaces(
         operations, aliases = SURFACE_SPECS[surface]
         matches = _select_matches(call_edges, function_meta_by_addr, operations, aliases)
         total_candidates = len(matches)
-        max_entries = options.get(SURFACE_MAX_KEYS.get(surface, ""), 0) or 0
-        selected = matches
-        if max_entries >= 0 and total_candidates > max_entries:
-            selected = matches[:max_entries]
+        raw_max_entries = options.get(SURFACE_MAX_KEYS.get(surface, ""))
+        try:
+            max_entries = int(raw_max_entries) if raw_max_entries is not None else 0
+        except Exception:
+            max_entries = 0
+        if max_entries <= 0:
+            max_entries = None
+
+        selected = matches if max_entries is None else matches[:max_entries]
         callsite_ids = [match.callsite_id for match in selected]
         if callsite_ids:
             call_args_cache = _resolve_call_args(
@@ -415,6 +420,9 @@ def build_interfaces_index_payload(surfaces: dict[str, dict[str, Any]]) -> dict[
     entries = []
     for name in SURFACE_ORDER:
         payload = surfaces.get(name, {})
+        max_entries = payload.get("max_entries")
+        if isinstance(max_entries, bool):
+            max_entries = None
         entries.append(
             {
                 "name": name,
@@ -422,7 +430,7 @@ def build_interfaces_index_payload(surfaces: dict[str, dict[str, Any]]) -> dict[
                 "entry_count": len(payload.get("entries") or []),
                 "total_candidates": payload.get("total_candidates", 0),
                 "truncated": payload.get("truncated", False),
-                "max_entries": payload.get("max_entries", 0),
+                "max_entries": max_entries,
             }
         )
     return {

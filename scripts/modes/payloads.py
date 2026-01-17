@@ -66,7 +66,13 @@ def _derive_mode_kind(mode, dispatch_kind_by_callsite):
 def _build_modes_index_payload(
     mode_candidates, callsite_meta, dispatch_kind_by_callsite, options, min_token_len
 ):
-    max_modes = options.get("max_modes", 0)
+    raw_max_modes = options.get("max_modes", 0)
+    try:
+        max_modes = int(raw_max_modes)
+    except Exception:
+        max_modes = 0
+    if max_modes <= 0:
+        max_modes = None
     max_sites = options.get("max_mode_dispatch_sites_per_mode", 0)
     max_roots = options.get("max_mode_dispatch_roots_per_mode", 0)
     max_token_len = options.get("max_mode_token_length", 0)
@@ -646,4 +652,3 @@ def _build_dispatch_sites_payload(
         "dispatch_sites": dispatch_sites,
     }
     return payload
-

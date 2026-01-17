@@ -128,7 +128,7 @@ def select_index_functions(functions, full_functions, max_count):
 
     # Prefer entry points to keep the index navigable and stable.
     for func in functions:
-        if len(selected) >= max_count:
+        if max_count and len(selected) >= max_count:
             break
         if func.isExternal() or func.isThunk():
             continue
@@ -148,7 +148,7 @@ def select_index_functions(functions, full_functions, max_count):
         key=lambda func: (-function_size(func), func.getEntryPoint().getOffset()),
     )
     for func in ordered:
-        if len(selected) >= max_count:
+        if max_count and len(selected) >= max_count:
             break
         addr = addr_str(func.getEntryPoint())
         if addr in selected_addrs:
@@ -403,8 +403,7 @@ def select_call_edges(call_edges_all, signal_set, max_edges):
 
     total_edges = len(call_edges)
     truncated_edges = False
-    if total_edges > max_edges:
+    if max_edges and total_edges > max_edges:
         call_edges = call_edges[:max_edges]
         truncated_edges = True
     return call_edges, total_edges, truncated_edges
-

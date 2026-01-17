@@ -247,7 +247,7 @@ def write_context_pack(
     full_functions = select_full_functions(functions, metrics_by_addr, options["max_full_functions"])
     index_functions = select_index_functions(functions, full_functions, options["max_functions_index"])
 
-    if options["max_full_functions"] > options["max_functions_index"]:
+    if options["max_functions_index"] and options["max_full_functions"] > options["max_functions_index"]:
         # Guard against misconfigured bounds; index must include full exports.
         index_functions = full_functions
 
@@ -383,7 +383,91 @@ def write_context_pack(
         string_bucket_counts,
         string_bucket_limits,
     )
+    strings_index, strings_shards = build_sharded_list_index(
+        strings_payload,
+        list_key="strings",
+        shard_dir="strings",
+        item_id_key=None,
+        item_kind="strings",
+    )
+    callgraph_index, callgraph_shards = build_sharded_list_index(
+        callgraph,
+        list_key="edges",
+        shard_dir="callgraph/edges",
+        item_id_key=None,
+        item_kind="callgraph_edges",
+    )
+    cli_options_index, cli_options_shards = build_sharded_list_index(
+        cli_options_payload,
+        list_key="options",
+        shard_dir="cli/options",
+        item_id_key=None,
+        item_kind="cli_options",
+    )
+    error_messages_index, error_messages_shards = build_sharded_list_index(
+        error_messages_payload,
+        list_key="messages",
+        shard_dir="errors/messages",
+        item_id_key=None,
+        item_kind="error_messages",
+    )
+    exit_paths_index, exit_paths_shards = build_sharded_list_index(
+        exit_paths_payload,
+        list_key="direct_calls",
+        shard_dir="errors/exit_paths",
+        item_id_key=None,
+        item_kind="exit_calls",
+    )
+    error_sites_index, error_sites_shards = build_sharded_list_index(
+        error_sites_payload,
+        list_key="sites",
+        shard_dir="errors/error_sites",
+        item_id_key=None,
+        item_kind="error_sites",
+    )
+    interfaces_env_index, interfaces_env_shards = build_sharded_list_index(
+        interfaces_payloads.get("env", {}),
+        list_key="entries",
+        shard_dir="interfaces/env",
+        item_id_key=None,
+        item_kind="interfaces_env",
+    )
+    interfaces_fs_index, interfaces_fs_shards = build_sharded_list_index(
+        interfaces_payloads.get("fs", {}),
+        list_key="entries",
+        shard_dir="interfaces/fs",
+        item_id_key=None,
+        item_kind="interfaces_fs",
+    )
+    interfaces_process_index, interfaces_process_shards = build_sharded_list_index(
+        interfaces_payloads.get("process", {}),
+        list_key="entries",
+        shard_dir="interfaces/process",
+        item_id_key=None,
+        item_kind="interfaces_process",
+    )
+    interfaces_net_index, interfaces_net_shards = build_sharded_list_index(
+        interfaces_payloads.get("net", {}),
+        list_key="entries",
+        shard_dir="interfaces/net",
+        item_id_key=None,
+        item_kind="interfaces_net",
+    )
+    interfaces_output_index, interfaces_output_shards = build_sharded_list_index(
+        interfaces_payloads.get("output", {}),
+        list_key="entries",
+        shard_dir="interfaces/output",
+        item_id_key=None,
+        item_kind="interfaces_output",
+    )
     index_payload = build_index_payload(functions, full_functions, index_functions, summaries, options)
+    functions_index, functions_index_shards = build_sharded_list_index(
+        index_payload,
+        list_key="functions",
+        shard_dir="functions/index",
+        item_id_key=None,
+        item_kind="functions_index",
+    )
     coverage_summary = {
         "strings": {
             "total": strings_payload.get("total_strings"),
@@ -539,41 +623,77 @@ def write_context_pack(
     )
 
     with _phase(profiler, "write_outputs"):
+        ensure_dir(layout.root / "strings")
+        ensure_dir(layout.root / "callgraph" / "edges")
         ensure_dir(layout.modes_dir / "slices")
         ensure_dir(layout.cli_dir / "parse_loops")
+        ensure_dir(layout.cli_dir / "options")
+        ensure_dir(layout.errors_dir / "messages")
+        ensure_dir(layout.errors_dir / "exit_paths")
+        ensure_dir(layout.errors_dir / "error_sites")
+        ensure_dir(layout.interfaces_dir / "env")
+        ensure_dir(layout.interfaces_dir / "fs")
+        ensure_dir(layout.interfaces_dir / "process")
+        ensure_dir(layout.interfaces_dir / "net")
+        ensure_dir(layout.interfaces_dir / "output")
         ensure_dir(layout.contracts_dir / "index")
         ensure_dir(layout.contracts_dir / "modes")
+        ensure_dir(layout.functions_dir / "index")
         write_json(layout.root / "index.json", pack_index_payload)
         write_json(layout.root / "manifest.json", manifest)
         write_json(layout.root / "binary.json", binary_info)
         write_json(layout.root / "imports.json", imports)
-        write_json(layout.root / "strings.json", strings_payload)
-        write_json(layout.root / "callgraph.json", callgraph)
+        write_json(layout.root / "strings.json", strings_index)
+        write_json(layout.root / "callgraph.json", callgraph_index)
         write_json(layout.root / "capabilities.json", capabilities)
         write_json(layout.root / "subsystems.json", subsystems_payload)
         write_json(layout.root / "surface_map.json", surface_map_payload)
-        write_json(layout.errors_dir / "messages.json", error_messages_payload)
-        write_json(layout.errors_dir / "exit_paths.json", exit_paths_payload)
-        write_json(layout.errors_dir / "error_sites.json", error_sites_payload)
+        write_json(layout.errors_dir / "messages.json", error_messages_index)
+        write_json(layout.errors_dir / "exit_paths.json", exit_paths_index)
+        write_json(layout.errors_dir / "error_sites.json", error_sites_index)
         write_json(layout.modes_dir / "index.json", modes_payload)
         write_json(layout.modes_dir / "dispatch_sites.json", dispatch_sites_payload)
         write_json(layout.modes_dir / "slices.json", modes_slices_index)
         write_json(layout.interfaces_dir / "index.json", interfaces_index_payload)
-        write_json(layout.interfaces_dir / "env.json", interfaces_payloads.get("env", {}))
-        write_json(layout.interfaces_dir / "fs.json", interfaces_payloads.get("fs", {}))
-        write_json(layout.interfaces_dir / "process.json", interfaces_payloads.get("process", {}))
-        write_json(layout.interfaces_dir / "net.json", interfaces_payloads.get("net", {}))
-        write_json(layout.interfaces_dir / "output.json", interfaces_payloads.get("output", {}))
-        write_json(layout.cli_dir / "options.json", cli_options_payload)
+        write_json(layout.interfaces_dir / "env.json", interfaces_env_index)
+        write_json(layout.interfaces_dir / "fs.json", interfaces_fs_index)
+        write_json(layout.interfaces_dir / "process.json", interfaces_process_index)
+        write_json(layout.interfaces_dir / "net.json", interfaces_net_index)
+        write_json(layout.interfaces_dir / "output.json", interfaces_output_index)
+        write_json(layout.cli_dir / "options.json", cli_options_index)
         write_json(layout.cli_dir / "parse_loops.json", cli_parse_loops_index)
         write_json(layout.contracts_dir / "index.json", contracts_index)
         for rel_path, content in modes_slices_shards.items():
             write_json(layout.root / rel_path, content)
         for rel_path, content in cli_parse_loops_shards.items():
             write_json(layout.root / rel_path, content)
+        for rel_path, content in strings_shards.items():
+            write_json(layout.root / rel_path, content)
+        for rel_path, content in callgraph_shards.items():
+            write_json(layout.root / rel_path, content)
+        for rel_path, content in cli_options_shards.items():
+            write_json(layout.root / rel_path, content)
+        for rel_path, content in error_messages_shards.items():
+            write_json(layout.root / rel_path, content)
+        for rel_path, content in exit_paths_shards.items():
+            write_json(layout.root / rel_path, content)
+        for rel_path, content in error_sites_shards.items():
+            write_json(layout.root / rel_path, content)
+        for rel_path, content in interfaces_env_shards.items():
+            write_json(layout.root / rel_path, content)
+        for rel_path, content in interfaces_fs_shards.items():
+            write_json(layout.root / rel_path, content)
+        for rel_path, content in interfaces_process_shards.items():
+            write_json(layout.root / rel_path, content)
+        for rel_path, content in interfaces_net_shards.items():
+            write_json(layout.root / rel_path, content)
+        for rel_path, content in interfaces_output_shards.items():
+            write_json(layout.root / rel_path, content)
         for rel_path, content in contracts_shards.items():
             write_json(layout.root / rel_path, content)
-        write_json(layout.functions_dir / "index.json", index_payload)
+        write_json(layout.functions_dir / "index.json", functions_index)
+        for rel_path, content in functions_index_shards.items():
+            write_json(layout.root / rel_path, content)
         write_text(layout.root / "README.md", pack_readme)
         for rel_path, content in pack_docs.items():
             write_text(layout.root / rel_path, content)

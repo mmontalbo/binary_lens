@@ -77,7 +77,13 @@ def derive_exit_paths(
             },
         })
     direct_calls.sort(key=lambda item: addr_to_int(item.get("callsite_id")))
-    max_exit_paths = options.get("max_exit_paths", 0)
+    raw_max_exit_paths = options.get("max_exit_paths", 0)
+    try:
+        max_exit_paths = int(raw_max_exit_paths)
+    except Exception:
+        max_exit_paths = 0
+    if max_exit_paths <= 0:
+        max_exit_paths = None
     truncated = False
     if max_exit_paths and len(direct_calls) > max_exit_paths:
         direct_calls = direct_calls[:max_exit_paths]

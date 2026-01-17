@@ -730,7 +730,13 @@ def derive_error_messages(
         )
 
     messages.sort(key=message_sort_key)
-    max_messages = options.get("max_error_messages", 0)
+    raw_max_messages = options.get("max_error_messages", 0)
+    try:
+        max_messages = int(raw_max_messages)
+    except Exception:
+        max_messages = 0
+    if max_messages <= 0:
+        max_messages = None
     truncated = False
     if max_messages and len(messages) > max_messages:
         messages = messages[:max_messages]

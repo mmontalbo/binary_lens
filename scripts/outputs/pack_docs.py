@@ -549,7 +549,7 @@ def build_pack_markdown_docs(
                 truncated_entries.append((0, f"`{key}` truncated"))
         truncated_entries.sort(reverse=True)
         if truncated_entries:
-            caveats.append("Some surfaces are truncated (bounded export):")
+            caveats.append("Some surfaces are truncated (bounded excerpts or capped exports):")
             caveats.extend([item for _, item in truncated_entries[:8]])
 
         cli_parse = coverage.get("cli_parse_loops")
@@ -575,7 +575,8 @@ def build_pack_markdown_docs(
 
     overview_sections: list[str] = [
         f"# Overview: `{binary_name}`\n",
-        "This pack is an evidence-linked, bounded export produced by `binary_lens`.\n",
+        "This pack is an evidence-linked export produced by `binary_lens`.\n"
+        "Large inventories are sharded; evidence excerpts remain bounded.\n",
         "## Pack metadata\n",
         _format_kv_block(
             [
@@ -590,7 +591,7 @@ def build_pack_markdown_docs(
                 ("binary_lens_revision", tool_revision),
             ]
         ),
-        "## Coverage & bounds\n",
+        "## Coverage\n",
         _coverage_table(manifest),
         "## Observations & caveats\n",
         ("- _No notable caveats detected._\n" if not caveats else "\n".join(f"- {c}" for c in caveats) + "\n"),
@@ -600,12 +601,12 @@ def build_pack_markdown_docs(
         "- `contracts/modes/<mode_id>.md` (per-mode contract view)\n"
         "- `index.json` (machine-readable entrypoints)\n"
         "- `surface_map.json` (high-signal routing pointers)\n"
-        "- `manifest.json` (bounds + coverage summary)\n",
+        "- `manifest.json` (coverage summary)\n",
         _surface_map_summary(surface_map),
         _interfaces_summary(interfaces),
         "## Notes\n",
         "- When a field is `unknown`, the exporter could not establish it (not \"false\").\n"
-        "- When `truncated: true`, treat the list as partial; missing entries may exist.\n",
+        "- When `truncated: true`, treat the record/list as partial; missing entries may exist.\n",
     ]
     docs["docs/overview.md"] = "\n".join(overview_sections).strip() + "\n"
 
@@ -615,7 +616,7 @@ def build_pack_markdown_docs(
         "## Start here\n\n"
         "- `index.json` \u2192 structured entrypoints + conventions\n"
         "- `surface_map.json` \u2192 small, high-signal pointers into `modes/`, `cli/`, and `errors/`\n"
-        "- `manifest.json` \u2192 bounds + coverage summary (what was exported vs omitted)\n"
+        "- `manifest.json` \u2192 coverage summary (what was exported vs omitted)\n"
         "- `contracts/index.json` \u2192 mode-scoped contract views (recommended human/LLM entrypoint)\n\n"
         "## Follow `*_ref` pointers\n\n"
         "Many records include `*_ref` / `*_refs` fields. These are paths relative to the pack root.\n"
@@ -627,10 +628,10 @@ def build_pack_markdown_docs(
         "- `evidence/callsites/cs_<addr>.json`: callsite context (caller, instruction, candidate targets) and recovered arguments when available.\n"
         "- `evidence/decomp/f_<addr>.json`: bounded decompiler excerpt for a function (may include `error: decompile_failed`).\n\n"
         "## IDs and lookups\n\n"
-        "- `function_id` values are addresses as hex strings (e.g., `00118020`). Look them up in `functions/index.json`.\n"
-        "- `string_id` values (e.g., `s_0020733a`) resolve via `strings.json`.\n\n"
+        "- `function_id` values are addresses as hex strings (e.g., `00118020`). Resolve via `functions/index.json` (sharded index).\n"
+        "- `string_id` values (e.g., `s_0020733a`) resolve via `strings.json` (sharded index).\n\n"
         "## Truncation and unknowns\n\n"
-        "- `truncated: true` means the exporter hit a bound; treat as partial coverage.\n"
+        "- `truncated: true` means the exporter bounded that record/list; treat as partial coverage.\n"
         "- `status: unknown` means argument recovery did not resolve a constant value at that site.\n"
         "\n"
         "## Two-minute walkthrough\n\n"
@@ -646,7 +647,7 @@ def build_pack_markdown_docs(
         "## Pack root\n\n"
         "- `README.md`: top-level pointer into docs and key entry files\n"
         "- `index.json`: machine-readable index of canonical entrypoints and conventions\n"
-        "- `manifest.json`: export metadata, bounds, and coverage summary\n"
+        "- `manifest.json`: export metadata and coverage summary\n"
         "- `binary.json`: target binary facts (format, arch, hashes, ranges)\n"
         "- `surface_map.json`: small, high-signal routing pointers\n\n"
         "## Evidence-linked lenses\n\n"
@@ -658,8 +659,8 @@ def build_pack_markdown_docs(
         "## Low-level inventories\n\n"
         "- `functions/`: function index and selected full function exports\n"
         "- `imports.json`: external symbol inventory\n"
-        "- `strings.json`: selected string inventory (bounded)\n"
-        "- `callgraph.json`: bounded call edges\n"
+        "- `strings.json`: string inventory (sharded index)\n"
+        "- `callgraph.json`: call edges (sharded index)\n"
         "- `capabilities.json`: capability signals derived from imports/callsites\n"
         "- `subsystems.json`: subsystem grouping derived from call patterns\n\n"
         "## Raw evidence\n\n"
@@ -674,7 +675,7 @@ def build_pack_markdown_docs(
         "This is a reference for what the major files and common fields mean.\n\n"
         "## Common patterns\n\n"
         "- `*_ref` / `*_refs`: file paths relative to the pack root.\n"
-        "- `truncated` + `max_*`: bounded export; `truncated: true` means the list is partial.\n"
+        "- `truncated`: exporter bounded that record/list; missing entries may exist.\n"
         "- `status: known|unknown`: argument/value recovery result for a specific field.\n"
         "- `confidence` and `strength`: best-effort quality signals; `unknown` means not established.\n"
         "- `format: sharded_list/v1`: index into shard files; follow `shards[*].path` to enumerate.\n\n"
@@ -696,12 +697,12 @@ def build_pack_markdown_docs(
         "- `net.json`: socket/connect/getaddrinfo/etc; `hosts[*]`/`ports` are best-effort.\n"
         "- `output.json`: printf/fprintf/write/etc; `templates[*]` and `channel` are best-effort.\n\n"
         "## CLI (`cli/`)\n\n"
-        "- `cli/options.json`: option token inventory with parse-site evidence.\n"
+        "- `cli/options.json`: option token inventory (sharded index).\n"
         "- `cli/parse_loops.json`: localized parse loops (sharded index).\n\n"
         "## Errors (`errors/`)\n\n"
-        "- `errors/messages.json`: message strings + emitting callsites.\n"
-        "- `errors/exit_paths.json`: exit/abort callsites with recovered exit codes when possible.\n"
-        "- `errors/error_sites.json`: error-emitter callsites.\n"
+        "- `errors/messages.json`: message strings + emitting callsites (sharded index).\n"
+        "- `errors/exit_paths.json`: exit/abort callsites with recovered exit codes when possible (sharded index).\n"
+        "- `errors/error_sites.json`: error-emitter callsites (sharded index).\n"
     )
 
     examples_sections: list[str] = [
@@ -877,7 +878,8 @@ def build_pack_markdown_docs(
         "This directory documents the on-disk layout and conventions for this pack.\n\n"
         "## Conventions\n\n"
         "- `*_ref` / `*_refs` paths are relative to the pack root.\n"
-        "- Lists are intentionally bounded; consult `manifest.json` for coverage and bounds.\n"
+        "- Large inventories are sharded (`format: sharded_list/v1`); evidence excerpts may be bounded.\n"
+        "- Consult `manifest.json` for coverage and known omissions.\n"
         "- `unknown` indicates the exporter could not establish a value.\n"
         "- `format: sharded_list/v1` marks a shard index; follow `shards[*].path`.\n\n"
         "## Canonical entrypoints\n\n"
