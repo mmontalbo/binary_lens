@@ -27,6 +27,7 @@ from export_collectors import (
     summarize_functions,
 )
 from export_config import BINARY_LENS_VERSION, CAPABILITY_RULES, FORMAT_VERSION
+from export_contracts import build_contract_views
 from export_derivations import (
     build_string_bucket_counts,
     derive_capabilities,
@@ -70,6 +71,7 @@ from export_outputs import (
     write_json,
     write_text,
 )
+from export_primitives import addr_str
 from ghidra_analysis import run_program_analysis
 from outputs.sharding import build_sharded_list_index
 from pipeline.cli import collect_cli_inputs
@@ -505,10 +507,40 @@ def write_context_pack(
         cli_options=cli_options_payload,
         error_messages=error_messages_payload,
     )
+    exported_function_ids = {
+        addr
+        for func in full_functions
+        if (addr := addr_str(func.getEntryPoint())) is not None
+    }
+    contracts_payload, contract_docs = build_contract_views(
+        modes_payload,
+        modes_slices_payload,
+        cli_options_payload,
+        cli_parse_loops_payload,
+        interfaces_payloads,
+        error_messages_payload,
+        error_sites_payload,
+        exit_paths_payload,
+        string_tags_by_id,
+        string_value_by_id,
+        string_refs_by_func,
+        callgraph,
+        function_meta_by_addr,
+        exported_function_ids,
+    )
+    contracts_index, contracts_shards = build_sharded_list_index(
+        contracts_payload,
+        list_key="modes",
+        shard_dir="contracts/index",
+        item_id_key="mode_id",
+        item_kind="mode_contracts",
+    )
 
     with _phase(profiler, "write_outputs"):
         ensure_dir(layout.modes_dir / "slices")
         ensure_dir(layout.cli_dir / "parse_loops")
+        ensure_dir(layout.contracts_dir / "index")
+        ensure_dir(layout.contracts_dir / "modes")
         write_json(layout.root / "index.json", pack_index_payload)
         write_json(layout.root / "manifest.json", manifest)
         write_json(layout.root / "binary.json", binary_info)
@@ -532,13 +564,18 @@ def write_context_pack(
         write_json(layout.interfaces_dir / "output.json", interfaces_payloads.get("output", {}))
         write_json(layout.cli_dir / "options.json", cli_options_payload)
         write_json(layout.cli_dir / "parse_loops.json", cli_parse_loops_index)
+        write_json(layout.contracts_dir / "index.json", contracts_index)
         for rel_path, content in modes_slices_shards.items():
             write_json(layout.root / rel_path, content)
         for rel_path, content in cli_parse_loops_shards.items():
             write_json(layout.root / rel_path, content)
+        for rel_path, content in contracts_shards.items():
+            write_json(layout.root / rel_path, content)
         write_json(layout.functions_dir / "index.json", index_payload)
         write_text(layout.root / "README.md", pack_readme)
         for rel_path, content in pack_docs.items():
+            write_text(layout.root / rel_path, content)
+        for rel_path, content in contract_docs.items():
             write_text(layout.root / rel_path, content)
 
     if profiler is not None:

@@ -596,6 +596,8 @@ def build_pack_markdown_docs(
         ("- _No notable caveats detected._\n" if not caveats else "\n".join(f"- {c}" for c in caveats) + "\n"),
         "## Suggested entrypoints\n",
         "- `docs/overview.md` (this file)\n"
+        "- `contracts/index.json` (mode-scoped contract index; recommended human/LLM entrypoint)\n"
+        "- `contracts/modes/<mode_id>.md` (per-mode contract view)\n"
         "- `index.json` (machine-readable entrypoints)\n"
         "- `surface_map.json` (high-signal routing pointers)\n"
         "- `manifest.json` (bounds + coverage summary)\n",
@@ -613,7 +615,8 @@ def build_pack_markdown_docs(
         "## Start here\n\n"
         "- `index.json` \u2192 structured entrypoints + conventions\n"
         "- `surface_map.json` \u2192 small, high-signal pointers into `modes/`, `cli/`, and `errors/`\n"
-        "- `manifest.json` \u2192 bounds + coverage summary (what was exported vs omitted)\n\n"
+        "- `manifest.json` \u2192 bounds + coverage summary (what was exported vs omitted)\n"
+        "- `contracts/index.json` \u2192 mode-scoped contract views (recommended human/LLM entrypoint)\n\n"
         "## Follow `*_ref` pointers\n\n"
         "Many records include `*_ref` / `*_refs` fields. These are paths relative to the pack root.\n"
         "When in doubt, follow the refs instead of guessing file names.\n\n"
@@ -648,6 +651,7 @@ def build_pack_markdown_docs(
         "- `surface_map.json`: small, high-signal routing pointers\n\n"
         "## Evidence-linked lenses\n\n"
         "- `modes/`: multiplexing/subcommand surfaces (mode inventory, dispatch sites, per-mode slices)\n"
+        "- `contracts/`: mode-scoped contract views (joins over modes/cli/interfaces/errors)\n"
         "- `interfaces/`: callsite-anchored external interface inventory (env/fs/process/net/output)\n"
         "- `cli/`: CLI option inventory and parse loop localization\n"
         "- `errors/`: error message catalog + emitting sites + exit paths\n\n"
@@ -681,6 +685,9 @@ def build_pack_markdown_docs(
         "- `modes/index.json`: mode inventory; each mode includes `mode_id`, `name`, `kind`, and dispatch evidence.\n"
         "- `modes/dispatch_sites.json`: localized dispatch regions and token candidates.\n"
         "- `modes/slices.json`: per-mode \"start here\" slices (sharded index).\n\n"
+        "## Contracts (`contracts/`)\n\n"
+        "- `contracts/index.json`: mode contract index (sharded list).\n"
+        "- `contracts/modes/<mode_id>.md`: per-mode contract view (inputs/outputs/diagnostics with evidence refs).\n\n"
         "## Interfaces (`interfaces/`)\n\n"
         "Each entry is anchored to a `callsite_ref` and represents a single observed API interaction.\n\n"
         "- `env.json`: getenv/setenv/etc; `var` may be `known` (constant string) or `unknown`.\n"

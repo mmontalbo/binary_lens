@@ -15,6 +15,7 @@ class PackLayout:
     docs_dir: Path
     schema_dir: Path
     functions_dir: Path
+    contracts_dir: Path
     cli_dir: Path
     errors_dir: Path
     modes_dir: Path
@@ -31,6 +32,7 @@ class PackLayout:
             docs_dir=root / "docs",
             schema_dir=root / "schema",
             functions_dir=root / "functions",
+            contracts_dir=root / "contracts",
             cli_dir=root / "cli",
             errors_dir=root / "errors",
             modes_dir=root / "modes",
@@ -45,6 +47,7 @@ class PackLayout:
             self.docs_dir,
             self.schema_dir,
             self.functions_dir,
+            self.contracts_dir,
             self.cli_dir,
             self.errors_dir,
             self.modes_dir,

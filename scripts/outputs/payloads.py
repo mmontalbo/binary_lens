@@ -227,6 +227,7 @@ def build_pack_index_payload(format_version: str) -> dict[str, object]:
             "docs_overview_ref": "docs/overview.md",
             "surface_map_ref": "surface_map.json",
             "manifest_ref": "manifest.json",
+            "contracts_index_ref": "contracts/index.json",
         },
         "entrypoints": {
             "docs_readme_ref": "docs/README.md",
@@ -253,6 +254,7 @@ def build_pack_index_payload(format_version: str) -> dict[str, object]:
             "errors_messages_ref": "errors/messages.json",
             "errors_exit_paths_ref": "errors/exit_paths.json",
             "errors_error_sites_ref": "errors/error_sites.json",
+            "contracts_index_ref": "contracts/index.json",
             "strings_ref": "strings.json",
             "functions_index_ref": "functions/index.json",
             "imports_ref": "imports.json",
@@ -442,9 +444,11 @@ def build_pack_readme():
         "- docs/navigation.md\n"
         "- docs/field_guide.md\n"
         "- docs/examples.md\n"
+        "- contracts/index.json\n"
         "- index.json\n"
         "- surface_map.json\n\n"
         "Key sections:\n\n"
+        "- contracts/\n"
         "- modes/\n"
         "- interfaces/\n"
         "- cli/\n"
