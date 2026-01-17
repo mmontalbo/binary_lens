@@ -59,12 +59,15 @@ def _coverage_row(
         return None
     total = entry.get("total")
     selected = entry.get("selected")
+    candidates = entry.get("candidate_total")
+    excluded = entry.get("excluded")
     max_entries = entry.get("max")
     truncated = entry.get("truncated")
     rendered_path = path or "\u2014"
     return (
         f"| {label or key} | {rendered_path} | {_fmt_optional(selected)} | "
-        f"{_fmt_optional(total)} | {_fmt_optional(max_entries)} | {_fmt_bool(truncated)} |"
+        f"{_fmt_optional(total)} | {_fmt_optional(candidates)} | {_fmt_optional(excluded)} | "
+        f"{_fmt_optional(max_entries)} | {_fmt_bool(truncated)} |"
     )
 
 
@@ -108,8 +111,8 @@ def _coverage_table(manifest: Mapping[str, Any]) -> str:
         rows.append(row)
 
     lines = [
-        "| Surface | Path | Selected | Total | Max | Truncated |",
-        "| --- | --- | ---: | ---: | ---: | --- |",
+        "| Surface | Path | Exported | Total | Candidates | Excluded | Max | Truncated |",
+        "| --- | --- | ---: | ---: | ---: | ---: | ---: | --- |",
         *rows,
         "",
     ]
@@ -519,6 +522,8 @@ def build_pack_markdown_docs(
         "## Notes\n",
         "- When a field is `unknown`, the exporter could not establish it (not \"false\").\n"
         "- When `truncated: true`, treat the record/list as partial; missing entries may exist.\n"
+        "- Coverage `Candidates`/`Excluded` are pre-classification counts when available; `Total` "
+        "is the exportable/discovered count.\n"
         "- Callsite evidence is emitted on-demand for referenced callsites; re-export with "
         "`callsite_evidence=all` to include every callgraph callsite.\n",
     ]

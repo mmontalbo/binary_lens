@@ -726,13 +726,15 @@ def derive_error_messages(
 
     messages.sort(key=message_sort_key)
     max_messages = bounds.optional("max_error_messages")
+    total_messages = len(messages)
     truncated = False
-    if max_messages and len(messages) > max_messages:
+    if max_messages and total_messages > max_messages:
         messages = messages[:max_messages]
         truncated = True
 
     payload = {
         "total_candidates": len(candidates),
+        "total_messages": total_messages,
         "selected_messages": len(messages),
         "truncated": truncated,
         "max_messages": max_messages,

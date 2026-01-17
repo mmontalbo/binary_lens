@@ -303,6 +303,17 @@ def derive_payloads(
         item_id_key=None,
         item_kind="functions_index",
     )
+    error_candidates = collected.error_messages_payload.get("total_candidates")
+    error_total = collected.error_messages_payload.get("total_messages")
+    error_excluded = None
+    if isinstance(error_candidates, int) and isinstance(error_total, int):
+        error_excluded = max(0, error_candidates - error_total)
+
+    mode_candidates = collected.modes_payload.get("total_mode_candidates")
+    mode_excluded = collected.modes_payload.get("filtered_out_modes")
+    if not isinstance(mode_excluded, int):
+        mode_excluded = None
+
     coverage_summary = {
         "strings": {
             "total": strings_payload.get("total_strings"),
@@ -344,6 +355,8 @@ def derive_payloads(
             "selected": collected.modes_payload.get("selected_modes"),
             "truncated": collected.modes_payload.get("truncated"),
             "max": collected.modes_payload.get("max_modes"),
+            "candidate_total": mode_candidates,
+            "excluded": mode_excluded,
         },
         "mode_dispatch_sites": {
             "total": collected.dispatch_sites_payload.get("total_dispatch_sites"),
@@ -388,10 +401,12 @@ def derive_payloads(
             "max": collected.interfaces_payloads.get("output", {}).get("max_entries"),
         },
         "error_messages": {
-            "total": collected.error_messages_payload.get("total_candidates"),
+            "total": error_total,
             "selected": collected.error_messages_payload.get("selected_messages"),
             "truncated": collected.error_messages_payload.get("truncated"),
             "max": collected.error_messages_payload.get("max_messages"),
+            "candidate_total": error_candidates,
+            "excluded": error_excluded,
         },
         "error_sites": {
             "total": collected.error_sites_payload.get("total_sites"),
