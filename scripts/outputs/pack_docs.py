@@ -217,91 +217,6 @@ def _find_by_id(items: Any, item_id: str) -> Mapping[str, Any] | None:
     return None
 
 
-def _surface_map_summary(surface_map: Mapping[str, Any]) -> str:
-    if not surface_map:
-        return "_No surface_map.json present._\n"
-
-    sections: list[str] = []
-
-    modes = surface_map.get("modes")
-    if isinstance(modes, Mapping):
-        top_modes = modes.get("top_modes")
-        if isinstance(top_modes, list) and top_modes:
-            sections.append("## Modes (sample)\n")
-            for mode in top_modes[:10]:
-                if not isinstance(mode, Mapping):
-                    continue
-                name = _as_str(mode.get("name")) or "(unknown)"
-                mode_id = _as_str(mode.get("mode_id")) or "(unknown)"
-                callsite_ref = _as_str(mode.get("representative_callsite_ref")) or "modes/dispatch_sites.json"
-                dispatch_sites = _as_int(mode.get("dispatch_site_count"))
-                dispatch_roots = _as_int(mode.get("dispatch_root_count"))
-                score = _as_int(mode.get("dispatch_cluster_score"))
-                suffix_bits = []
-                if dispatch_sites is not None:
-                    suffix_bits.append(f"sites={dispatch_sites}")
-                if dispatch_roots is not None:
-                    suffix_bits.append(f"roots={dispatch_roots}")
-                if score is not None:
-                    suffix_bits.append(f"score={score}")
-                suffix = f" ({', '.join(suffix_bits)})" if suffix_bits else ""
-                sections.append(f"- `{name}` ({mode_id}){suffix} \u2192 `{callsite_ref}`")
-            sections.append("")
-
-    cli = surface_map.get("cli")
-    if isinstance(cli, Mapping):
-        top_options = cli.get("top_options")
-        if isinstance(top_options, list) and top_options:
-            sections.append("## CLI options (top)\n")
-            for opt in top_options[:10]:
-                if not isinstance(opt, Mapping):
-                    continue
-                short_name = opt.get("short_name")
-                long_name = opt.get("long_name")
-                option_label = ""
-                if isinstance(short_name, str) and short_name:
-                    option_label = f"-{short_name}"
-                if isinstance(long_name, str) and long_name:
-                    option_label = f"{option_label}, --{long_name}" if option_label else f"--{long_name}"
-                if not option_label:
-                    option_label = opt.get("id") or "(option)"
-                evidence_count = _as_int(opt.get("evidence_count"))
-                parse_sites = _as_int(opt.get("parse_site_count"))
-                suffix_bits = []
-                if evidence_count is not None:
-                    suffix_bits.append(f"evidence={evidence_count}")
-                if parse_sites is not None:
-                    suffix_bits.append(f"parse_sites={parse_sites}")
-                suffix = f" ({', '.join(suffix_bits)})" if suffix_bits else ""
-                sections.append(f"- `{option_label}`{suffix}")
-            sections.append("")
-
-    errors = surface_map.get("errors")
-    if isinstance(errors, Mapping):
-        top_exit_paths = errors.get("top_exit_paths")
-        if isinstance(top_exit_paths, list) and top_exit_paths:
-            sections.append("## Exit paths (top)\n")
-            for path in top_exit_paths[:8]:
-                if not isinstance(path, Mapping):
-                    continue
-                exit_code = path.get("exit_code")
-                strength = _as_str(path.get("exit_code_strength")) or "unknown"
-                callsite_ref = _as_str(path.get("callsite_ref")) or "errors/exit_paths.json"
-                target = path.get("target")
-                target_name = None
-                if isinstance(target, Mapping):
-                    target_name = _as_str(target.get("name"))
-                rendered_exit = f"code={exit_code}" if isinstance(exit_code, int) else "code=?"
-                if target_name:
-                    rendered_exit = f"{rendered_exit} via {target_name}"
-                sections.append(f"- {rendered_exit} ({strength}) \u2192 `{callsite_ref}`")
-            sections.append("")
-
-    if not sections:
-        return "_surface_map.json has no recognized sections._\n"
-    return "\n".join(sections)
-
-
 def _interfaces_known_counts(interfaces_payloads: Mapping[str, Any]) -> dict[str, Any]:
     counts: dict[str, Any] = {}
     env_payload = interfaces_payloads.get("env")
@@ -488,7 +403,6 @@ def build_pack_markdown_docs(
     pack_index: Mapping[str, Any],
     manifest: Mapping[str, Any],
     binary_info: Mapping[str, Any],
-    surface_map: Mapping[str, Any],
     modes: Mapping[str, Any],
     interfaces_index: Mapping[str, Any],
     interfaces: Mapping[str, Any],
@@ -600,9 +514,7 @@ def build_pack_markdown_docs(
         "- `contracts/index.json` (mode-scoped contract index; recommended human/LLM entrypoint)\n"
         "- `contracts/modes/<mode_id>.md` (per-mode contract view)\n"
         "- `index.json` (machine-readable entrypoints)\n"
-        "- `surface_map.json` (high-signal routing pointers)\n"
         "- `manifest.json` (coverage summary)\n",
-        _surface_map_summary(surface_map),
         _interfaces_summary(interfaces),
         "## Notes\n",
         "- When a field is `unknown`, the exporter could not establish it (not \"false\").\n"
@@ -615,7 +527,6 @@ def build_pack_markdown_docs(
         "This pack is a directory of JSON + evidence excerpts. JSON files are authoritative; evidence files are bounded.\n\n"
         "## Start here\n\n"
         "- `index.json` \u2192 structured entrypoints + conventions\n"
-        "- `surface_map.json` \u2192 small, high-signal pointers into `modes/`, `cli/`, and `errors/`\n"
         "- `manifest.json` \u2192 coverage summary (what was exported vs omitted)\n"
         "- `contracts/index.json` \u2192 mode-scoped contract views (recommended human/LLM entrypoint)\n\n"
         "## Follow `*_ref` pointers\n\n"
@@ -635,8 +546,8 @@ def build_pack_markdown_docs(
         "- `status: unknown` means argument recovery did not resolve a constant value at that site.\n"
         "\n"
         "## Two-minute walkthrough\n\n"
-        "1. Pick a mode from `surface_map.json` \u2192 `modes.top_modes[*]`.\n"
-        "2. Follow its `representative_callsite_ref` into `evidence/callsites/`.\n"
+        "1. Pick a mode from `modes/index.json` \u2192 `modes[*]`.\n"
+        "2. Follow a `dispatch_sites[*].callsite_ref` into `evidence/callsites/`.\n"
         "3. From the callsite record, note the `from` function address and open `functions/f_<addr>.json`.\n"
         "4. Use that function record to pivot to `strings.json`, `errors/`, `cli/`, and (if present) `evidence/decomp/`.\n"
     )
@@ -649,7 +560,7 @@ def build_pack_markdown_docs(
         "- `index.json`: machine-readable index of canonical entrypoints and conventions\n"
         "- `manifest.json`: export metadata and coverage summary\n"
         "- `binary.json`: target binary facts (format, arch, hashes, ranges)\n"
-        "- `surface_map.json`: small, high-signal routing pointers\n\n"
+        "\n"
         "## Evidence-linked lenses\n\n"
         "- `modes/`: multiplexing/subcommand surfaces (mode inventory, dispatch sites, per-mode slices)\n"
         "- `contracts/`: mode-scoped contract views (joins over modes/cli/interfaces/errors)\n"
@@ -660,9 +571,7 @@ def build_pack_markdown_docs(
         "- `functions/`: function index and selected full function exports\n"
         "- `imports.json`: external symbol inventory\n"
         "- `strings.json`: string inventory (sharded index)\n"
-        "- `callgraph.json`: call edges (sharded index)\n"
-        "- `capabilities.json`: capability signals derived from imports/callsites\n"
-        "- `subsystems.json`: subsystem grouping derived from call patterns\n\n"
+        "- `callgraph.json`: call edges (sharded index)\n\n"
         "## Raw evidence\n\n"
         "- `evidence/callsites/`: bounded callsite context + best-effort recovered args\n"
         "- `evidence/decomp/`: bounded decompiler excerpts\n\n"
@@ -710,28 +619,20 @@ def build_pack_markdown_docs(
         "These examples use real records from this pack and show how to follow evidence trails.\n",
     ]
 
-    top_mode = None
-    modes_section = surface_map.get("modes")
-    if isinstance(modes_section, Mapping):
-        top_mode = _first_dict_entry(modes_section.get("top_modes"))
+    top_mode = _first_dict_entry(modes.get("modes")) if isinstance(modes, Mapping) else None
     if isinstance(top_mode, Mapping):
         mode_id = _as_str(top_mode.get("mode_id"))
-        rep_ref = _as_str(top_mode.get("representative_callsite_ref"))
-        mode_entry = None
-        if mode_id and isinstance(modes, Mapping):
-            mode_entry = _first_dict_entry_matching(
-                modes.get("modes"),
-                lambda m: isinstance(m, Mapping) and m.get("mode_id") == mode_id,
-            )
+        dispatch_site = _first_dict_entry(top_mode.get("dispatch_sites"))
+        rep_ref = _as_str(dispatch_site.get("callsite_ref")) if isinstance(dispatch_site, Mapping) else None
         rendered = {
             "mode_id": mode_id,
             "name": _as_str(top_mode.get("name")),
-            "representative_callsite_ref": rep_ref,
+            "kind": top_mode.get("kind"),
+            "dispatch_sites": (top_mode.get("dispatch_sites") or [])[:1],
+            "dispatch_roots": (top_mode.get("dispatch_roots") or [])[:1],
         }
-        if isinstance(mode_entry, Mapping):
-            rendered["kind"] = mode_entry.get("kind")
-            rendered["dispatch_sites"] = (mode_entry.get("dispatch_sites") or [])[:1]
-            rendered["dispatch_roots"] = (mode_entry.get("dispatch_roots") or [])[:1]
+        if rep_ref:
+            rendered["representative_callsite_ref"] = rep_ref
         examples_sections.extend(
             [
                 "## Example: a mode dispatch trail\n",
@@ -885,7 +786,6 @@ def build_pack_markdown_docs(
         "## Canonical entrypoints\n\n"
         "- `index.json` (start here)\n"
         "- `manifest.json`\n"
-        "- `surface_map.json`\n"
         "- `docs/overview.md`\n"
         "- `docs/field_guide.md`\n"
     )

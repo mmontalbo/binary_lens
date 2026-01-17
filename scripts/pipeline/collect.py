@@ -9,8 +9,8 @@ from collectors.imports import collect_imports
 from collectors.strings import collect_string_refs_by_func, collect_strings
 from errors.exits import derive_exit_paths
 from errors.messages import derive_error_messages
+from errors.refs import collect_error_callsites
 from errors.sites import derive_error_sites
-from errors.surface import build_error_surface, collect_error_callsites
 from export_bounds import Bounds
 from interfaces.surface import build_interfaces_index_payload, collect_interfaces
 from modes.candidates import collect_mode_candidates
@@ -98,7 +98,6 @@ def collect_pipeline_inputs(
             bounds,
             function_meta_by_addr,
         )
-    error_surface = build_error_surface(error_messages_payload, exit_paths_payload, error_sites_payload)
     error_callsite_ids = collect_error_callsites(
         error_messages_payload, exit_paths_payload, error_sites_payload
     )
@@ -148,7 +147,6 @@ def collect_pipeline_inputs(
         error_messages_payload=error_messages_payload,
         exit_paths_payload=exit_paths_payload,
         error_sites_payload=error_sites_payload,
-        error_surface=error_surface,
         error_callsite_ids=error_callsite_ids,
         interfaces_payloads=interfaces_payloads,
         interfaces_index_payload=interfaces_index_payload,

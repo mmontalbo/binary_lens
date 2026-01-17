@@ -51,7 +51,7 @@ DEFAULT_MAX_INTERFACE_PROCESS = 0
 DEFAULT_MAX_INTERFACE_NET = 0
 DEFAULT_MAX_INTERFACE_OUTPUT = 0
 
-CAPABILITY_RULES = [
+CALLGRAPH_SIGNAL_RULES = [
     {
         "id": "parses_command_line_options",
         "name": "parses command-line options",

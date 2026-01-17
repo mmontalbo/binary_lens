@@ -5,7 +5,6 @@ from __future__ import annotations
 from typing import Any
 
 from collectors.callgraph import (
-    build_function_import_sets,
     build_function_metrics,
     build_signal_set,
     collect_function_calls,
@@ -15,17 +14,14 @@ from collectors.callgraph import (
     summarize_functions,
 )
 from contracts.views import build_contract_views
-from derivations.capabilities import derive_capabilities
 from derivations.cli_surface import derive_cli_surface
-from derivations.strings import build_string_bucket_counts
-from derivations.subsystems import derive_subsystems
-from errors.surface import attach_callsite_refs
+from errors.refs import attach_callsite_refs
 from export_bounds import Bounds
-from export_config import BINARY_LENS_VERSION, CAPABILITY_RULES, FORMAT_VERSION
+from export_config import BINARY_LENS_VERSION, CALLGRAPH_SIGNAL_RULES, FORMAT_VERSION
 from export_primitives import addr_str
 from interfaces.surface import attach_interface_callsite_refs
+from modes.refs import attach_mode_callsite_refs
 from modes.slices import build_mode_slices
-from modes.surface import attach_mode_callsite_refs, build_modes_surface
 from outputs.pack_docs import build_pack_markdown_docs
 from outputs.payloads import (
     build_callgraph_payload,
@@ -36,7 +32,6 @@ from outputs.payloads import (
     build_pack_index_payload,
     build_pack_readme,
     build_strings_payload,
-    build_surface_map_payload,
 )
 from outputs.sharding import build_sharded_list_index
 from outputs.writers import build_callsite_records
@@ -55,11 +50,6 @@ def derive_payloads(
         collected.string_refs_by_func,
         collected.string_tags_by_id,
     )
-    import_sets_by_func = build_function_import_sets(collected.call_edges_all)
-    string_bucket_counts_by_func = build_string_bucket_counts(
-        collected.string_refs_by_func,
-        collected.string_tags_by_id,
-    )
 
     full_functions = select_full_functions(
         collected.functions,
@@ -74,7 +64,7 @@ def derive_payloads(
 
     summaries = summarize_functions(collected.functions, index_functions, full_functions)
 
-    signal_set = build_signal_set(CAPABILITY_RULES)
+    signal_set = build_signal_set(CALLGRAPH_SIGNAL_RULES)
     call_edges, total_edges, truncated_edges = select_call_edges(
         collected.call_edges_all,
         signal_set,
@@ -97,7 +87,6 @@ def derive_payloads(
         collected.error_messages_payload,
         collected.exit_paths_payload,
         collected.error_sites_payload,
-        collected.error_surface,
         callsite_paths,
     )
     attach_mode_callsite_refs(collected.modes_payload, collected.dispatch_sites_payload, callsite_paths)
@@ -112,26 +101,6 @@ def derive_payloads(
 
     calls_by_func = collect_function_calls(call_edges)
 
-    capabilities = derive_capabilities(
-        call_edges,
-        callsite_paths,
-        collected.function_meta_by_addr,
-        metrics_by_addr,
-        collected.string_refs_by_func,
-        collected.selected_string_ids,
-        collected.string_tags_by_id,
-        collected.string_value_by_id,
-        CAPABILITY_RULES,
-    )
-
-    subsystems_payload = derive_subsystems(
-        collected.functions,
-        collected.function_meta_by_addr,
-        metrics_by_addr,
-        collected.call_edges_all,
-        import_sets_by_func,
-        string_bucket_counts_by_func,
-    )
     with phase(profiler, "derive_cli_surface"):
         cli_surface = derive_cli_surface(
             collected.cli_inputs.parse_groups,
@@ -177,19 +146,6 @@ def derive_payloads(
         item_id_key="mode_id",
         item_kind="mode_slices",
     )
-    with phase(profiler, "build_surface_map"):
-        modes_surface = build_modes_surface(
-            collected.modes_payload,
-            collected.dispatch_sites_payload,
-            callsite_paths,
-            bounds,
-        )
-        surface_map_payload = build_surface_map_payload(
-            cli_surface,
-            bounds,
-            error_surface=collected.error_surface,
-            modes_surface=modes_surface,
-        )
 
     strings_payload = build_strings_payload(
         collected.strings,
@@ -408,7 +364,6 @@ def derive_payloads(
         pack_index=pack_index_payload,
         manifest=manifest,
         binary_info=collected.binary_info,
-        surface_map=surface_map_payload,
         modes=collected.modes_payload,
         interfaces_index=collected.interfaces_index_payload,
         interfaces=collected.interfaces_payloads,
@@ -448,9 +403,6 @@ def derive_payloads(
         full_functions=full_functions,
         calls_by_func=calls_by_func,
         callsite_evidence=callsite_evidence,
-        capabilities=capabilities,
-        subsystems_payload=subsystems_payload,
-        surface_map_payload=surface_map_payload,
         cli_options_index=cli_options_index,
         cli_parse_loops_index=cli_parse_loops_index,
         modes_slices_index=modes_slices_index,
