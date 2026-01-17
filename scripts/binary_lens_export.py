@@ -16,9 +16,9 @@ if script_dir and script_dir not in sys.path:
     sys.path.insert(0, script_dir)
 
 from export_cli import parse_args, print_usage, resolve_pack_root
-from export_outputs import ensure_dir
 from export_pipeline import ensure_profiler_enabled, write_context_pack
 from ghidra.util import SystemUtilities
+from outputs.io import ensure_dir
 
 
 def main():

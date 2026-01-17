@@ -1,6 +1,6 @@
 """Shared helpers/constants for the error/exit lens."""
 
-from export_collectors import collect_callsite_matches
+from collectors.callsites import collect_callsite_matches
 from export_primitives import addr_to_int
 from symbols import (
     IMPORT_SYMBOL_POLICY,

@@ -6,7 +6,7 @@ This module focuses on extracting candidate handler targets from those post-comp
 "chains" so higher-level heuristics can attach implementation roots to modes.
 """
 
-from export_collectors import _resolve_varnode_addr
+from collectors.pcode import _resolve_varnode_addr
 from export_primitives import addr_str, addr_to_int
 from export_profile import profiled_decompile
 from ghidra.program.model.pcode import PcodeOp

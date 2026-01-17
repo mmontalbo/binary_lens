@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import re
 
-from export_collectors import CLI_COMPARE_SIGNAL_NAMES
+from collectors.cli import CLI_COMPARE_SIGNAL_NAMES
 from export_primitives import normalize_symbol_name
 
 _HANDLER_ASSIGN_RE = re.compile(r"=\s*(?:\([^)]+\)\s*)*&?\s*([A-Za-z_][A-Za-z0-9_]*)\s*;")
@@ -141,4 +141,3 @@ def _is_usage_like_handler_name(name):
     if "usage" in lowered:
         return True
     return False
-

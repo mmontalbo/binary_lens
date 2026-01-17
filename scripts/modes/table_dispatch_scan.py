@@ -7,7 +7,7 @@ heuristics:
 - build fast lookup maps for function-pointer resolution
 """
 
-from export_collectors import _read_ptr_with_reloc, _resolve_string_at, _to_address
+from collectors.ghidra_memory import _read_ptr_with_reloc, _resolve_string_at, _to_address
 from export_primitives import addr_str
 from modes.common import _looks_like_subcommand_token, _token_candidate
 from modes.handlers import _is_ignored_handler_name
@@ -305,4 +305,3 @@ def _parse_table_dispatch_records_at(
             }
         )
     return records
-

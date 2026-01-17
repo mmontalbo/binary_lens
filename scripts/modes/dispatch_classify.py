@@ -11,7 +11,7 @@ argv index mentions, adjacent table-dispatch roots) to keep analysis stable.
 
 import re
 
-from export_collectors import _to_address
+from collectors.ghidra_memory import _to_address
 from ghidra.app.decompiler import DecompInterface
 from modes.common import _c_string_literal
 from modes.ghidra_helpers import _decompile_function_text
@@ -184,4 +184,3 @@ def _classify_dispatch_groups(
             dispatch_meta_by_callsite[callsite_id] = meta
 
     return dispatch_meta_by_func, dispatch_meta_by_callsite
-
