@@ -7,10 +7,12 @@ This module wires together the smaller mode-export subsystems:
 - dispatch classification
 - stable payload construction
 
-Public API: `collect_mode_candidates` (re-exported from `export_modes.py`).
+Public API: `collect_mode_candidates`.
 """
 
-from export_collectors import collect_cli_option_compare_sites, extract_call_args_for_callsites
+from collectors.call_args import extract_call_args_for_callsites
+from collectors.cli import collect_cli_option_compare_sites
+from export_bounds import Bounds
 from export_config import DEFAULT_MAX_DECOMPILE_FUNCTION_SIZE
 from export_primitives import addr_str, addr_to_int
 from modes.dispatch_classify import _classify_dispatch_groups
@@ -24,9 +26,9 @@ from modes.implementation_roots import _attach_implementation_roots
 from modes.mode_candidates import _build_mode_candidates
 from modes.name_heuristics import entry_name_candidates
 from modes.payloads import _build_dispatch_sites_payload, _build_modes_index_payload
-from modes.table_dispatch import (
+from modes.table_dispatch_candidates import _collect_table_dispatch_mode_candidates
+from modes.table_dispatch_payload import (
     _attach_table_dispatch_sites,
-    _collect_table_dispatch_mode_candidates,
     _collect_table_dispatch_site_infos,
     _collect_table_dispatch_tokens,
 )
@@ -37,7 +39,7 @@ def collect_mode_candidates(
     call_edges,
     function_meta_by_addr,
     string_addr_map_all,
-    options,
+    bounds: Bounds,
     monitor=None,
 ):
     compare_sites = collect_cli_option_compare_sites(call_edges, function_meta_by_addr)
@@ -49,7 +51,7 @@ def collect_mode_candidates(
     total_dispatch_sites = len(groups)
 
     callgraph_callees_by_func, out_degree_by_func = _build_callgraph_out_degree(call_edges)
-    entry_names = entry_name_candidates(options)
+    entry_names = entry_name_candidates(bounds)
     entry_func_ids = []
     for func_id, meta in (function_meta_by_addr or {}).items():
         name = (meta or {}).get("name")
@@ -69,10 +71,10 @@ def collect_mode_candidates(
                 entry_func_ids.append(addr_str(entry_func.getEntryPoint()))
     entry_distances = _build_entry_distances(callgraph_callees_by_func, entry_func_ids)
 
-    max_dispatch_functions = options.get("max_mode_dispatch_functions", 0)
-    max_callsites_per_function = options.get("max_mode_callsites_per_function", 0)
-    max_token_len = options.get("max_mode_token_length", 0)
-    max_tokens_per_callsite = options.get("max_mode_tokens_per_callsite", 0)
+    max_dispatch_functions = bounds.max_mode_dispatch_functions
+    max_callsites_per_function = bounds.max_mode_callsites_per_function
+    max_token_len = bounds.max_mode_token_length
+    max_tokens_per_callsite = bounds.max_mode_tokens_per_callsite
     min_token_len = 1
 
     selected_groups, callsite_ids = _select_dispatch_groups(
@@ -125,7 +127,7 @@ def collect_mode_candidates(
             call_edges,
             compare_callsites_by_func,
             function_meta_by_addr,
-            options,
+            bounds,
             monitor=monitor,
         )
     )
@@ -144,18 +146,18 @@ def collect_mode_candidates(
         mode_candidates,
         callsite_meta,
         dispatch_meta_by_callsite,
-        options,
+        bounds,
         min_token_len,
     )
 
-    min_table_dispatch_modes = options.get("min_table_dispatch_modes", 0) or 5
+    min_table_dispatch_modes = bounds.get("min_table_dispatch_modes", 0) or 5
     if len(selected_mode_ids) < min_table_dispatch_modes:
         added = False
         for mode_id, mode in _collect_table_dispatch_mode_candidates(
             program,
             function_meta_by_addr,
             string_addr_map_all,
-            options,
+            bounds,
             monitor=monitor,
         ).items():
             if mode_id in mode_candidates:
@@ -168,7 +170,7 @@ def collect_mode_candidates(
                 mode_candidates,
                 callsite_meta,
                 dispatch_meta_by_callsite,
-                options,
+                bounds,
                 min_token_len,
             )
 
@@ -182,7 +184,7 @@ def collect_mode_candidates(
         selected_mode_ids,
         table_dispatch_tokens,
         dispatch_meta_by_func,
-        options,
+        bounds,
         total_dispatch_sites,
     )
 

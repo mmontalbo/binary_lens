@@ -8,6 +8,7 @@ They should remain schema-stable; refactors in this module should avoid altering
 field meanings, ordering, or truncation behavior.
 """
 
+from export_bounds import Bounds
 from export_primitives import addr_to_int
 from modes.common import _confidence_from_count, _source_rank
 
@@ -64,19 +65,17 @@ def _derive_mode_kind(mode, dispatch_kind_by_callsite):
 
 
 def _build_modes_index_payload(
-    mode_candidates, callsite_meta, dispatch_kind_by_callsite, options, min_token_len
+    mode_candidates,
+    callsite_meta,
+    dispatch_kind_by_callsite,
+    bounds: Bounds,
+    min_token_len,
 ):
-    raw_max_modes = options.get("max_modes", 0)
-    try:
-        max_modes = int(raw_max_modes)
-    except Exception:
-        max_modes = 0
-    if max_modes <= 0:
-        max_modes = None
-    max_sites = options.get("max_mode_dispatch_sites_per_mode", 0)
-    max_roots = options.get("max_mode_dispatch_roots_per_mode", 0)
-    max_token_len = options.get("max_mode_token_length", 0)
-    max_tokens_per_callsite = options.get("max_mode_tokens_per_callsite", 0)
+    max_modes = bounds.optional("max_modes")
+    max_sites = bounds.max_mode_dispatch_sites_per_mode
+    max_roots = bounds.max_mode_dispatch_roots_per_mode
+    max_token_len = bounds.max_mode_token_length
+    max_tokens_per_callsite = bounds.max_mode_tokens_per_callsite
     preferred_dispatch_kinds = set(
         [
             "argv0_compare_chain",
@@ -383,7 +382,7 @@ def _build_modes_index_payload(
             item.get("mode_id") or "",
         )
     )
-    max_low_confidence = options.get("max_mode_low_confidence_candidates", 0) or 50
+    max_low_confidence = bounds.max_mode_low_confidence_candidates or 50
     low_confidence_truncated = False
     if max_low_confidence and len(low_confidence_candidates) > max_low_confidence:
         low_confidence_candidates = low_confidence_candidates[:max_low_confidence]
@@ -446,13 +445,13 @@ def _build_dispatch_sites_payload(
     selected_mode_ids,
     table_dispatch_tokens,
     dispatch_meta_by_func,
-    options,
+    bounds: Bounds,
     total_dispatch_sites,
 ):
-    max_tokens = options.get("max_mode_dispatch_site_tokens", 0)
-    max_callsites = options.get("max_mode_dispatch_site_callsites", 0)
-    max_ignored = options.get("max_mode_dispatch_site_ignored_tokens", 0)
-    max_dispatch_sites = options.get("max_mode_dispatch_functions", 0)
+    max_tokens = bounds.max_mode_dispatch_site_tokens
+    max_callsites = bounds.max_mode_dispatch_site_callsites
+    max_ignored = bounds.max_mode_dispatch_site_ignored_tokens
+    max_dispatch_sites = bounds.max_mode_dispatch_functions
 
     dispatch_sites = []
     for group in groups:

@@ -12,7 +12,8 @@ The end result is a set of handler-callsite IDs (for callsite export) and
 auxiliary metadata used by dispatch classification.
 """
 
-from export_collectors import _to_address
+from collectors.ghidra_memory import _to_address
+from export_bounds import Bounds
 from export_primitives import addr_str, addr_to_int
 from ghidra.app.decompiler import DecompInterface
 from modes.common import _add_implementation_root, _c_string_literal
@@ -23,7 +24,7 @@ from modes.compare_chain import (
 )
 from modes.ghidra_helpers import _decompile_function_text, _find_function_by_name
 from modes.handlers import _extract_handler_candidates_from_decomp, _is_ignored_handler_name
-from modes.table_dispatch import _collect_table_dispatch_targets
+from modes.table_dispatch_scan import _collect_table_dispatch_targets
 
 
 def _attach_implementation_roots(
@@ -32,7 +33,7 @@ def _attach_implementation_roots(
     call_edges,
     compare_callsites_by_func,
     function_meta_by_addr,
-    options,
+    bounds: Bounds,
     monitor=None,
 ):
     if not mode_candidates:
@@ -41,7 +42,7 @@ def _attach_implementation_roots(
     compare_chain_targets = _collect_compare_chain_targets(
         callsites_by_func, callsite_targets, compare_callsites_by_func
     )
-    max_roots = options.get("max_mode_dispatch_roots_per_mode", 0)
+    max_roots = bounds.max_mode_dispatch_roots_per_mode
     max_table_targets = max_roots if max_roots else 6
     max_table_refs = max(8, max_table_targets * 2)
     table_cache = {}
@@ -289,4 +290,3 @@ def _attach_implementation_roots(
         func_id: len(targets) for func_id, targets in handler_targets_by_func.items()
     }
     return handler_callsites, table_dispatch_funcs, handler_diversity_by_func
-

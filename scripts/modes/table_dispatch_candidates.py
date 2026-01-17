@@ -12,7 +12,8 @@ from __future__ import annotations
 
 import re
 
-from export_collectors import _read_ptr_with_reloc, _resolve_string_at, _to_address
+from collectors.ghidra_memory import _read_ptr_with_reloc, _resolve_string_at, _to_address
+from export_bounds import Bounds
 from export_primitives import addr_str, addr_to_int
 from modes.common import (
     _add_implementation_root,
@@ -84,16 +85,20 @@ def _lookup_symbols_by_name(symbol_table, name, max_symbols=None):
 
 
 def _collect_table_dispatch_mode_candidates_from_symbols(
-    program, function_meta_by_addr, string_addr_map_all, options, monitor=None
+    program,
+    function_meta_by_addr,
+    string_addr_map_all,
+    bounds: Bounds,
+    monitor=None,
 ):
-    if not use_name_heuristics(options):
+    if not use_name_heuristics(bounds):
         return {}
     if program is None:
         return {}
-    max_token_len = options.get("max_mode_token_length", 0) or 32
-    max_modes = options.get("max_modes", 0) or 200
-    min_entries = options.get("min_table_dispatch_table_entries", 0) or 5
-    max_tables = options.get("max_table_dispatch_tables", 0) or 4
+    max_token_len = bounds.max_mode_token_length or 32
+    max_modes = bounds.max_modes or 200
+    min_entries = bounds.get("min_table_dispatch_table_entries", 0) or 5
+    max_tables = bounds.get("max_table_dispatch_tables", 0) or 4
     max_entries = max(64, min(max_modes * 4, 1024))
 
     ptr_size = program.getDefaultPointerSize()
@@ -251,14 +256,18 @@ def _collect_table_dispatch_mode_candidates_from_symbols(
 
 
 def _collect_table_dispatch_mode_candidates_from_memory(
-    program, function_meta_by_addr, string_addr_map_all, options, monitor=None
+    program,
+    function_meta_by_addr,
+    string_addr_map_all,
+    bounds: Bounds,
+    monitor=None,
 ):
     if program is None:
         return {}
-    max_token_len = options.get("max_mode_token_length", 0) or 32
-    max_modes = options.get("max_modes", 0) or 200
-    min_entries = options.get("min_table_dispatch_table_entries", 0) or 5
-    max_tables = options.get("max_table_dispatch_tables", 0) or 4
+    max_token_len = bounds.max_mode_token_length or 32
+    max_modes = bounds.max_modes or 200
+    min_entries = bounds.get("min_table_dispatch_table_entries", 0) or 5
+    max_tables = bounds.get("max_table_dispatch_tables", 0) or 4
 
     ptr_size = program.getDefaultPointerSize()
     big_endian = program.getLanguage().isBigEndian()
@@ -417,14 +426,18 @@ def _collect_table_dispatch_mode_candidates_from_memory(
 
 
 def _collect_table_dispatch_mode_candidates_from_handlers(
-    program, function_meta_by_addr, string_addr_map_all, options, monitor=None
+    program,
+    function_meta_by_addr,
+    string_addr_map_all,
+    bounds: Bounds,
+    monitor=None,
 ):
-    if not use_name_heuristics(options):
+    if not use_name_heuristics(bounds):
         return {}
     if program is None or not function_meta_by_addr:
         return {}
-    max_token_len = options.get("max_mode_token_length", 0) or 32
-    max_modes = options.get("max_modes", 0) or 200
+    max_token_len = bounds.max_mode_token_length or 32
+    max_modes = bounds.max_modes or 200
     max_handlers = max(200, max_modes)
     max_refs_per_handler = 8
 
@@ -541,12 +554,15 @@ def _collect_table_dispatch_mode_candidates_from_handlers(
 
 
 def _collect_table_dispatch_mode_candidates_from_strings(
-    program, string_addr_map_all, options, monitor=None
+    program,
+    string_addr_map_all,
+    bounds: Bounds,
+    monitor=None,
 ):
     if program is None or not string_addr_map_all:
         return {}
-    max_token_len = options.get("max_mode_token_length", 0) or 32
-    max_modes = options.get("max_modes", 0) or 200
+    max_token_len = bounds.max_mode_token_length or 32
+    max_modes = bounds.max_modes or 200
     max_scan_strings = max(2500, max_modes * 40)
 
     string_addrs = sorted(string_addr_map_all.keys(), key=addr_to_int)
@@ -610,14 +626,18 @@ def _collect_table_dispatch_mode_candidates_from_strings(
 
 
 def _collect_table_dispatch_mode_candidates(
-    program, function_meta_by_addr, string_addr_map_all, options, monitor=None
+    program,
+    function_meta_by_addr,
+    string_addr_map_all,
+    bounds: Bounds,
+    monitor=None,
 ):
-    if use_name_heuristics(options):
+    if use_name_heuristics(bounds):
         mode_candidates = _collect_table_dispatch_mode_candidates_from_symbols(
             program,
             function_meta_by_addr,
             string_addr_map_all,
-            options,
+            bounds,
             monitor=monitor,
         )
         if mode_candidates:
@@ -626,7 +646,7 @@ def _collect_table_dispatch_mode_candidates(
             program,
             function_meta_by_addr,
             string_addr_map_all,
-            options,
+            bounds,
             monitor=monitor,
         )
         if mode_candidates:
@@ -634,7 +654,7 @@ def _collect_table_dispatch_mode_candidates(
     mode_candidates = _collect_table_dispatch_mode_candidates_from_strings(
         program,
         string_addr_map_all,
-        options,
+        bounds,
         monitor=monitor,
     )
     if mode_candidates:
@@ -643,6 +663,6 @@ def _collect_table_dispatch_mode_candidates(
         program,
         function_meta_by_addr,
         string_addr_map_all,
-        options,
+        bounds,
         monitor=monitor,
     )

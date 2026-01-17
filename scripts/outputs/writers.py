@@ -1,6 +1,7 @@
 import os
 
-from export_collectors import collect_flow_summary, function_size
+from collectors.callgraph import collect_flow_summary, function_size
+from export_bounds import Bounds
 from export_config import DEFAULT_MAX_DECOMPILE_FUNCTION_SIZE
 from export_primitives import addr_filename, addr_str
 from export_profile import profiled_decompile
@@ -51,7 +52,8 @@ def _looks_like_help_printer(func_id, string_refs_by_func, string_tags_by_id, st
     return False
 
 
-def write_callsite_records(callsite_records, call_edges, evidence_callsites_dir, extra_callsites=None):
+def build_callsite_records(callsite_records, call_edges, extra_callsites=None):
+    """Prepare callsite evidence records and their relative pack paths."""
     # Only emit callsite evidence for selected edges plus explicitly requested extras.
     selected_callsite_records = {}
     for edge in call_edges:
@@ -85,9 +87,20 @@ def write_callsite_records(callsite_records, call_edges, evidence_callsites_dir,
             }
 
     callsite_paths = {}
-    for callsite, record in selected_callsite_records.items():
+    for callsite in selected_callsite_records:
         filename = addr_filename("cs", callsite, "json")
         callsite_paths[callsite] = pack_path("evidence", "callsites", filename)
+    return callsite_paths, selected_callsite_records
+
+
+def write_callsite_records(callsite_records, call_edges, evidence_callsites_dir, extra_callsites=None):
+    callsite_paths, selected_callsite_records = build_callsite_records(
+        callsite_records,
+        call_edges,
+        extra_callsites=extra_callsites,
+    )
+    for callsite, record in selected_callsite_records.items():
+        filename = addr_filename("cs", callsite, "json")
         write_json(os.path.join(evidence_callsites_dir, filename), record)
     return callsite_paths
 
@@ -95,7 +108,7 @@ def write_callsite_records(callsite_records, call_edges, evidence_callsites_dir,
 def write_function_exports(
     program,
     full_functions,
-    options,
+    bounds: Bounds,
     string_refs_by_func,
     selected_string_ids,
     string_tags_by_id,
@@ -133,8 +146,8 @@ def write_function_exports(
             return_type = None
 
         calls = calls_by_func.get(entry_addr, [])
-        if len(calls) > options["max_calls_per_function"]:
-            calls = calls[: options["max_calls_per_function"]]
+        if len(calls) > bounds.max_calls_per_function:
+            calls = calls[: bounds.max_calls_per_function]
             calls_truncated = True
         else:
             calls_truncated = False
@@ -201,7 +214,7 @@ def write_function_exports(
             if decomp_text:
                 lines = decomp_text.splitlines()
                 decomp_excerpt["line_count"] = len(lines)
-                max_lines = options["max_decomp_lines"]
+                max_lines = bounds.max_decomp_lines
                 if _looks_like_help_printer(
                     entry_addr,
                     string_refs_by_func,

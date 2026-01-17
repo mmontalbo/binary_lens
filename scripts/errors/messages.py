@@ -4,17 +4,15 @@ from __future__ import annotations
 
 from typing import Any, Mapping, MutableMapping, Sequence
 
+from collectors.call_args import extract_call_args_for_callsites
+from collectors.strings import is_printf_format_string, is_usage_marker
 from errors.common import (
     ERROR_BUCKET_EMITTERS,
     ERROR_EMITTER_NAMES,
     WARN_BUCKET_EMITTERS,
     _collect_callsites,
 )
-from export_collectors import (
-    extract_call_args_for_callsites,
-    is_printf_format_string,
-    is_usage_marker,
-)
+from export_bounds import Bounds
 from export_primitives import addr_to_int
 
 StringId = str
@@ -636,7 +634,7 @@ def derive_error_messages(
     call_edges,
     function_meta_by_addr,
     string_tags_by_id,
-    options,
+    bounds: Bounds,
     call_args_cache=None,
 ):
     """Compute `errors/messages.json` and supporting error-emitter link state."""
@@ -653,7 +651,7 @@ def derive_error_messages(
     candidate_ids = set(candidates.keys())
     candidate_func_ids = _collect_candidate_function_ids(string_refs_by_func, candidate_ids)
 
-    max_emitters = options.get("max_error_emitter_callsites", 0)
+    max_emitters = bounds.max_error_emitter_callsites
     considered_callsites, truncated_emitters = _prioritize_emitter_callsites(
         emitter_callsites, candidate_func_ids, max_emitters
     )
@@ -661,15 +659,15 @@ def derive_error_messages(
     links_by_string = {}
     observed_strings = set()
     observed_emitter_bucket = {}
-    max_observed_strings = _parse_int_option(options, "max_error_observed_strings")
-    max_observed_callsites = _parse_int_option(options, "max_error_observed_callsites")
-    max_observed_functions = _parse_int_option(options, "max_error_observed_functions")
+    max_observed_strings = _parse_int_option(bounds, "max_error_observed_strings")
+    max_observed_callsites = _parse_int_option(bounds, "max_error_observed_callsites")
+    max_observed_functions = _parse_int_option(bounds, "max_error_observed_functions")
 
     auto_observed_limits = False
     if not (max_observed_strings or max_observed_callsites or max_observed_functions):
         if len(considered_callsites) >= 1500:
             auto_observed_limits = True
-            max_messages_budget = options.get("max_error_messages", 0)
+            max_messages_budget = bounds.max_error_messages
             if max_messages_budget:
                 max_observed_strings = int(max_messages_budget)
                 max_observed_callsites = max(200, int(max_observed_strings * 4))
@@ -701,7 +699,7 @@ def derive_error_messages(
     _apply_observed_emitter_buckets(candidates, observed_emitter_bucket, string_tags_by_id)
 
     string_xrefs = _build_string_xrefs(string_refs_by_func)
-    max_callsites = options.get("max_error_message_callsites", 5)
+    max_callsites = bounds.max_error_message_callsites
     _add_heuristic_links(
         candidates,
         observed_strings=observed_strings,
@@ -711,7 +709,7 @@ def derive_error_messages(
         emitter_callsites_by_func=emitter_callsites_by_func,
     )
 
-    max_funcs = options.get("max_error_message_functions", 10)
+    max_funcs = bounds.max_error_message_functions
     messages = _build_messages(
         candidates,
         links_by_string=links_by_string,
@@ -730,13 +728,7 @@ def derive_error_messages(
         )
 
     messages.sort(key=message_sort_key)
-    raw_max_messages = options.get("max_error_messages", 0)
-    try:
-        max_messages = int(raw_max_messages)
-    except Exception:
-        max_messages = 0
-    if max_messages <= 0:
-        max_messages = None
+    max_messages = bounds.optional("max_error_messages")
     truncated = False
     if max_messages and len(messages) > max_messages:
         messages = messages[:max_messages]

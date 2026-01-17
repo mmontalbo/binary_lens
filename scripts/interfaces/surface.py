@@ -4,7 +4,9 @@ from __future__ import annotations
 
 from typing import Any
 
-from export_collectors import collect_callsite_matches, extract_call_args_for_callsites
+from collectors.call_args import extract_call_args_for_callsites
+from collectors.callsites import collect_callsite_matches
+from export_bounds import Bounds
 from export_config import FORMAT_VERSION
 from export_primitives import addr_to_int
 from interfaces.common import (
@@ -359,7 +361,7 @@ def collect_interfaces(
     call_edges,
     function_meta_by_addr,
     string_addr_map_all,
-    options,
+    bounds: Bounds,
     monitor=None,
     *,
     call_args_cache=None,
@@ -372,13 +374,8 @@ def collect_interfaces(
         operations, aliases = SURFACE_SPECS[surface]
         matches = _select_matches(call_edges, function_meta_by_addr, operations, aliases)
         total_candidates = len(matches)
-        raw_max_entries = options.get(SURFACE_MAX_KEYS.get(surface, ""))
-        try:
-            max_entries = int(raw_max_entries) if raw_max_entries is not None else 0
-        except Exception:
-            max_entries = 0
-        if max_entries <= 0:
-            max_entries = None
+        max_key = SURFACE_MAX_KEYS.get(surface, "")
+        max_entries = bounds.optional(max_key) if max_key else None
 
         selected = matches if max_entries is None else matches[:max_entries]
         callsite_ids = [match.callsite_id for match in selected]

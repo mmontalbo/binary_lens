@@ -11,15 +11,16 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
-from export_collectors import (
+from collectors.call_args import extract_call_args_for_callsites
+from collectors.cli import (
     build_cli_compare_details,
     build_cli_parse_details,
     collect_cli_option_compare_sites,
     collect_cli_parse_sites,
     collect_flag_check_sites,
-    extract_call_args_for_callsites,
-    parse_option_token,
 )
+from collectors.cli_tokens import parse_option_token
+from export_bounds import Bounds
 
 
 @dataclass(frozen=True)
@@ -34,7 +35,7 @@ class CliInputs:
 
 def collect_cli_inputs(
     program: Any,
-    options: dict[str, Any],
+    bounds: Bounds,
     call_edges_all: list[dict[str, Any]],
     function_meta_by_addr: dict[str, Any],
     string_addr_map_all: dict[str, Any],
@@ -91,7 +92,7 @@ def collect_cli_inputs(
         parse_sites,
         call_args_by_callsite,
         string_addr_map_all,
-        options.get("max_cli_longopt_entries", 0),
+        bounds.max_cli_longopt_entries,
     )
 
     flag_addresses = set()
@@ -104,7 +105,7 @@ def collect_cli_inputs(
     check_sites_by_flag_addr = collect_flag_check_sites(
         program,
         sorted(flag_addresses),
-        options.get("max_cli_check_sites", 0),
+        bounds.max_cli_check_sites,
     )
 
     compare_details_by_callsite = build_cli_compare_details(
@@ -121,4 +122,3 @@ def collect_cli_inputs(
         parse_callsite_ids=parse_callsite_ids,
         compare_callsite_ids=compare_callsite_ids,
     )
-

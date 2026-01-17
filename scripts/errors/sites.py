@@ -1,10 +1,17 @@
 """Derive `errors/error_sites.json` payload."""
 
 from errors.common import INT_TYPES, STATUS_EMITTERS
+from export_bounds import Bounds
 from export_primitives import addr_to_int
 
 
-def derive_error_sites(messages_payload, exit_callsites_by_func, call_args_cache, options, function_meta_by_addr):
+def derive_error_sites(
+    messages_payload,
+    exit_callsites_by_func,
+    call_args_cache,
+    bounds: Bounds,
+    function_meta_by_addr,
+):
     callsite_imports = {}
     for message in messages_payload.get("messages", []):
         for callsite in message.get("emitting_callsites", []):
@@ -38,7 +45,7 @@ def derive_error_sites(messages_payload, exit_callsites_by_func, call_args_cache
                 site["imports"].add(emitter)
 
     results = []
-    max_callsites = options.get("max_error_site_callsites", 0)
+    max_callsites = bounds.max_error_site_callsites
     for site in sites.values():
         all_callsite_ids = sorted(set(site["callsite_ids"]), key=addr_to_int)
         callsite_ids = list(all_callsite_ids)
@@ -114,13 +121,7 @@ def derive_error_sites(messages_payload, exit_callsites_by_func, call_args_cache
         })
 
     results.sort(key=lambda item: addr_to_int(item.get("function_id")))
-    raw_max_sites = options.get("max_error_sites", 0)
-    try:
-        max_sites = int(raw_max_sites)
-    except Exception:
-        max_sites = 0
-    if max_sites <= 0:
-        max_sites = None
+    max_sites = bounds.optional("max_error_sites")
     truncated = False
     if max_sites and len(results) > max_sites:
         results = results[:max_sites]

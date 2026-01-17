@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from derivations.constants import INT_TYPES
+from export_bounds import Bounds
 from export_primitives import addr_to_int
 
 
@@ -20,15 +21,15 @@ class CliSurfaceBounds:
     max_check_sites: int
 
     @classmethod
-    def from_options(cls, options: dict[str, Any]) -> CliSurfaceBounds:
+    def from_bounds(cls, bounds: Bounds) -> CliSurfaceBounds:
         return cls(
-            max_options=options.get("max_cli_options", 0),
-            max_parse_loops=options.get("max_cli_parse_loops", 0),
-            max_evidence=options.get("max_cli_option_evidence", 0),
-            max_parse_sites=options.get("max_cli_parse_sites_per_option", 0),
-            max_callsites_per_loop=options.get("max_cli_callsites_per_parse_loop", 0),
-            max_flag_vars=options.get("max_cli_flag_vars", 0),
-            max_check_sites=options.get("max_cli_check_sites", 0),
+            max_options=bounds.max_cli_options,
+            max_parse_loops=bounds.max_cli_parse_loops,
+            max_evidence=bounds.max_cli_option_evidence,
+            max_parse_sites=bounds.max_cli_parse_sites_per_option,
+            max_callsites_per_loop=bounds.max_cli_callsites_per_parse_loop,
+            max_flag_vars=bounds.max_cli_flag_vars,
+            max_check_sites=bounds.max_cli_check_sites,
         )
 
 
@@ -533,7 +534,7 @@ def derive_cli_surface(
     parse_details_by_callsite,
     compare_details_by_callsite,
     callsite_paths,
-    options,
+    bounds: Bounds,
     check_sites_by_flag_addr,
 ):
     """Derive CLI surface artifacts.
@@ -544,12 +545,12 @@ def derive_cli_surface(
     - `truncated` flags indicate exporter bounds were hit; missing entries may exist.
     """
 
-    bounds = CliSurfaceBounds.from_options(options or {})
+    cli_bounds = CliSurfaceBounds.from_bounds(bounds)
     return _CliSurfaceDeriver(
         parse_groups=parse_groups or [],
         parse_details_by_callsite=parse_details_by_callsite or {},
         compare_details_by_callsite=compare_details_by_callsite or {},
         callsite_paths=callsite_paths or {},
         check_sites_by_flag_addr=check_sites_by_flag_addr or {},
-        bounds=bounds,
+        bounds=cli_bounds,
     ).derive()

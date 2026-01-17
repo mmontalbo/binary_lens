@@ -5,6 +5,7 @@ payloads (modes + CLI surface + optional errors/strings). It should not depend o
 Ghidra APIs so it remains easy to read and mechanically refactor.
 """
 
+from export_bounds import Bounds
 from export_primitives import addr_to_int
 from modes.name_heuristics import prefer_cmd_table_roots
 
@@ -32,25 +33,19 @@ def _collect_option_ids_from_parse_sites(options_list, func_ids, max_options):
 def build_mode_slices(
     modes_payload,
     cli_surface,
-    options,
+    bounds: Bounds,
     string_refs_by_func=None,
     selected_string_ids=None,
     error_messages_payload=None,
     exit_paths_payload=None,
 ):
-    raw_max_slices = options.get("max_mode_slices", 0)
-    try:
-        max_slices = int(raw_max_slices)
-    except Exception:
-        max_slices = 0
-    if max_slices <= 0:
-        max_slices = None
-    max_roots = options.get("max_mode_slice_roots", 0)
-    max_sites = options.get("max_mode_slice_dispatch_sites", 0)
-    max_options = options.get("max_mode_slice_options", 0)
-    max_strings = options.get("max_mode_slice_strings", 0)
-    max_messages = options.get("max_mode_slice_messages", 0)
-    max_exit_paths = options.get("max_mode_slice_exit_paths", 0)
+    max_slices = bounds.optional("max_mode_slices")
+    max_roots = bounds.max_mode_slice_roots
+    max_sites = bounds.max_mode_slice_dispatch_sites
+    max_options = bounds.max_mode_slice_options
+    max_strings = bounds.max_mode_slice_strings
+    max_messages = bounds.max_mode_slice_messages
+    max_exit_paths = bounds.max_mode_slice_exit_paths
 
     modes = modes_payload.get("modes", []) if modes_payload else []
     parse_loops = (cli_surface or {}).get("parse_loops", [])
@@ -106,7 +101,7 @@ def build_mode_slices(
             table_roots = [
                 root for root in roots_sorted if "table_dispatch" in (root.get("sources") or [])
             ]
-            if table_roots and prefer_cmd_table_roots(table_roots, options):
+            if table_roots and prefer_cmd_table_roots(table_roots, bounds):
                 roots_sorted = table_roots
                 selection_strategy = "table_dispatch_roots_then_cli_scope"
         else:

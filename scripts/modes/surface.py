@@ -5,6 +5,7 @@ decide where to start reading mode evidence. This module also contains the small
 "callsite_ref" hydration pass that runs after callsite evidence has been written.
 """
 
+from export_bounds import Bounds
 from export_primitives import addr_to_int
 
 
@@ -54,8 +55,13 @@ def attach_mode_callsite_refs(modes_payload, dispatch_sites_payload, callsite_pa
             entry["representative_callsite_ref"] = callsite_paths.get(representative_callsite)
 
 
-def build_modes_surface(modes_payload, dispatch_sites_payload, callsite_paths, options):
-    max_entries = options.get("max_mode_surface_entries", 0) or 5
+def build_modes_surface(
+    modes_payload,
+    dispatch_sites_payload,
+    callsite_paths,
+    bounds: Bounds,
+):
+    max_entries = bounds.max_mode_surface_entries or 5
 
     modes = modes_payload.get("modes", []) if modes_payload else []
     dispatch_sites = (
@@ -153,4 +159,3 @@ def build_modes_surface(modes_payload, dispatch_sites_payload, callsite_paths, o
         surface["dispatch_sites_ref"] = "modes/dispatch_sites.json"
         surface["slices_ref"] = "modes/slices.json"
     return surface
-

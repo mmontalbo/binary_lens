@@ -1,7 +1,8 @@
 """Derive `errors/exit_paths.json` payload."""
 
+from collectors.call_args import extract_call_args_for_callsites
 from errors.common import EXIT_CALL_NAMES, INT_TYPES, _collect_callsites
-from export_collectors import extract_call_args_for_callsites
+from export_bounds import Bounds
 from export_config import DEFAULT_MAX_DECOMPILE_FUNCTION_SIZE
 from export_primitives import addr_to_int
 
@@ -11,7 +12,7 @@ def derive_exit_paths(
     monitor,
     call_edges,
     function_meta_by_addr,
-    options,
+    bounds: Bounds,
     call_args_cache=None,
     emitter_callsites_by_func=None,
 ):
@@ -77,13 +78,7 @@ def derive_exit_paths(
             },
         })
     direct_calls.sort(key=lambda item: addr_to_int(item.get("callsite_id")))
-    raw_max_exit_paths = options.get("max_exit_paths", 0)
-    try:
-        max_exit_paths = int(raw_max_exit_paths)
-    except Exception:
-        max_exit_paths = 0
-    if max_exit_paths <= 0:
-        max_exit_paths = None
+    max_exit_paths = bounds.optional("max_exit_paths")
     truncated = False
     if max_exit_paths and len(direct_calls) > max_exit_paths:
         direct_calls = direct_calls[:max_exit_paths]
@@ -113,7 +108,7 @@ def derive_exit_paths(
                 },
             })
     likely_fatal.sort(key=lambda item: addr_to_int(item.get("function_id")))
-    max_patterns = options.get("max_exit_patterns", 0)
+    max_patterns = bounds.max_exit_patterns
     if max_patterns and len(likely_fatal) > max_patterns:
         likely_fatal = likely_fatal[:max_patterns]
 
