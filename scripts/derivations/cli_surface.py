@@ -527,3 +527,36 @@ def derive_cli_surface(
         check_sites_by_flag_addr=check_sites_by_flag_addr or {},
         bounds=cli_bounds,
     ).derive()
+
+
+def attach_cli_callsite_refs(cli_surface: dict[str, Any], callsite_paths: dict[str, str]) -> None:
+    if not callsite_paths or not cli_surface:
+        return
+    for option in cli_surface.get("options", []) or []:
+        for site in option.get("parse_sites", []) or []:
+            callsite_id = site.get("callsite_id")
+            if not callsite_id:
+                continue
+            ref = callsite_paths.get(callsite_id)
+            if ref:
+                site["callsite_ref"] = ref
+        for evidence in option.get("evidence", []) or []:
+            callsite_id = evidence.get("callsite_id")
+            if not callsite_id:
+                continue
+            ref = callsite_paths.get(callsite_id)
+            if ref:
+                evidence["callsite_ref"] = ref
+
+    for loop in cli_surface.get("parse_loops", []) or []:
+        callsite_ids = loop.get("callsite_ids") or []
+        callsite_refs = []
+        for callsite_id in callsite_ids:
+            ref = callsite_paths.get(callsite_id)
+            if ref:
+                callsite_refs.append(ref)
+        if callsite_refs:
+            loop["callsite_refs"] = callsite_refs
+        rep_callsite = loop.get("representative_callsite_id")
+        if rep_callsite:
+            loop["representative_callsite_ref"] = callsite_paths.get(rep_callsite)

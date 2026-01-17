@@ -52,28 +52,73 @@ def _looks_like_help_printer(func_id, string_refs_by_func, string_tags_by_id, st
     return False
 
 
-def build_callsite_records(callsite_records, call_edges, extra_callsites=None):
+def build_callsite_records(callsite_records, call_edges, extra_callsites=None, callsite_ids=None):
     """Prepare callsite evidence records and their relative pack paths."""
     # Only emit callsite evidence for selected edges plus explicitly requested extras.
     selected_callsite_records = {}
-    for edge in call_edges:
-        callsite = edge.get("callsite")
-        base_record = callsite_records.get(callsite)
-        if base_record is None:
-            continue
-        record = selected_callsite_records.get(callsite)
-        if record is None:
-            record = {
-                "callsite": base_record.get("callsite"),
-                "from": base_record.get("from"),
-                "instruction": base_record.get("instruction"),
-                "targets": [],
-            }
-            selected_callsite_records[callsite] = record
-        record["targets"].append(edge.get("to"))
+    if callsite_ids is None:
+        for edge in call_edges:
+            callsite = edge.get("callsite")
+            base_record = callsite_records.get(callsite)
+            if base_record is None:
+                continue
+            record = selected_callsite_records.get(callsite)
+            if record is None:
+                record = {
+                    "callsite": base_record.get("callsite"),
+                    "from": base_record.get("from"),
+                    "instruction": base_record.get("instruction"),
+                    "targets": [],
+                }
+                selected_callsite_records[callsite] = record
+            record["targets"].append(edge.get("to"))
 
-    if extra_callsites:
-        for callsite in extra_callsites:
+        if extra_callsites:
+            for callsite in extra_callsites:
+                if callsite in selected_callsite_records:
+                    continue
+                base_record = callsite_records.get(callsite)
+                if base_record is None:
+                    continue
+                selected_callsite_records[callsite] = {
+                    "callsite": base_record.get("callsite"),
+                    "from": base_record.get("from"),
+                    "instruction": base_record.get("instruction"),
+                    "targets": list(base_record.get("targets") or []),
+                }
+    else:
+        ordered_callsites = []
+        seen = set()
+        for callsite in callsite_ids:
+            if not callsite or callsite in seen:
+                continue
+            seen.add(callsite)
+            ordered_callsites.append(callsite)
+        if extra_callsites:
+            for callsite in extra_callsites:
+                if not callsite or callsite in seen:
+                    continue
+                seen.add(callsite)
+                ordered_callsites.append(callsite)
+        callsite_set = set(ordered_callsites)
+        for edge in call_edges:
+            callsite = edge.get("callsite")
+            if callsite not in callsite_set:
+                continue
+            base_record = callsite_records.get(callsite)
+            if base_record is None:
+                continue
+            record = selected_callsite_records.get(callsite)
+            if record is None:
+                record = {
+                    "callsite": base_record.get("callsite"),
+                    "from": base_record.get("from"),
+                    "instruction": base_record.get("instruction"),
+                    "targets": [],
+                }
+                selected_callsite_records[callsite] = record
+            record["targets"].append(edge.get("to"))
+        for callsite in ordered_callsites:
             if callsite in selected_callsite_records:
                 continue
             base_record = callsite_records.get(callsite)
@@ -93,11 +138,18 @@ def build_callsite_records(callsite_records, call_edges, extra_callsites=None):
     return callsite_paths, selected_callsite_records
 
 
-def write_callsite_records(callsite_records, call_edges, evidence_callsites_dir, extra_callsites=None):
+def write_callsite_records(
+    callsite_records,
+    call_edges,
+    evidence_callsites_dir,
+    extra_callsites=None,
+    callsite_ids=None,
+):
     callsite_paths, selected_callsite_records = build_callsite_records(
         callsite_records,
         call_edges,
         extra_callsites=extra_callsites,
+        callsite_ids=callsite_ids,
     )
     for callsite, record in selected_callsite_records.items():
         filename = addr_filename("cs", callsite, "json")

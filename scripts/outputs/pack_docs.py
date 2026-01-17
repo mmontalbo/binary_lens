@@ -518,7 +518,9 @@ def build_pack_markdown_docs(
         _interfaces_summary(interfaces),
         "## Notes\n",
         "- When a field is `unknown`, the exporter could not establish it (not \"false\").\n"
-        "- When `truncated: true`, treat the record/list as partial; missing entries may exist.\n",
+        "- When `truncated: true`, treat the record/list as partial; missing entries may exist.\n"
+        "- Callsite evidence is emitted on-demand for referenced callsites; re-export with "
+        "`callsite_evidence=all` to include every callgraph callsite.\n",
     ]
     docs["docs/overview.md"] = "\n".join(overview_sections).strip() + "\n"
 
@@ -538,6 +540,8 @@ def build_pack_markdown_docs(
         "## Evidence files\n\n"
         "- `evidence/callsites/cs_<addr>.json`: callsite context (caller, instruction, candidate targets) and recovered arguments when available.\n"
         "- `evidence/decomp/f_<addr>.json`: bounded decompiler excerpt for a function (may include `error: decompile_failed`).\n\n"
+        "Callsite evidence is emitted only for referenced callsites. Re-export with "
+        "`callsite_evidence=all` to include evidence for every callgraph callsite.\n\n"
         "## IDs and lookups\n\n"
         "- `function_id` values are addresses as hex strings (e.g., `00118020`). Resolve via `functions/index.json` (sharded index).\n"
         "- `string_id` values (e.g., `s_0020733a`) resolve via `strings.json` (sharded index).\n\n"

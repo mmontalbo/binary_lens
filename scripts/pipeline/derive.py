@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from typing import Any
 
 from collectors.callgraph import (
@@ -14,11 +15,11 @@ from collectors.callgraph import (
     summarize_functions,
 )
 from contracts.views import build_contract_views
-from derivations.cli_surface import derive_cli_surface
+from derivations.cli_surface import attach_cli_callsite_refs, derive_cli_surface
 from errors.refs import attach_callsite_refs
 from export_bounds import Bounds
 from export_config import BINARY_LENS_VERSION, CALLGRAPH_SIGNAL_RULES, FORMAT_VERSION
-from export_primitives import addr_str
+from export_primitives import addr_str, addr_to_int
 from interfaces.surface import attach_interface_callsite_refs
 from modes.refs import attach_mode_callsite_refs
 from modes.slices import build_mode_slices
@@ -37,6 +38,40 @@ from outputs.sharding import build_sharded_list_index
 from outputs.writers import build_callsite_records
 from pipeline.phases import phase
 from pipeline.types import CollectedData, DerivedPayloads
+
+
+def _collect_callsite_values(value: Any, callsite_ids: set[str]) -> None:
+    if isinstance(value, str):
+        cleaned = value.strip()
+        if cleaned:
+            callsite_ids.add(cleaned)
+        return
+    if isinstance(value, list):
+        for entry in value:
+            _collect_callsite_values(entry, callsite_ids)
+        return
+    if isinstance(value, Mapping):
+        _collect_callsite_ids(value, callsite_ids)
+
+
+def _collect_callsite_ids(value: Any, callsite_ids: set[str]) -> None:
+    if isinstance(value, Mapping):
+        for key, entry in value.items():
+            if isinstance(key, str) and "callsite" in key and "ref" not in key:
+                _collect_callsite_values(entry, callsite_ids)
+                continue
+            _collect_callsite_ids(entry, callsite_ids)
+        return
+    if isinstance(value, list):
+        for entry in value:
+            _collect_callsite_ids(entry, callsite_ids)
+
+
+def _collect_exported_callsites(*payloads: Any) -> list[str]:
+    callsite_ids: set[str] = set()
+    for payload in payloads:
+        _collect_callsite_ids(payload, callsite_ids)
+    return sorted(callsite_ids, key=addr_to_int)
 
 
 def derive_payloads(
@@ -70,19 +105,58 @@ def derive_payloads(
         signal_set,
         bounds.max_call_edges,
     )
-    # Ensure CLI evidence callsites are serialized even if they fall outside edge caps.
-    extra_callsites = (
-        collected.cli_inputs.parse_callsite_ids
-        + collected.cli_inputs.compare_callsite_ids
-        + collected.error_callsite_ids
-        + collected.mode_callsite_ids
-        + collected.interface_callsite_ids
-    )
-    callsite_paths, callsite_evidence = build_callsite_records(
-        collected.callsite_records,
-        call_edges,
-        extra_callsites=extra_callsites,
-    )
+    with phase(profiler, "derive_cli_surface"):
+        cli_surface = derive_cli_surface(
+            collected.cli_inputs.parse_groups,
+            collected.cli_inputs.parse_details_by_callsite,
+            collected.cli_inputs.compare_details_by_callsite,
+            {},
+            bounds,
+            collected.cli_inputs.check_sites_by_flag_addr,
+        )
+    with phase(profiler, "build_mode_slices"):
+        modes_slices_payload = build_mode_slices(
+            collected.modes_payload,
+            cli_surface,
+            bounds,
+            string_refs_by_func=collected.string_refs_by_func,
+            selected_string_ids=collected.selected_string_ids,
+            error_messages_payload=collected.error_messages_payload,
+            exit_paths_payload=collected.exit_paths_payload,
+        )
+
+    callsite_evidence_mode = (bounds.get("callsite_evidence") or "referenced").strip().lower()
+    if callsite_evidence_mode == "all":
+        # Ensure CLI evidence callsites are serialized even if they fall outside edge caps.
+        extra_callsites = (
+            collected.cli_inputs.parse_callsite_ids
+            + collected.cli_inputs.compare_callsite_ids
+            + collected.error_callsite_ids
+            + collected.mode_callsite_ids
+            + collected.interface_callsite_ids
+        )
+        callsite_paths, callsite_evidence = build_callsite_records(
+            collected.callsite_records,
+            call_edges,
+            extra_callsites=extra_callsites,
+        )
+    else:
+        required_callsites = _collect_exported_callsites(
+            cli_surface,
+            collected.error_messages_payload,
+            collected.exit_paths_payload,
+            collected.error_sites_payload,
+            collected.interfaces_payloads,
+            collected.modes_payload,
+            collected.dispatch_sites_payload,
+            modes_slices_payload,
+        )
+        callsite_paths, callsite_evidence = build_callsite_records(
+            collected.callsite_records,
+            call_edges,
+            callsite_ids=required_callsites,
+        )
+
     attach_callsite_refs(
         collected.error_messages_payload,
         collected.exit_paths_payload,
@@ -91,6 +165,8 @@ def derive_payloads(
     )
     attach_mode_callsite_refs(collected.modes_payload, collected.dispatch_sites_payload, callsite_paths)
     attach_interface_callsite_refs(collected.interfaces_payloads, callsite_paths)
+    attach_cli_callsite_refs(cli_surface, callsite_paths)
+
     callgraph = build_callgraph_payload(
         call_edges,
         total_edges,
@@ -101,15 +177,6 @@ def derive_payloads(
 
     calls_by_func = collect_function_calls(call_edges)
 
-    with phase(profiler, "derive_cli_surface"):
-        cli_surface = derive_cli_surface(
-            collected.cli_inputs.parse_groups,
-            collected.cli_inputs.parse_details_by_callsite,
-            collected.cli_inputs.compare_details_by_callsite,
-            callsite_paths,
-            bounds,
-            collected.cli_inputs.check_sites_by_flag_addr,
-        )
     cli_options_payload = build_cli_options_payload(
         cli_surface.get("options", []),
         cli_surface.get("total_options", 0),
@@ -129,16 +196,6 @@ def derive_payloads(
         item_id_key="id",
         item_kind="cli_parse_loops",
     )
-    with phase(profiler, "build_mode_slices"):
-        modes_slices_payload = build_mode_slices(
-            collected.modes_payload,
-            cli_surface,
-            bounds,
-            string_refs_by_func=collected.string_refs_by_func,
-            selected_string_ids=collected.selected_string_ids,
-            error_messages_payload=collected.error_messages_payload,
-            exit_paths_payload=collected.exit_paths_payload,
-        )
     modes_slices_index, modes_slices_shards = build_sharded_list_index(
         modes_slices_payload,
         list_key="slices",
