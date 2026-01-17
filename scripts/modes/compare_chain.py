@@ -136,6 +136,8 @@ def _collect_compare_chain_assignments(
     func_obj,
     compare_callsites,
     monitor=None,
+    *,
+    name_hints_source=None,
 ):
     if func_obj is None or not compare_callsites or decomp_iface is None:
         return {}
@@ -217,7 +219,7 @@ def _collect_compare_chain_assignments(
         func_id = addr_str(target_func.getEntryPoint())
         if not func_id:
             continue
-        usage_like = _is_usage_like_handler_name(func_name)
+        usage_like = _is_usage_like_handler_name(func_name, name_hints_source)
         events.append(
             {
                 "assignment_id": assign_id,

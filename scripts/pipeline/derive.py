@@ -390,6 +390,7 @@ def derive_payloads(
         callgraph,
         collected.function_meta_by_addr,
         exported_function_ids,
+        name_hints_source=bounds,
     )
     contracts_index, contracts_shards = build_sharded_list_index(
         contracts_payload,

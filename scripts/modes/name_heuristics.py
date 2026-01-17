@@ -1,47 +1,51 @@
-"""Name-based heuristics for mode dispatch (explicitly gated)."""
+"""Name-based heuristics for mode dispatch (explicitly gated).
+
+The actual symbol-name patterns live in `scripts/wordlists/name_hints_default.json`
+so they are explicit and configurable.
+"""
 
 from __future__ import annotations
 
 from typing import Any
 
 from export_bounds import Bounds
-
-
-def _resolve_heuristics_flag(source: Any) -> bool:
-    value = 1
-    if isinstance(source, Bounds):
-        value = source.enable_mode_name_heuristics
-    elif isinstance(source, dict):
-        value = source.get("enable_mode_name_heuristics", 1)
-    try:
-        return int(value) != 0
-    except Exception:
-        return bool(value)
+from wordlists.name_hints import load_name_hints, name_hints_enabled
 
 
 def use_name_heuristics(bounds: Bounds | dict[str, Any]) -> bool:
-    return _resolve_heuristics_flag(bounds)
+    return name_hints_enabled(bounds)
 
 
 def entry_name_candidates(bounds: Bounds | dict[str, Any]) -> set[str]:
-    names = {"main"}
+    hints = load_name_hints(bounds)
+    names = set(hints.entry_function_names_always)
     if use_name_heuristics(bounds):
-        names.add("cmd_main")
+        names.update(hints.entry_function_names_enabled)
     return names
 
 
-def is_cmd_handler_name(name: str | None) -> bool:
+def is_cmd_handler_name(name: str | None, bounds: Bounds | dict[str, Any] | None = None) -> bool:
     if not name:
         return False
-    if name == "cmd_main":
+    hints = load_name_hints(bounds)
+    if name in hints.handler_exclude_names:
         return False
-    return name.startswith("cmd_")
+    for prefix in hints.handler_prefixes:
+        if name.startswith(prefix):
+            return True
+    return False
 
 
 def prefer_cmd_table_roots(table_roots, bounds: Bounds | dict[str, Any]) -> bool:
     if not use_name_heuristics(bounds):
         return False
+    hints = load_name_hints(bounds)
+    prefixes = hints.handler_prefixes
+    if not prefixes:
+        return False
     for root in table_roots:
-        if (root.get("function_name") or "").startswith("cmd_"):
-            return True
+        func_name = root.get("function_name") or ""
+        for prefix in prefixes:
+            if func_name.startswith(prefix):
+                return True
     return False

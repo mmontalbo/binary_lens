@@ -137,6 +137,7 @@ def _attach_implementation_roots(
                 func_obj,
                 compare_callsites,
                 monitor=monitor,
+                name_hints_source=bounds,
             )
             for callsite_id, targets in mapping.items():
                 if callsite_id and targets:

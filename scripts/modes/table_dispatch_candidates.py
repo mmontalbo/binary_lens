@@ -28,18 +28,18 @@ from modes.table_dispatch_scan import (
     _collect_table_runs,
     _parse_table_dispatch_records_at,
 )
+from wordlists.name_hints import load_name_hints
 
-_TABLE_DISPATCH_SYMBOL_NAMES = [
-    "commands",
-    "command_list",
-    "command_table",
-    "cmds",
-    "subcommands",
-    "subcommand_table",
-]
-_TABLE_DISPATCH_SYMBOL_FALLBACK_RE = re.compile(
-    r"(?:^|_)(?:command|commands|cmds|subcommand)(?:$|_)", re.I
-)
+
+def _compile_symbol_fallback_res(bounds: Bounds) -> list[re.Pattern[str]]:
+    hints = load_name_hints(bounds)
+    patterns: list[re.Pattern[str]] = []
+    for expr in hints.table_dispatch_symbol_regexes:
+        try:
+            patterns.append(re.compile(expr, re.I))
+        except re.error:
+            continue
+    return patterns
 
 
 def _iter_symbol_iterator(symbol_iter, max_symbols=None):
@@ -95,6 +95,8 @@ def _collect_table_dispatch_mode_candidates_from_symbols(
         return {}
     if program is None:
         return {}
+    hints = load_name_hints(bounds)
+    fallback_res = _compile_symbol_fallback_res(bounds)
     max_token_len = bounds.max_mode_token_length or 32
     max_modes = bounds.max_modes or 200
     min_entries = bounds.get("min_table_dispatch_table_entries", 0) or 5
@@ -112,7 +114,7 @@ def _collect_table_dispatch_mode_candidates_from_symbols(
     symbol_table = program.getSymbolTable()
     candidates = []
     seen_addrs = set()
-    for name in _TABLE_DISPATCH_SYMBOL_NAMES:
+    for name in hints.table_dispatch_symbol_names:
         for sym in _lookup_symbols_by_name(symbol_table, name, max_symbols=6):
             try:
                 addr = sym.getAddress()
@@ -152,7 +154,9 @@ def _collect_table_dispatch_mode_candidates_from_symbols(
                 sym_name = sym.getName()
             except Exception:
                 sym_name = None
-            if not sym_name or not _TABLE_DISPATCH_SYMBOL_FALLBACK_RE.search(sym_name):
+            if not sym_name or not fallback_res:
+                continue
+            if not any(rx.search(sym_name) for rx in fallback_res):
                 continue
             try:
                 addr = sym.getAddress()
@@ -444,7 +448,7 @@ def _collect_table_dispatch_mode_candidates_from_handlers(
     handler_ids = []
     for func_id, meta in (function_meta_by_addr or {}).items():
         name = (meta or {}).get("name") or ""
-        if not is_cmd_handler_name(name):
+        if not is_cmd_handler_name(name, bounds=bounds):
             continue
         handler_ids.append(func_id)
     handler_ids.sort(key=addr_to_int)

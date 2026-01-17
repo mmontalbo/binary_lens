@@ -12,6 +12,7 @@ import re
 
 from collectors.cli import CLI_COMPARE_SIGNAL_NAMES
 from export_primitives import normalize_symbol_name
+from wordlists.name_hints import load_name_hints
 
 _HANDLER_ASSIGN_RE = re.compile(r"=\s*(?:\([^)]+\)\s*)*&?\s*([A-Za-z_][A-Za-z0-9_]*)\s*;")
 _HANDLER_RETURN_RE = re.compile(r"\breturn\s+([A-Za-z_][A-Za-z0-9_]*)\b")
@@ -132,12 +133,15 @@ def _extract_handler_candidates_from_decomp(decomp_text, token_literal, max_line
     return candidates
 
 
-def _is_usage_like_handler_name(name):
+def _is_usage_like_handler_name(name, name_hints_source=None):
     if not name:
         return False
+    hints = load_name_hints(name_hints_source)
     lowered = name.lower()
-    if lowered.startswith("_usage_"):
-        return True
-    if "usage" in lowered:
-        return True
+    for prefix in hints.usage_like_function_prefixes:
+        if lowered.startswith(prefix.lower()):
+            return True
+    for keyword in hints.usage_like_function_keywords:
+        if keyword.lower() in lowered:
+            return True
     return False

@@ -5,8 +5,10 @@ from __future__ import annotations
 import re
 from typing import Any, Mapping
 
+from export_bounds import Bounds
 from export_primitives import addr_filename, addr_to_int
 from outputs.io import pack_path
+from wordlists.name_hints import load_name_hints, name_hints_enabled
 
 MAX_ENV_ENTRIES = 12
 MAX_OUTPUT_ENTRIES = 12
@@ -261,6 +263,8 @@ def build_contract_views(
     callgraph_payload: Mapping[str, Any] | None,
     function_meta_by_addr: Mapping[str, Any] | None,
     exported_function_ids: set[str] | None = None,
+    *,
+    name_hints_source: Bounds | Mapping[str, Any] | None = None,
 ) -> tuple[dict[str, Any], dict[str, str]]:
     modes = modes_payload.get("modes", []) if isinstance(modes_payload, Mapping) else []
     slices = modes_slices_payload.get("slices", []) if isinstance(modes_slices_payload, Mapping) else []
@@ -296,6 +300,8 @@ def build_contract_views(
     string_value_by_id = string_value_by_id or {}
     string_refs_by_func = string_refs_by_func or {}
     function_meta_by_addr = function_meta_by_addr or {}
+    name_hints = load_name_hints(name_hints_source)
+    use_name_hints = name_hints_enabled(name_hints_source)
     help_marker_string_ids = _help_marker_string_ids(string_tags_by_id, string_value_by_id)
     help_string_functions: dict[str, list[str]] = {}
     for func_id, string_ids in string_refs_by_func.items():
@@ -561,19 +567,21 @@ def build_contract_views(
                 entry = help_candidate_map.setdefault(func_id, {"signals": set(), "string_ids": []})
                 entry["signals"].add("usage_messages")
 
-        if not help_candidate_map and function_meta_by_addr:
+        if not help_candidate_map and function_meta_by_addr and use_name_hints:
             for func_id in proximity_roots:
                 func_meta = function_meta_by_addr.get(func_id, {})
                 func_name = _as_str(func_meta.get("name")) or ""
                 if not func_name:
                     continue
                 lowered = func_name.lower()
-                if "usage" in lowered or "help" in lowered:
+                if any(lowered.startswith(prefix.lower()) for prefix in name_hints.help_function_prefixes) or any(
+                    keyword.lower() in lowered for keyword in name_hints.help_function_keywords
+                ):
                     entry = help_candidate_map.setdefault(func_id, {"signals": set(), "string_ids": []})
                     entry["signals"].add("name_heuristic")
 
         mode_name_lower = mode_name.lower() if mode_name and mode_name != "(unknown)" else ""
-        help_candidates: list[dict[str, Any]] = []
+        help_candidates: list[tuple[int, dict[str, Any]]] = []
         for func_id, info in help_candidate_map.items():
             if func_id in scope_function_ids:
                 proximity = "root_function"
@@ -599,25 +607,35 @@ def build_contract_views(
             func_name = _as_str((function_meta_by_addr.get(func_id, {}) or {}).get("name")) or ""
             func_name_lower = func_name.lower() if func_name else ""
             if (
-                mode_name_lower
+                use_name_hints
+                and mode_name_lower
                 and func_name_lower
                 and _mode_name_in_function(func_name_lower, mode_name_lower)
-                and ("usage" in func_name_lower or "help" in func_name_lower)
+                and (
+                    any(
+                        func_name_lower.startswith(prefix.lower())
+                        for prefix in name_hints.help_function_prefixes
+                    )
+                    or any(
+                        keyword.lower() in func_name_lower
+                        for keyword in name_hints.help_function_keywords
+                    )
+                )
             ):
                 signals.add("name_heuristic")
                 score += 2
-            signals_sorted = sorted(signals)
             help_candidates.append(
-                {
-                    "function_id": func_id,
-                    "proximity": proximity,
-                    "signals": signals_sorted,
-                    "string_ids": string_ids,
-                    "score": score,
-                }
+                (
+                    score,
+                    {
+                        "function_id": func_id,
+                        "proximity": proximity,
+                        "string_ids": string_ids,
+                    },
+                )
             )
         help_candidates.sort(
-            key=lambda item: (-item.get("score", 0), addr_to_int(item.get("function_id")))
+            key=lambda item: (-item[0], addr_to_int(item[1].get("function_id")))
         )
         help_candidates, help_candidates_truncated = _truncate(
             help_candidates, MAX_HELP_PRINTERS
@@ -795,16 +813,11 @@ def build_contract_views(
             lines.append("- _No output templates exported._")
 
         help_rows: list[list[str]] = []
-        help_name_heuristic = False
-        for candidate in help_candidates:
+        for _score, candidate in help_candidates:
             func_id = _as_str(candidate.get("function_id")) or "unknown"
             func_meta = function_meta_by_addr.get(func_id, {})
             func_name = _as_str(func_meta.get("name")) or "unknown"
             proximity = _as_str(candidate.get("proximity")) or "unknown"
-            signals = candidate.get("signals") or []
-            if "name_heuristic" in signals:
-                help_name_heuristic = True
-            signals_str = _format_list([f"`{sig}`" for sig in signals], empty="none")
             string_ids = candidate.get("string_ids") or []
             string_ids = string_ids[:MAX_HELP_STRING_IDS]
             string_ids_str = _format_list([f"`{sid}`" for sid in string_ids], empty="none")
@@ -814,7 +827,6 @@ def build_contract_views(
                     f"`{func_id}`",
                     f"`{func_name}`",
                     f"`{proximity}`",
-                    signals_str,
                     evidence_refs,
                     string_ids_str,
                 ]
@@ -824,7 +836,6 @@ def build_contract_views(
             [
                 "",
                 "### Help/usage evidence",
-                "- selection_basis: usage marker strings + usage messages + callgraph proximity (1 hop)",
                 "- strings_ref: `strings.json`",
                 "- messages_ref: `errors/messages.json`",
                 "- evidence_ref: `evidence/decomp/`",
@@ -834,13 +845,11 @@ def build_contract_views(
         )
         if help_rows:
             lines.append(_format_table(
-                ["function_id", "name", "proximity", "signals", "evidence_refs", "string_ids"],
+                ["function_id", "name", "proximity", "evidence_refs", "string_ids"],
                 help_rows,
             ))
             if help_candidates_truncated:
                 lines.append("- note: help printer list truncated for readability")
-            if help_name_heuristic:
-                lines.append("- note: help printer list includes name-based heuristics")
         else:
             lines.append("- _No help/usage printer candidates linked to this mode._")
 
