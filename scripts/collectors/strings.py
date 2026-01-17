@@ -30,6 +30,10 @@ def is_usage_marker(value):
         return True
     if "try '" in lowered or "try \"" in lowered:
         return True
+    if "options:" in lowered or "options\n" in lowered:
+        return True
+    if "report bugs" in lowered or "reporting bugs" in lowered:
+        return True
     return False
 
 
@@ -232,4 +236,3 @@ def collect_string_refs_by_func(listing, functions, string_addr_map_all, monitor
             listing, func, string_addr_map_all, monitor
         )
     return string_refs_by_func
-

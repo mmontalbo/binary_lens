@@ -8,6 +8,48 @@ from ghidra.app.decompiler import DecompInterface
 
 from .io import pack_path, write_json, write_text
 
+MAX_HELP_DECOMP_LINES = 600
+
+
+def _is_help_marker_value(value):
+    if value is None:
+        return False
+    lowered = value.lower()
+    if "usage:" in lowered:
+        return True
+    if "--help" in value:
+        return True
+    if "try '" in lowered or "try \"" in lowered:
+        return True
+    if "options:" in lowered or "options\n" in lowered:
+        return True
+    if "report bugs" in lowered or "reporting bugs" in lowered:
+        return True
+    return False
+
+
+def _has_usage_tag(tags):
+    if not tags:
+        return False
+    if isinstance(tags, set):
+        return "usage" in tags
+    if isinstance(tags, (list, tuple)):
+        return "usage" in tags
+    return False
+
+
+def _looks_like_help_printer(func_id, string_refs_by_func, string_tags_by_id, string_value_by_id):
+    string_tags_by_id = string_tags_by_id or {}
+    string_value_by_id = string_value_by_id or {}
+    for string_id in string_refs_by_func.get(func_id, []) or []:
+        tags = string_tags_by_id.get(string_id)
+        if _has_usage_tag(tags):
+            return True
+        value = string_value_by_id.get(string_id)
+        if value and _is_help_marker_value(value):
+            return True
+    return False
+
 
 def write_callsite_records(callsite_records, call_edges, evidence_callsites_dir, extra_callsites=None):
     # Only emit callsite evidence for selected edges plus explicitly requested extras.
@@ -56,6 +98,8 @@ def write_function_exports(
     options,
     string_refs_by_func,
     selected_string_ids,
+    string_tags_by_id,
+    string_value_by_id,
     calls_by_func,
     functions_dir,
     evidence_decomp_dir,
@@ -157,12 +201,22 @@ def write_function_exports(
             if decomp_text:
                 lines = decomp_text.splitlines()
                 decomp_excerpt["line_count"] = len(lines)
-                if len(lines) > options["max_decomp_lines"]:
-                    decomp_excerpt["lines"] = lines[: options["max_decomp_lines"]]
+                max_lines = options["max_decomp_lines"]
+                if _looks_like_help_printer(
+                    entry_addr,
+                    string_refs_by_func,
+                    string_tags_by_id,
+                    string_value_by_id,
+                ):
+                    max_lines = max(
+                        max_lines,
+                        min(MAX_HELP_DECOMP_LINES, max_lines * 3),
+                    )
+                if len(lines) > max_lines:
+                    decomp_excerpt["lines"] = lines[:max_lines]
                     decomp_excerpt["truncated"] = True
                 else:
                     decomp_excerpt["lines"] = lines
         else:
             decomp_excerpt["error"] = "decompile_failed"
         write_json(os.path.join(evidence_decomp_dir, decomp_filename), decomp_excerpt)
-

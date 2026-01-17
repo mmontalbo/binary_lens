@@ -293,6 +293,8 @@ def write_context_pack(
             options,
             string_refs_by_func,
             selected_string_ids,
+            string_tags_by_id,
+            string_value_by_id,
             calls_by_func,
             layout.functions_dir,
             layout.evidence_decomp_dir,
