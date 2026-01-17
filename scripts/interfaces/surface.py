@@ -80,19 +80,6 @@ def _select_matches(call_edges, function_meta_by_addr, operations, aliases):
     return matches
 
 
-def _entry_strength_confidence(match_kind: str | None, has_known_arg: bool) -> tuple[str, str]:
-    if match_kind == "exact":
-        strength = "observed"
-        confidence = "high" if has_known_arg else "medium"
-    elif match_kind == "alias":
-        strength = "derived"
-        confidence = "medium" if has_known_arg else "low"
-    else:
-        strength = "heuristic"
-        confidence = "low"
-    return strength, confidence
-
-
 def _shift_index(index: int | None, shift_from: int, shift_by: int) -> int | None:
     if index is None:
         return None
@@ -310,9 +297,6 @@ def _build_entry(
     else:
         entry["details"] = {}
 
-    strength, confidence = _entry_strength_confidence(match.match_kind, has_known_arg)
-    entry["strength"] = strength
-    entry["confidence"] = confidence
     return entry, has_known_arg
 
 

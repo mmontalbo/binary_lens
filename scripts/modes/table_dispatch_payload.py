@@ -93,7 +93,7 @@ def _collect_table_dispatch_tokens(mode_candidates, selected_mode_ids):
         if value in seen:
             continue
         seen.add(value)
-        kind, kind_strength, kind_confidence = _token_kind(value)
+        kind, _kind_basis = _token_kind(value)
         tokens.append(
             {
                 "mode_id": mode.get("mode_id") or mode_id,
@@ -101,12 +101,8 @@ def _collect_table_dispatch_tokens(mode_candidates, selected_mode_ids):
                 "string_id": mode.get("string_id"),
                 "address": mode.get("address"),
                 "kind": kind,
-                "kind_strength": kind_strength,
-                "kind_confidence": kind_confidence,
                 "source": "table_dispatch",
-                "confidence": "medium",
             }
         )
     tokens.sort(key=lambda item: (item.get("value") or "", item.get("mode_id") or ""))
     return tokens
-

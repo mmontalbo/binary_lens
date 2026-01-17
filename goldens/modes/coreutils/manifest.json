@@ -58,8 +58,8 @@
   "coverage_summary": {
     "callgraph_edges": {
       "max": null,
-      "selected": 17748,
-      "total": 17748,
+      "selected": 17756,
+      "total": 17756,
       "truncated": false
     },
     "cli_options": {
@@ -77,13 +77,13 @@
     "error_messages": {
       "max": null,
       "selected": 783,
-      "total": 922,
+      "total": 921,
       "truncated": false
     },
     "error_sites": {
       "max": null,
-      "selected": 291,
-      "total": 291,
+      "selected": 290,
+      "total": 290,
       "truncated": false
     },
     "exit_calls": {
@@ -123,8 +123,8 @@
     },
     "interfaces_output": {
       "max": null,
-      "selected": 906,
-      "total": 906,
+      "selected": 909,
+      "total": 909,
       "truncated": false
     },
     "interfaces_process": {
@@ -176,7 +176,7 @@
   "target_endian": "little",
   "tool": {
     "name": "binary_lens",
-    "revision": "6c776c9ea779efbcb9e9f87903ac6f84919e3a51",
+    "revision": "f97f1d755e0d4b11c190ec97aebf55754e0654e1",
     "version": "0.1.0-dev"
   }
 }

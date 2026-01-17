@@ -57,21 +57,16 @@ def derive_exit_paths(
         callsite_id = callsite["callsite_id"]
         args = call_args_cache.get(callsite_id) or {}
         exit_code = None
-        code_strength = "unknown"
         if callsite.get("emitter_import") in ("exit",):
             const_value = args.get("const_args_by_index", {}).get(0)
             if isinstance(const_value, INT_TYPES):
                 exit_code = int(const_value)
-                code_strength = "observed"
         direct_calls.append({
             "callsite_id": callsite_id,
             "function_id": callsite["function_id"],
             "function_name": callsite.get("function_name"),
             "target": callsite.get("target"),
             "exit_code": exit_code,
-            "exit_code_strength": code_strength,
-            "strength": "observed",
-            "confidence": "high",
             "evidence": {
                 "callsites": [callsite_id],
                 "functions": [callsite.get("function_id")],
@@ -84,42 +79,12 @@ def derive_exit_paths(
         direct_calls = direct_calls[:max_exit_paths]
         truncated = True
 
-    likely_fatal = []
-    if emitter_callsites_by_func:
-        for func_id, exit_calls in exit_callsites_by_func.items():
-            if func_id not in emitter_callsites_by_func:
-                continue
-            emit_calls = emitter_callsites_by_func.get(func_id) or []
-            if not emit_calls:
-                continue
-            likely_fatal.append({
-                "pattern": "emit_and_exit_same_function",
-                "function_id": func_id,
-                "emitter_callsites": [entry.get("callsite_id") for entry in emit_calls],
-                "exit_callsites": [entry.get("callsite_id") for entry in exit_calls],
-                "strength": "heuristic",
-                "confidence": "low",
-                "evidence": {
-                    "callsites": sorted(
-                        {entry.get("callsite_id") for entry in emit_calls + exit_calls if entry.get("callsite_id")},
-                        key=addr_to_int,
-                    ),
-                    "functions": [func_id],
-                },
-            })
-    likely_fatal.sort(key=lambda item: addr_to_int(item.get("function_id")))
-    max_patterns = bounds.max_exit_patterns
-    if max_patterns and len(likely_fatal) > max_patterns:
-        likely_fatal = likely_fatal[:max_patterns]
-
     payload = {
         "total_exit_calls": len(exit_callsites),
         "selected_exit_calls": len(direct_calls),
         "truncated": truncated,
         "max_exit_calls": max_exit_paths,
-        "selection_strategy": "direct_calls_to_exit_abort",
         "direct_calls": direct_calls,
-        "likely_fatal_patterns": likely_fatal,
     }
     if skipped_large_exit_call_args:
         payload["exit_code_call_args_skipped_due_to_size"] = skipped_large_exit_call_args

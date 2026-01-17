@@ -1,7 +1,7 @@
 """Stable JSON payload builders for mode export.
 
 These helpers build the Milestone 3 "modes" JSON artifacts:
-- `modes/index.json` (mode candidate index + low confidence candidates)
+- `modes/index.json` (mode candidate index)
 - `modes/dispatch_sites.json` (per-dispatch-function token evidence)
 
 They should remain schema-stable; refactors in this module should avoid altering
@@ -10,17 +10,15 @@ field meanings, ordering, or truncation behavior.
 
 from export_bounds import Bounds
 from export_primitives import addr_to_int
-from modes.common import _confidence_from_count, _source_rank
+from modes.common import _source_rank
 
 
 def _derive_mode_kind(mode, dispatch_kind_by_callsite):
     kind = mode.get("kind")
-    kind_strength = mode.get("kind_strength")
-    kind_confidence = mode.get("kind_confidence")
     if kind == "flag_mode":
-        return kind, kind_strength, kind_confidence, "token_prefix_dash"
+        return kind, "token_prefix_dash"
     if not dispatch_kind_by_callsite:
-        return kind, kind_strength, kind_confidence, None
+        return kind, mode.get("kind_basis")
 
     dispatch_kind_priority = [
         ("argv0_compare_chain", "argv0"),
@@ -36,32 +34,12 @@ def _derive_mode_kind(mode, dispatch_kind_by_callsite):
             if dispatch_kind == "table_dispatch":
                 argv_index = meta.get("argv_index")
                 if argv_index == 0:
-                    return (
-                        "argv0",
-                        meta.get("strength") or "derived",
-                        meta.get("confidence") or "low",
-                        "dispatch_kind:table_dispatch:argv0",
-                    )
+                    return "argv0", "dispatch_kind:table_dispatch:argv0"
                 if argv_index == 1:
-                    return (
-                        "subcommand",
-                        meta.get("strength") or "derived",
-                        meta.get("confidence") or "low",
-                        "dispatch_kind:table_dispatch:argv1",
-                    )
-                return (
-                    "subcommand",
-                    meta.get("strength") or "derived",
-                    "low",
-                    "dispatch_kind:table_dispatch",
-                )
-            return (
-                mode_kind,
-                meta.get("strength") or "heuristic",
-                meta.get("confidence") or "low",
-                "dispatch_kind:%s" % dispatch_kind,
-            )
-    return kind, kind_strength, kind_confidence, None
+                    return "subcommand", "dispatch_kind:table_dispatch:argv1"
+                return "subcommand", "dispatch_kind:table_dispatch"
+            return mode_kind, "dispatch_kind:%s" % dispatch_kind
+    return kind, mode.get("kind_basis")
 
 
 def _build_modes_index_payload(
@@ -69,7 +47,6 @@ def _build_modes_index_payload(
     callsite_meta,
     dispatch_kind_by_callsite,
     bounds: Bounds,
-    min_token_len,
 ):
     max_modes = bounds.optional("max_modes")
     max_sites = bounds.max_mode_dispatch_sites_per_mode
@@ -87,12 +64,10 @@ def _build_modes_index_payload(
     candidate_modes = list(mode_candidates.values())
     total_mode_candidates = len(candidate_modes)
 
-    low_confidence_reason_counts = {}
-    low_confidence_candidates = []
     filtered_modes = []
     for mode in candidate_modes:
         impl_roots = mode.get("implementation_roots") or {}
-        derived_kind, derived_strength, derived_confidence, derived_basis = _derive_mode_kind(
+        derived_kind, _ = _derive_mode_kind(
             mode,
             dispatch_kind_by_callsite,
         )
@@ -110,105 +85,11 @@ def _build_modes_index_payload(
                     has_preferred_dispatch_kind = True
                     break
 
-        reasons = []
         if mode.get("kind") == "flag_mode" or derived_kind == "flag_mode":
-            reasons.append("flag_mode_token")
+            continue
         if not has_preferred_dispatch_kind:
-            reasons.append("unpreferred_dispatch_kind")
+            continue
         if derived_kind == "unknown":
-            reasons.append("unclassified_kind")
-        if not impl_roots:
-            reasons.append("missing_implementation_roots")
-
-        if (
-            "flag_mode_token" in reasons
-            or "unpreferred_dispatch_kind" in reasons
-            or "unclassified_kind" in reasons
-        ):
-            primary_reason = reasons[0]
-            low_confidence_reason_counts[primary_reason] = (
-                low_confidence_reason_counts.get(primary_reason, 0) + 1
-            )
-            dispatch_site_ids = sorted(mode.get("dispatch_sites") or [], key=addr_to_int)
-            representative_callsite = dispatch_site_ids[0] if dispatch_site_ids else None
-            token = {
-                "value": mode.get("name"),
-                "string_id": mode.get("string_id"),
-                "address": mode.get("address"),
-            }
-            dispatch_root_entries = []
-            dispatch_cluster_score = 0
-            for func_addr, root in (mode.get("dispatch_roots") or {}).items():
-                callsite_count = len(root.get("callsite_ids") or [])
-                compare_callsite_count = root.get("compare_callsite_count")
-                if compare_callsite_count is None:
-                    compare_callsite_count = callsite_count
-                dispatch_cluster_score += compare_callsite_count or 0
-                dispatch_root_entries.append(
-                    {
-                        "function_id": func_addr,
-                        "function_name": root.get("function_name"),
-                        "callsite_count": callsite_count,
-                        "compare_callsite_count": compare_callsite_count,
-                        "strength": "derived",
-                        "confidence": _confidence_from_count(callsite_count),
-                    }
-                )
-            dispatch_root_entries.sort(
-                key=lambda item: (
-                    -item.get("callsite_count", 0),
-                    addr_to_int(item.get("function_id")),
-                )
-            )
-            if max_roots and len(dispatch_root_entries) > max_roots:
-                dispatch_root_entries = dispatch_root_entries[:max_roots]
-
-            dispatch_sites = []
-            dispatch_site_sources = mode.get("dispatch_site_sources") or {}
-            for callsite_id in dispatch_site_ids[: max_sites or 3]:
-                meta = callsite_meta.get(callsite_id, {})
-                strength = "observed"
-                confidence = "high"
-                if dispatch_site_sources.get(callsite_id) == "table_dispatch":
-                    strength = "derived"
-                    confidence = "medium"
-                dispatch_sites.append(
-                    {
-                        "callsite_id": callsite_id,
-                        "caller": meta.get("caller"),
-                        "callee": meta.get("callee"),
-                        "strength": strength,
-                        "confidence": confidence,
-                    }
-                )
-
-            low_confidence_candidates.append(
-                {
-                    "mode_id": mode.get("mode_id"),
-                    "name": mode.get("name"),
-                    "token": token,
-                    "kind": derived_kind,
-                    "kind_strength": derived_strength,
-                    "kind_confidence": derived_confidence,
-                    "kind_basis": derived_basis,
-                    "primary_reason": primary_reason,
-                    "reasons": reasons,
-                    "dispatch_sites": dispatch_sites,
-                    "dispatch_site_count": len(dispatch_site_ids),
-                    "dispatch_roots": dispatch_root_entries,
-                    "dispatch_root_count": len(mode.get("dispatch_roots") or {}),
-                    "dispatch_cluster_score": dispatch_cluster_score,
-                    "implementation_root_count": len(impl_roots),
-                    "representative_callsite_id": representative_callsite,
-                    "evidence": {
-                        "strings": [mode.get("string_id")] if mode.get("string_id") else [],
-                        "callsites": dispatch_site_ids,
-                        "functions": sorted(
-                            (mode.get("dispatch_roots") or {}).keys(), key=addr_to_int
-                        ),
-                    },
-                }
-            )
             continue
 
         filtered_modes.append(mode)
@@ -219,21 +100,13 @@ def _build_modes_index_payload(
     for mode in filtered_modes:
         callsite_ids = sorted(mode.get("dispatch_sites") or [], key=addr_to_int)
         dispatch_sites = []
-        dispatch_site_sources = mode.get("dispatch_site_sources") or {}
         for callsite_id in callsite_ids:
             meta = callsite_meta.get(callsite_id, {})
-            strength = "observed"
-            confidence = "high"
-            if dispatch_site_sources.get(callsite_id) == "table_dispatch":
-                strength = "derived"
-                confidence = "medium"
             dispatch_sites.append(
                 {
                     "callsite_id": callsite_id,
                     "caller": meta.get("caller"),
                     "callee": meta.get("callee"),
-                    "strength": strength,
-                    "confidence": confidence,
                 }
             )
         sites_truncated = False
@@ -242,21 +115,17 @@ def _build_modes_index_payload(
             sites_truncated = True
 
         root_entries = []
-        dispatch_cluster_score = 0
         for func_addr, root in (mode.get("dispatch_roots") or {}).items():
             callsite_count = len(root.get("callsite_ids") or [])
             compare_callsite_count = root.get("compare_callsite_count")
             if compare_callsite_count is None:
                 compare_callsite_count = callsite_count
-            dispatch_cluster_score += compare_callsite_count or 0
             root_entries.append(
                 {
                     "function_id": func_addr,
                     "function_name": root.get("function_name"),
                     "callsite_count": callsite_count,
                     "compare_callsite_count": compare_callsite_count,
-                    "strength": "derived",
-                    "confidence": _confidence_from_count(callsite_count),
                 }
             )
         root_entries.sort(
@@ -272,14 +141,12 @@ def _build_modes_index_payload(
         implementation_root_count = len(mode.get("implementation_roots") or {})
         name = mode.get("name")
         string_id = mode.get("string_id")
-        strength = "observed" if dispatch_site_count else "heuristic"
-        confidence = _confidence_from_count(dispatch_site_count)
         token = {
             "value": name,
             "string_id": string_id,
             "address": mode.get("address"),
         }
-        kind, kind_strength, kind_confidence, kind_basis = _derive_mode_kind(
+        kind, kind_basis = _derive_mode_kind(
             mode,
             dispatch_kind_by_callsite,
         )
@@ -308,8 +175,6 @@ def _build_modes_index_payload(
                 "function_id": func_id,
                 "function_name": root.get("function_name"),
                 "sources": sources,
-                "strength": root.get("strength") or "heuristic",
-                "confidence": root.get("confidence") or "low",
             }
             if evidence:
                 entry["evidence"] = evidence
@@ -330,22 +195,15 @@ def _build_modes_index_payload(
             "unknown_name": not bool(name),
             "token": token,
             "kind": kind,
-            "kind_strength": kind_strength,
-            "kind_confidence": kind_confidence,
-            "name_strength": "observed" if name else "unknown",
-            "name_confidence": "high" if name else "unknown",
             "dispatch_roots": root_entries,
             "dispatch_roots_truncated": roots_truncated,
             "dispatch_sites": dispatch_sites,
             "dispatch_sites_truncated": sites_truncated,
             "dispatch_site_count": dispatch_site_count,
             "dispatch_root_count": dispatch_root_count,
-            "dispatch_cluster_score": dispatch_cluster_score,
             "implementation_roots": implementation_roots,
             "implementation_root_count": implementation_root_count,
             "implementation_roots_truncated": impl_roots_truncated,
-            "strength": strength,
-            "confidence": confidence,
             "evidence": {
                 "strings": evidence_strings,
                 "callsites": callsite_ids,
@@ -358,9 +216,9 @@ def _build_modes_index_payload(
 
     modes.sort(
         key=lambda item: (
-            -item.get("dispatch_cluster_score", 0),
             -item.get("dispatch_site_count", 0),
             -item.get("dispatch_root_count", 0),
+            -item.get("implementation_root_count", 0),
             item.get("name") or "",
             item.get("mode_id") or "",
         )
@@ -373,49 +231,9 @@ def _build_modes_index_payload(
 
     selected_mode_ids = set([entry.get("mode_id") for entry in modes if entry.get("mode_id")])
 
-    low_confidence_candidates.sort(
-        key=lambda item: (
-            -item.get("dispatch_cluster_score", 0),
-            -item.get("dispatch_site_count", 0),
-            -item.get("dispatch_root_count", 0),
-            item.get("name") or "",
-            item.get("mode_id") or "",
-        )
-    )
-    max_low_confidence = bounds.max_mode_low_confidence_candidates or 50
-    low_confidence_truncated = False
-    if max_low_confidence and len(low_confidence_candidates) > max_low_confidence:
-        low_confidence_candidates = low_confidence_candidates[:max_low_confidence]
-        low_confidence_truncated = True
-
-    reason_entries = []
-    for reason, count in sorted(
-        low_confidence_reason_counts.items(), key=lambda item: (-item[1], item[0] or "")
-    ):
-        reason_entries.append(
-            {
-                "reason": reason,
-                "count": count,
-            }
-        )
-
     payload = {
         "total_mode_candidates": total_mode_candidates,
         "filtered_out_modes": filtered_out_modes,
-        "candidate_filter": {
-            "require_implementation_roots": False,
-            "preferred_dispatch_kinds": sorted(preferred_dispatch_kinds),
-            "exclude_flag_mode_tokens": True,
-            "exclude_unclassified_kinds": True,
-        },
-        "low_confidence_candidates": {
-            "total_low_confidence_candidates": filtered_out_modes,
-            "selected_low_confidence_candidates": len(low_confidence_candidates),
-            "truncated": low_confidence_truncated,
-            "max_low_confidence_candidates": max_low_confidence,
-            "primary_reason_counts": reason_entries,
-            "candidates": low_confidence_candidates,
-        },
         "total_modes": total_modes,
         "selected_modes": len(modes),
         "truncated": truncated,
@@ -424,13 +242,6 @@ def _build_modes_index_payload(
         "max_mode_tokens_per_callsite": max_tokens_per_callsite,
         "max_dispatch_sites_per_mode": max_sites,
         "max_dispatch_roots_per_mode": max_roots,
-        "selection_strategy": "prefer_dispatch_kinds_then_compare_callsite_groups_then_token_clusters_by_cluster_score",
-        "token_filters": {
-            "min_length": min_token_len,
-            "max_length": max_token_len,
-            "exclude_whitespace": True,
-            "exclude_non_printable": True,
-        },
         "modes": modes,
     }
     return payload, selected_mode_ids
@@ -488,13 +299,9 @@ def _build_dispatch_sites_payload(
         dispatch_meta = dispatch_meta_by_func.get(func_addr) if dispatch_meta_by_func else None
         if dispatch_meta:
             dispatch_kind = dispatch_meta.get("kind") or "string_compare_chain"
-            dispatch_kind_strength = dispatch_meta.get("strength") or "heuristic"
-            dispatch_kind_confidence = dispatch_meta.get("confidence") or "low"
             dispatch_kind_basis = dispatch_meta.get("basis")
         else:
             dispatch_kind = "string_compare_chain" if len(callsite_ids) > 1 else "string_compare"
-            dispatch_kind_strength = "heuristic"
-            dispatch_kind_confidence = "low"
             dispatch_kind_basis = "compare_callsite_count"
 
         if dispatch_kind == "table_dispatch" and table_dispatch_tokens:
@@ -517,12 +324,6 @@ def _build_dispatch_sites_payload(
         token_entries = []
         for key, count in token_counts_selected.items():
             token = token_meta_selected.get(key, {})
-            token_source = token.get("source")
-            strength = "observed"
-            confidence = _confidence_from_count(count)
-            if token_source == "table_dispatch":
-                strength = "derived"
-                confidence = token.get("confidence") or "medium"
             token_entries.append(
                 {
                     "mode_id": token.get("mode_id"),
@@ -530,11 +331,7 @@ def _build_dispatch_sites_payload(
                     "string_id": token.get("string_id"),
                     "address": token.get("address"),
                     "kind": token.get("kind"),
-                    "kind_strength": token.get("kind_strength"),
-                    "kind_confidence": token.get("kind_confidence"),
                     "occurrence_count": count,
-                    "strength": strength,
-                    "confidence": confidence,
                 }
             )
 
@@ -594,8 +391,6 @@ def _build_dispatch_sites_payload(
         callsite_ids_sorted = sorted(callsite_ids, key=addr_to_int)
         representative_callsite = callsite_ids_sorted[0] if callsite_ids_sorted else None
         token_count = token_selected_count
-        strength = "observed" if token_count else "heuristic"
-        confidence = _confidence_from_count(token_count)
         evidence_strings = sorted(
             {entry.get("string_id") for entry in token_entries if entry.get("string_id")}
         )
@@ -607,8 +402,6 @@ def _build_dispatch_sites_payload(
             "callsites_truncated": callsites_truncated,
             "representative_callsite_id": representative_callsite,
             "dispatch_kind": dispatch_kind,
-            "dispatch_kind_strength": dispatch_kind_strength,
-            "dispatch_kind_confidence": dispatch_kind_confidence,
             "token_candidates": token_entries,
             "token_candidates_truncated": token_truncated,
             "token_candidate_count": token_count,
@@ -620,8 +413,6 @@ def _build_dispatch_sites_payload(
             "omitted_token_count": omitted,
             "omitted_token_occurrence_count": omitted_occurrences,
             "callsite_status_counts": status_entries,
-            "strength": strength,
-            "confidence": confidence,
             "evidence": {
                 "callsites": callsite_ids_sorted,
                 "functions": [(group.get("function") or {}).get("address")],
@@ -647,7 +438,6 @@ def _build_dispatch_sites_payload(
         "max_dispatch_site_callsites": max_callsites,
         "max_dispatch_site_tokens": max_tokens,
         "max_dispatch_site_ignored_tokens": max_ignored,
-        "selection_strategy": "top_compare_callers_then_token_counts",
         "dispatch_sites": dispatch_sites,
     }
     return payload

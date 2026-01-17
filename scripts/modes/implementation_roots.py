@@ -178,8 +178,6 @@ def _attach_implementation_roots(
                     root.get("function_id"),
                     root.get("function_name"),
                     "table_dispatch",
-                    "derived",
-                    "medium",
                     {
                         "table_entry_address": root.get("table_entry_address"),
                         "string_id": mode.get("string_id"),
@@ -204,8 +202,6 @@ def _attach_implementation_roots(
                     root.get("function_id"),
                     root.get("function_name"),
                     "compare_chain",
-                    "heuristic",
-                    "low",
                     {
                         "compare_callsite_id": callsite_id,
                         "handler_callsite_id": handler_callsite_id,
@@ -230,8 +226,6 @@ def _attach_implementation_roots(
                     handler_id,
                     handler_name,
                     "compare_chain_assignment",
-                    "derived",
-                    "medium",
                     {
                         "compare_callsite_id": callsite_id,
                         "handler_callsite_id": root.get("assignment_id"),
@@ -259,8 +253,6 @@ def _attach_implementation_roots(
                         handler_id,
                         handler_name,
                         "compare_chain_handler",
-                        "derived",
-                        "medium",
                         {
                             "compare_callsite_id": callsite_id,
                             "string_id": string_id,

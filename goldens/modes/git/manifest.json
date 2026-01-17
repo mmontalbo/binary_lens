@@ -176,7 +176,7 @@
   "target_endian": "little",
   "tool": {
     "name": "binary_lens",
-    "revision": "6c776c9ea779efbcb9e9f87903ac6f84919e3a51",
+    "revision": "f97f1d755e0d4b11c190ec97aebf55754e0654e1",
     "version": "0.1.0-dev"
   }
 }

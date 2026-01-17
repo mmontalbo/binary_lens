@@ -14,13 +14,6 @@ def collect_error_callsites(messages_payload, exit_paths_payload, error_sites_pa
         callsite_id = entry.get("callsite_id")
         if callsite_id:
             callsite_ids.add(callsite_id)
-    for entry in exit_paths_payload.get("likely_fatal_patterns", []):
-        for callsite_id in entry.get("emitter_callsites", []):
-            if callsite_id:
-                callsite_ids.add(callsite_id)
-        for callsite_id in entry.get("exit_callsites", []):
-            if callsite_id:
-                callsite_ids.add(callsite_id)
     for site in error_sites_payload.get("sites", []):
         for callsite_id in site.get("callsite_ids", []):
             if callsite_id:
@@ -43,19 +36,6 @@ def attach_callsite_refs(messages_payload, exit_paths_payload, error_sites_paylo
         ref = callsite_paths.get(callsite_id)
         if ref:
             entry["callsite_ref"] = ref
-
-    for entry in exit_paths_payload.get("likely_fatal_patterns", []):
-        refs = []
-        for callsite_id in entry.get("emitter_callsites", []):
-            ref = callsite_paths.get(callsite_id)
-            if ref:
-                refs.append(ref)
-        for callsite_id in entry.get("exit_callsites", []):
-            ref = callsite_paths.get(callsite_id)
-            if ref:
-                refs.append(ref)
-        if refs:
-            entry["callsite_refs"] = refs
 
     for site in error_sites_payload.get("sites", []):
         refs = []

@@ -254,10 +254,7 @@ def _classify_check_site(listing, instr):
     except Exception:
         flow = None
     if flow and flow.isConditional():
-        return {
-            "strength": "derived",
-            "confidence": "medium",
-        }
+        return {}
     try:
         mnemonic = instr.getMnemonicString()
     except Exception:
@@ -274,14 +271,9 @@ def _classify_check_site(listing, instr):
                 next_flow = None
             if next_flow and next_flow.isConditional():
                 return {
-                    "strength": "derived",
-                    "confidence": "medium",
                     "branch_address": addr_str(next_instr.getAddress()),
                 }
-        return {
-            "strength": "heuristic",
-            "confidence": "low",
-        }
+        return {}
     return None
 
 
@@ -330,8 +322,6 @@ def collect_flag_check_sites(program, flag_addresses, max_sites_per_flag):
                     "name": func_name,
                 },
                 "instruction": instr.toString(),
-                "strength": classification.get("strength"),
-                "confidence": classification.get("confidence"),
             }
             branch_addr = classification.get("branch_address")
             if branch_addr:

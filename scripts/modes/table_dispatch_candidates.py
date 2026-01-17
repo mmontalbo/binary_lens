@@ -233,8 +233,6 @@ def _collect_table_dispatch_mode_candidates_from_symbols(
                     "string_id": string_id,
                     "address": string_addr_text,
                     "kind": "subcommand",
-                    "kind_strength": "derived",
-                    "kind_confidence": "low",
                     "dispatch_sites": set(),
                     "dispatch_roots": {},
                 }
@@ -249,8 +247,6 @@ def _collect_table_dispatch_mode_candidates_from_symbols(
                 record.get("function_id"),
                 record.get("function_name"),
                 "table_dispatch",
-                "derived",
-                "medium",
                 evidence,
             )
             if max_modes and len(mode_candidates) >= max_modes:
@@ -404,8 +400,6 @@ def _collect_table_dispatch_mode_candidates_from_memory(
                     "string_id": string_id,
                     "address": string_addr_text,
                     "kind": "subcommand",
-                    "kind_strength": "derived",
-                    "kind_confidence": "low",
                     "dispatch_sites": set(),
                     "dispatch_roots": {},
                 }
@@ -415,8 +409,6 @@ def _collect_table_dispatch_mode_candidates_from_memory(
                 record.get("function_id"),
                 record.get("function_name"),
                 "table_dispatch",
-                "derived",
-                "medium",
                 {
                     "table_entry_address": record.get("table_entry_address"),
                     "string_id": string_id,
@@ -531,8 +523,6 @@ def _collect_table_dispatch_mode_candidates_from_handlers(
                         "string_id": string_id,
                         "address": string_addr_text,
                         "kind": "subcommand",
-                        "kind_strength": "derived",
-                        "kind_confidence": "low",
                         "dispatch_sites": set(),
                         "dispatch_roots": {},
                     }
@@ -542,8 +532,6 @@ def _collect_table_dispatch_mode_candidates_from_handlers(
                     handler_id,
                     handler_name,
                     "table_dispatch",
-                    "derived",
-                    "medium",
                     {
                         "table_entry_address": addr_str(from_addr),
                         "string_id": string_id,
@@ -604,8 +592,6 @@ def _collect_table_dispatch_mode_candidates_from_strings(
                 "string_id": string_id,
                 "address": addr_text,
                 "kind": "subcommand",
-                "kind_strength": "derived",
-                "kind_confidence": "low",
                 "dispatch_sites": set(),
                 "dispatch_roots": {},
             }
@@ -616,8 +602,6 @@ def _collect_table_dispatch_mode_candidates_from_strings(
                 target.get("function_id"),
                 target.get("function_name"),
                 "table_dispatch",
-                "derived",
-                "medium",
                 {
                     "table_entry_address": target.get("table_entry_address"),
                     "string_id": string_id,

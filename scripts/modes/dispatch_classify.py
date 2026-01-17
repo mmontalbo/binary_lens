@@ -102,16 +102,12 @@ def _classify_dispatch_groups(
                 decomp_cache[func_addr] = decomp_text
 
         kind = base_kind
-        strength = "heuristic"
-        confidence = "low"
         basis = "compare_callsite_count"
         argv_index = None
         argv_index_basis = None
 
         if table_dispatch_funcs and func_addr in table_dispatch_funcs:
             kind = "table_dispatch"
-            strength = "derived"
-            confidence = "medium"
             basis = "string_table_adjacent_function_ptrs"
             argv0_hits, argv1_hits = _detect_argv_index(decomp_text, token_literals)
             if not (argv0_hits or argv1_hits):
@@ -131,7 +127,6 @@ def _classify_dispatch_groups(
                 flag_ratio = float(dash_count) / float(len(token_values))
             if flag_ratio >= 0.6:
                 kind = "flag_compare_chain"
-                confidence = "low"
                 basis = "token_prefix_dash"
             else:
                 argv0_hits, argv1_hits = _detect_argv_index(decomp_text, token_literals)
@@ -148,10 +143,8 @@ def _classify_dispatch_groups(
                 if argv0_hits or argv1_hits:
                     if argv0_hits >= argv1_hits and argv0_hits > 0:
                         kind = "argv0_compare_chain"
-                        confidence = "medium" if argv0_hits > 1 else "low"
                     else:
                         kind = "argv1_compare_chain"
-                        confidence = "medium" if argv1_hits > 1 else "low"
                     basis = argv_basis or "argv_index_in_decomp"
                 elif handler_diversity_by_func and func_addr:
                     diversity = handler_diversity_by_func.get(func_addr, 0) or 0
@@ -161,17 +154,12 @@ def _classify_dispatch_groups(
                         if func_name and func_name == "main":
                             kind = "argv1_compare_chain"
                             basis = "handler_assignment_diversity_in_main"
-                        strength = "derived"
-                        confidence = "high"
                 elif decomp_text and _SWITCH_RE.search(decomp_text):
                     kind = "switch_dispatch"
-                    confidence = "low"
                     basis = "switch_in_decomp"
 
         meta = {
             "kind": kind,
-            "strength": strength,
-            "confidence": confidence,
             "basis": basis,
         }
         if argv_index is not None:

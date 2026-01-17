@@ -53,8 +53,6 @@ def derive_error_sites(
             callsite_ids = callsite_ids[:max_callsites]
         imports = sorted(site["imports"])
         severity = "unknown"
-        strength = "unknown"
-        confidence = "low"
         exit_callsites = exit_callsites_by_func.get(site["function_id"]) if exit_callsites_by_func else None
         direct_exit_callsites = []
         if exit_callsites:
@@ -83,16 +81,10 @@ def derive_error_sites(
 
         if direct_exit_callsites:
             severity = "fatal"
-            strength = "derived"
-            confidence = "medium"
         elif status_arg_nonzero:
             severity = "fatal"
-            strength = "heuristic"
-            confidence = "low"
         elif status_arg_zero:
             severity = "non_fatal"
-            strength = "heuristic"
-            confidence = "low"
 
         def cap_callsites(values):
             if not max_callsites:
@@ -111,8 +103,6 @@ def derive_error_sites(
             "callsite_ids": callsite_ids,
             "imports": imports,
             "severity": severity,
-            "strength": strength,
-            "confidence": confidence,
             "followed_by": followed_by,
             "evidence": {
                 "callsites": callsite_ids,
@@ -133,7 +123,6 @@ def derive_error_sites(
         "truncated": truncated,
         "max_sites": max_sites,
         "max_callsites_per_site": max_callsites,
-        "selection_strategy": "grouped_emitter_callsites",
         "sites": results,
     }
     return payload

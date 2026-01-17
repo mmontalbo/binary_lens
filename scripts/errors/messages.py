@@ -133,7 +133,7 @@ def dedupe_links(links):
     seen_links = set()
     unique_links = []
     for link in links:
-        key = (link.get("callsite_id"), link.get("link_strength"))
+        key = (link.get("callsite_id"), link.get("basis"))
         if key in seen_links:
             continue
         seen_links.add(key)
@@ -144,7 +144,7 @@ def dedupe_links(links):
 def sort_links(links, max_callsites):
     def link_sort_key(item):
         return (
-            0 if item.get("link_strength") == "observed" else 1,
+            0 if item.get("basis") == "direct_callsite" else 1,
             addr_to_int(item.get("callsite_id")),
         )
 
@@ -349,8 +349,7 @@ def _process_observed_callsites(
                 "function_id": callsite.get("function_id"),
                 "function_name": callsite.get("function_name"),
                 "emitter_import": callsite.get("emitter_import"),
-                "link_strength": "observed",
-                "confidence": "high",
+                "basis": "direct_callsite",
             }
             append_link(links_by_string, string_id, entry)
             observed_strings.add(string_id)
@@ -547,8 +546,7 @@ def _add_heuristic_links(
                         "function_id": callsite["function_id"],
                         "function_name": callsite.get("function_name"),
                         "emitter_import": callsite["emitter_import"],
-                        "link_strength": "heuristic",
-                        "confidence": "low",
+                        "basis": "string_xref",
                     },
                 )
                 if len(links_by_string.get(string_id, [])) >= max_callsites:
@@ -575,9 +573,6 @@ def _build_messages(
         links = dedupe_links(links)
         if not links:
             continue
-        observed = any(link.get("link_strength") == "observed" for link in links)
-        strength = "observed" if observed else "heuristic"
-        confidence = "high" if observed else "low"
         imports = set()
         function_counts = {}
         for link in links:
@@ -611,8 +606,6 @@ def _build_messages(
                 "related_imports": sorted(imports),
                 "emitting_functions": functions,
                 "emitting_callsites": links_sorted,
-                "strength": strength,
-                "confidence": confidence,
                 "evidence": {
                     "strings": [string_id],
                     "callsites": sorted(
@@ -719,9 +712,13 @@ def derive_error_messages(
     )
 
     def message_sort_key(item):
+        has_direct = any(
+            link.get("basis") == "direct_callsite"
+            for link in item.get("emitting_callsites") or []
+        )
         return (
             BUCKET_PRIORITY.get(item.get("bucket"), 99),
-            0 if item.get("strength") == "observed" else 1,
+            0 if has_direct else 1,
             -len(item.get("emitting_callsites") or []),
             -len(item.get("emitting_functions") or []),
             addr_to_int(item.get("string_address")),
@@ -744,7 +741,6 @@ def derive_error_messages(
         "emitter_callsites_total": emitter_callsites_total,
         "emitter_callsites_considered": len(considered_callsites),
         "emitter_callsites_truncated": truncated_emitters,
-        "selection_strategy": "heuristic_candidates_then_callsite_linked",
         "messages": messages,
     }
     if observed_scan is not None:

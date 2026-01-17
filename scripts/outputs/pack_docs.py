@@ -586,7 +586,6 @@ def build_pack_markdown_docs(
         "- `*_ref` / `*_refs`: file paths relative to the pack root.\n"
         "- `truncated`: exporter bounded that record/list; missing entries may exist.\n"
         "- `status: known|unknown`: argument/value recovery result for a specific field.\n"
-        "- `confidence` and `strength`: best-effort quality signals; `unknown` means not established.\n"
         "- `format: sharded_list/v1`: index into shard files; follow `shards[*].path` to enumerate.\n\n"
         "## Evidence\n\n"
         "- `evidence/callsites/cs_<addr>.json`: callsite context, candidate targets, recovered args.\n"

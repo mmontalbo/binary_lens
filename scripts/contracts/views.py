@@ -122,12 +122,6 @@ def _format_table(headers: list[str], rows: list[list[str]]) -> str:
     return "\n".join([header_line, divider_line, body])
 
 
-def _format_confidence(strength: Any, confidence: Any) -> str:
-    strength = _as_str(strength) or "unknown"
-    confidence = _as_str(confidence) or "unknown"
-    return f"strength: {strength}, confidence: {confidence}"
-
-
 def _format_truncated(value: Any) -> str:
     if value is True:
         return "true"
@@ -421,8 +415,6 @@ def build_contract_views(
         # Options section.
         option_scope = slice_entry.get("option_scope") if isinstance(slice_entry, Mapping) else {}
         option_scope_kind = _as_str(option_scope.get("kind")) or "unknown"
-        option_scope_strength = option_scope.get("strength")
-        option_scope_confidence = option_scope.get("confidence")
         option_scope_basis = _as_str(option_scope.get("basis")) or "unknown"
         parse_loop_ids = option_scope.get("parse_loop_ids") if isinstance(option_scope, Mapping) else None
         cleaned_loop_ids: list[str] = []
@@ -466,8 +458,6 @@ def build_contract_views(
         option_scope_notes: list[str] = []
         if option_scope_kind in ("global", "unknown"):
             option_scope_notes.append("option scope is not localized to this mode")
-        if _as_str(option_scope_confidence) in ("low", "unknown"):
-            option_scope_notes.append("option scope confidence is low")
         if parse_loops_total == 0:
             option_scope_notes.append("cli/parse_loops.json is empty; scoping is uncertain")
         if not parse_loop_ids and parse_loops_total not in (0, None):
@@ -717,14 +707,21 @@ def build_contract_views(
             "",
             "## Identity",
             f"- mode_id: `{mode_id}`",
-            f"- name: `{mode_name}` ({_format_confidence(mode.get('name_strength'), mode.get('name_confidence'))})",
-            f"- kind: `{_as_str(mode.get('kind')) or 'unknown'}` ({_format_confidence(mode.get('kind_strength'), mode.get('kind_confidence'))})",
-            "- source: `modes/index.json`",
-            "",
-            "## Implementation roots (modes/index.json)",
-            f"- root_count: `{len(implementation_roots)}`",
-            f"- truncated: `{_format_truncated(mode.get('implementation_roots_truncated'))}`",
+            f"- name: `{mode_name}`",
+            f"- kind: `{_as_str(mode.get('kind')) or 'unknown'}`",
         ]
+        kind_basis = _as_str(mode.get("kind_basis"))
+        if kind_basis:
+            lines.append(f"- kind_basis: `{kind_basis}`")
+        lines.extend(
+            [
+                "- source: `modes/index.json`",
+                "",
+                "## Implementation roots (modes/index.json)",
+                f"- root_count: `{len(implementation_roots)}`",
+                f"- truncated: `{_format_truncated(mode.get('implementation_roots_truncated'))}`",
+            ]
+        )
 
         if implementation_roots:
             for root in implementation_roots:
@@ -735,10 +732,7 @@ def build_contract_views(
                 sources = root.get("sources") if isinstance(root.get("sources"), list) else []
                 sources = [src for src in sources if _as_str(src)]
                 source_str = _format_list(sources)
-                strength_conf = _format_confidence(root.get("strength"), root.get("confidence"))
-                lines.append(
-                    f"- `{func_id}` (`{func_name}`) sources: `{source_str}`, {strength_conf}"
-                )
+                lines.append(f"- `{func_id}` (`{func_name}`) sources: `{source_str}`")
         else:
             lines.append("- _No implementation roots exported for this mode._")
 
@@ -748,7 +742,7 @@ def build_contract_views(
                 "",
                 "## Inputs",
                 "### Options",
-                f"- scope: `{option_scope_kind}` ({_format_confidence(option_scope_strength, option_scope_confidence)}, basis: `{option_scope_basis}`)",
+                f"- scope: `{option_scope_kind}` (basis: `{option_scope_basis}`)",
                 f"- parse_loops: `{_format_list(parse_loop_ids)}` (ref: `cli/parse_loops.json`, total: `{parse_loops_total_str}`)",
                 "- options_ref: `cli/options.json`",
             ]
@@ -928,10 +922,7 @@ def build_contract_views(
                 callsite_ref = _as_str(entry.get("callsite_ref")) or "unknown"
                 exit_code = entry.get("exit_code")
                 exit_code_str = "unknown" if exit_code is None else str(exit_code)
-                exit_strength = _as_str(entry.get("exit_code_strength")) or "unknown"
-                lines.append(
-                    f"- `{callsite_ref}` (exit_code: `{exit_code_str}`, strength: `{exit_strength}`)"
-                )
+                lines.append(f"- `{callsite_ref}` (exit_code: `{exit_code_str}`)")
             if exit_truncated:
                 lines.append("- note: exit list truncated for readability")
         else:

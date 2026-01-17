@@ -32,40 +32,6 @@ def _c_string_literal(value):
     return '"' + value.replace("\\", "\\\\").replace('"', '\\"') + '"'
 
 
-def _confidence_from_count(count):
-    if count >= 3:
-        return "high"
-    if count == 2:
-        return "medium"
-    if count == 1:
-        return "low"
-    return "unknown"
-
-
-_STRENGTH_RANK = {
-    "observed": 3,
-    "derived": 2,
-    "heuristic": 1,
-    "unknown": 0,
-}
-_CONFIDENCE_RANK = {
-    "high": 3,
-    "medium": 2,
-    "low": 1,
-    "unknown": 0,
-}
-
-
-def _merge_ranked(existing, candidate, rank_map):
-    if candidate is None:
-        return existing
-    if existing is None:
-        return candidate
-    if rank_map.get(candidate, 0) >= rank_map.get(existing, 0):
-        return candidate
-    return existing
-
-
 def _source_rank(sources):
     if not sources:
         return 0
@@ -110,8 +76,8 @@ def _mode_id(string_id, address, value):
 
 def _token_kind(value):
     if value and value.startswith("-"):
-        return "flag_mode", "heuristic", "low"
-    return "unknown", "heuristic", "low"
+        return "flag_mode", "token_prefix_dash"
+    return "unknown", None
 
 
 def _token_candidate(value, min_len, max_len):
@@ -143,7 +109,7 @@ def _looks_like_subcommand_token(value):
     return True
 
 
-def _add_implementation_root(mode, func_id, func_name, source, strength, confidence, evidence=None):
+def _add_implementation_root(mode, func_id, func_name, source, evidence=None):
     if not func_id:
         return
     roots = mode.get("implementation_roots")
@@ -155,8 +121,6 @@ def _add_implementation_root(mode, func_id, func_name, source, strength, confide
         root = {
             "function_name": func_name,
             "sources": set(),
-            "strength": strength,
-            "confidence": confidence,
             "table_entry_addresses": set(),
             "compare_callsites": set(),
             "handler_callsites": set(),
@@ -167,8 +131,6 @@ def _add_implementation_root(mode, func_id, func_name, source, strength, confide
     if not root.get("function_name") and func_name:
         root["function_name"] = func_name
     root["sources"].add(source)
-    root["strength"] = _merge_ranked(root.get("strength"), strength, _STRENGTH_RANK)
-    root["confidence"] = _merge_ranked(root.get("confidence"), confidence, _CONFIDENCE_RANK)
     if not evidence:
         return
     if evidence.get("table_entry_address"):
@@ -181,4 +143,3 @@ def _add_implementation_root(mode, func_id, func_name, source, strength, confide
         root["string_ids"].add(evidence.get("string_id"))
     if evidence.get("string_address"):
         root["string_addresses"].add(evidence.get("string_address"))
-

@@ -76,14 +76,6 @@ def _init_option(long_name, short_name, has_arg):
     }
 
 
-def _entry_strength_confidence(entry):
-    evidence = entry.get("evidence") or []
-    strength = "observed" if any(ev.get("strength") == "observed" for ev in evidence) else "heuristic"
-    confidences = [ev.get("confidence") for ev in evidence if ev.get("confidence")]
-    confidence = "high" if confidences and all(c == "high" for c in confidences) else "medium"
-    return strength, confidence
-
-
 def _add_parse_site(option, callsite_id, callsite_ref, caller, max_sites):
     seen = option.setdefault("_seen_parse_sites", set())
     if callsite_id in seen:
@@ -95,8 +87,6 @@ def _add_parse_site(option, callsite_id, callsite_ref, caller, max_sites):
         "callsite_id": callsite_id,
         "callsite_ref": callsite_ref,
         "function": caller,
-        "strength": "observed",
-        "confidence": "high",
     })
 
 
@@ -137,8 +127,6 @@ def _add_flag_var(option, flag_addr, entry_addr, name_addr, max_vars):
         "address": flag_addr,
         "entry_address": entry_addr,
         "name_address": name_addr,
-        "strength": "observed",
-        "confidence": "high",
     })
 
 
@@ -152,7 +140,8 @@ def _add_check_sites(option, flag_addr, check_sites_by_flag_addr, max_sites):
         if len(option["check_sites"]) >= max_sites:
             break
         seen.add(addr)
-        option["check_sites"].append(site)
+        cleaned = {key: value for key, value in site.items() if key not in ("strength", "confidence")}
+        option["check_sites"].append(cleaned)
 
 
 def _add_check_site_entry(option, site, max_sites):
@@ -165,7 +154,8 @@ def _add_check_site_entry(option, site, max_sites):
     if len(option["check_sites"]) >= max_sites:
         return
     seen.add(addr)
-    option["check_sites"].append(site)
+    cleaned = {key: value for key, value in site.items() if key not in ("strength", "confidence")}
+    option["check_sites"].append(cleaned)
 
 
 def _build_parse_loop_lookup(parse_groups):
@@ -216,8 +206,6 @@ def _collect_parse_option_entries(
                         "callsite_ref": callsite_ref,
                         "optstring_address": optstring.get("address"),
                         "string_id": optstring.get("string_id"),
-                        "strength": "observed",
-                        "confidence": "high",
                     },
                     max_evidence,
                 )
@@ -241,8 +229,6 @@ def _collect_parse_option_entries(
                         "entry_address": entry.get("entry_address"),
                         "name_address": entry.get("name_address"),
                         "string_id": entry.get("string_id"),
-                        "strength": "observed",
-                        "confidence": "high",
                     },
                     max_evidence,
                 )
@@ -294,8 +280,6 @@ def _collect_compare_option_entries(
                     "string_id": token.get("string_id"),
                     "string_address": token.get("address"),
                     "compare_callee": detail.get("callee"),
-                    "strength": "observed",
-                    "confidence": "high",
                 },
                 max_evidence,
             )
@@ -311,8 +295,6 @@ def _merge_option_entries(raw_options, max_parse_sites, max_evidence, max_flag_v
         option = options_map.get(key)
         if option is None:
             option = _init_option(entry.get("long_name"), entry.get("short_name"), entry.get("has_arg"))
-            option["_strengths"] = set()
-            option["_confidences"] = set()
             options_map[key] = option
         else:
             if entry.get("long_name") and not option.get("long_name"):
@@ -342,25 +324,17 @@ def _merge_option_entries(raw_options, max_parse_sites, max_evidence, max_flag_v
             _add_check_site_entry(option, site, max_check_sites)
         for loop_id in entry.get("parse_loop_ids", []):
             _add_parse_loop_id(option, loop_id)
-        strength, confidence = _entry_strength_confidence(entry)
-        option["_strengths"].add(strength)
-        option["_confidences"].add(confidence)
-
     options_list = list(options_map.values())
     for option in options_list:
-        strengths = option.pop("_strengths", set())
-        confidences = option.pop("_confidences", set())
-        option["strength"] = "observed" if "observed" in strengths else "heuristic"
-        option["confidence"] = "high" if confidences and confidences == {"high"} else "medium"
         if option.get("parse_sites"):
             option["parse_sites"].sort(key=lambda item: addr_to_int(item.get("callsite_id")))
         if option.get("parse_loop_ids"):
             option["parse_loop_ids"] = sorted(set(option["parse_loop_ids"]))
-        option["_score"] = len(option.get("parse_sites", [])) + len(option.get("evidence", []))
 
     options_list.sort(
         key=lambda item: (
-            -item.get("_score", 0),
+            -len(item.get("parse_sites") or []),
+            -len(item.get("evidence") or []),
             item.get("long_name") or "",
             item.get("short_name") or "",
         )
@@ -377,7 +351,6 @@ def _finalize_option_entries(options_list, max_options):
 
     for idx, option in enumerate(options_list, start=1):
         option["id"] = "opt_%03d" % idx
-        option.pop("_score", None)
         option.pop("_seen_evidence", None)
         option.pop("_seen_parse_sites", None)
         option.pop("_seen_flag_vars", None)
@@ -540,8 +513,8 @@ def derive_cli_surface(
     """Derive CLI surface artifacts.
 
     Invariants:
-    - Options are merged across parse sites (multi-call binaries) and then sorted by a small
-      score (parse-site + evidence count), with stable tie-breakers.
+    - Options are merged across parse sites (multi-call binaries) and then sorted by
+      parse-site/evidence counts with stable tie-breakers.
     - `truncated` flags indicate exporter bounds were hit; missing entries may exist.
     """
 

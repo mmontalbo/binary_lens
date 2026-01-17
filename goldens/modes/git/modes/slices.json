@@ -4,7 +4,6 @@
   "list_key": "slices",
   "max_slices": null,
   "selected_slices": 143,
-  "selection_strategy": "top_modes_by_dispatch_cluster_score",
   "shard_count": 143,
   "shard_strategy": "by_id",
   "shards": [

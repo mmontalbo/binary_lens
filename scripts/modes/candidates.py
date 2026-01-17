@@ -147,7 +147,6 @@ def collect_mode_candidates(
         callsite_meta,
         dispatch_meta_by_callsite,
         bounds,
-        min_token_len,
     )
 
     min_table_dispatch_modes = bounds.get("min_table_dispatch_modes", 0) or 5
@@ -171,7 +170,6 @@ def collect_mode_candidates(
                 callsite_meta,
                 dispatch_meta_by_callsite,
                 bounds,
-                min_token_len,
             )
 
     table_dispatch_tokens = _collect_table_dispatch_tokens(mode_candidates, selected_mode_ids)

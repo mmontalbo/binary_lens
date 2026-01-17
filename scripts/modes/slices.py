@@ -97,13 +97,11 @@ def build_mode_slices(
         if implementation_roots:
             root_kind = "implementation"
             roots_sorted = list(implementation_roots)
-            selection_strategy = "top_implementation_roots_then_cli_scope"
             table_roots = [
                 root for root in roots_sorted if "table_dispatch" in (root.get("sources") or [])
             ]
             if table_roots and prefer_cmd_table_roots(table_roots, bounds):
                 roots_sorted = table_roots
-                selection_strategy = "table_dispatch_roots_then_cli_scope"
         else:
             root_kind = "dispatch_shared"
             roots_sorted = sorted(
@@ -113,7 +111,6 @@ def build_mode_slices(
                     addr_to_int(item.get("function_id")),
                 ),
             )
-            selection_strategy = "shared_dispatch_roots_then_cli_scope"
         if max_roots and len(roots_sorted) > max_roots:
             roots_sorted = roots_sorted[:max_roots]
 
@@ -137,8 +134,6 @@ def build_mode_slices(
         option_ids = []
         parse_loop_ids = []
         scope_kind = "unknown"
-        scope_strength = "heuristic"
-        scope_confidence = "low"
         scope_basis = "no_parse_loop_overlap"
 
         option_ids = _collect_option_ids_from_parse_sites(
@@ -156,8 +151,6 @@ def build_mode_slices(
                 }
             )
             scope_kind = "mode_scoped"
-            scope_strength = "derived"
-            scope_confidence = "medium"
             scope_basis = "option_parse_sites"
         else:
             loop_ids = []
@@ -182,8 +175,6 @@ def build_mode_slices(
                 for loop_id in loop_ids:
                     option_ids.extend(options_by_loop_id.get(loop_id, []))
                 scope_kind = "mode_scoped"
-                scope_strength = "derived"
-                scope_confidence = "low"
                 dispatch_root_kinds = ("dispatch", "dispatch_shared")
                 if loop_source in dispatch_root_kinds and root_kind in dispatch_root_kinds:
                     scope_basis = "shared_parse_loop_function"
@@ -200,8 +191,6 @@ def build_mode_slices(
                     if max_options and len(parse_loop_ids) >= max_options:
                         break
                 scope_kind = "global"
-                scope_strength = "heuristic"
-                scope_confidence = "low"
                 scope_basis = "shared_parse_loops"
 
         seen_option_ids = set()
@@ -264,12 +253,8 @@ def build_mode_slices(
             "root_functions": roots_sorted,
             "root_kind": root_kind,
             "dispatch_sites": dispatch_sites,
-            "dispatch_cluster_score": mode.get("dispatch_cluster_score", 0),
-            "selection_strategy": selection_strategy,
             "option_scope": {
                 "kind": scope_kind,
-                "strength": scope_strength,
-                "confidence": scope_confidence,
                 "basis": scope_basis,
                 "option_ids": deduped,
                 "parse_loop_ids": parse_loop_ids,
@@ -295,10 +280,10 @@ def build_mode_slices(
 
     slices.sort(
         key=lambda item: (
-            -item.get("dispatch_cluster_score", 0),
             -len(item.get("dispatch_sites") or []),
             -len(item.get("root_functions") or []),
             item.get("name") or "",
+            item.get("mode_id") or "",
         )
     )
 
@@ -310,6 +295,5 @@ def build_mode_slices(
         "selected_slices": total_slices,
         "truncated": truncated,
         "max_slices": max_slices,
-        "selection_strategy": "top_modes_by_dispatch_cluster_score",
         "slices": slices,
     }

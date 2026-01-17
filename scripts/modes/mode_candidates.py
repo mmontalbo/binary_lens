@@ -57,15 +57,13 @@ def _build_mode_candidates(
                 address = entry.get("address")
                 string_id = string_addr_map_all.get(address)
                 mode_id = _mode_id(string_id, address, token_value)
-                kind, kind_strength, kind_confidence = _token_kind(token_value)
+                kind, _kind_basis = _token_kind(token_value)
                 token_entry = {
                     "mode_id": mode_id,
                     "value": token_value,
                     "address": address,
                     "string_id": string_id,
                     "kind": kind,
-                    "kind_strength": kind_strength,
-                    "kind_confidence": kind_confidence,
                 }
                 tokens.append(token_entry)
                 kept_count += 1
@@ -78,8 +76,6 @@ def _build_mode_candidates(
                         "string_id": string_id,
                         "address": address,
                         "kind": kind,
-                        "kind_strength": kind_strength,
-                        "kind_confidence": kind_confidence,
                         "dispatch_sites": set(),
                         "dispatch_roots": {},
                     }
@@ -110,4 +106,3 @@ def _build_mode_candidates(
                 }
 
     return mode_candidates, callsite_tokens, callsite_ignored, callsite_token_stats
-

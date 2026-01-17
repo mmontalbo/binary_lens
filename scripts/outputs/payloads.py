@@ -62,22 +62,11 @@ def build_binary_info(program):
 
 
 def build_callgraph_payload(call_edges, total_edges, truncated_edges, bounds: Bounds, call_edge_stats):
-    max_edges = bounds.max_call_edges
     return {
         "total_edges": total_edges,
         "selected_edges": len(call_edges),
         "truncated": truncated_edges,
         "max_edges": bounds.optional("max_call_edges"),
-        "selection_strategy": (
-            "capability_signals_then_sorted_internal_calls"
-            if max_edges > 0
-            else "all_internal_calls_sorted_by_address"
-        ),
-        "filters": {
-            "exclude_external_callers": True,
-            "exclude_thunk_callers": True,
-            "exclude_jump_calls": True,
-        },
         "metrics": call_edge_stats,
         "edges": call_edges,
     }
@@ -210,10 +199,6 @@ def build_pack_index_payload(format_version: str) -> dict[str, object]:
                 "Large inventories use format=sharded_list/v1; follow shards[*].path to enumerate the full list."
             ),
             "truncation": "truncated=true means that record/list was bounded; missing entries may exist.",
-            "unknowns": (
-                "When a field carries *_confidence / *_strength, the value 'unknown' means the exporter "
-                "did not establish it (not 'false')."
-            ),
         },
     }
 
@@ -289,15 +274,10 @@ def build_strings_payload(
     string_bucket_counts,
     string_bucket_limits,
 ):
-    max_strings = bounds.max_strings
-    selection_strategy = "bucketed_then_most_referenced"
-    if max_strings <= 0 or not strings_truncated:
-        selection_strategy = "all_defined_strings_with_refs"
     return {
         "total_strings": total_strings,
         "truncated": strings_truncated,
         "max_strings": bounds.optional("max_strings"),
-        "selection_strategy": selection_strategy,
         "buckets": {
             "env_vars": {
                 "limit": string_bucket_limits.get("env_vars"),
@@ -327,15 +307,6 @@ def build_index_payload(functions, full_functions, index_functions, summaries, b
         "total_functions": len(functions),
         "max_functions": bounds.optional("max_functions_index"),
         "truncated": truncated,
-        "full_function_selection": "mixed_relevance",
-        "full_function_selection_metrics": [
-            "import_calls",
-            "import_diversity",
-            "string_salience",
-            "callgraph_degree",
-            "size",
-        ],
-        "index_selection": "full_functions_then_largest_by_size",
         "full_functions": [addr_str(func.getEntryPoint()) for func in full_functions],
         "omitted_functions": max(0, len(functions) - len(index_functions)),
         "functions": summaries,
