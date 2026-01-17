@@ -106,66 +106,6 @@ def build_cli_parse_loops_payload(parse_loops, total_parse_loops, truncated, bou
     }
 
 
-def build_surface_map_payload(cli_surface, bounds: Bounds, error_surface=None, modes_surface=None):
-    cli_section = {}
-    parse_loops = cli_surface.get("parse_loops", [])
-    options_list = cli_surface.get("options", [])
-
-    # Provide a minimal "start here" map for CLI exploration.
-    primary_parse_loops = []
-    for entry in parse_loops[:3]:
-        primary_parse_loops.append({
-            "function": entry.get("function"),
-            "representative_callsite_id": entry.get("representative_callsite_id"),
-            "representative_callsite_ref": entry.get("representative_callsite_ref"),
-        })
-
-    table_candidates = {}
-    for entry in parse_loops:
-        longopts = entry.get("longopts") or {}
-        addr = longopts.get("address")
-        if not addr:
-            continue
-        count = longopts.get("entry_count", 0)
-        existing = table_candidates.get(addr, 0)
-        if count > existing:
-            table_candidates[addr] = count
-    option_tables = []
-    for addr, count in sorted(table_candidates.items(), key=lambda item: (-item[1], item[0])):
-        option_tables.append({
-            "address": addr,
-            "entry_count": count,
-        })
-        if len(option_tables) >= 3:
-            break
-
-    top_options = []
-    for entry in options_list[:10]:
-        top_options.append({
-            "id": entry.get("id"),
-            "long_name": entry.get("long_name"),
-            "short_name": entry.get("short_name"),
-            "parse_site_count": len(entry.get("parse_sites") or []),
-            "evidence_count": len(entry.get("evidence") or []),
-        })
-
-    if primary_parse_loops:
-        cli_section["primary_parse_loops"] = primary_parse_loops
-    if option_tables:
-        cli_section["option_tables"] = option_tables
-    if top_options:
-        cli_section["top_options"] = top_options
-
-    surface_map = {
-        "cli": cli_section,
-    }
-    if error_surface:
-        surface_map["errors"] = error_surface
-    if modes_surface:
-        surface_map["modes"] = modes_surface
-    return surface_map
-
-
 @dataclass(frozen=True)
 class ExportCreatedAt:
     iso8601: str
