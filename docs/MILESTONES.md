@@ -9,53 +9,46 @@ This document defines near-term milestones for adding **LM-tailored interface le
 Status: planned
 
 ### Goal
-Expand the context pack with **evidence-backed contract anchors** beyond modes/errors/options: stable, bounded surfaces derived from callsites + constant/table arguments that help consumers understand what the binary *interacts with* (filesystem, env, subprocesses, network, stdout/stderr) without relying on narrative decompiler output.
+Shift the pack’s primary interface toward a **user-facing contract model** (commands/modes, inputs, outputs, diagnostics), backed by evidence. Low-level implementation conventions (`getopt_long`, `strcmp` chains, custom parsers, `fprintf`, etc.) should be treated as *evidence sources*, not the interface.
 
 This milestone should make it easy to answer:
-- “What external interfaces does this binary touch (files, env vars, subprocesses, sockets)?”
-- “What user-visible text/output templates exist, and where are they emitted?”
-- “Which constants/strings participate in those interfaces (paths, env var names, argv tokens)?”
+- “For mode X, what inputs does it accept (options/env/positionals), and what outputs/diagnostics does it emit?”
+- “What evidence supports each claim (callsite refs, function refs, string IDs)?”
+- “What is known vs unknown for this specific mode (coverage), without manual joins?”
 
 ### Context
-Many binaries encode “user contracts” through:
-- calls into stable APIs (`getenv`, `open`, `execve`, `connect`, `fprintf`, …)
+Many binaries encode “user contracts” through multiple mechanisms:
+- stable APIs (`getenv`, `open`, `execve`, `connect`, `fprintf`, …)
 - constant arguments and static tables (string keys, path templates, format strings)
+- custom parsing/dispatch code (table-driven, compare chains, bespoke parsers)
 
-`binary_lens` already exports call edges, strings, and evidence callsites, plus focused lenses (errors, modes). This milestone adds **generic interface surfaces** that scale beyond the current test binaries and remain useful to non-LM reverse engineering workflows (triage, auditing, diffing).
+`binary_lens` already exports modes, CLI option tokens, errors, interface surfaces, strings, and evidence. This milestone focuses on:
+- reducing reliance on “read the code and infer the joins”
+- presenting **mode-scoped contract views** that are convention-agnostic
+- keeping the pack comprehensive without becoming unreadable (sharding + small indexes)
 
 ### Deliverables
-Add a new top-level `interfaces/` section to the context pack. Keep the section cohesive, and treat its JSON schemas as stable once introduced.
+1) **Sharded list outputs (no dropped records)**
+- Replace “top-N truncation” for large lists with a sharded layout:
+  - Keep a small index file at the stable path (e.g., `modes/slices.json`, `cli/parse_loops.json`).
+  - Store the full set in shard files under a sibling directory (e.g., `modes/slices/`, `cli/parse_loops/`).
+  - Index includes totals, shard refs, and `truncated: false`.
 
-1. `interfaces/index.json`
-   - Index of available interface surfaces, with refs + bounded counts/truncation metadata.
+2) **Mode-scoped contract views (Markdown-first)**
+- Add a mode-first “start here” surface that joins existing inventories into a per-mode contract view, with explicit coverage/unknowns and evidence trails.
+- Recommended pack layout (subject to iteration):
+  - `contracts/index.json`: list modes + refs to per-mode contract docs
+  - `contracts/modes/<mode_id>.md`: one page per mode that summarizes:
+    - command/mode identity + implementation roots
+    - inputs: options (spellings + arg shape) and env vars, with recognizer evidence
+    - outputs: user-visible templates/help text, with evidence
+    - diagnostics: error templates + exit paths, with evidence
+    - per-mode coverage summary (what we have vs missing), and truncation/unknown markers
 
-2. `interfaces/env.json`
-   - Environment-variable interactions anchored to callsites:
-     - `getenv`/`setenv`/`unsetenv`/`putenv` callsites (bounded)
-     - resolved constant env var names when visible (string IDs + addresses)
-     - explicit “unknown name” when not recoverable
+3) **Interface inventories remain evidence-backed building blocks**
+Maintain the existing `interfaces/` surfaces as atomic, evidence-linked inventories. They should be useful on their own, and also serve as inputs to the mode-scoped contract views.
 
-3. `interfaces/fs.json`
-   - Filesystem interactions anchored to callsites:
-     - `open/openat/fopen/stat/lstat/access/unlink/rename/mkdir/opendir/...` callsites (bounded)
-     - resolved constant path-like strings when visible (string IDs + addresses)
-     - flags/modes when statically visible (constant ints) with explicit unknowns otherwise
-
-4. `interfaces/process.json`
-   - Subprocess interactions anchored to callsites:
-     - `exec*`, `posix_spawn`, `system`, `popen` callsites (bounded)
-     - resolved constant argv0/command strings when visible
-
-5. `interfaces/net.json`
-   - Network interactions anchored to callsites:
-     - `socket/connect/bind/listen/send/recv/getaddrinfo/...` callsites (bounded)
-     - resolved constant protocol/port/host strings when visible (explicit unknowns otherwise)
-
-6. `interfaces/output.json`
-   - User-visible output templates anchored to callsites:
-     - `printf/fprintf/dprintf/write/puts/fputs/...` callsites (bounded)
-     - resolved constant format strings and/or message templates when visible
-     - best-effort output channel hints when statically visible (e.g., fd=1/2, stderr) with explicit unknowns otherwise
+For `interfaces/*` specifics, keep the existing surface split (`env`, `fs`, `process`, `net`, `output`) and preserve explicit unknowns + evidence refs.
 
 ### Implementation hygiene (required)
 To keep the pack generic and reduce future churn while adding new pattern families:
@@ -65,21 +58,22 @@ To keep the pack generic and reduce future churn while adding new pattern famili
 
 ### Approach (static-first)
 - Prefer **import-signal anchors** + existing callgraph/callsite evidence to localize sites.
+- Add **derived joins/views** (contracts) on top of existing inventories; do not introduce new deep semantic extraction as part of this milestone.
 - Recover constant-ish arguments using existing bounded argument-resolution helpers; degrade gracefully when decompilation fails.
-- Emit **atomic, evidence-linked records** with explicit `status`/`unknown` fields rather than narrative claims.
-- Enforce bounds and stable ordering; include totals + truncation flags so consumers can distinguish “absent” vs “not exported”.
+- Emit evidence-linked records with explicit `unknown` fields and coverage summaries rather than narrative claims.
+- Keep outputs comprehensive via sharding; keep navigation small via indexes and per-mode docs.
 
 ### Acceptance Criteria
-**A. Non-trivial surfaces**
-- On at least two diverse binaries, each `interfaces/*.json` surface contains meaningful anchored evidence (not just empty shells), with explicit `truncated`/bounds metadata.
-- `git` and `coreutils` remain primary validation targets, but the exporter should avoid tailoring heuristics specifically to them.
+**A. Mode-first UX**
+- For both `git` and `coreutils`, consumers can pick an arbitrary mode from `modes/index.json` and find a single mode-scoped contract view that links to options/env/output/diagnostics evidence with explicit coverage/unknowns.
+- No mode is “missing” from key routing surfaces due to truncation (sharded lists instead of top-N).
 
 **B. Generic-first**
 - Core functionality does not depend on binary-specific symbol naming conventions; any name-based shortcuts are optional and labeled as heuristic.
 
-**C. Bounded + auditable**
-- Records are diff-friendly and bounded.
-- Every entry links back to evidence (callsites, functions, string IDs/addresses), and missing data is represented explicitly (unknown vs truncated).
+**C. Comprehensive + navigable**
+- Large lists are comprehensive via sharding; small indexes and Markdown views keep navigation tractable.
+- Every contract claim links back to evidence (callsites, functions, string IDs/addresses), and missing data is represented explicitly (unknown vs truncated).
 
 ## Milestone 3 — Dispatch & Mode Surface Lens
 
