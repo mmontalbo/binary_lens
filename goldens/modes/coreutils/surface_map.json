@@ -116,38 +116,38 @@
   "errors": {
     "top_emitting_functions": [
       {
-        "emit_callsite_count": 8,
+        "emit_callsite_count": 7,
         "function": {
-          "address": "00134930",
-          "name": "process_file"
-        }
-      },
-      {
-        "emit_callsite_count": 8,
-        "function": {
-          "address": "00176e90",
-          "name": "single_binary_main_mknod"
-        }
-      },
-      {
-        "emit_callsite_count": 8,
-        "function": {
-          "address": "00179940",
-          "name": "rm"
-        }
-      },
-      {
-        "emit_callsite_count": 8,
-        "function": {
-          "address": "001af030",
-          "name": "print_stat"
+          "address": "0011a5d0",
+          "name": "usage"
         }
       },
       {
         "emit_callsite_count": 7,
         "function": {
-          "address": "0011a5d0",
-          "name": "usage"
+          "address": "0011abb0",
+          "name": "_usage_chroot"
+        }
+      },
+      {
+        "emit_callsite_count": 7,
+        "function": {
+          "address": "0012a040",
+          "name": "_usage_b2sum"
+        }
+      },
+      {
+        "emit_callsite_count": 7,
+        "function": {
+          "address": "0017b7e0",
+          "name": "_usage_nohup"
+        }
+      },
+      {
+        "emit_callsite_count": 7,
+        "function": {
+          "address": "001a9af0",
+          "name": "create"
         }
       }
     ],
@@ -237,8 +237,8 @@
       {
         "bucket": "error",
         "preview": "missing operand",
-        "representative_callsite_id": "0011b660",
-        "representative_callsite_ref": "evidence/callsites/cs_0011b660.json",
+        "representative_callsite_id": "00132649",
+        "representative_callsite_ref": "evidence/callsites/cs_00132649.json",
         "string_id": "s_0020732a"
       },
       {
@@ -250,10 +250,10 @@
       },
       {
         "bucket": "warn",
-        "preview": "WARNING: %ju lines are improperly formatted",
-        "representative_callsite_id": "0012ab62",
-        "representative_callsite_ref": "evidence/callsites/cs_0012ab62.json",
-        "string_id": "s_00213228"
+        "preview": "Warning: ",
+        "representative_callsite_id": "00125f1c",
+        "representative_callsite_ref": "evidence/callsites/cs_00125f1c.json",
+        "string_id": "s_00207d24"
       },
       {
         "bucket": "diagnostic",

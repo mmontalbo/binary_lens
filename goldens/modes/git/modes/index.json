@@ -2200,7 +2200,7 @@
   "max_dispatch_sites_per_mode": 12,
   "max_mode_token_length": 32,
   "max_mode_tokens_per_callsite": 6,
-  "max_modes": 200,
+  "max_modes": null,
   "modes": [
     {
       "confidence": "high",

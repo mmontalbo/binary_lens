@@ -2,73 +2,73 @@
   "cli": {
     "top_options": [
       {
-        "evidence_count": 4,
+        "evidence_count": 7,
         "id": "opt_001",
         "long_name": "all",
+        "parse_site_count": 6,
+        "short_name": null
+      },
+      {
+        "evidence_count": 5,
+        "id": "opt_002",
+        "long_name": "ff-only",
+        "parse_site_count": 5,
+        "short_name": null
+      },
+      {
+        "evidence_count": 4,
+        "id": "opt_003",
+        "long_name": "bisect",
         "parse_site_count": 4,
         "short_name": null
       },
       {
         "evidence_count": 4,
-        "id": "opt_002",
+        "id": "opt_004",
+        "long_name": "end-of-options",
+        "parse_site_count": 4,
+        "short_name": null
+      },
+      {
+        "evidence_count": 4,
+        "id": "opt_005",
         "long_name": "merge-base",
         "parse_site_count": 4,
         "short_name": null
       },
       {
         "evidence_count": 4,
-        "id": "opt_003",
+        "id": "opt_006",
         "long_name": "stdin",
         "parse_site_count": 4,
         "short_name": null
       },
       {
         "evidence_count": 3,
-        "id": "opt_004",
+        "id": "opt_007",
         "long_name": "cached",
         "parse_site_count": 3,
         "short_name": null
       },
       {
         "evidence_count": 3,
-        "id": "opt_005",
-        "long_name": "end-of-options",
+        "id": "opt_008",
+        "long_name": "exclude-promisor-objects",
         "parse_site_count": 3,
         "short_name": null
       },
       {
-        "evidence_count": 2,
-        "id": "opt_006",
-        "long_name": "check-self-contained-and-connected",
-        "parse_site_count": 2,
-        "short_name": null
-      },
-      {
-        "evidence_count": 2,
-        "id": "opt_007",
-        "long_name": "quiet",
-        "parse_site_count": 2,
-        "short_name": null
-      },
-      {
-        "evidence_count": 2,
-        "id": "opt_008",
-        "long_name": "staged",
-        "parse_site_count": 2,
-        "short_name": null
-      },
-      {
-        "evidence_count": 2,
+        "evidence_count": 3,
         "id": "opt_009",
-        "long_name": "verify",
-        "parse_site_count": 2,
+        "long_name": "help",
+        "parse_site_count": 3,
         "short_name": null
       },
       {
-        "evidence_count": 1,
+        "evidence_count": 3,
         "id": "opt_010",
-        "long_name": "absolute-git-dir",
-        "parse_site_count": 1,
+        "long_name": "not",
+        "parse_site_count": 3,
         "short_name": null
       }
     ]
@@ -78,29 +78,22 @@
       {
         "emit_callsite_count": 8,
         "function": {
-          "address": "00444f40",
-          "name": "cmd_difftool"
+          "address": "00416950",
+          "name": "emit_one_suspect_detail"
         }
       },
       {
-        "emit_callsite_count": 8,
+        "emit_callsite_count": 6,
         "function": {
-          "address": "00502530",
-          "name": "apply_fragments"
+          "address": "005e06a0",
+          "name": "load_idx"
         }
       },
       {
-        "emit_callsite_count": 8,
+        "emit_callsite_count": 5,
         "function": {
-          "address": "006531c0",
-          "name": "read_author_script"
-        }
-      },
-      {
-        "emit_callsite_count": 7,
-        "function": {
-          "address": "0045f9e0",
-          "name": "cmd_fsck"
+          "address": "00406790",
+          "name": "handle_options"
         }
       },
       {
@@ -108,6 +101,13 @@
         "function": {
           "address": "00407640",
           "name": "cmd_main"
+        }
+      },
+      {
+        "emit_callsite_count": 5,
+        "function": {
+          "address": "0040aec0",
+          "name": "do_interactive.part.0"
         }
       }
     ],
@@ -203,31 +203,31 @@
       },
       {
         "bucket": "usage",
-        "preview": "git [-v | --version] [-h | --help] [-C <path>] [-c <name>=<value>]\\n           [--exec-path[=<path>]] [--html-path] [--man-path] [--info-path]\\n           [-...",
-        "representative_callsite_id": "00408229",
-        "representative_callsite_ref": "evidence/callsites/cs_00408229.json",
-        "string_id": "s_007490a0"
+        "preview": "Entry '%s' overlaps with '%s'.  Cannot bind.",
+        "representative_callsite_id": "006a07f9",
+        "representative_callsite_ref": "evidence/callsites/cs_006a07f9.json",
+        "string_id": "s_00744190"
       },
       {
-        "bucket": "error",
-        "preview": "could not write index",
-        "representative_callsite_id": "004d68ea",
-        "representative_callsite_ref": "evidence/callsites/cs_004d68ea.json",
-        "string_id": "s_006ef86f"
+        "bucket": "warn",
+        "preview": "deprecated synonym for --branches",
+        "representative_callsite_id": "0047f2b2",
+        "representative_callsite_ref": "evidence/callsites/cs_0047f2b2.json",
+        "string_id": "s_007130a8"
       },
       {
-        "bucket": "usage",
-        "preview": "usage: %s%s",
-        "representative_callsite_id": "0046d857",
-        "representative_callsite_ref": "evidence/callsites/cs_0046d857.json",
-        "string_id": "s_006e64d4"
+        "bucket": "diagnostic",
+        "preview": "%s: ok\\n",
+        "representative_callsite_id": "004ecb55",
+        "representative_callsite_ref": "evidence/callsites/cs_004ecb55.json",
+        "string_id": "s_006f099e"
       },
       {
-        "bucket": "error",
-        "preview": "options '%s' and '%s' cannot be used together",
-        "representative_callsite_id": "0050496d",
-        "representative_callsite_ref": "evidence/callsites/cs_0050496d.json",
-        "string_id": "s_00701a48"
+        "bucket": "unknown",
+        "preview": "--------------------------",
+        "representative_callsite_id": "0040af3d",
+        "representative_callsite_ref": "evidence/callsites/cs_0040af3d.json",
+        "string_id": "s_006df97d"
       }
     ]
   },

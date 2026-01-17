@@ -2,7 +2,7 @@
   "format": "sharded_list/v1",
   "item_kind": "mode_slices",
   "list_key": "slices",
-  "max_slices": 8,
+  "max_slices": null,
   "selected_slices": 106,
   "selection_strategy": "top_modes_by_dispatch_cluster_score",
   "shard_count": 106,
