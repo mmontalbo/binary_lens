@@ -8,24 +8,38 @@ from export_primitives import addr_to_int
 def derive_error_sites(
     messages_payload,
     exit_callsites_by_func,
+    emitter_callsites_by_func,
     call_args_cache,
     bounds: Bounds,
     function_meta_by_addr,
 ):
     callsite_imports = {}
-    for message in messages_payload.get("messages", []):
-        for callsite in message.get("emitting_callsites", []):
-            callsite_id = callsite.get("callsite_id")
-            if not callsite_id:
+    callsite_to_function = {}
+    for entries in (emitter_callsites_by_func or {}).values():
+        if not entries:
+            continue
+        for entry in entries:
+            if not isinstance(entry, dict):
                 continue
-            emitter = callsite.get("emitter_import")
-            if emitter:
+            callsite_id = entry.get("callsite_id")
+            func_id = entry.get("function_id")
+            if callsite_id and func_id:
+                callsite_to_function[callsite_id] = func_id
+            emitter = entry.get("emitter_import")
+            if callsite_id and emitter:
                 callsite_imports[callsite_id] = emitter
 
     sites = {}
     for message in messages_payload.get("messages", []):
-        for callsite in message.get("emitting_callsites", []):
-            func_id = callsite.get("function_id")
+        for callsite_entry in message.get("emitting_callsites", []):
+            callsite_id = None
+            if isinstance(callsite_entry, str):
+                callsite_id = callsite_entry
+            elif isinstance(callsite_entry, dict):
+                callsite_id = callsite_entry.get("callsite_id")
+            if not callsite_id:
+                continue
+            func_id = callsite_to_function.get(callsite_id)
             if not func_id:
                 continue
             site = sites.get(func_id)
@@ -37,12 +51,10 @@ def derive_error_sites(
                     "imports": set(),
                 }
                 sites[func_id] = site
-            callsite_id = callsite.get("callsite_id")
-            if callsite_id:
-                site["callsite_ids"].append(callsite_id)
-            emitter = callsite.get("emitter_import")
+            emitter = callsite_imports.get(callsite_id)
             if emitter:
                 site["imports"].add(emitter)
+            site["callsite_ids"].append(callsite_id)
 
     results = []
     max_callsites = bounds.max_error_site_callsites

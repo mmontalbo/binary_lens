@@ -7,7 +7,11 @@ def collect_error_callsites(messages_payload, exit_paths_payload, error_sites_pa
     callsite_ids = set()
     for message in messages_payload.get("messages", []):
         for entry in message.get("emitting_callsites", []):
-            callsite_id = entry.get("callsite_id")
+            callsite_id = None
+            if isinstance(entry, str):
+                callsite_id = entry
+            elif isinstance(entry, dict):
+                callsite_id = entry.get("callsite_id")
             if callsite_id:
                 callsite_ids.add(callsite_id)
     for entry in exit_paths_payload.get("direct_calls", []):

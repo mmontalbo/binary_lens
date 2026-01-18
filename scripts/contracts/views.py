@@ -93,7 +93,11 @@ def _truncate(entries: list[Any], max_entries: int) -> tuple[list[Any], bool]:
 def _callsite_ids_for_message(message: Mapping[str, Any]) -> list[str]:
     callsite_ids: list[str] = []
     for entry in message.get("emitting_callsites") or []:
-        callsite_id = _as_str(entry.get("callsite_id"))
+        callsite_id = None
+        if isinstance(entry, str):
+            callsite_id = _as_str(entry)
+        elif isinstance(entry, Mapping):
+            callsite_id = _as_str(entry.get("callsite_id"))
         if callsite_id:
             callsite_ids.append(callsite_id)
     return _unique(callsite_ids)
@@ -102,8 +106,11 @@ def _callsite_ids_for_message(message: Mapping[str, Any]) -> list[str]:
 def _function_ids_for_message(message: Mapping[str, Any]) -> list[str]:
     func_ids: list[str] = []
     for entry in message.get("emitting_functions") or []:
-        func_id = entry.get("function_id") if isinstance(entry, Mapping) else None
-        func_id = _as_str(func_id)
+        func_id = None
+        if isinstance(entry, str):
+            func_id = _as_str(entry)
+        elif isinstance(entry, Mapping):
+            func_id = _as_str(entry.get("function_id"))
         if func_id:
             func_ids.append(func_id)
     return _unique(func_ids)

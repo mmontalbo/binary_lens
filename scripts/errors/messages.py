@@ -559,7 +559,6 @@ def _build_messages(
     candidates,
     *,
     links_by_string,
-    function_meta_by_addr,
     max_callsites,
     max_funcs,
 ):
@@ -573,47 +572,47 @@ def _build_messages(
         links = dedupe_links(links)
         if not links:
             continue
-        imports = set()
         function_counts = {}
         for link in links:
-            imports.add(link.get("emitter_import"))
             func_id = link.get("function_id")
             if not func_id:
                 continue
             function_counts[func_id] = function_counts.get(func_id, 0) + 1
         functions = []
         for func_id, count in function_counts.items():
-            func_meta = function_meta_by_addr.get(func_id, {})
-            functions.append(
-                {
-                    "function_id": func_id,
-                    "function_name": func_meta.get("name"),
-                    "callsite_count": count,
-                }
-            )
-        functions.sort(
-            key=lambda item: (-item.get("callsite_count", 0), addr_to_int(item.get("function_id")))
-        )
+            functions.append((func_id, count))
+        functions.sort(key=lambda item: (-item[1], addr_to_int(item[0])))
         if max_funcs:
             functions = functions[:max_funcs]
+        function_ids = [func_id for func_id, _ in functions if func_id]
         links_sorted = sort_links(links, max_callsites)
+        callsite_ids = []
+        seen_callsites = set()
+        for link in links_sorted:
+            callsite_id = link.get("callsite_id")
+            if not callsite_id or callsite_id in seen_callsites:
+                continue
+            seen_callsites.add(callsite_id)
+            callsite_ids.append(callsite_id)
+        bucket = meta.get("bucket")
+        has_direct = any(link.get("basis") == "direct_callsite" for link in links)
+        sort_key = (
+            BUCKET_PRIORITY.get(bucket, 99),
+            0 if has_direct else 1,
+            -len(callsite_ids),
+            -len(function_ids),
+            addr_to_int(meta.get("address")),
+        )
         messages.append(
-            {
-                "string_id": string_id,
-                "string_address": meta.get("address"),
-                "preview": meta.get("preview"),
-                "bucket": meta.get("bucket"),
-                "related_imports": sorted(imports),
-                "emitting_functions": functions,
-                "emitting_callsites": links_sorted,
-                "evidence": {
-                    "strings": [string_id],
-                    "callsites": sorted(
-                        {link.get("callsite_id") for link in links if link.get("callsite_id")}
-                    ),
-                    "functions": sorted(function_counts.keys(), key=addr_to_int),
+            (
+                sort_key,
+                {
+                    "string_id": string_id,
+                    "bucket": bucket,
+                    "emitting_functions": function_ids,
+                    "emitting_callsites": callsite_ids,
                 },
-            }
+            )
         )
     return messages
 
@@ -706,25 +705,11 @@ def derive_error_messages(
     messages = _build_messages(
         candidates,
         links_by_string=links_by_string,
-        function_meta_by_addr=function_meta_by_addr,
         max_callsites=max_callsites,
         max_funcs=max_funcs,
     )
-
-    def message_sort_key(item):
-        has_direct = any(
-            link.get("basis") == "direct_callsite"
-            for link in item.get("emitting_callsites") or []
-        )
-        return (
-            BUCKET_PRIORITY.get(item.get("bucket"), 99),
-            0 if has_direct else 1,
-            -len(item.get("emitting_callsites") or []),
-            -len(item.get("emitting_functions") or []),
-            addr_to_int(item.get("string_address")),
-        )
-
-    messages.sort(key=message_sort_key)
+    messages.sort(key=lambda item: item[0])
+    messages = [entry for _, entry in messages]
     max_messages = bounds.optional("max_error_messages")
     total_messages = len(messages)
     truncated = False

@@ -94,6 +94,7 @@ def collect_pipeline_inputs(
         error_sites_payload = derive_error_sites(
             error_messages_payload,
             exit_callsites_by_func,
+            emitter_callsites_by_func,
             call_args_cache,
             bounds,
             function_meta_by_addr,
