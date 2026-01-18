@@ -127,9 +127,8 @@ Add a `modes/` (or `dispatch/`) section to the context pack:
      - `name` (string token, when discoverable)
      - `kind` (e.g., `argv0`, `subcommand`, `verb`, `flag_mode`, `unknown`)
      - `dispatch_roots` (best-effort function IDs that anchor the mode)
-     - `dispatch_sites` (callsite IDs + evidence refs where the mode token is tested/selected)
-     - `evidence` (strings/callsites/functions)
-     - `strength/confidence` tags for all non-trivial fields
+     - `dispatch_sites` (callsite IDs where the mode token is tested/selected)
+     - `implementation_roots` (function IDs + sources)
 
 2. `modes/dispatch_sites.json` (optional debug surface; no longer emitted by default)
    - Use `modes/index.json` dispatch sites + `evidence/callsites.json` instead.
@@ -138,7 +137,7 @@ Add a `modes/` (or `dispatch/`) section to the context pack:
    - Bounded per-mode “start here” slices to make consumers efficient:
      - `mode_id`
      - `root_functions` (bounded list)
-     - `top_strings` / `top_messages` / `top_options` (bounded references into existing outputs)
+     - `top_strings` / `top_messages` (bounded references into existing outputs)
      - recommended: `option_scope` hints (global/mode_scoped/mode_selecting/unknown), explicitly labeled as derived/heuristic
      - `top_exit_paths` (bounded references)
      - explicit `selection_strategy` + bounds metadata

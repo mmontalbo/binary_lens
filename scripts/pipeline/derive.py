@@ -58,10 +58,17 @@ def _collect_callsite_values(value: Any, callsite_ids: set[str]) -> None:
         _collect_callsite_ids(value, callsite_ids)
 
 
+_CALLSITE_KEYS = {
+    "dispatch_sites",
+}
+
+
 def _collect_callsite_ids(value: Any, callsite_ids: set[str]) -> None:
     if isinstance(value, Mapping):
         for key, entry in value.items():
-            if isinstance(key, str) and "callsite" in key and "ref" not in key:
+            if isinstance(key, str) and "ref" not in key and (
+                "callsite" in key or key in _CALLSITE_KEYS
+            ):
                 _collect_callsite_values(entry, callsite_ids)
                 continue
             _collect_callsite_ids(entry, callsite_ids)

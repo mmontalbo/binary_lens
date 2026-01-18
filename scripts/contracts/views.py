@@ -109,10 +109,15 @@ def _mode_name_in_function(func_name: str, mode_name: str) -> bool:
     return re.search(pattern, func_name) is not None
 
 
-def _collect_function_ids(roots: list[Mapping[str, Any]]) -> list[str]:
+def _collect_function_ids(roots: list[Any]) -> list[str]:
     func_ids: list[str] = []
     for root in roots:
-        func_id = _as_str(root.get("function_id"))
+        if isinstance(root, Mapping):
+            func_id = _as_str(root.get("function_id"))
+        elif isinstance(root, str):
+            func_id = _as_str(root)
+        else:
+            func_id = None
         if func_id:
             func_ids.append(func_id)
     func_ids = _unique(func_ids)
@@ -874,7 +879,6 @@ def build_contract_views(
                 "",
                 "## Implementation roots (modes/index.json)",
                 f"- root_count: `{len(implementation_roots)}`",
-                f"- truncated: `{_format_truncated(mode.get('implementation_roots_truncated'))}`",
             ]
         )
 

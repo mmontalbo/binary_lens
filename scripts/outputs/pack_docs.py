@@ -602,7 +602,7 @@ def build_pack_markdown_docs(
         "\n"
         "## Two-minute walkthrough\n\n"
         "1. Pick a mode from `modes/index.json` \u2192 `modes[*]`.\n"
-        "2. From `modes/index.json`, use `dispatch_sites[*].callsite_id` with `evidence/callsites.json` to locate the callsite record.\n"
+        "2. From `modes/index.json`, use `dispatch_sites[*]` with `evidence/callsites.json` to locate the callsite record.\n"
         "3. From the callsite record, note the `from` function address and open `functions/f_<addr>.json`.\n"
         "4. Use that function record to pivot to `strings.json`, `errors/`, `cli/`, and (if present) `evidence/decomp/`.\n"
     )
@@ -648,7 +648,7 @@ def build_pack_markdown_docs(
         "- `evidence/callsites.json`: callsite ids with `from`/`targets` addresses (resolve names via `callgraph/nodes.json`).\n"
         "- `evidence/decomp/f_<addr>.json`: bounded decompiler excerpt for a function.\n\n"
         "## Modes (`modes/`)\n\n"
-        "- `modes/index.json`: mode inventory; each mode includes `mode_id`, `kind`, and dispatch evidence (resolve names via `token.string_id` + `strings.json`).\n"
+        "- `modes/index.json`: mode inventory; each mode includes `mode_id`, `kind`, `dispatch_sites` (callsite ids), and `dispatch_roots` (function ids); resolve names via `token.string_id` + `strings.json`.\n"
         "- `modes/slices.json`: per-mode \"start here\" slices (sharded index).\n\n"
         "## Contracts (`contracts/`)\n\n"
         "- `contracts/index.json`: mode contract index (sharded list).\n"
@@ -681,8 +681,6 @@ def build_pack_markdown_docs(
     top_mode = _first_dict_entry(modes.get("modes")) if isinstance(modes, Mapping) else None
     if isinstance(top_mode, Mapping):
         mode_id = _as_str(top_mode.get("mode_id"))
-        dispatch_site = _first_dict_entry(top_mode.get("dispatch_sites"))
-        rep_callsite = _as_str(dispatch_site.get("callsite_id")) if isinstance(dispatch_site, Mapping) else None
         mode_name = _as_str(top_mode.get("name"))
         if not mode_name:
             token = top_mode.get("token") if isinstance(top_mode.get("token"), Mapping) else {}
@@ -696,8 +694,6 @@ def build_pack_markdown_docs(
             "dispatch_sites": (top_mode.get("dispatch_sites") or [])[:1],
             "dispatch_roots": (top_mode.get("dispatch_roots") or [])[:1],
         }
-        if rep_callsite:
-            rendered["representative_callsite_id"] = rep_callsite
         if isinstance(modes, Mapping) and modes.get("callsites_ref"):
             rendered["callsites_ref"] = modes.get("callsites_ref")
         examples_sections.extend(
@@ -706,7 +702,7 @@ def build_pack_markdown_docs(
                 "Start from a mode and pivot into evidence and owning functions.\n\n"
                 "Steps:\n\n"
                 "1. Open `modes/index.json` and locate the mode by `mode_id`.\n"
-                "2. Use `dispatch_sites[*].callsite_id` from `modes/index.json` with `callsites_ref` to locate the callsite record.\n"
+                "2. Use `dispatch_sites[*]` from `modes/index.json` with `callsites_ref` to locate the callsite record.\n"
                 "3. From the callsite record, open the owning function (`functions/f_<addr>.json`) and its decompiler excerpt (`evidence/decomp/`).\n",
                 _json_code_block(rendered),
             ]

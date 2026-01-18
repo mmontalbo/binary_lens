@@ -99,17 +99,9 @@ def _build_modes_index_payload(
     modes = []
     for mode in filtered_modes:
         callsite_ids = sorted(mode.get("dispatch_sites") or [], key=addr_to_int)
-        dispatch_sites = []
-        for callsite_id in callsite_ids:
-            dispatch_sites.append(
-                {
-                    "callsite_id": callsite_id,
-                }
-            )
-        sites_truncated = False
+        dispatch_sites = list(callsite_ids)
         if max_sites and len(dispatch_sites) > max_sites:
             dispatch_sites = dispatch_sites[:max_sites]
-            sites_truncated = True
 
         root_entries = []
         for func_addr, root in (mode.get("dispatch_roots") or {}).items():
@@ -127,14 +119,9 @@ def _build_modes_index_payload(
         root_entries.sort(
             key=lambda item: (-item.get("callsite_count", 0), addr_to_int(item.get("function_id")))
         )
-        roots_truncated = False
         if max_roots and len(root_entries) > max_roots:
             root_entries = root_entries[:max_roots]
-            roots_truncated = True
-
-        dispatch_site_count = len(callsite_ids)
-        dispatch_root_count = len(mode.get("dispatch_roots") or {})
-        implementation_root_count = len(mode.get("implementation_roots") or {})
+        dispatch_roots = [entry.get("function_id") for entry in root_entries if entry.get("function_id")]
         name = mode.get("name")
         string_id = mode.get("string_id")
         token: dict[str, object] = {}
@@ -156,33 +143,13 @@ def _build_modes_index_payload(
             mode,
             dispatch_kind_by_callsite,
         )
-        evidence_strings = [string_id] if string_id else []
         implementation_roots = []
-        max_impl_evidence = 3
         for func_id, root in (mode.get("implementation_roots") or {}).items():
             sources = sorted(root.get("sources") or [])
-            evidence = {}
-            table_entries = sorted(root.get("table_entry_addresses") or [], key=addr_to_int)
-            compare_callsites = sorted(root.get("compare_callsites") or [], key=addr_to_int)
-            handler_callsites = sorted(root.get("handler_callsites") or [], key=addr_to_int)
-            string_ids = sorted(root.get("string_ids") or [])
-            string_addresses = sorted(root.get("string_addresses") or [], key=addr_to_int)
-            if table_entries:
-                evidence["table_entry_addresses"] = table_entries[:max_impl_evidence]
-            if compare_callsites:
-                evidence["compare_callsites"] = compare_callsites[:max_impl_evidence]
-            if handler_callsites:
-                evidence["handler_callsites"] = handler_callsites[:max_impl_evidence]
-            if string_ids:
-                evidence["strings"] = string_ids[:max_impl_evidence]
-            elif string_addresses:
-                evidence["string_addresses"] = string_addresses[:max_impl_evidence]
             entry = {
                 "function_id": func_id,
                 "sources": sources,
             }
-            if evidence:
-                entry["evidence"] = evidence
             implementation_roots.append(entry)
         implementation_roots.sort(
             key=lambda item: (
@@ -190,30 +157,17 @@ def _build_modes_index_payload(
                 addr_to_int(item.get("function_id")),
             )
         )
-        impl_roots_truncated = False
         if max_roots and len(implementation_roots) > max_roots:
             implementation_roots = implementation_roots[:max_roots]
-            impl_roots_truncated = True
         entry = {
             "mode_id": mode.get("mode_id"),
             "name": name if not string_id else None,
             "unknown_name": not bool(name or string_id),
             "token": token,
             "kind": kind,
-            "dispatch_roots": root_entries,
-            "dispatch_roots_truncated": roots_truncated,
+            "dispatch_roots": dispatch_roots,
             "dispatch_sites": dispatch_sites,
-            "dispatch_sites_truncated": sites_truncated,
-            "dispatch_site_count": dispatch_site_count,
-            "dispatch_root_count": dispatch_root_count,
             "implementation_roots": implementation_roots,
-            "implementation_root_count": implementation_root_count,
-            "implementation_roots_truncated": impl_roots_truncated,
-            "evidence": {
-                "strings": evidence_strings,
-                "callsites": callsite_ids,
-                "functions": sorted((mode.get("dispatch_roots") or {}).keys(), key=addr_to_int),
-            },
             "_sort_name": sort_name,
         }
         if kind_basis:
@@ -222,9 +176,9 @@ def _build_modes_index_payload(
 
     modes.sort(
         key=lambda item: (
-            -item.get("dispatch_site_count", 0),
-            -item.get("dispatch_root_count", 0),
-            -item.get("implementation_root_count", 0),
+            -len(item.get("dispatch_sites") or []),
+            -len(item.get("dispatch_roots") or []),
+            -len(item.get("implementation_roots") or []),
             item.get("_sort_name") or "",
             item.get("mode_id") or "",
         )

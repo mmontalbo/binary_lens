@@ -10,6 +10,23 @@ from export_primitives import addr_to_int
 from modes.name_heuristics import prefer_cmd_table_roots
 
 
+def _root_function_id(root) -> str | None:
+    if isinstance(root, dict):
+        return root.get("function_id")
+    if isinstance(root, str):
+        return root
+    return None
+
+
+def _dispatch_root_entries(roots) -> list[dict[str, str]]:
+    entries: list[dict[str, str]] = []
+    for root in roots or []:
+        func_id = _root_function_id(root)
+        if func_id:
+            entries.append({"function_id": func_id})
+    return entries
+
+
 def _collect_option_ids_from_parse_sites(options_list, func_ids, max_options, parse_loop_by_id):
     if not func_ids or not parse_loop_by_id:
         return []
@@ -96,16 +113,12 @@ def build_mode_slices(
         loop_id = loop.get("id")
         func_addr = loop.get("function_id")
         if not func_addr:
-            rep_callsite = loop.get("representative_callsite_id")
-            if rep_callsite:
-                func_addr = callsite_to_function.get(rep_callsite)
-            if not func_addr:
-                for callsite_id in loop.get("callsite_ids") or []:
-                    if not callsite_id:
-                        continue
-                    func_addr = callsite_to_function.get(callsite_id)
-                    if func_addr:
-                        break
+            for callsite_id in loop.get("callsite_ids") or []:
+                if not callsite_id:
+                    continue
+                func_addr = callsite_to_function.get(callsite_id)
+                if func_addr:
+                    break
         if loop_id and func_addr:
             parse_loop_by_function[func_addr] = loop_id
             parse_loop_by_id[loop_id] = func_addr
@@ -132,13 +145,8 @@ def build_mode_slices(
                 roots_sorted = table_roots
         else:
             root_kind = "dispatch_shared"
-            roots_sorted = sorted(
-                mode.get("dispatch_roots", []),
-                key=lambda item: (
-                    -item.get("callsite_count", 0),
-                    addr_to_int(item.get("function_id")),
-                ),
-            )
+            roots_sorted = _dispatch_root_entries(mode.get("dispatch_roots", []))
+            roots_sorted.sort(key=lambda item: addr_to_int(item.get("function_id")))
         if max_roots and len(roots_sorted) > max_roots:
             roots_sorted = roots_sorted[:max_roots]
 
@@ -148,14 +156,14 @@ def build_mode_slices(
 
         root_func_ids = set()
         for root in roots_sorted:
-            func_id = root.get("function_id")
+            func_id = _root_function_id(root)
             if func_id:
                 root_func_ids.add(func_id)
 
         implementation_func_ids = set()
         if root_kind == "implementation":
             for root in roots_sorted:
-                func_id = root.get("function_id")
+                func_id = _root_function_id(root)
                 if func_id:
                     implementation_func_ids.add(func_id)
 
@@ -185,14 +193,14 @@ def build_mode_slices(
             loop_ids = []
             loop_source = root_kind
             for root in roots_sorted:
-                func_id = root.get("function_id")
+                func_id = _root_function_id(root)
                 loop_id = parse_loop_by_function.get(func_id)
                 if loop_id:
                     loop_ids.append(loop_id)
             if not loop_ids and root_kind == "implementation":
                 fallback_roots = mode.get("dispatch_roots", [])
                 for root in fallback_roots:
-                    func_id = root.get("function_id")
+                    func_id = _root_function_id(root)
                     loop_id = parse_loop_by_function.get(func_id)
                     if loop_id:
                         loop_ids.append(loop_id)
@@ -293,9 +301,6 @@ def build_mode_slices(
         }
         if root_kind == "dispatch_shared" and mode.get("token"):
             slice_entry["token"] = mode.get("token")
-        if deduped:
-            slice_entry["top_options"] = deduped
-            slice_entry["top_options_ref"] = "cli/options.json"
         if top_strings:
             slice_entry["top_strings"] = top_strings
             slice_entry["top_strings_ref"] = "strings.json"
