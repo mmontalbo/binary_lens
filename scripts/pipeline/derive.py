@@ -17,7 +17,12 @@ from contracts.views import build_contract_views
 from derivations.cli_surface import derive_cli_surface
 from errors.refs import attach_callsite_refs
 from export_bounds import Bounds
-from export_config import BINARY_LENS_VERSION, CALLGRAPH_SIGNAL_RULES, FORMAT_VERSION
+from export_config import (
+    BINARY_LENS_VERSION,
+    CALLGRAPH_SIGNAL_RULES,
+    DEFAULT_CALLGRAPH_EDGE_SHARD_SIZE,
+    FORMAT_VERSION,
+)
 from export_primitives import addr_str, addr_to_int
 from interfaces.surface import attach_interface_callsite_refs
 from modes.refs import attach_mode_callsite_refs
@@ -228,6 +233,7 @@ def derive_payloads(
         shard_dir="callgraph/edges",
         item_id_key=None,
         item_kind="callgraph_edges",
+        shard_size=DEFAULT_CALLGRAPH_EDGE_SHARD_SIZE,
     )
     callgraph_nodes_payload = build_callgraph_nodes_payload(callgraph_nodes)
     callgraph_nodes_index, callgraph_nodes_shards = build_sharded_list_index(
