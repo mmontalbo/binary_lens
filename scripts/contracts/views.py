@@ -143,6 +143,24 @@ def _format_list(values: list[str], *, empty: str = "none") -> str:
     return ", ".join(values)
 
 
+def _escape_preview(value: Any, limit: int = 160) -> str:
+    if not isinstance(value, str) or not value:
+        return ""
+    escaped = value.replace("\\", "\\\\")
+    escaped = escaped.replace("\n", "\\n").replace("\r", "\\r").replace("\t", "\\t")
+    safe: list[str] = []
+    for ch in escaped:
+        code = ord(ch)
+        if 32 <= code <= 126:
+            safe.append(ch)
+        else:
+            safe.append("\\u%04x" % code)
+    preview = "".join(safe)
+    if limit and len(preview) > limit:
+        preview = preview[: max(0, limit - 3)] + "..."
+    return preview
+
+
 def _is_help_marker_value(value: Any) -> bool:
     if not isinstance(value, str) or not value:
         return False
@@ -300,6 +318,10 @@ def build_contract_views(
 
     parse_loop_by_id = _parse_loop_function_ids(cli_parse_loops_payload)
     callgraph_forward, callgraph_reverse = _build_callgraph_neighbors(callgraph_payload)
+    callsites_ref = _as_str((modes_payload or {}).get("callsites_ref")) or "evidence/callsites.json"
+    strings_ref = "strings.json"
+    callgraph_nodes_ref = "callgraph/nodes.json"
+    messages_ref = "errors/messages.json"
 
     interfaces_payloads = interfaces_payloads or {}
     env_entries = (
@@ -688,8 +710,6 @@ def build_contract_views(
         exit_unknown_code = sum(1 for entry in exit_candidates if entry.get("exit_code") is None)
         exit_candidates, exit_truncated = _truncate(exit_candidates, MAX_EXIT_ENTRIES)
 
-        callsites_ref = _as_str((modes_payload or {}).get("callsites_ref")) or "evidence/callsites.json"
-
         # Build Markdown document.
         lines: list[str] = [
             f"# Contract: {mode_name}",
@@ -706,6 +726,7 @@ def build_contract_views(
             [
                 "- source: `modes/index.json`",
                 f"- callsites_ref: `{callsites_ref}`",
+                f"- callgraph_nodes_ref: `{callgraph_nodes_ref}`",
                 "",
                 "## Implementation roots (modes/index.json)",
                 f"- root_count: `{len(implementation_roots)}`",
@@ -820,8 +841,8 @@ def build_contract_views(
             [
                 "",
                 "### Help/usage evidence",
-                "- strings_ref: `strings.json`",
-                "- messages_ref: `errors/messages.json`",
+                f"- strings_ref: `{strings_ref}`",
+                f"- messages_ref: `{messages_ref}`",
                 "- evidence_ref: `evidence/decomp/`",
                 "",
                 "#### Help/usage printers",
@@ -841,16 +862,18 @@ def build_contract_views(
             [
                 "",
                 "#### Usage messages",
-                "- entries_ref: `errors/messages.json`",
+                f"- entries_ref: `{messages_ref}`",
             ]
         )
         if usage_messages:
             for message in usage_messages:
                 msg_id = _as_str(message.get("string_id")) or _as_str(message.get("string_address")) or "unknown"
+                preview = _escape_preview(string_value_by_id.get(msg_id))
+                preview_suffix = f': "{preview}"' if preview else ""
                 refs = _callsite_ids_for_message(message)
                 refs = refs[:MAX_CALLSITE_REFS]
                 lines.append(
-                    f"- `{msg_id}` (callsites: {_format_list([f'`{ref}`' for ref in refs])})"
+                    f"- `{msg_id}`{preview_suffix} (callsites: {_format_list([f'`{ref}`' for ref in refs])})"
                 )
             if usage_truncated:
                 lines.append("- note: usage list truncated for readability")
@@ -862,7 +885,7 @@ def build_contract_views(
                 "",
                 "## Diagnostics and exits",
                 "### Error messages",
-                "- entries_ref: `errors/messages.json`",
+                f"- entries_ref: `{messages_ref}`",
             ]
         )
         if message_entries:
@@ -872,8 +895,10 @@ def build_contract_views(
                 if isinstance(message, Mapping):
                     bucket = _as_str(message.get("bucket")) or "unknown"
                     refs = _callsite_ids_for_message(message)[:MAX_CALLSITE_REFS]
+                preview = _escape_preview(string_value_by_id.get(msg_id))
+                preview_suffix = f': "{preview}"' if preview else ""
                 lines.append(
-                    f"- `{msg_id}` (bucket: `{bucket}`, callsites: {_format_list([f'`{ref}`' for ref in refs])})"
+                    f"- `{msg_id}`{preview_suffix} (bucket: `{bucket}`, callsites: {_format_list([f'`{ref}`' for ref in refs])})"
                 )
             if message_truncated:
                 lines.append("- note: message list truncated for readability")
@@ -996,6 +1021,10 @@ def build_contract_views(
     contracts_payload = {
         "modes_ref": "modes/index.json",
         "mode_slices_ref": "modes/slices.json",
+        "callsites_ref": callsites_ref,
+        "strings_ref": strings_ref,
+        "callgraph_nodes_ref": callgraph_nodes_ref,
+        "errors_messages_ref": messages_ref,
         "contracts_doc_dir": "contracts/modes",
         "total_modes": len(contract_entries),
         "modes": contract_entries,

@@ -38,6 +38,24 @@ def _fmt_bool(value: Any) -> str:
     return "yes" if as_bool else "no"
 
 
+def _escape_preview(value: Any, limit: int = 160) -> str:
+    if not isinstance(value, str) or not value:
+        return ""
+    escaped = value.replace("\\", "\\\\")
+    escaped = escaped.replace("\n", "\\n").replace("\r", "\\r").replace("\t", "\\t")
+    safe: list[str] = []
+    for ch in escaped:
+        code = ord(ch)
+        if 32 <= code <= 126:
+            safe.append(ch)
+        else:
+            safe.append("\\u%04x" % code)
+    preview = "".join(safe)
+    if limit and len(preview) > limit:
+        preview = preview[: max(0, limit - 3)] + "..."
+    return preview
+
+
 def _manifest_value(manifest: Mapping[str, Any], *keys: str) -> Any:
     current: Any = manifest
     for key in keys:
@@ -409,6 +427,7 @@ def build_pack_markdown_docs(
     modes: Mapping[str, Any],
     interfaces_index: Mapping[str, Any],
     interfaces: Mapping[str, Any],
+    strings: Mapping[str, Any] | None = None,
     cli_options: Mapping[str, Any] | None = None,
     error_messages: Mapping[str, Any] | None = None,
 ) -> dict[str, str]:
@@ -437,6 +456,15 @@ def build_pack_markdown_docs(
     compiler_spec = _as_str(_manifest_value(manifest, "compiler_spec"))
 
     docs: dict[str, str] = {}
+    string_value_by_id: dict[str, str] = {}
+    if isinstance(strings, Mapping):
+        for entry in strings.get("strings", []) or []:
+            if not isinstance(entry, Mapping):
+                continue
+            string_id = _as_str(entry.get("id"))
+            value = entry.get("value")
+            if string_id and isinstance(value, str):
+                string_value_by_id[string_id] = value
 
     docs["docs/README.md"] = (
         "# Pack docs\n\n"
@@ -581,11 +609,11 @@ def build_pack_markdown_docs(
         "- `errors/`: error message catalog + emitting sites + exit paths\n\n"
         "## Low-level inventories\n\n"
         "- `functions/`: function index and selected full function exports\n"
-        "- `strings.json`: string inventory (sharded index)\n"
+        "- `strings.json`: string inventory (`id` + `value`, sharded index)\n"
         "- `callgraph.json`: call edges (sharded index)\n"
         "- `callgraph/nodes.json`: callgraph node metadata (sharded index)\n\n"
         "## Raw evidence\n\n"
-        "- `evidence/callsites.json`: sharded callsite context + best-effort recovered args\n"
+        "- `evidence/callsites.json`: callsite ids with `from`/`targets` addresses (resolve names via `callgraph/nodes.json`)\n"
         "- `evidence/decomp/`: bounded decompiler excerpts\n\n"
         "## Schemas\n\n"
         "- `schema/README.md`: format notes for this pack version\n"
@@ -601,7 +629,7 @@ def build_pack_markdown_docs(
         "- `status: known|unknown`: argument/value recovery result for a specific field.\n"
         "- `format: sharded_list/v1`: index into shard files; follow `shards[*].path` to enumerate.\n\n"
         "## Evidence\n\n"
-        "- `evidence/callsites.json`: sharded callsite context, candidate targets, recovered args.\n"
+        "- `evidence/callsites.json`: callsite ids with `from`/`targets` addresses (resolve names via `callgraph/nodes.json`).\n"
         "- `evidence/decomp/f_<addr>.json`: bounded decompiler excerpt for a function.\n\n"
         "## Modes (`modes/`)\n\n"
         "- `modes/index.json`: mode inventory; each mode includes `mode_id`, `name`, `kind`, and dispatch evidence.\n"
@@ -618,10 +646,10 @@ def build_pack_markdown_docs(
         "- `net.json`: socket/connect/getaddrinfo/etc; `hosts[*]`/`ports` are best-effort.\n"
         "- `output.json`: printf/fprintf/write/etc; `templates[*]` and `channel` are best-effort.\n\n"
         "## CLI (`cli/`)\n\n"
-        "- `cli/options.json`: option token inventory (sharded index).\n"
+        "- `cli/options.json`: option token inventory (ids + parse loop/callsite refs).\n"
         "- `cli/parse_loops.json`: localized parse loops (sharded index).\n\n"
         "## Errors (`errors/`)\n\n"
-        "- `errors/messages.json`: message strings + emitting callsites (sharded index).\n"
+        "- `errors/messages.json`: `string_id` + emitting callsite/function ids (preview via `strings.json`).\n"
         "- `errors/exit_paths.json`: exit/abort callsites with recovered exit codes when possible (sharded index).\n"
         "- `errors/error_sites.json`: error-emitter callsites (sharded index).\n"
         "\n"
@@ -755,8 +783,6 @@ def build_pack_markdown_docs(
         options_list = cli_options.get("options")
         cli_example = _first_dict_entry(options_list)
         if isinstance(cli_example, Mapping):
-            evidence = cli_example.get("evidence")
-            evidence_item = _first_dict_entry(evidence)
             examples_sections.extend(
                 [
                     "## Example: a CLI option record\n",
@@ -766,7 +792,9 @@ def build_pack_markdown_docs(
                             "short_name": cli_example.get("short_name"),
                             "long_name": cli_example.get("long_name"),
                             "has_arg": cli_example.get("has_arg"),
-                            "example_evidence": evidence_item,
+                            "parse_loop_ids": cli_example.get("parse_loop_ids"),
+                            "parse_sites": cli_example.get("parse_sites"),
+                            "callsites_ref": cli_options.get("callsites_ref"),
                         }
                     ),
                 ]
@@ -776,15 +804,20 @@ def build_pack_markdown_docs(
         messages = error_messages.get("messages")
         message = _first_dict_entry(messages)
         if isinstance(message, Mapping):
+            string_id = _as_str(message.get("string_id"))
+            preview = _escape_preview(string_value_by_id.get(string_id)) if string_id else ""
             examples_sections.extend(
                 [
                     "## Example: an error/usage message\n",
                     _json_code_block(
                         {
                             "bucket": message.get("bucket"),
-                            "preview": message.get("preview"),
-                            "string_id": message.get("string_id"),
-                            "example_emitting_callsite": _first_dict_entry(message.get("emitting_callsites")),
+                            "string_id": string_id,
+                            "preview": preview or None,
+                            "emitting_callsites": message.get("emitting_callsites"),
+                            "emitting_functions": message.get("emitting_functions"),
+                            "callsites_ref": error_messages.get("callsites_ref"),
+                            "strings_ref": "strings.json",
                         }
                     ),
                 ]
@@ -816,7 +849,7 @@ def build_pack_markdown_docs(
         "- `callgraph/nodes.json` is a sharded list of node metadata keyed by address (names/libraries/signatures).\n"
         "\n"
         "## Callsites\n\n"
-        "- `evidence/callsites.json` is a sharded list of callsite evidence keyed by `callsite`.\n"
+        "- `evidence/callsites.json` is a sharded list of callsite ids with `from`/`targets` addresses.\n"
     )
 
     return docs

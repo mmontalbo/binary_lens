@@ -460,6 +460,7 @@ def derive_payloads(
         modes=collected.modes_payload,
         interfaces_index=collected.interfaces_index_payload,
         interfaces=collected.interfaces_payloads,
+        strings=strings_payload,
         cli_options=cli_options_payload,
         error_messages=collected.error_messages_payload,
     )
