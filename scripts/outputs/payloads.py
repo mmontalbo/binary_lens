@@ -296,6 +296,18 @@ def build_strings_payload(
     string_bucket_counts,
     string_bucket_limits,
 ):
+    slim_strings = []
+    for entry in strings or []:
+        if not isinstance(entry, dict):
+            continue
+        string_id = entry.get("id")
+        value = entry.get("value")
+        if string_id is None or value is None:
+            continue
+        slim_strings.append({
+            "id": string_id,
+            "value": value,
+        })
     return {
         "total_strings": total_strings,
         "truncated": strings_truncated,
@@ -318,7 +330,7 @@ def build_strings_payload(
                 "selected": string_bucket_counts.get("path", 0),
             },
         },
-        "strings": strings,
+        "strings": slim_strings,
     }
 
 
