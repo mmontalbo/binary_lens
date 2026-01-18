@@ -135,9 +135,15 @@ def _coverage_table(manifest: Mapping[str, Any]) -> str:
     return "\n".join(lines)
 
 
+def _string_entry_known(entry: Mapping[str, Any]) -> bool:
+    status = _as_str(entry.get("status")) or "unknown"
+    if status == "unknown":
+        return False
+    return bool(_as_str(entry.get("string_id")) or _as_str(entry.get("value")))
+
+
 def _interface_value(entry: Mapping[str, Any], string_value_by_id: Mapping[str, str]) -> str | None:
-    status = entry.get("status")
-    if status != "known":
+    if not _string_entry_known(entry):
         return None
     value = _as_str(entry.get("value"))
     if value:
@@ -255,7 +261,7 @@ def _interfaces_known_counts(interfaces_payloads: Mapping[str, Any]) -> dict[str
                 if not isinstance(entry, Mapping):
                     continue
                 var = entry.get("var")
-                if isinstance(var, Mapping) and var.get("status") == "known":
+                if isinstance(var, Mapping) and _string_entry_known(var):
                     known_vars += 1
             counts["env_known_vars"] = known_vars
             counts["env_total_entries"] = len(entries)
@@ -270,7 +276,7 @@ def _interfaces_known_counts(interfaces_payloads: Mapping[str, Any]) -> dict[str
                     continue
                 paths = entry.get("paths")
                 if isinstance(paths, list) and any(
-                    isinstance(path, Mapping) and path.get("status") == "known" for path in paths
+                    isinstance(path, Mapping) and _string_entry_known(path) for path in paths
                 ):
                     entries_with_known_path += 1
             counts["fs_entries_with_known_path"] = entries_with_known_path
@@ -286,7 +292,7 @@ def _interfaces_known_counts(interfaces_payloads: Mapping[str, Any]) -> dict[str
                     continue
                 commands = entry.get("commands")
                 if isinstance(commands, list) and any(
-                    isinstance(cmd, Mapping) and cmd.get("status") == "known" for cmd in commands
+                    isinstance(cmd, Mapping) and _string_entry_known(cmd) for cmd in commands
                 ):
                     entries_with_known_command += 1
             counts["process_entries_with_known_command"] = entries_with_known_command
@@ -306,7 +312,7 @@ def _interfaces_known_counts(interfaces_payloads: Mapping[str, Any]) -> dict[str
                     ports_known += 1
                 hosts = entry.get("hosts")
                 if isinstance(hosts, list) and any(
-                    isinstance(host, Mapping) and host.get("status") == "known" for host in hosts
+                    isinstance(host, Mapping) and _string_entry_known(host) for host in hosts
                 ):
                     hosts_known += 1
             counts["net_entries_with_known_port"] = ports_known
@@ -327,7 +333,7 @@ def _interfaces_known_counts(interfaces_payloads: Mapping[str, Any]) -> dict[str
                     channel_known += 1
                 templates = entry.get("templates")
                 if isinstance(templates, list) and any(
-                    isinstance(t, Mapping) and t.get("status") == "known" for t in templates
+                    isinstance(t, Mapping) and _string_entry_known(t) for t in templates
                 ):
                     templates_known += 1
             counts["output_channel_known"] = channel_known
@@ -409,7 +415,7 @@ def _interfaces_summary(interfaces_payloads: Mapping[str, Any]) -> str:
                         channel_kinds[kind] += 1
                 templates = entry.get("templates")
                 if isinstance(templates, list) and any(
-                    isinstance(t, Mapping) and t.get("status") == "known" for t in templates
+                    isinstance(t, Mapping) and _string_entry_known(t) for t in templates
                 ):
                     known_template_entries += 1
 
@@ -555,10 +561,10 @@ def build_pack_markdown_docs(
         _interfaces_summary(interfaces),
         "## Notes\n",
         "- When a field is `unknown`, the exporter could not establish it (not \"false\").\n"
-        "- When `truncated: true`, treat the record/list as partial; missing entries may exist.\n"
+        "- When `truncated: true` appears, treat the record/list as partial; see `manifest.json` for coverage context.\n"
         "- Coverage `Candidates`/`Excluded` are pre-classification counts when available; `Total` "
         "is the exportable/discovered count.\n"
-        "- `manifest.json` is the canonical metadata source.\n"
+        "- `manifest.json` is the canonical metadata source (coverage + bounds).\n"
         "- Callsite evidence lives in `evidence/callsites.json` (sharded list); resolve by `callsite_id`.\n"
         "- Callsite evidence is emitted on-demand for referenced callsites; re-export with "
         "`callsite_evidence=all` to include every callgraph callsite.\n",
@@ -590,8 +596,9 @@ def build_pack_markdown_docs(
         "- `callgraph/nodes.json` is the canonical address \u2192 name/signature table (includes isolated functions).\n"
         "- `callsite_id` values resolve via `evidence/callsites.json` (sharded index).\n\n"
         "## Truncation and unknowns\n\n"
-        "- `truncated: true` means the exporter bounded that record/list; treat as partial coverage.\n"
-        "- `status: unknown` means argument recovery did not resolve a constant value at that site.\n"
+        "- Coverage/truncation is summarized in `manifest.json` (`coverage_summary`).\n"
+        "- `status: resolved|unresolved|unknown` marks string-valued fields (`unresolved` means a value was seen without a `string_id`).\n"
+        "- `status: known|unknown` marks non-string constant recovery (ports, flags, etc.).\n"
         "\n"
         "## Two-minute walkthrough\n\n"
         "1. Pick a mode from `modes/index.json` \u2192 `modes[*]`.\n"
@@ -632,9 +639,10 @@ def build_pack_markdown_docs(
         "## Common patterns\n\n"
         "- `*_ref` / `*_refs`: file paths relative to the pack root.\n"
         "- `callsites_ref`: shared callsite evidence index (sharded list).\n"
-        "- `truncated`: exporter bounded that record/list; missing entries may exist.\n"
-        "- `status: known|unknown`: argument/value recovery result for a specific field.\n"
-        "- `string_id`: canonical string reference; resolve via `strings.json` (value/address omitted when resolved).\n"
+        "- `truncated`: when present, exporter bounded that record/list; see `manifest.json` for coverage context.\n"
+        "- `status: resolved|unresolved|unknown`: string-valued field resolution (`unresolved` means value without a `string_id`).\n"
+        "- `status: known|unknown`: non-string constant recovery (ports, flags, etc.).\n"
+        "- `string_id`: canonical string reference; resolve via `strings.json` (address/value omitted when resolved).\n"
         "- `format: sharded_list/v1`: index into shard files; follow `shards[*].path` to enumerate.\n\n"
         "## Evidence\n\n"
         "- `evidence/callsites.json`: callsite ids with `from`/`targets` addresses (resolve names via `callgraph/nodes.json`).\n"
@@ -647,14 +655,14 @@ def build_pack_markdown_docs(
         "- `contracts/modes/<mode_id>.md`: per-mode contract view (inputs/outputs/diagnostics with evidence refs).\n\n"
         "## Interfaces (`interfaces/`)\n\n"
         "Each entry is anchored to a `callsite_id` (resolve owning functions via `callsites_ref`); string-valued fields prefer `string_id` and omit value/address when resolved.\n\n"
-        "- `env.json`: getenv/setenv/etc; `var` may be `known` (constant string) or `unknown`.\n"
-        "- `fs.json`: open/chdir/stat/etc; `paths[*]` may be `known` (constant) or `unknown`.\n"
-        "- `process.json`: exec*/spawn/system; `commands[*]` may be constant or unknown.\n"
+        "- `env.json`: getenv/setenv/etc; `var` may be `resolved`, `unresolved`, or `unknown`.\n"
+        "- `fs.json`: open/chdir/stat/etc; `paths[*]` may be `resolved`, `unresolved`, or `unknown`.\n"
+        "- `process.json`: exec*/spawn/system; `commands[*]` may be `resolved`, `unresolved`, or `unknown`.\n"
         "- `net.json`: socket/connect/getaddrinfo/etc; `hosts[*]`/`ports` are best-effort.\n"
         "- `output.json`: printf/fprintf/write/etc; `templates[*]` and `channel` are best-effort.\n\n"
         "## CLI (`cli/`)\n\n"
         "- `cli/options.json`: option token inventory (ids + parse loop/callsite refs).\n"
-        "- `cli/parse_loops.json`: localized parse loops (`function_id` + callsite refs; sharded index).\n\n"
+        "- `cli/parse_loops.json`: localized parse loops (callsite ids + optstring evidence; resolve owning functions via callsites).\n\n"
         "## Errors (`errors/`)\n\n"
         "- `errors/messages.json`: `string_id`, `bucket`, and emitting callsite ids (resolve values via `strings.json`).\n"
         "- `errors/exit_paths.json`: exit/abort callsites with recovered exit codes when possible (sharded index).\n"
@@ -712,7 +720,7 @@ def build_pack_markdown_docs(
             lambda e: isinstance(e.get("channel"), Mapping)
             and e.get("channel", {}).get("status") == "known"
             and isinstance(e.get("templates"), list)
-            and any(isinstance(t, Mapping) and t.get("status") == "known" for t in e.get("templates")),
+            and any(isinstance(t, Mapping) and _string_entry_known(t) for t in e.get("templates")),
         )
         if isinstance(output_example, Mapping):
             channel = output_example.get("channel") if isinstance(output_example.get("channel"), Mapping) else {}
@@ -720,7 +728,7 @@ def build_pack_markdown_docs(
             templates = output_example.get("templates")
             if isinstance(templates, list):
                 for template in templates:
-                    if isinstance(template, Mapping) and template.get("status") == "known":
+                    if isinstance(template, Mapping) and _string_entry_known(template):
                         template_value = _interface_value(template, string_value_by_id)
                         break
             examples_sections.extend(
@@ -743,7 +751,7 @@ def build_pack_markdown_docs(
     if isinstance(env_payload, Mapping):
         env_example = _first_dict_entry_matching(
             env_payload.get("entries"),
-            lambda e: isinstance(e.get("var"), Mapping) and e.get("var", {}).get("status") == "known",
+            lambda e: isinstance(e.get("var"), Mapping) and _string_entry_known(e.get("var", {})),
         )
         if isinstance(env_example, Mapping):
             examples_sections.extend(
@@ -765,14 +773,14 @@ def build_pack_markdown_docs(
         fs_example = _first_dict_entry_matching(
             fs_payload.get("entries"),
             lambda e: isinstance(e.get("paths"), list)
-            and any(isinstance(p, Mapping) and p.get("status") == "known" for p in e.get("paths")),
+            and any(isinstance(p, Mapping) and _string_entry_known(p) for p in e.get("paths")),
         )
         if isinstance(fs_example, Mapping):
             path_preview = None
             paths = fs_example.get("paths")
             if isinstance(paths, list):
                 for path in paths:
-                    if isinstance(path, Mapping) and path.get("status") == "known":
+                    if isinstance(path, Mapping) and _string_entry_known(path):
                         path_preview = _interface_value(path, string_value_by_id)
                         break
             examples_sections.extend(
@@ -843,6 +851,8 @@ def build_pack_markdown_docs(
         "- `callsites_ref` points at the shared callsite evidence index (sharded list).\n"
         "- Large inventories are sharded (`format: sharded_list/v1`); evidence excerpts may be bounded.\n"
         "- Consult `manifest.json` for coverage and known omissions.\n"
+        "- `status: resolved|unresolved|unknown` applies to string-valued fields (`unresolved` means value without `string_id`).\n"
+        "- `status: known|unknown` applies to non-string constant recovery.\n"
         "- `unknown` indicates the exporter could not establish a value.\n"
         "- `format: sharded_list/v1` marks a shard index; follow `shards[*].path`.\n\n"
         "## Canonical entrypoints\n\n"
