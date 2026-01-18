@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import shutil
 from typing import Any
 
 from export_bounds import Bounds
@@ -10,6 +11,16 @@ from outputs.writers import write_function_exports
 from pipeline.layout import PackLayout
 from pipeline.phases import phase
 from pipeline.types import CollectedData, DerivedPayloads
+
+
+def _remove_deprecated_function_index(layout: PackLayout) -> None:
+    index_json = layout.functions_dir / "index.json"
+    index_dir = layout.functions_dir / "index"
+    for path in (index_json, index_dir):
+        if path.is_dir():
+            shutil.rmtree(path)
+        elif path.exists():
+            path.unlink()
 
 
 def write_outputs(
@@ -21,6 +32,8 @@ def write_outputs(
     monitor: Any,
     profiler: Any,
 ) -> None:
+    _remove_deprecated_function_index(layout)
+
     with phase(profiler, "write_function_exports"):
         write_function_exports(
             program,

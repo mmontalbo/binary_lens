@@ -464,9 +464,12 @@ def build_callgraph_nodes(call_edges, function_meta_by_addr=None):
                 to_node["name"] = name
 
     for addr, meta in (function_meta_by_addr or {}).items():
-        if addr not in nodes_by_addr:
+        meta = meta or {}
+        if addr not in nodes_by_addr and meta.get("is_external"):
             continue
-        node = nodes_by_addr[addr]
+        node = ensure_node(addr)
+        if node is None:
+            continue
         name = meta.get("name")
         if name and not node.get("name"):
             node["name"] = name

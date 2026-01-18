@@ -585,9 +585,10 @@ def build_pack_markdown_docs(
         "Callsite evidence is emitted only for referenced callsites. Re-export with "
         "`callsite_evidence=all` to include evidence for every callgraph callsite.\n\n"
         "## IDs and lookups\n\n"
-        "- `function_id` values are addresses as hex strings (e.g., `00118020`). Resolve via `callgraph/nodes.json` (sharded index).\n"
+        "- `function_id` values are addresses as hex strings (e.g., `00118020`). Resolve names/signatures via `callgraph/nodes.json` (sharded index).\n"
         "- `string_id` values (e.g., `s_0020733a`) resolve via `strings.json` (sharded index).\n"
         "- `callgraph.json` edges use `from`/`to` addresses; resolve names/signatures via `callgraph/nodes.json` (sharded index).\n"
+        "- `callgraph/nodes.json` is the canonical address \u2192 name/signature table (includes isolated functions).\n"
         "- `callsite_id` values resolve via `evidence/callsites.json` (sharded index).\n\n"
         "## Truncation and unknowns\n\n"
         "- `truncated: true` means the exporter bounded that record/list; treat as partial coverage.\n"
@@ -662,7 +663,7 @@ def build_pack_markdown_docs(
         "\n"
         "## Callgraph (`callgraph/`)\n\n"
         "- `callgraph.json`: call edges; each edge includes `callsite`, `from`, and `to` addresses.\n"
-        "- `callgraph/nodes.json`: node metadata keyed by address (name/signature when available).\n"
+        "- `callgraph/nodes.json`: canonical address \u2192 name/signature table (includes isolated functions).\n"
     )
 
     examples_sections: list[str] = [
@@ -859,7 +860,7 @@ def build_pack_markdown_docs(
         "\n"
         "## Callgraph\n\n"
         "- `callgraph.json` is a sharded list of call edges; edges include `callsite`, `from`, and `to` addresses.\n"
-        "- `callgraph/nodes.json` is a sharded list of node metadata keyed by address (names/signatures).\n"
+        "- `callgraph/nodes.json` is the canonical address \u2192 name/signature table (includes isolated functions).\n"
         "\n"
         "## Callsites\n\n"
         "- `evidence/callsites.json` is a sharded list of callsite ids with `from`/`targets` addresses.\n"
