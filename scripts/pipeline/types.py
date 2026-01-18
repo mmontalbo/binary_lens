@@ -60,7 +60,6 @@ class DerivedPayloads:
     interfaces_process_index: dict[str, Any]
     interfaces_net_index: dict[str, Any]
     interfaces_output_index: dict[str, Any]
-    functions_index: dict[str, Any]
     contracts_index: dict[str, Any]
     cli_parse_loops_shards: dict[str, Any]
     modes_slices_shards: dict[str, Any]
@@ -77,7 +76,6 @@ class DerivedPayloads:
     interfaces_net_shards: dict[str, Any]
     interfaces_output_shards: dict[str, Any]
     contracts_shards: dict[str, Any]
-    functions_index_shards: dict[str, Any]
     pack_index_payload: dict[str, Any]
     manifest: dict[str, Any]
     pack_readme: str

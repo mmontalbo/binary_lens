@@ -40,7 +40,7 @@ Key files (high level):
 - `binary.lens/errors/exit_paths.json`: exit/abort inventory
 - `binary.lens/modes/index.json`: mode inventory
 - `binary.lens/modes/slices.json`: per-mode “start here” slices
-- `binary.lens/functions/index.json`: function index plus selected function exports
+- `binary.lens/callgraph/nodes.json`: address → name/signature lookup table
 - `binary.lens/evidence/…`: evidence callsites + decompiler excerpts
 
 ## Design principles

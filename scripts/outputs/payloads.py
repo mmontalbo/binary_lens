@@ -209,7 +209,6 @@ def build_pack_index_payload(format_version: str) -> dict[str, object]:
             "errors_error_sites_ref": "errors/error_sites.json",
             "contracts_index_ref": "contracts/index.json",
             "strings_ref": "strings.json",
-            "functions_index_ref": "functions/index.json",
             "callgraph_ref": "callgraph.json",
             "callgraph_nodes_ref": "callgraph/nodes.json",
             "callsites_ref": "evidence/callsites.json",
@@ -331,19 +330,6 @@ def build_strings_payload(
             },
         },
         "strings": slim_strings,
-    }
-
-
-def build_index_payload(functions, full_functions, index_functions, summaries, bounds: Bounds):
-    max_functions = bounds.max_functions_index
-    truncated = bool(max_functions > 0 and len(functions) > max_functions)
-    return {
-        "total_functions": len(functions),
-        "max_functions": bounds.optional("max_functions_index"),
-        "truncated": truncated,
-        "full_functions": [addr_str(func.getEntryPoint()) for func in full_functions],
-        "omitted_functions": max(0, len(functions) - len(index_functions)),
-        "functions": summaries,
     }
 
 

@@ -52,7 +52,6 @@ def write_outputs(
         ensure_dir(layout.interfaces_dir / "output")
         ensure_dir(layout.contracts_dir / "index")
         ensure_dir(layout.contracts_dir / "modes")
-        ensure_dir(layout.functions_dir / "index")
 
         write_json(layout.root / "index.json", derived.pack_index_payload)
         write_json(layout.root / "manifest.json", derived.manifest)
@@ -106,9 +105,6 @@ def write_outputs(
         for rel_path, content in derived.interfaces_output_shards.items():
             write_json(layout.root / rel_path, content)
         for rel_path, content in derived.contracts_shards.items():
-            write_json(layout.root / rel_path, content)
-        write_json(layout.functions_dir / "index.json", derived.functions_index)
-        for rel_path, content in derived.functions_index_shards.items():
             write_json(layout.root / rel_path, content)
         write_text(layout.root / "README.md", derived.pack_readme)
         for rel_path, content in derived.pack_docs.items():

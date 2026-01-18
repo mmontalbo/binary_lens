@@ -12,8 +12,6 @@ from collectors.callgraph import (
     build_signal_set,
     select_call_edges,
     select_full_functions,
-    select_index_functions,
-    summarize_functions,
 )
 from contracts.views import build_contract_views
 from derivations.cli_surface import derive_cli_surface
@@ -30,7 +28,6 @@ from outputs.payloads import (
     build_callgraph_payload,
     build_cli_options_payload,
     build_cli_parse_loops_payload,
-    build_index_payload,
     build_manifest,
     build_pack_index_payload,
     build_pack_readme,
@@ -94,13 +91,6 @@ def derive_payloads(
         metrics_by_addr,
         bounds.max_full_functions,
     )
-    index_functions = select_index_functions(
-        collected.functions,
-        full_functions,
-        bounds.max_functions_index,
-    )
-
-    summaries = summarize_functions(collected.functions, index_functions, full_functions)
 
     signal_set = build_signal_set(CALLGRAPH_SIGNAL_RULES)
     call_edges, total_edges, truncated_edges = select_call_edges(
@@ -310,20 +300,6 @@ def derive_payloads(
         item_id_key=None,
         item_kind="interfaces_output",
     )
-    index_payload = build_index_payload(
-        collected.functions,
-        full_functions,
-        index_functions,
-        summaries,
-        bounds,
-    )
-    functions_index, functions_index_shards = build_sharded_list_index(
-        index_payload,
-        list_key="functions",
-        shard_dir="functions/index",
-        item_id_key=None,
-        item_kind="functions_index",
-    )
     error_candidates = collected.error_messages_payload.get("total_candidates")
     error_total = collected.error_messages_payload.get("total_messages")
     error_excluded = None
@@ -342,14 +318,8 @@ def derive_payloads(
             "truncated": strings_payload.get("truncated"),
             "max": strings_payload.get("max_strings"),
         },
-        "functions_index": {
-            "total": index_payload.get("total_functions"),
-            "selected": len(index_payload.get("functions") or []),
-            "truncated": index_payload.get("truncated"),
-            "max": index_payload.get("max_functions"),
-        },
         "full_functions": {
-            "selected": len(index_payload.get("full_functions") or []),
+            "selected": len(full_functions),
             "truncated": len(collected.functions) > bounds.max_full_functions,
             "max": bounds.max_full_functions,
         },
@@ -512,7 +482,6 @@ def derive_payloads(
         interfaces_process_index=interfaces_process_index,
         interfaces_net_index=interfaces_net_index,
         interfaces_output_index=interfaces_output_index,
-        functions_index=functions_index,
         contracts_index=contracts_index,
         cli_parse_loops_shards=cli_parse_loops_shards,
         modes_slices_shards=modes_slices_shards,
@@ -529,7 +498,6 @@ def derive_payloads(
         interfaces_net_shards=interfaces_net_shards,
         interfaces_output_shards=interfaces_output_shards,
         contracts_shards=contracts_shards,
-        functions_index_shards=functions_index_shards,
         pack_index_payload=pack_index_payload,
         manifest=manifest,
         pack_readme=pack_readme,

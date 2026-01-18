@@ -97,7 +97,6 @@ def _coverage_table(manifest: Mapping[str, Any]) -> str:
     preferred = [
         ("strings", "strings.json"),
         ("callgraph_edges", "callgraph.json"),
-        ("functions_index", "functions/index.json"),
         ("full_functions", "functions/f_<addr>.json"),
         ("cli_options", "cli/options.json"),
         ("cli_parse_loops", "cli/parse_loops.json"),
@@ -578,7 +577,7 @@ def build_pack_markdown_docs(
         "Callsite evidence is emitted only for referenced callsites. Re-export with "
         "`callsite_evidence=all` to include evidence for every callgraph callsite.\n\n"
         "## IDs and lookups\n\n"
-        "- `function_id` values are addresses as hex strings (e.g., `00118020`). Resolve via `functions/index.json` (sharded index).\n"
+        "- `function_id` values are addresses as hex strings (e.g., `00118020`). Resolve via `callgraph/nodes.json` (sharded index).\n"
         "- `string_id` values (e.g., `s_0020733a`) resolve via `strings.json` (sharded index).\n"
         "- `callgraph.json` edges use `from`/`to` addresses; resolve names/signatures via `callgraph/nodes.json` (sharded index).\n"
         "- `callsite_id` values resolve via `evidence/callsites.json` (sharded index).\n\n"
@@ -608,7 +607,7 @@ def build_pack_markdown_docs(
         "- `cli/`: CLI option inventory and parse loop localization\n"
         "- `errors/`: error message catalog + emitting sites + exit paths\n\n"
         "## Low-level inventories\n\n"
-        "- `functions/`: function index and selected full function exports\n"
+        "- `functions/`: selected full function exports\n"
         "- `strings.json`: string inventory (`id` + `value`, sharded index)\n"
         "- `callgraph.json`: call edges (sharded index)\n"
         "- `callgraph/nodes.json`: callgraph node metadata (sharded index)\n\n"
