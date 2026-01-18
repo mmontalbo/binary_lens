@@ -324,11 +324,13 @@ def _build_parse_loops(
             entry["representative_callsite_id"] = rep_detail.get("callsite")
             optstring = rep_detail.get("optstring")
             if optstring:
-                entry["optstring"] = {
-                    "address": optstring.get("address"),
+                optstring_entry = {
                     "string_id": optstring.get("string_id"),
                     "option_count": len(optstring.get("options") or []),
                 }
+                if not optstring_entry.get("string_id"):
+                    optstring_entry["address"] = optstring.get("address")
+                entry["optstring"] = optstring_entry
             longopts = rep_detail.get("longopts")
             if longopts:
                 entries = longopts.get("entries") or []

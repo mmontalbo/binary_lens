@@ -635,6 +635,7 @@ def build_pack_markdown_docs(
         "- `callsites_ref`: shared callsite evidence index (sharded list).\n"
         "- `truncated`: exporter bounded that record/list; missing entries may exist.\n"
         "- `status: known|unknown`: argument/value recovery result for a specific field.\n"
+        "- `string_id`: canonical string reference; resolve via `strings.json` (value/address omitted when resolved).\n"
         "- `format: sharded_list/v1`: index into shard files; follow `shards[*].path` to enumerate.\n\n"
         "## Evidence\n\n"
         "- `evidence/callsites.json`: callsite ids with `from`/`targets` addresses (resolve names via `callgraph/nodes.json`).\n"

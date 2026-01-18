@@ -137,12 +137,15 @@ def _build_modes_index_payload(
         implementation_root_count = len(mode.get("implementation_roots") or {})
         name = mode.get("name")
         string_id = mode.get("string_id")
-        token = {
-            "string_id": string_id,
-            "address": mode.get("address"),
-        }
-        if not string_id and name:
-            token["value"] = name
+        token: dict[str, object] = {}
+        if string_id:
+            token["string_id"] = string_id
+        else:
+            if name:
+                token["value"] = name
+            address = mode.get("address")
+            if address:
+                token["address"] = address
         sort_name = name or ""
         kind, kind_basis = _derive_mode_kind(
             mode,
@@ -327,17 +330,20 @@ def _build_dispatch_sites_payload(
             token = token_meta_selected.get(key, {})
             name = token.get("value")
             string_id = token.get("string_id")
-            token_entries.append(
-                {
-                    "mode_id": token.get("mode_id"),
-                    "name": name if not string_id else None,
-                    "string_id": string_id,
-                    "address": token.get("address"),
-                    "kind": token.get("kind"),
-                    "occurrence_count": count,
-                    "_sort_name": name or "",
-                }
-            )
+            entry = {
+                "mode_id": token.get("mode_id"),
+                "kind": token.get("kind"),
+                "occurrence_count": count,
+                "_sort_name": name or "",
+            }
+            if string_id:
+                entry["string_id"] = string_id
+            else:
+                entry["name"] = name
+                address = token.get("address")
+                if address:
+                    entry["address"] = address
+            token_entries.append(entry)
 
         token_entries.sort(
             key=lambda item: (

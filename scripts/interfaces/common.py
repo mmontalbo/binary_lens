@@ -21,13 +21,24 @@ def _unique_by_address(entries: list[dict[str, Any]]) -> list[dict[str, Any]]:
     seen = set()
     unique = []
     for entry in entries:
-        addr = entry.get("address")
-        key = addr or entry.get("value")
+        key = entry.get("string_id") or entry.get("address") or entry.get("value")
         if key in seen:
             continue
         seen.add(key)
         unique.append(entry)
     return unique
+
+
+def _string_candidate_sort_key(entry: dict[str, Any]) -> tuple[int, int, str]:
+    addr = entry.get("address")
+    if addr:
+        return (0, addr_to_int(addr), "")
+    string_id = entry.get("string_id")
+    if isinstance(string_id, str):
+        addr_text = string_id.split("_", 1)[-1] if "_" in string_id else string_id
+        return (1, addr_to_int(addr_text), string_id)
+    value = entry.get("value") or ""
+    return (2, -1, value)
 
 
 def _string_args_by_index(args: dict[str, Any]) -> tuple[dict[int, list[dict[str, Any]]], list[dict[str, Any]]]:
@@ -60,12 +71,15 @@ def string_candidates_for_index(
         string_id = string_addr_map_all.get(addr) if (string_addr_map_all and addr) else None
         value_entry = {
             "status": "known",
-            "address": addr,
-            "string_id": string_id,
             "arg_index": index,
         }
-        if string_id is None and value is not None:
-            value_entry["value"] = value
+        if string_id:
+            value_entry["string_id"] = string_id
+        else:
+            if addr:
+                value_entry["address"] = addr
+            if value is not None:
+                value_entry["value"] = value
         source = entry.get("source")
         if source:
             value_entry["source"] = source
@@ -74,7 +88,7 @@ def string_candidates_for_index(
             value_entry["provider_callsite_id"] = provider_callsite_id
         entries.append(value_entry)
     entries = _unique_by_address(entries)
-    entries.sort(key=lambda item: addr_to_int(item.get("address")))
+    entries.sort(key=_string_candidate_sort_key)
     return entries
 
 
