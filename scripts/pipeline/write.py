@@ -30,7 +30,6 @@ def write_outputs(
             collected.selected_string_ids,
             collected.string_tags_by_id,
             collected.string_value_by_id,
-            derived.calls_by_func,
             layout.functions_dir,
             layout.evidence_decomp_dir,
             monitor,

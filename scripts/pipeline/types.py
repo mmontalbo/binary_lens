@@ -44,7 +44,6 @@ class DerivedPayloads:
     """Derived payloads and shards ready for writing."""
 
     full_functions: list[Any]
-    calls_by_func: dict[str, Any]
     callsites_index: dict[str, Any]
     callsites_shards: dict[str, Any]
     cli_options_index: dict[str, Any]

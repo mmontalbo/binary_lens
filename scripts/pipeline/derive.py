@@ -10,7 +10,6 @@ from collectors.callgraph import (
     build_function_metrics,
     build_minimal_call_edges,
     build_signal_set,
-    collect_function_calls,
     select_call_edges,
     select_full_functions,
     select_index_functions,
@@ -181,8 +180,6 @@ def derive_payloads(
         nodes_ref="callgraph/nodes.json",
         nodes_total=len(callgraph_nodes),
     )
-
-    calls_by_func = collect_function_calls(call_edges)
 
     cli_options_payload = build_cli_options_payload(
         cli_surface.get("options", []),
@@ -498,7 +495,6 @@ def derive_payloads(
 
     return DerivedPayloads(
         full_functions=full_functions,
-        calls_by_func=calls_by_func,
         callsites_index=callsites_index,
         callsites_shards=callsites_shards,
         cli_options_index=cli_options_index,

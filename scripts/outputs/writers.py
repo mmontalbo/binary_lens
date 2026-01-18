@@ -161,7 +161,6 @@ def write_function_exports(
     selected_string_ids,
     string_tags_by_id,
     string_value_by_id,
-    calls_by_func,
     functions_dir,
     evidence_decomp_dir,
     monitor,
@@ -192,13 +191,6 @@ def write_function_exports(
         except Exception:
             return_type = None
 
-        calls = calls_by_func.get(entry_addr, [])
-        if len(calls) > bounds.max_calls_per_function:
-            calls = calls[: bounds.max_calls_per_function]
-            calls_truncated = True
-        else:
-            calls_truncated = False
-
         string_refs = []
         raw_refs = string_refs_by_func.get(entry_addr, set())
         for string_id in raw_refs:
@@ -218,8 +210,6 @@ def write_function_exports(
             "return_type": return_type,
             "parameters": params,
             "strings": sorted(string_refs),
-            "calls": calls,
-            "calls_truncated": calls_truncated,
             "control_flow": flow_summary,
             "decompiler_excerpt": decomp_ref,
         }
