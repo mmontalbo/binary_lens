@@ -582,7 +582,6 @@ def build_pack_markdown_docs(
         "- `errors/`: error message catalog + emitting sites + exit paths\n\n"
         "## Low-level inventories\n\n"
         "- `functions/`: function index and selected full function exports\n"
-        "- `imports.json`: external symbol inventory\n"
         "- `strings.json`: string inventory (sharded index)\n"
         "- `callgraph.json`: call edges (sharded index)\n"
         "- `callgraph/nodes.json`: callgraph node metadata (sharded index)\n\n"

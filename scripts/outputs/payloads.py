@@ -211,7 +211,6 @@ def build_pack_index_payload(format_version: str) -> dict[str, object]:
             "contracts_index_ref": "contracts/index.json",
             "strings_ref": "strings.json",
             "functions_index_ref": "functions/index.json",
-            "imports_ref": "imports.json",
             "callgraph_ref": "callgraph.json",
             "callgraph_nodes_ref": "callgraph/nodes.json",
             "callsites_ref": "evidence/callsites.json",
