@@ -318,17 +318,13 @@ def _parse_loop_function_ids(
         loop_id = _as_str(loop.get("id"))
         func_id = _as_str(loop.get("function_id"))
         if not func_id:
-            rep_callsite = _as_str(loop.get("representative_callsite_id"))
-            if rep_callsite:
-                func_id = _as_str(callsite_to_function.get(rep_callsite))
-            if not func_id:
-                for callsite_id in loop.get("callsite_ids") or []:
-                    callsite_id = _as_str(callsite_id)
-                    if not callsite_id:
-                        continue
-                    func_id = _as_str(callsite_to_function.get(callsite_id))
-                    if func_id:
-                        break
+            for callsite_id in loop.get("callsite_ids") or []:
+                callsite_id = _as_str(callsite_id)
+                if not callsite_id:
+                    continue
+                func_id = _as_str(callsite_to_function.get(callsite_id))
+                if func_id:
+                    break
         if loop_id and func_id:
             parse_loop_by_id[loop_id] = func_id
     return parse_loop_by_id

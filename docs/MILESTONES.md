@@ -326,7 +326,7 @@ Add a `cli/` section to the context pack:
      - `short_name` (if present)
      - `has_arg` (no/required/optional)
      - `evidence` (strings, table entries, parse-loop callsites)
-     - `parse_sites` (function IDs + callsite IDs)
+     - `parse_sites` (callsite IDs)
      - `flag_vars` (best-effort: varnode/local/global identifiers and evidence)
      - `check_sites` (best-effort: function IDs + evidence refs where flag is tested)
 

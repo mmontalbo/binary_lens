@@ -60,6 +60,7 @@ def _collect_callsite_values(value: Any, callsite_ids: set[str]) -> None:
 
 _CALLSITE_KEYS = {
     "dispatch_sites",
+    "parse_sites",
 }
 
 

@@ -661,7 +661,7 @@ def build_pack_markdown_docs(
         "- `net.json`: socket/connect/getaddrinfo/etc; `hosts[*]`/`ports` are best-effort.\n"
         "- `output.json`: printf/fprintf/write/etc; `templates[*]` and `channel` are best-effort.\n\n"
         "## CLI (`cli/`)\n\n"
-        "- `cli/options.json`: option token inventory (ids + parse loop/callsite refs).\n"
+        "- `cli/options.json`: option token inventory (ids + parse_loop_ids + parse_sites callsite ids).\n"
         "- `cli/parse_loops.json`: localized parse loops (callsite ids + optstring evidence; resolve owning functions via callsites).\n\n"
         "## Errors (`errors/`)\n\n"
         "- `errors/messages.json`: `string_id`, `bucket`, and emitting callsite ids (resolve values via `strings.json`).\n"

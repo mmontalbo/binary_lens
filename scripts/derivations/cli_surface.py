@@ -88,9 +88,7 @@ def _add_parse_site(option, callsite_id, caller, max_sites):
     seen.add(callsite_id)
     if len(option["parse_sites"]) >= max_sites:
         return
-    option["parse_sites"].append({
-        "callsite_id": callsite_id,
-    })
+    option["parse_sites"].append(callsite_id)
 
 
 def _add_parse_loop_id(option, loop_id):
@@ -254,9 +252,13 @@ def _merge_option_entries(raw_options, max_parse_sites, max_evidence, max_flag_v
                 option["short_name"] = entry.get("short_name")
 
         for site in entry.get("parse_sites", []):
+            if isinstance(site, dict):
+                callsite_id = site.get("callsite_id")
+            else:
+                callsite_id = site
             _add_parse_site(
                 option,
-                site.get("callsite_id"),
+                callsite_id,
                 None,
                 max_parse_sites,
             )
@@ -265,7 +267,7 @@ def _merge_option_entries(raw_options, max_parse_sites, max_evidence, max_flag_v
     options_list = list(options_map.values())
     for option in options_list:
         if option.get("parse_sites"):
-            option["parse_sites"].sort(key=lambda item: addr_to_int(item.get("callsite_id")))
+            option["parse_sites"].sort(key=addr_to_int)
         if option.get("parse_loop_ids"):
             option["parse_loop_ids"] = sorted(set(option["parse_loop_ids"]))
 
@@ -322,12 +324,10 @@ def _build_parse_loops(
         callsite_ids = sorted(set(callsites), key=addr_to_int)
         entry = {
             "id": parse_loop_id_by_function.get((group.get("function") or {}).get("address")),
-            "callsite_count": len(callsite_ids),
             "callsite_ids": callsite_ids[:max_callsites_per_loop],
             "callsites_truncated": len(callsite_ids) > max_callsites_per_loop,
         }
         if rep_detail:
-            entry["representative_callsite_id"] = rep_detail.get("callsite")
             optstring = rep_detail.get("optstring")
             if optstring:
                 string_id = optstring.get("string_id")
@@ -346,7 +346,6 @@ def _build_parse_loops(
                 entries = longopts.get("entries") or []
                 entry["longopts"] = {
                     "address": longopts.get("address"),
-                    "entry_count": len(entries),
                     "truncated": longopts.get("truncated", False),
                     "entry_addresses": [e.get("entry_address") for e in entries[:3]],
                 }
@@ -356,16 +355,15 @@ def _build_parse_loops(
 
 def _finalize_parse_loops(parse_loops, max_parse_loops):
     def _loop_sort_id(item):
-        rep_callsite = item.get("representative_callsite_id")
-        if not rep_callsite:
-            callsites = item.get("callsite_ids") or []
-            if callsites:
-                rep_callsite = callsites[0]
+        rep_callsite = None
+        callsites = item.get("callsite_ids") or []
+        if callsites:
+            rep_callsite = callsites[0]
         return addr_to_int(rep_callsite)
 
     parse_loops.sort(
         key=lambda item: (
-            -item.get("callsite_count", 0),
+            -len(item.get("callsite_ids") or []),
             _loop_sort_id(item),
         )
     )
