@@ -296,18 +296,34 @@ def _help_marker_string_ids(
     return marker_ids
 
 
-def _parse_loop_function_ids(cli_parse_loops_payload: Mapping[str, Any] | None) -> dict[str, str]:
+def _parse_loop_function_ids(
+    cli_parse_loops_payload: Mapping[str, Any] | None,
+    callsite_to_function: Mapping[str, Any] | None,
+) -> dict[str, str]:
     parse_loops = (
         cli_parse_loops_payload.get("parse_loops", [])
         if isinstance(cli_parse_loops_payload, Mapping)
         else []
     )
     parse_loop_by_id: dict[str, str] = {}
+    callsite_to_function = callsite_to_function or {}
     for loop in parse_loops:
         if not isinstance(loop, Mapping):
             continue
         loop_id = _as_str(loop.get("id"))
         func_id = _as_str(loop.get("function_id"))
+        if not func_id:
+            rep_callsite = _as_str(loop.get("representative_callsite_id"))
+            if rep_callsite:
+                func_id = _as_str(callsite_to_function.get(rep_callsite))
+            if not func_id:
+                for callsite_id in loop.get("callsite_ids") or []:
+                    callsite_id = _as_str(callsite_id)
+                    if not callsite_id:
+                        continue
+                    func_id = _as_str(callsite_to_function.get(callsite_id))
+                    if func_id:
+                        break
         if loop_id and func_id:
             parse_loop_by_id[loop_id] = func_id
     return parse_loop_by_id
@@ -355,11 +371,18 @@ def _build_callgraph_neighbors(callgraph_payload: Mapping[str, Any] | None) -> t
     return forward, reverse
 
 
+def _string_entry_known(entry: Mapping[str, Any]) -> bool:
+    status = _as_str(entry.get("status")) or "unknown"
+    if status == "unknown":
+        return False
+    return bool(_as_str(entry.get("string_id")) or _as_str(entry.get("value")))
+
+
 def _env_var_value(entry: Mapping[str, Any], string_value_by_id: Mapping[str, Any]) -> str:
     var = entry.get("var")
     if not isinstance(var, Mapping):
         return "unknown"
-    if var.get("status") != "known":
+    if not _string_entry_known(var):
         return "unknown"
     value = _as_str(var.get("value"))
     if value:
@@ -374,8 +397,8 @@ def _template_status(entry: Mapping[str, Any]) -> tuple[int, int]:
     templates = entry.get("templates")
     if not isinstance(templates, list):
         return 0, 1
-    known = sum(1 for tmpl in templates if isinstance(tmpl, Mapping) and tmpl.get("status") == "known")
-    unknown = sum(1 for tmpl in templates if isinstance(tmpl, Mapping) and tmpl.get("status") != "known")
+    known = sum(1 for tmpl in templates if isinstance(tmpl, Mapping) and _string_entry_known(tmpl))
+    unknown = sum(1 for tmpl in templates if isinstance(tmpl, Mapping) and not _string_entry_known(tmpl))
     return known, unknown
 
 
@@ -430,7 +453,7 @@ def build_contract_views(
             matched = _unique(sorted(matched))
             help_string_functions[func_id] = matched
 
-    parse_loop_by_id = _parse_loop_function_ids(cli_parse_loops_payload)
+    parse_loop_by_id = _parse_loop_function_ids(cli_parse_loops_payload, callsite_to_function)
     callgraph_forward, callgraph_reverse = _build_callgraph_neighbors(callgraph_payload)
     callsites_ref = _as_str((modes_payload or {}).get("callsites_ref")) or "evidence/callsites.json"
     strings_ref = "strings.json"

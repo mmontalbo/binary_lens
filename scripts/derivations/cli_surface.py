@@ -73,6 +73,14 @@ def _init_option(long_name, short_name, has_arg):
     }
 
 
+def _string_ref_status(string_id: str | None, address: str | None) -> str:
+    if string_id:
+        return "resolved"
+    if address:
+        return "unresolved"
+    return "unknown"
+
+
 def _add_parse_site(option, callsite_id, caller, max_sites):
     seen = option.setdefault("_seen_parse_sites", set())
     if callsite_id in seen:
@@ -312,10 +320,8 @@ def _build_parse_loops(
                 rep_detail = detail
 
         callsite_ids = sorted(set(callsites), key=addr_to_int)
-        function_id = (group.get("function") or {}).get("address")
         entry = {
             "id": parse_loop_id_by_function.get((group.get("function") or {}).get("address")),
-            "function_id": function_id,
             "callsite_count": len(callsite_ids),
             "callsite_ids": callsite_ids[:max_callsites_per_loop],
             "callsites_truncated": len(callsite_ids) > max_callsites_per_loop,
@@ -324,12 +330,16 @@ def _build_parse_loops(
             entry["representative_callsite_id"] = rep_detail.get("callsite")
             optstring = rep_detail.get("optstring")
             if optstring:
+                string_id = optstring.get("string_id")
+                address = optstring.get("address")
                 optstring_entry = {
-                    "string_id": optstring.get("string_id"),
+                    "status": _string_ref_status(string_id, address),
                     "option_count": len(optstring.get("options") or []),
                 }
-                if not optstring_entry.get("string_id"):
-                    optstring_entry["address"] = optstring.get("address")
+                if string_id:
+                    optstring_entry["string_id"] = string_id
+                elif address:
+                    optstring_entry["address"] = address
                 entry["optstring"] = optstring_entry
             longopts = rep_detail.get("longopts")
             if longopts:
@@ -345,10 +355,18 @@ def _build_parse_loops(
 
 
 def _finalize_parse_loops(parse_loops, max_parse_loops):
+    def _loop_sort_id(item):
+        rep_callsite = item.get("representative_callsite_id")
+        if not rep_callsite:
+            callsites = item.get("callsite_ids") or []
+            if callsites:
+                rep_callsite = callsites[0]
+        return addr_to_int(rep_callsite)
+
     parse_loops.sort(
         key=lambda item: (
             -item.get("callsite_count", 0),
-            addr_to_int(item.get("function_id")),
+            _loop_sort_id(item),
         )
     )
     total_parse_loops = len(parse_loops)

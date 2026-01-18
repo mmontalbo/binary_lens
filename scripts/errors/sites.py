@@ -108,7 +108,13 @@ def derive_error_sites(
             "severity": severity,
         })
 
-    results.sort(key=lambda item: addr_to_int(item.get("function_id")))
+    def _site_sort_key(item):
+        callsites = item.get("callsites") or []
+        if callsites:
+            return addr_to_int(callsites[0].get("callsite_id"))
+        return -1
+
+    results.sort(key=_site_sort_key)
     max_sites = bounds.optional("max_error_sites")
     truncated = False
     if max_sites and len(results) > max_sites:

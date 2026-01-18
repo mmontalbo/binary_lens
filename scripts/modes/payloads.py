@@ -139,11 +139,16 @@ def _build_modes_index_payload(
         string_id = mode.get("string_id")
         token: dict[str, object] = {}
         if string_id:
+            token["status"] = "resolved"
             token["string_id"] = string_id
         else:
+            address = mode.get("address")
+            if name or address:
+                token["status"] = "unresolved"
+            else:
+                token["status"] = "unknown"
             if name:
                 token["value"] = name
-            address = mode.get("address")
             if address:
                 token["address"] = address
         sort_name = name or ""
@@ -337,10 +342,15 @@ def _build_dispatch_sites_payload(
                 "_sort_name": name or "",
             }
             if string_id:
+                entry["status"] = "resolved"
                 entry["string_id"] = string_id
             else:
-                entry["name"] = name
                 address = token.get("address")
+                if name or address:
+                    entry["status"] = "unresolved"
+                else:
+                    entry["status"] = "unknown"
+                entry["name"] = name
                 if address:
                     entry["address"] = address
             token_entries.append(entry)

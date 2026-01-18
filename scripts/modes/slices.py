@@ -93,10 +93,20 @@ def build_mode_slices(
     parse_loop_by_function = {}
     parse_loop_by_id = {}
     for loop in parse_loops:
-        func = loop.get("function") or {}
-        func_addr = func.get("address")
         loop_id = loop.get("id")
-        if func_addr and loop_id:
+        func_addr = loop.get("function_id")
+        if not func_addr:
+            rep_callsite = loop.get("representative_callsite_id")
+            if rep_callsite:
+                func_addr = callsite_to_function.get(rep_callsite)
+            if not func_addr:
+                for callsite_id in loop.get("callsite_ids") or []:
+                    if not callsite_id:
+                        continue
+                    func_addr = callsite_to_function.get(callsite_id)
+                    if func_addr:
+                        break
+        if loop_id and func_addr:
             parse_loop_by_function[func_addr] = loop_id
             parse_loop_by_id[loop_id] = func_addr
 

@@ -69,8 +69,13 @@ def string_candidates_for_index(
         addr = entry.get("address")
         value = truncate_value(entry.get("value"), value_limit)
         string_id = string_addr_map_all.get(addr) if (string_addr_map_all and addr) else None
+        status = "unknown"
+        if string_id:
+            status = "resolved"
+        elif addr or value is not None:
+            status = "unresolved"
         value_entry = {
-            "status": "known",
+            "status": status,
             "arg_index": index,
         }
         if string_id:
