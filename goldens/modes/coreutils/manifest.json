@@ -75,9 +75,11 @@
       "truncated": false
     },
     "error_messages": {
+      "candidate_total": 921,
+      "excluded": 138,
       "max": null,
       "selected": 783,
-      "total": 921,
+      "total": 783,
       "truncated": false
     },
     "error_sites": {
@@ -146,6 +148,8 @@
       "truncated": false
     },
     "modes_index": {
+      "candidate_total": 117,
+      "excluded": 11,
       "max": null,
       "selected": 106,
       "total": 106,
@@ -153,8 +157,8 @@
     },
     "strings": {
       "max": null,
-      "selected": 2458,
-      "total": 2458,
+      "selected": 2459,
+      "total": 2459,
       "truncated": false
     }
   },
@@ -176,7 +180,7 @@
   "target_endian": "little",
   "tool": {
     "name": "binary_lens",
-    "revision": "f97f1d755e0d4b11c190ec97aebf55754e0654e1",
+    "revision": "fa7f002ea5b14c6213dabe4871d36dbff3449d80",
     "version": "0.1.0-dev"
   }
 }

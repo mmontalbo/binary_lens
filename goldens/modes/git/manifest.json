@@ -75,9 +75,11 @@
       "truncated": false
     },
     "error_messages": {
+      "candidate_total": 2973,
+      "excluded": 1367,
       "max": null,
       "selected": 1606,
-      "total": 2973,
+      "total": 1606,
       "truncated": false
     },
     "error_sites": {
@@ -146,6 +148,8 @@
       "truncated": false
     },
     "modes_index": {
+      "candidate_total": 178,
+      "excluded": 35,
       "max": null,
       "selected": 143,
       "total": 143,
@@ -176,7 +180,7 @@
   "target_endian": "little",
   "tool": {
     "name": "binary_lens",
-    "revision": "f97f1d755e0d4b11c190ec97aebf55754e0654e1",
+    "revision": "fa7f002ea5b14c6213dabe4871d36dbff3449d80",
     "version": "0.1.0-dev"
   }
 }

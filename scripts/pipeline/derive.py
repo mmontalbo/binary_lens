@@ -208,7 +208,7 @@ def derive_payloads(
         modes_slices_payload,
         list_key="slices",
         shard_dir="modes/slices",
-        item_id_key="mode_id",
+        item_id_key=None,
         item_kind="mode_slices",
     )
 
@@ -484,7 +484,7 @@ def derive_payloads(
         contracts_payload,
         list_key="modes",
         shard_dir="contracts/index",
-        item_id_key="mode_id",
+        item_id_key=None,
         item_kind="mode_contracts",
     )
 

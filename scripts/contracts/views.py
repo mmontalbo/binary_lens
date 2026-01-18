@@ -265,26 +265,6 @@ def build_contract_views(
     slices_by_id = {
         entry.get("mode_id"): entry for entry in slices if isinstance(entry, Mapping) and entry.get("mode_id")
     }
-    slice_refs_by_id: dict[str, str] = {}
-    seen_slice_ids: set[str] = set()
-    slice_ref_ok = True
-    for entry in slices:
-        if not isinstance(entry, Mapping):
-            slice_ref_ok = False
-            break
-        mode_id = _as_str(entry.get("mode_id"))
-        if not mode_id:
-            slice_ref_ok = False
-            break
-        safe_id = _safe_component(mode_id)
-        if safe_id in seen_slice_ids:
-            slice_ref_ok = False
-            break
-        seen_slice_ids.add(safe_id)
-        slice_refs_by_id[mode_id] = pack_path("modes", "slices", f"{safe_id}.json")
-    if not slice_ref_ok:
-        slice_refs_by_id = {}
-
     options_list = cli_options_payload.get("options", []) if isinstance(cli_options_payload, Mapping) else []
     parse_loops_total = None
     if isinstance(cli_parse_loops_payload, Mapping):
@@ -1002,9 +982,6 @@ def build_contract_views(
                 "mode_index_ref": "modes/index.json",
             }
         )
-        mode_slice_ref = slice_refs_by_id.get(mode_id)
-        if mode_slice_ref:
-            contract_entries[-1]["mode_slice_ref"] = mode_slice_ref
 
     contracts_payload = {
         "modes_ref": "modes/index.json",
