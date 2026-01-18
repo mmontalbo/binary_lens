@@ -452,7 +452,7 @@ def derive_payloads(
         collected.string_value_by_id,
         collected.string_refs_by_func,
         callgraph_for_contracts,
-        collected.function_meta_by_addr,
+        callgraph_nodes,
         exported_function_ids,
         name_hints_source=bounds,
     )

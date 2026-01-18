@@ -135,6 +135,7 @@ def collect_cli_option_compare_sites(call_edges, function_meta_by_addr, allowed_
         compare_sites.append({
             "callsite": edge.get("callsite"),
             "callee": target.get("name"),
+            "callee_id": target.get("address"),
             "callee_norm": name_norm,
             "caller": {
                 "address": from_addr,

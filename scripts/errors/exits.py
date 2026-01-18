@@ -64,8 +64,7 @@ def derive_exit_paths(
         direct_calls.append({
             "callsite_id": callsite_id,
             "function_id": callsite["function_id"],
-            "function_name": callsite.get("function_name"),
-            "target": callsite.get("target"),
+            "target_id": callsite.get("target_id"),
             "exit_code": exit_code,
             "evidence": {
                 "callsites": [callsite_id],

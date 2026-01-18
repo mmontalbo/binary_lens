@@ -102,11 +102,14 @@ def _build_modes_index_payload(
         dispatch_sites = []
         for callsite_id in callsite_ids:
             meta = callsite_meta.get(callsite_id, {})
+            caller_id = meta.get("caller_id")
+            if not caller_id:
+                caller_id = (meta.get("caller") or {}).get("address")
             dispatch_sites.append(
                 {
                     "callsite_id": callsite_id,
-                    "caller": meta.get("caller"),
-                    "callee": meta.get("callee"),
+                    "caller_id": caller_id,
+                    "callee_id": meta.get("callee_id"),
                 }
             )
         sites_truncated = False
@@ -123,7 +126,6 @@ def _build_modes_index_payload(
             root_entries.append(
                 {
                     "function_id": func_addr,
-                    "function_name": root.get("function_name"),
                     "callsite_count": callsite_count,
                     "compare_callsite_count": compare_callsite_count,
                 }
@@ -173,7 +175,6 @@ def _build_modes_index_payload(
                 evidence["string_addresses"] = string_addresses[:max_impl_evidence]
             entry = {
                 "function_id": func_id,
-                "function_name": root.get("function_name"),
                 "sources": sources,
             }
             if evidence:
@@ -394,9 +395,9 @@ def _build_dispatch_sites_payload(
         evidence_strings = sorted(
             {entry.get("string_id") for entry in token_entries if entry.get("string_id")}
         )
+        function_id = (group.get("function") or {}).get("address")
         entry = {
-            "function": group.get("function"),
-            "callee_names": group.get("callee_names"),
+            "function_id": function_id,
             "compare_callsite_count": group.get("compare_callsite_count", 0),
             "callsite_ids": callsite_ids_sorted,
             "callsites_truncated": callsites_truncated,
@@ -415,7 +416,7 @@ def _build_dispatch_sites_payload(
             "callsite_status_counts": status_entries,
             "evidence": {
                 "callsites": callsite_ids_sorted,
-                "functions": [(group.get("function") or {}).get("address")],
+                "functions": [function_id] if function_id else [],
                 "strings": evidence_strings,
             },
         }
@@ -426,7 +427,7 @@ def _build_dispatch_sites_payload(
     dispatch_sites.sort(
         key=lambda item: (
             -item.get("compare_callsite_count", 0),
-            addr_to_int((item.get("function") or {}).get("address")),
+            addr_to_int(item.get("function_id")),
         )
     )
 

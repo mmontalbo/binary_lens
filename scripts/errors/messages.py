@@ -347,7 +347,6 @@ def _process_observed_callsites(
             entry = {
                 "callsite_id": callsite_id,
                 "function_id": callsite.get("function_id"),
-                "function_name": callsite.get("function_name"),
                 "emitter_import": callsite.get("emitter_import"),
                 "basis": "direct_callsite",
             }
@@ -544,7 +543,6 @@ def _add_heuristic_links(
                     {
                         "callsite_id": callsite["callsite_id"],
                         "function_id": callsite["function_id"],
-                        "function_name": callsite.get("function_name"),
                         "emitter_import": callsite["emitter_import"],
                         "basis": "string_xref",
                     },

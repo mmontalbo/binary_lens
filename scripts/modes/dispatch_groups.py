@@ -24,8 +24,10 @@ def _group_compare_sites(compare_sites):
             continue
         callsite_meta[callsite] = {
             "caller": caller,
+            "caller_id": func_addr,
             "callee": site.get("callee"),
             "callee_norm": site.get("callee_norm"),
+            "callee_id": site.get("callee_id"),
         }
         group = groups.get(func_addr)
         if group is None:
@@ -129,4 +131,3 @@ def _select_dispatch_groups(
         group["callee_names"] = sorted(group.get("callee_names") or [])
         selected_callsite_ids.extend(callsites)
     return group_list, selected_callsite_ids
-

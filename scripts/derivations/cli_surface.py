@@ -312,10 +312,10 @@ def _build_parse_loops(
                 rep_detail = detail
 
         callsite_ids = sorted(set(callsites), key=addr_to_int)
+        function_id = (group.get("function") or {}).get("address")
         entry = {
             "id": parse_loop_id_by_function.get((group.get("function") or {}).get("address")),
-            "function": group.get("function"),
-            "callee_names": group.get("callee_names"),
+            "function_id": function_id,
             "callsite_count": len(callsite_ids),
             "callsite_ids": callsite_ids[:max_callsites_per_loop],
             "callsites_truncated": len(callsite_ids) > max_callsites_per_loop,
@@ -346,7 +346,7 @@ def _finalize_parse_loops(parse_loops, max_parse_loops):
     parse_loops.sort(
         key=lambda item: (
             -item.get("callsite_count", 0),
-            addr_to_int((item.get("function") or {}).get("address")),
+            addr_to_int(item.get("function_id")),
         )
     )
     total_parse_loops = len(parse_loops)

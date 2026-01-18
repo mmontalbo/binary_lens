@@ -97,7 +97,6 @@ def collect_pipeline_inputs(
             emitter_callsites_by_func,
             call_args_cache,
             bounds,
-            function_meta_by_addr,
         )
     error_callsite_ids = collect_error_callsites(
         error_messages_payload, exit_paths_payload, error_sites_payload

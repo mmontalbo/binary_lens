@@ -101,10 +101,11 @@ def _collect_callsites(call_edges, function_meta_by_addr, name_set):
         entry = {
             "callsite_id": match.callsite_id,
             "function_id": match.function_id,
-            "function_name": match.function_name,
             "emitter_import": match.match_key or match.callee_normalized,
-            "target": match.target,
         }
+        target_id = match.target.get("address") if isinstance(match.target, dict) else None
+        if target_id:
+            entry["target_id"] = target_id
         callsites.append(entry)
         bucket = callsites_by_func.get(match.function_id)
         if bucket is None:

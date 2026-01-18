@@ -11,7 +11,6 @@ def derive_error_sites(
     emitter_callsites_by_func,
     call_args_cache,
     bounds: Bounds,
-    function_meta_by_addr,
 ):
     callsite_imports = {}
     callsite_to_function = {}
@@ -46,7 +45,6 @@ def derive_error_sites(
             if site is None:
                 site = {
                     "function_id": func_id,
-                    "function_name": function_meta_by_addr.get(func_id, {}).get("name"),
                     "callsite_ids": [],
                     "imports": set(),
                 }
@@ -111,7 +109,6 @@ def derive_error_sites(
         }
         results.append({
             "function_id": site["function_id"],
-            "function_name": site.get("function_name"),
             "callsite_ids": callsite_ids,
             "imports": imports,
             "severity": severity,

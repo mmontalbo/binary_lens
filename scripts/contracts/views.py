@@ -51,6 +51,23 @@ def _unique(values: list[str]) -> list[str]:
     return ordered
 
 
+def _node_name_map(callgraph_nodes: Any) -> dict[str, str]:
+    nodes = []
+    if isinstance(callgraph_nodes, Mapping):
+        nodes = callgraph_nodes.get("nodes", [])
+    elif isinstance(callgraph_nodes, list):
+        nodes = callgraph_nodes
+    name_by_id: dict[str, str] = {}
+    for node in nodes or []:
+        if not isinstance(node, Mapping):
+            continue
+        addr = _as_str(node.get("address"))
+        name = _as_str(node.get("name"))
+        if addr and name and addr not in name_by_id:
+            name_by_id[addr] = name
+    return name_by_id
+
+
 def _mode_name_in_function(func_name: str, mode_name: str) -> bool:
     if not func_name or not mode_name:
         return False
@@ -213,8 +230,7 @@ def _parse_loop_function_ids(cli_parse_loops_payload: Mapping[str, Any] | None) 
         if not isinstance(loop, Mapping):
             continue
         loop_id = _as_str(loop.get("id"))
-        func = loop.get("function") if isinstance(loop.get("function"), Mapping) else {}
-        func_id = _as_str(func.get("address"))
+        func_id = _as_str(loop.get("function_id"))
         if loop_id and func_id:
             parse_loop_by_id[loop_id] = func_id
     return parse_loop_by_id
@@ -280,7 +296,7 @@ def build_contract_views(
     string_value_by_id: Mapping[str, Any] | None,
     string_refs_by_func: Mapping[str, Any] | None,
     callgraph_payload: Mapping[str, Any] | None,
-    function_meta_by_addr: Mapping[str, Any] | None,
+    callgraph_nodes: Any,
     exported_function_ids: set[str] | None = None,
     *,
     name_hints_source: Bounds | Mapping[str, Any] | None = None,
@@ -298,7 +314,7 @@ def build_contract_views(
     string_tags_by_id = string_tags_by_id or {}
     string_value_by_id = string_value_by_id or {}
     string_refs_by_func = string_refs_by_func or {}
-    function_meta_by_addr = function_meta_by_addr or {}
+    node_name_by_id = _node_name_map(callgraph_nodes)
     name_hints = load_name_hints(name_hints_source)
     use_name_hints = name_hints_enabled(name_hints_source)
     help_marker_string_ids = _help_marker_string_ids(string_tags_by_id, string_value_by_id)
@@ -566,10 +582,9 @@ def build_contract_views(
                 entry = help_candidate_map.setdefault(func_id, {"signals": set(), "string_ids": []})
                 entry["signals"].add("usage_messages")
 
-        if not help_candidate_map and function_meta_by_addr and use_name_hints:
+        if not help_candidate_map and node_name_by_id and use_name_hints:
             for func_id in proximity_roots:
-                func_meta = function_meta_by_addr.get(func_id, {})
-                func_name = _as_str(func_meta.get("name")) or ""
+                func_name = _as_str(node_name_by_id.get(func_id)) or ""
                 if not func_name:
                     continue
                 lowered = func_name.lower()
@@ -603,7 +618,7 @@ def build_contract_views(
                 score += 1
             if "usage_messages" in signals:
                 score += 1
-            func_name = _as_str((function_meta_by_addr.get(func_id, {}) or {}).get("name")) or ""
+            func_name = _as_str(node_name_by_id.get(func_id)) or ""
             func_name_lower = func_name.lower() if func_name else ""
             if (
                 use_name_hints
@@ -739,7 +754,7 @@ def build_contract_views(
                 if not isinstance(root, Mapping):
                     continue
                 func_id = _as_str(root.get("function_id")) or "unknown"
-                func_name = _as_str(root.get("function_name")) or "unknown"
+                func_name = _as_str(node_name_by_id.get(func_id)) or "unknown"
                 sources = root.get("sources") if isinstance(root.get("sources"), list) else []
                 sources = [src for src in sources if _as_str(src)]
                 source_str = _format_list(sources)
@@ -820,8 +835,7 @@ def build_contract_views(
         help_rows: list[list[str]] = []
         for _score, candidate in help_candidates:
             func_id = _as_str(candidate.get("function_id")) or "unknown"
-            func_meta = function_meta_by_addr.get(func_id, {})
-            func_name = _as_str(func_meta.get("name")) or "unknown"
+            func_name = _as_str(node_name_by_id.get(func_id)) or "unknown"
             proximity = _as_str(candidate.get("proximity")) or "unknown"
             string_ids = candidate.get("string_ids") or []
             string_ids = string_ids[:MAX_HELP_STRING_IDS]
