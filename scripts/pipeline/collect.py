@@ -115,7 +115,7 @@ def collect_pipeline_inputs(
         interfaces_index_payload = build_interfaces_index_payload(interfaces_payloads)
 
     with phase(profiler, "collect_modes"):
-        modes_payload, dispatch_sites_payload, mode_callsite_ids = collect_mode_candidates(
+        modes_payload, mode_callsite_ids = collect_mode_candidates(
             program,
             call_edges_all,
             function_meta_by_addr,
@@ -152,6 +152,5 @@ def collect_pipeline_inputs(
         interfaces_index_payload=interfaces_index_payload,
         interface_callsite_ids=interface_callsite_ids,
         modes_payload=modes_payload,
-        dispatch_sites_payload=dispatch_sites_payload,
         mode_callsite_ids=mode_callsite_ids,
     )

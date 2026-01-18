@@ -181,7 +181,7 @@ def derive_payloads(
         collected.error_sites_payload,
         callsites_ref,
     )
-    attach_mode_callsite_refs(collected.modes_payload, collected.dispatch_sites_payload, callsites_ref)
+    attach_mode_callsite_refs(collected.modes_payload, callsites_ref)
     attach_interface_callsite_refs(collected.interfaces_payloads, callsites_ref)
 
     callgraph = build_callgraph_payload(

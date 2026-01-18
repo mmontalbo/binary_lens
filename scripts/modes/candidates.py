@@ -25,12 +25,11 @@ from modes.dispatch_groups import (
 from modes.implementation_roots import _attach_implementation_roots
 from modes.mode_candidates import _build_mode_candidates
 from modes.name_heuristics import entry_name_candidates
-from modes.payloads import _build_dispatch_sites_payload, _build_modes_index_payload
+from modes.payloads import _build_modes_index_payload
 from modes.table_dispatch_candidates import _collect_table_dispatch_mode_candidates
 from modes.table_dispatch_payload import (
     _attach_table_dispatch_sites,
     _collect_table_dispatch_site_infos,
-    _collect_table_dispatch_tokens,
 )
 
 
@@ -48,8 +47,6 @@ def collect_mode_candidates(
     for func_addr, group in groups.items():
         callsites = sorted(set(group.get("callsites") or []), key=addr_to_int)
         compare_callsites_by_func[func_addr] = callsites
-    total_dispatch_sites = len(groups)
-
     callgraph_callees_by_func, out_degree_by_func = _build_callgraph_out_degree(call_edges)
     entry_names = entry_name_candidates(bounds)
     entry_func_ids = []
@@ -109,7 +106,7 @@ def collect_mode_candidates(
         purpose="export_modes.collect_mode_candidates",
     )
 
-    mode_candidates, callsite_tokens, callsite_ignored, callsite_token_stats = (
+    mode_candidates, callsite_tokens, _callsite_ignored, _callsite_token_stats = (
         _build_mode_candidates(
             selected_groups,
             call_args_by_callsite,
@@ -172,19 +169,5 @@ def collect_mode_candidates(
                 bounds,
             )
 
-    table_dispatch_tokens = _collect_table_dispatch_tokens(mode_candidates, selected_mode_ids)
-    dispatch_sites_payload = _build_dispatch_sites_payload(
-        selected_groups,
-        callsite_tokens,
-        callsite_ignored,
-        callsite_token_stats,
-        call_args_by_callsite,
-        selected_mode_ids,
-        table_dispatch_tokens,
-        dispatch_meta_by_func,
-        bounds,
-        total_dispatch_sites,
-    )
-
     all_callsite_ids = sorted(set(callsite_ids) | set(handler_callsite_ids), key=addr_to_int)
-    return modes_payload, dispatch_sites_payload, all_callsite_ids
+    return modes_payload, all_callsite_ids

@@ -35,7 +35,6 @@ class CollectedData:
     interfaces_index_payload: dict[str, Any]
     interface_callsite_ids: list[str]
     modes_payload: dict[str, Any]
-    dispatch_sites_payload: dict[str, Any]
     mode_callsite_ids: list[str]
 
 
