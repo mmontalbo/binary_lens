@@ -45,7 +45,8 @@ class DerivedPayloads:
 
     full_functions: list[Any]
     calls_by_func: dict[str, Any]
-    callsite_evidence: dict[str, Any]
+    callsites_index: dict[str, Any]
+    callsites_shards: dict[str, Any]
     cli_options_index: dict[str, Any]
     cli_parse_loops_index: dict[str, Any]
     modes_slices_index: dict[str, Any]

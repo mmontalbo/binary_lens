@@ -90,13 +90,13 @@ def _truncate(entries: list[Any], max_entries: int) -> tuple[list[Any], bool]:
     return entries[:max_entries], True
 
 
-def _callsite_refs_for_message(message: Mapping[str, Any]) -> list[str]:
-    refs: list[str] = []
+def _callsite_ids_for_message(message: Mapping[str, Any]) -> list[str]:
+    callsite_ids: list[str] = []
     for entry in message.get("emitting_callsites") or []:
-        ref = _as_str(entry.get("callsite_ref"))
-        if ref:
-            refs.append(ref)
-    return _unique(refs)
+        callsite_id = _as_str(entry.get("callsite_id"))
+        if callsite_id:
+            callsite_ids.append(callsite_id)
+    return _unique(callsite_ids)
 
 
 def _function_ids_for_message(message: Mapping[str, Any]) -> list[str]:
@@ -492,7 +492,7 @@ def build_contract_views(
         output_candidates, output_truncated = _truncate(output_full_candidates, MAX_OUTPUT_ENTRIES)
         output_rows: list[list[str]] = []
         for entry in output_candidates:
-            callsite_ref = _as_str(entry.get("callsite_ref")) or "unknown"
+            callsite_id = _as_str(entry.get("callsite_id")) or "unknown"
             operation = _as_str(entry.get("operation")) or "unknown"
             channel = entry.get("channel") if isinstance(entry.get("channel"), Mapping) else {}
             channel_kind = _as_str(channel.get("kind")) or "unknown"
@@ -500,7 +500,7 @@ def build_contract_views(
             known_templates, unknown_templates = _template_status(entry)
             templates_summary = f"known={known_templates}, unknown={unknown_templates}"
             output_rows.append(
-                [f"`{callsite_ref}`", f"`{operation}`", f"`{channel_kind}`", f"`{templates_summary}`"]
+                [f"`{callsite_id}`", f"`{operation}`", f"`{channel_kind}`", f"`{templates_summary}`"]
             )
 
         # Help/usage evidence.
@@ -681,6 +681,8 @@ def build_contract_views(
         exit_unknown_code = sum(1 for entry in exit_candidates if entry.get("exit_code") is None)
         exit_candidates, exit_truncated = _truncate(exit_candidates, MAX_EXIT_ENTRIES)
 
+        callsites_ref = _as_str((modes_payload or {}).get("callsites_ref")) or "evidence/callsites.json"
+
         # Build Markdown document.
         lines: list[str] = [
             f"# Contract: {mode_name}",
@@ -696,6 +698,7 @@ def build_contract_views(
         lines.extend(
             [
                 "- source: `modes/index.json`",
+                f"- callsites_ref: `{callsites_ref}`",
                 "",
                 "## Implementation roots (modes/index.json)",
                 f"- root_count: `{len(implementation_roots)}`",
@@ -751,15 +754,15 @@ def build_contract_views(
         if env_candidates:
             env_rows: list[list[str]] = []
             for entry in env_candidates:
-                callsite_ref = _as_str(entry.get("callsite_ref")) or "unknown"
+                callsite_id = _as_str(entry.get("callsite_id")) or "unknown"
                 operation = _as_str(entry.get("operation")) or "unknown"
                 var_value = _env_var_value(entry)
                 func_id = _as_str(entry.get("function_id")) or "unknown"
                 env_rows.append(
-                    [f"`{var_value}`", f"`{operation}`", f"`{callsite_ref}`", f"`{func_id}`"]
+                    [f"`{var_value}`", f"`{operation}`", f"`{callsite_id}`", f"`{func_id}`"]
                 )
             lines.append("")
-            lines.append(_format_table(["var", "operation", "callsite_ref", "function_id"], env_rows))
+            lines.append(_format_table(["var", "operation", "callsite_id", "function_id"], env_rows))
             if env_truncated:
                 lines.append("- note: env list truncated for readability")
         else:
@@ -778,7 +781,7 @@ def build_contract_views(
             lines.append("")
             lines.append(
                 _format_table(
-                    ["callsite_ref", "operation", "channel", "templates"], output_rows
+                    ["callsite_id", "operation", "channel", "templates"], output_rows
                 )
             )
             if output_truncated:
@@ -837,7 +840,7 @@ def build_contract_views(
         if usage_messages:
             for message in usage_messages:
                 msg_id = _as_str(message.get("string_id")) or _as_str(message.get("string_address")) or "unknown"
-                refs = _callsite_refs_for_message(message)
+                refs = _callsite_ids_for_message(message)
                 refs = refs[:MAX_CALLSITE_REFS]
                 lines.append(
                     f"- `{msg_id}` (callsites: {_format_list([f'`{ref}`' for ref in refs])})"
@@ -861,7 +864,7 @@ def build_contract_views(
                 refs: list[str] = []
                 if isinstance(message, Mapping):
                     bucket = _as_str(message.get("bucket")) or "unknown"
-                    refs = _callsite_refs_for_message(message)[:MAX_CALLSITE_REFS]
+                    refs = _callsite_ids_for_message(message)[:MAX_CALLSITE_REFS]
                 lines.append(
                     f"- `{msg_id}` (bucket: `{bucket}`, callsites: {_format_list([f'`{ref}`' for ref in refs])})"
                 )
@@ -880,7 +883,7 @@ def build_contract_views(
         if error_site_candidates:
             for site in error_site_candidates:
                 severity = _as_str(site.get("severity")) or "unknown"
-                refs = site.get("callsite_refs") if isinstance(site.get("callsite_refs"), list) else []
+                refs = site.get("callsite_ids") if isinstance(site.get("callsite_ids"), list) else []
                 refs = [ref for ref in refs if _as_str(ref)][:MAX_CALLSITE_REFS]
                 lines.append(
                     f"- severity: `{severity}`, callsites: {_format_list([f'`{ref}`' for ref in refs])}"
@@ -899,10 +902,10 @@ def build_contract_views(
         )
         if exit_candidates:
             for entry in exit_candidates:
-                callsite_ref = _as_str(entry.get("callsite_ref")) or "unknown"
+                callsite_id = _as_str(entry.get("callsite_id")) or "unknown"
                 exit_code = entry.get("exit_code")
                 exit_code_str = "unknown" if exit_code is None else str(exit_code)
-                lines.append(f"- `{callsite_ref}` (exit_code: `{exit_code_str}`)")
+                lines.append(f"- `{callsite_id}` (exit_code: `{exit_code_str}`)")
             if exit_truncated:
                 lines.append("- note: exit list truncated for readability")
         else:

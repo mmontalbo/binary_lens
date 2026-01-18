@@ -420,12 +420,9 @@ def build_interfaces_index_payload(surfaces: dict[str, dict[str, Any]]) -> dict[
     }
 
 
-def attach_interface_callsite_refs(surfaces: dict[str, dict[str, Any]], callsite_paths: dict[str, str]):
-    if not callsite_paths:
+def attach_interface_callsite_refs(surfaces: dict[str, dict[str, Any]], callsites_ref: str) -> None:
+    if not callsites_ref:
         return
     for payload in surfaces.values():
-        for entry in payload.get("entries", []) or []:
-            callsite_id = entry.get("callsite_id")
-            ref = callsite_paths.get(callsite_id)
-            if ref:
-                entry["callsite_ref"] = ref
+        if isinstance(payload, dict):
+            payload["callsites_ref"] = callsites_ref

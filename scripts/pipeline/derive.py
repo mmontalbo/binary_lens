@@ -17,7 +17,7 @@ from collectors.callgraph import (
     summarize_functions,
 )
 from contracts.views import build_contract_views
-from derivations.cli_surface import attach_cli_callsite_refs, derive_cli_surface
+from derivations.cli_surface import derive_cli_surface
 from errors.refs import attach_callsite_refs
 from export_bounds import Bounds
 from export_config import BINARY_LENS_VERSION, CALLGRAPH_SIGNAL_RULES, FORMAT_VERSION
@@ -82,6 +82,7 @@ def derive_payloads(
     bounds: Bounds,
     profiler: Any,
 ) -> DerivedPayloads:
+    callsites_ref = "evidence/callsites.json"
     metrics_by_addr = build_function_metrics(
         collected.functions,
         collected.call_edges_all,
@@ -116,7 +117,6 @@ def derive_payloads(
             collected.cli_inputs.parse_groups,
             collected.cli_inputs.parse_details_by_callsite,
             collected.cli_inputs.compare_details_by_callsite,
-            {},
             bounds,
             collected.cli_inputs.check_sites_by_flag_addr,
         )
@@ -141,7 +141,7 @@ def derive_payloads(
             + collected.mode_callsite_ids
             + collected.interface_callsite_ids
         )
-        callsite_paths, callsite_evidence = build_callsite_records(
+        callsite_evidence = build_callsite_records(
             collected.callsite_records,
             call_edges,
             extra_callsites=extra_callsites,
@@ -157,7 +157,7 @@ def derive_payloads(
             collected.dispatch_sites_payload,
             modes_slices_payload,
         )
-        callsite_paths, callsite_evidence = build_callsite_records(
+        callsite_evidence = build_callsite_records(
             collected.callsite_records,
             call_edges,
             callsite_ids=required_callsites,
@@ -167,11 +167,10 @@ def derive_payloads(
         collected.error_messages_payload,
         collected.exit_paths_payload,
         collected.error_sites_payload,
-        callsite_paths,
+        callsites_ref,
     )
-    attach_mode_callsite_refs(collected.modes_payload, collected.dispatch_sites_payload, callsite_paths)
-    attach_interface_callsite_refs(collected.interfaces_payloads, callsite_paths)
-    attach_cli_callsite_refs(cli_surface, callsite_paths)
+    attach_mode_callsite_refs(collected.modes_payload, collected.dispatch_sites_payload, callsites_ref)
+    attach_interface_callsite_refs(collected.interfaces_payloads, callsites_ref)
 
     callgraph = build_callgraph_payload(
         callgraph_edges,
@@ -191,11 +190,20 @@ def derive_payloads(
         cli_surface.get("options_truncated", False),
         bounds,
     )
+    cli_options_payload["callsites_ref"] = callsites_ref
     cli_parse_loops_payload = build_cli_parse_loops_payload(
         cli_surface.get("parse_loops", []),
         cli_surface.get("total_parse_loops", 0),
         cli_surface.get("parse_loops_truncated", False),
         bounds,
+    )
+    cli_parse_loops_payload["callsites_ref"] = callsites_ref
+    callsites_index, callsites_shards = build_sharded_list_index(
+        {"callsites": callsite_evidence},
+        list_key="callsites",
+        shard_dir="evidence/callsites",
+        item_id_key=None,
+        item_kind="callsites",
     )
     cli_parse_loops_index, cli_parse_loops_shards = build_sharded_list_index(
         cli_parse_loops_payload,
@@ -491,7 +499,8 @@ def derive_payloads(
     return DerivedPayloads(
         full_functions=full_functions,
         calls_by_func=calls_by_func,
-        callsite_evidence=callsite_evidence,
+        callsites_index=callsites_index,
+        callsites_shards=callsites_shards,
         cli_options_index=cli_options_index,
         cli_parse_loops_index=cli_parse_loops_index,
         modes_slices_index=modes_slices_index,

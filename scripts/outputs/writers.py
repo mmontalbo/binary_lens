@@ -3,7 +3,7 @@ import os
 from collectors.callgraph import collect_flow_summary, function_size
 from export_bounds import Bounds
 from export_config import DEFAULT_MAX_DECOMPILE_FUNCTION_SIZE
-from export_primitives import addr_filename, addr_str
+from export_primitives import addr_filename, addr_str, addr_to_int
 from export_profile import profiled_decompile
 from ghidra.app.decompiler import DecompInterface
 
@@ -53,7 +53,7 @@ def _looks_like_help_printer(func_id, string_refs_by_func, string_tags_by_id, st
 
 
 def build_callsite_records(callsite_records, call_edges, extra_callsites=None, callsite_ids=None):
-    """Prepare callsite evidence records and their relative pack paths."""
+    """Prepare callsite evidence records for the sharded callsites surface."""
     # Only emit callsite evidence for selected edges plus explicitly requested extras.
     selected_callsite_records = {}
     if callsite_ids is None:
@@ -131,11 +131,8 @@ def build_callsite_records(callsite_records, call_edges, extra_callsites=None, c
                 "targets": list(base_record.get("targets") or []),
             }
 
-    callsite_paths = {}
-    for callsite in selected_callsite_records:
-        filename = addr_filename("cs", callsite, "json")
-        callsite_paths[callsite] = pack_path("evidence", "callsites", filename)
-    return callsite_paths, selected_callsite_records
+    ordered_callsites = sorted(selected_callsite_records.keys(), key=addr_to_int)
+    return [selected_callsite_records[callsite] for callsite in ordered_callsites]
 
 
 def write_callsite_records(
@@ -145,16 +142,15 @@ def write_callsite_records(
     extra_callsites=None,
     callsite_ids=None,
 ):
-    callsite_paths, selected_callsite_records = build_callsite_records(
+    """Deprecated: callsite evidence is now written via sharded list outputs."""
+    _ = (
         callsite_records,
         call_edges,
-        extra_callsites=extra_callsites,
-        callsite_ids=callsite_ids,
+        evidence_callsites_dir,
+        extra_callsites,
+        callsite_ids,
     )
-    for callsite, record in selected_callsite_records.items():
-        filename = addr_filename("cs", callsite, "json")
-        write_json(os.path.join(evidence_callsites_dir, filename), record)
-    return callsite_paths
+    return {}
 
 
 def write_function_exports(

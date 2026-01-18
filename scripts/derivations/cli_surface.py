@@ -76,7 +76,7 @@ def _init_option(long_name, short_name, has_arg):
     }
 
 
-def _add_parse_site(option, callsite_id, callsite_ref, caller, max_sites):
+def _add_parse_site(option, callsite_id, caller, max_sites):
     seen = option.setdefault("_seen_parse_sites", set())
     if callsite_id in seen:
         return
@@ -85,7 +85,6 @@ def _add_parse_site(option, callsite_id, callsite_ref, caller, max_sites):
         return
     option["parse_sites"].append({
         "callsite_id": callsite_id,
-        "callsite_ref": callsite_ref,
         "function": caller,
     })
 
@@ -175,7 +174,6 @@ def _build_parse_loop_lookup(parse_groups):
 def _collect_parse_option_entries(
     parse_details_by_callsite,
     parse_loop_id_by_callsite,
-    callsite_paths,
     max_parse_sites,
     max_evidence,
     max_flag_vars,
@@ -189,21 +187,19 @@ def _collect_parse_option_entries(
         if not detail:
             continue
         caller = detail.get("caller")
-        callsite_ref = callsite_paths.get(callsite_id)
         loop_id = parse_loop_id_by_callsite.get(callsite_id)
         optstring = detail.get("optstring")
         if optstring:
             for opt in optstring.get("options", []):
                 short_name = opt.get("short_name")
                 option = _init_option(None, short_name, opt.get("has_arg"))
-                _add_parse_site(option, callsite_id, callsite_ref, caller, max_parse_sites)
+                _add_parse_site(option, callsite_id, caller, max_parse_sites)
                 _add_parse_loop_id(option, loop_id)
                 _add_evidence(
                     option,
                     {
                         "kind": "optstring",
                         "callsite_id": callsite_id,
-                        "callsite_ref": callsite_ref,
                         "optstring_address": optstring.get("address"),
                         "string_id": optstring.get("string_id"),
                     },
@@ -217,14 +213,13 @@ def _collect_parse_option_entries(
                 long_name = entry.get("name")
                 short_name = _short_from_val(entry.get("val"))
                 option = _init_option(long_name, short_name, entry.get("has_arg"))
-                _add_parse_site(option, callsite_id, callsite_ref, caller, max_parse_sites)
+                _add_parse_site(option, callsite_id, caller, max_parse_sites)
                 _add_parse_loop_id(option, loop_id)
                 _add_evidence(
                     option,
                     {
                         "kind": "longopt_entry",
                         "callsite_id": callsite_id,
-                        "callsite_ref": callsite_ref,
                         "table_address": longopts.get("address"),
                         "entry_address": entry.get("entry_address"),
                         "name_address": entry.get("name_address"),
@@ -249,7 +244,6 @@ def _collect_parse_option_entries(
 def _collect_compare_option_entries(
     compare_details_by_callsite,
     parse_loop_id_by_callsite,
-    callsite_paths,
     max_parse_sites,
     max_evidence,
 ):
@@ -261,7 +255,6 @@ def _collect_compare_option_entries(
         if not detail:
             continue
         caller = detail.get("caller")
-        callsite_ref = callsite_paths.get(callsite_id)
         loop_id = parse_loop_id_by_callsite.get(callsite_id)
         for token in detail.get("option_tokens", []):
             option = _init_option(
@@ -269,14 +262,13 @@ def _collect_compare_option_entries(
                 token.get("short_name"),
                 token.get("has_arg"),
             )
-            _add_parse_site(option, callsite_id, callsite_ref, caller, max_parse_sites)
+            _add_parse_site(option, callsite_id, caller, max_parse_sites)
             _add_parse_loop_id(option, loop_id)
             _add_evidence(
                 option,
                 {
                     "kind": "direct_compare",
                     "callsite_id": callsite_id,
-                    "callsite_ref": callsite_ref,
                     "string_id": token.get("string_id"),
                     "string_address": token.get("address"),
                     "compare_callee": detail.get("callee"),
@@ -306,7 +298,6 @@ def _merge_option_entries(raw_options, max_parse_sites, max_evidence, max_flag_v
             _add_parse_site(
                 option,
                 site.get("callsite_id"),
-                site.get("callsite_ref"),
                 site.get("function"),
                 max_parse_sites,
             )
@@ -362,7 +353,6 @@ def _finalize_option_entries(options_list, max_options):
 def _build_parse_loops(
     parse_groups,
     parse_details_by_callsite,
-    callsite_paths,
     parse_loop_id_by_function,
     max_callsites_per_loop,
 ):
@@ -387,11 +377,6 @@ def _build_parse_loops(
                 rep_detail = detail
 
         callsite_ids = sorted(set(callsites), key=addr_to_int)
-        callsite_refs = []
-        for callsite_id in callsite_ids[:max_callsites_per_loop]:
-            ref = callsite_paths.get(callsite_id)
-            if ref:
-                callsite_refs.append(ref)
         entry = {
             "id": parse_loop_id_by_function.get((group.get("function") or {}).get("address")),
             "function": group.get("function"),
@@ -399,11 +384,9 @@ def _build_parse_loops(
             "callsite_count": len(callsite_ids),
             "callsite_ids": callsite_ids[:max_callsites_per_loop],
             "callsites_truncated": len(callsite_ids) > max_callsites_per_loop,
-            "callsite_refs": callsite_refs,
         }
         if rep_detail:
             entry["representative_callsite_id"] = rep_detail.get("callsite")
-            entry["representative_callsite_ref"] = callsite_paths.get(rep_detail.get("callsite"))
             optstring = rep_detail.get("optstring")
             if optstring:
                 entry["optstring"] = {
@@ -441,7 +424,6 @@ class _CliSurfaceDeriver:
     parse_groups: list[dict[str, Any]]
     parse_details_by_callsite: dict[str, Any]
     compare_details_by_callsite: dict[str, Any]
-    callsite_paths: dict[str, Any]
     check_sites_by_flag_addr: dict[str, Any]
     bounds: CliSurfaceBounds
 
@@ -451,7 +433,6 @@ class _CliSurfaceDeriver:
         raw_options = _collect_parse_option_entries(
             self.parse_details_by_callsite,
             parse_loop_id_by_callsite,
-            self.callsite_paths,
             self.bounds.max_parse_sites,
             self.bounds.max_evidence,
             self.bounds.max_flag_vars,
@@ -462,7 +443,6 @@ class _CliSurfaceDeriver:
             _collect_compare_option_entries(
                 self.compare_details_by_callsite,
                 parse_loop_id_by_callsite,
-                self.callsite_paths,
                 self.bounds.max_parse_sites,
                 self.bounds.max_evidence,
             )
@@ -483,7 +463,6 @@ class _CliSurfaceDeriver:
         parse_loops = _build_parse_loops(
             self.parse_groups,
             self.parse_details_by_callsite,
-            self.callsite_paths,
             parse_loop_id_by_function,
             self.bounds.max_callsites_per_loop,
         )
@@ -506,7 +485,6 @@ def derive_cli_surface(
     parse_groups,
     parse_details_by_callsite,
     compare_details_by_callsite,
-    callsite_paths,
     bounds: Bounds,
     check_sites_by_flag_addr,
 ):
@@ -523,40 +501,6 @@ def derive_cli_surface(
         parse_groups=parse_groups or [],
         parse_details_by_callsite=parse_details_by_callsite or {},
         compare_details_by_callsite=compare_details_by_callsite or {},
-        callsite_paths=callsite_paths or {},
         check_sites_by_flag_addr=check_sites_by_flag_addr or {},
         bounds=cli_bounds,
     ).derive()
-
-
-def attach_cli_callsite_refs(cli_surface: dict[str, Any], callsite_paths: dict[str, str]) -> None:
-    if not callsite_paths or not cli_surface:
-        return
-    for option in cli_surface.get("options", []) or []:
-        for site in option.get("parse_sites", []) or []:
-            callsite_id = site.get("callsite_id")
-            if not callsite_id:
-                continue
-            ref = callsite_paths.get(callsite_id)
-            if ref:
-                site["callsite_ref"] = ref
-        for evidence in option.get("evidence", []) or []:
-            callsite_id = evidence.get("callsite_id")
-            if not callsite_id:
-                continue
-            ref = callsite_paths.get(callsite_id)
-            if ref:
-                evidence["callsite_ref"] = ref
-
-    for loop in cli_surface.get("parse_loops", []) or []:
-        callsite_ids = loop.get("callsite_ids") or []
-        callsite_refs = []
-        for callsite_id in callsite_ids:
-            ref = callsite_paths.get(callsite_id)
-            if ref:
-                callsite_refs.append(ref)
-        if callsite_refs:
-            loop["callsite_refs"] = callsite_refs
-        rep_callsite = loop.get("representative_callsite_id")
-        if rep_callsite:
-            loop["representative_callsite_ref"] = callsite_paths.get(rep_callsite)

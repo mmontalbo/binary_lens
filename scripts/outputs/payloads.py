@@ -214,12 +214,14 @@ def build_pack_index_payload(format_version: str) -> dict[str, object]:
             "imports_ref": "imports.json",
             "callgraph_ref": "callgraph.json",
             "callgraph_nodes_ref": "callgraph/nodes.json",
+            "callsites_ref": "evidence/callsites.json",
         },
         "conventions": {
             "refs": "Paths in *_ref / *_refs are relative to the pack root.",
             "sharding": (
                 "Large inventories use format=sharded_list/v1; follow shards[*].path to enumerate the full list."
             ),
+            "callsites": "callsite_id values resolve via callsites_ref (sharded list).",
             "truncation": "truncated=true means that record/list was bounded; missing entries may exist.",
         },
     }

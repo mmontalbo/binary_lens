@@ -17,7 +17,7 @@ from typing import Any, Iterable
 MARKDOWN_REF_PATTERNS = (
     re.compile(r"functions/f_[A-Za-z0-9_]+\.json"),
     re.compile(r"evidence/decomp/f_[A-Za-z0-9_]+\.json"),
-    re.compile(r"evidence/callsites/cs_[A-Za-z0-9_]+\.json"),
+    re.compile(r"evidence/callsites\.json"),
 )
 
 

@@ -525,6 +525,7 @@ def build_pack_markdown_docs(
         "- Coverage `Candidates`/`Excluded` are pre-classification counts when available; `Total` "
         "is the exportable/discovered count.\n"
         "- `manifest.json` is the canonical metadata source; `binary.json` is a supplemental detail view.\n"
+        "- Callsite evidence lives in `evidence/callsites.json` (sharded list); resolve by `callsite_id`.\n"
         "- Callsite evidence is emitted on-demand for referenced callsites; re-export with "
         "`callsite_evidence=all` to include every callgraph callsite.\n",
     ]
@@ -544,21 +545,22 @@ def build_pack_markdown_docs(
         "Some large lists are sharded into multiple files. The index file includes\n"
         "`format: sharded_list/v1` and a `shards` list with relative paths to follow.\n\n"
         "## Evidence files\n\n"
-        "- `evidence/callsites/cs_<addr>.json`: callsite context (caller, instruction, candidate targets) and recovered arguments when available.\n"
+        "- `evidence/callsites.json`: sharded callsite evidence index (follow `shards[*].path`).\n"
         "- `evidence/decomp/f_<addr>.json`: bounded decompiler excerpt for a function (may include `error: decompile_failed`).\n\n"
         "Callsite evidence is emitted only for referenced callsites. Re-export with "
         "`callsite_evidence=all` to include evidence for every callgraph callsite.\n\n"
         "## IDs and lookups\n\n"
         "- `function_id` values are addresses as hex strings (e.g., `00118020`). Resolve via `functions/index.json` (sharded index).\n"
         "- `string_id` values (e.g., `s_0020733a`) resolve via `strings.json` (sharded index).\n"
-        "- `callgraph.json` edges use `from`/`to` addresses; resolve names/signatures via `callgraph/nodes.json` (sharded index).\n\n"
+        "- `callgraph.json` edges use `from`/`to` addresses; resolve names/signatures via `callgraph/nodes.json` (sharded index).\n"
+        "- `callsite_id` values resolve via `evidence/callsites.json` (sharded index).\n\n"
         "## Truncation and unknowns\n\n"
         "- `truncated: true` means the exporter bounded that record/list; treat as partial coverage.\n"
         "- `status: unknown` means argument recovery did not resolve a constant value at that site.\n"
         "\n"
         "## Two-minute walkthrough\n\n"
         "1. Pick a mode from `modes/index.json` \u2192 `modes[*]`.\n"
-        "2. Follow a `dispatch_sites[*].callsite_ref` into `evidence/callsites/`.\n"
+        "2. Use `dispatch_sites[*].callsite_id` with `evidence/callsites.json` to locate the callsite record.\n"
         "3. From the callsite record, note the `from` function address and open `functions/f_<addr>.json`.\n"
         "4. Use that function record to pivot to `strings.json`, `errors/`, `cli/`, and (if present) `evidence/decomp/`.\n"
     )
@@ -585,7 +587,7 @@ def build_pack_markdown_docs(
         "- `callgraph.json`: call edges (sharded index)\n"
         "- `callgraph/nodes.json`: callgraph node metadata (sharded index)\n\n"
         "## Raw evidence\n\n"
-        "- `evidence/callsites/`: bounded callsite context + best-effort recovered args\n"
+        "- `evidence/callsites.json`: sharded callsite context + best-effort recovered args\n"
         "- `evidence/decomp/`: bounded decompiler excerpts\n\n"
         "## Schemas\n\n"
         "- `schema/README.md`: format notes for this pack version\n"
@@ -596,11 +598,12 @@ def build_pack_markdown_docs(
         "This is a reference for what the major files and common fields mean.\n\n"
         "## Common patterns\n\n"
         "- `*_ref` / `*_refs`: file paths relative to the pack root.\n"
+        "- `callsites_ref`: shared callsite evidence index (sharded list).\n"
         "- `truncated`: exporter bounded that record/list; missing entries may exist.\n"
         "- `status: known|unknown`: argument/value recovery result for a specific field.\n"
         "- `format: sharded_list/v1`: index into shard files; follow `shards[*].path` to enumerate.\n\n"
         "## Evidence\n\n"
-        "- `evidence/callsites/cs_<addr>.json`: callsite context, candidate targets, recovered args.\n"
+        "- `evidence/callsites.json`: sharded callsite context, candidate targets, recovered args.\n"
         "- `evidence/decomp/f_<addr>.json`: bounded decompiler excerpt for a function.\n\n"
         "## Modes (`modes/`)\n\n"
         "- `modes/index.json`: mode inventory; each mode includes `mode_id`, `name`, `kind`, and dispatch evidence.\n"
@@ -610,7 +613,7 @@ def build_pack_markdown_docs(
         "- `contracts/index.json`: mode contract index (sharded list).\n"
         "- `contracts/modes/<mode_id>.md`: per-mode contract view (inputs/outputs/diagnostics with evidence refs).\n\n"
         "## Interfaces (`interfaces/`)\n\n"
-        "Each entry is anchored to a `callsite_ref` and represents a single observed API interaction.\n\n"
+        "Each entry is anchored to a `callsite_id` and resolved via `callsites_ref`.\n\n"
         "- `env.json`: getenv/setenv/etc; `var` may be `known` (constant string) or `unknown`.\n"
         "- `fs.json`: open/chdir/stat/etc; `paths[*]` may be `known` (constant) or `unknown`.\n"
         "- `process.json`: exec*/spawn/system; `commands[*]` may be constant or unknown.\n"
@@ -638,7 +641,7 @@ def build_pack_markdown_docs(
     if isinstance(top_mode, Mapping):
         mode_id = _as_str(top_mode.get("mode_id"))
         dispatch_site = _first_dict_entry(top_mode.get("dispatch_sites"))
-        rep_ref = _as_str(dispatch_site.get("callsite_ref")) if isinstance(dispatch_site, Mapping) else None
+        rep_callsite = _as_str(dispatch_site.get("callsite_id")) if isinstance(dispatch_site, Mapping) else None
         rendered = {
             "mode_id": mode_id,
             "name": _as_str(top_mode.get("name")),
@@ -646,15 +649,17 @@ def build_pack_markdown_docs(
             "dispatch_sites": (top_mode.get("dispatch_sites") or [])[:1],
             "dispatch_roots": (top_mode.get("dispatch_roots") or [])[:1],
         }
-        if rep_ref:
-            rendered["representative_callsite_ref"] = rep_ref
+        if rep_callsite:
+            rendered["representative_callsite_id"] = rep_callsite
+        if isinstance(modes, Mapping) and modes.get("callsites_ref"):
+            rendered["callsites_ref"] = modes.get("callsites_ref")
         examples_sections.extend(
             [
                 "## Example: a mode dispatch trail\n",
                 "Start from a mode and pivot into evidence and owning functions.\n\n"
                 "Steps:\n\n"
                 "1. Open `modes/index.json` and locate the mode by `mode_id`.\n"
-                "2. Follow a `dispatch_sites[*].callsite_ref` into `evidence/callsites/`.\n"
+                "2. Use `dispatch_sites[*].callsite_id` with `callsites_ref` to locate the callsite record.\n"
                 "3. From the callsite record, open the owning function (`functions/f_<addr>.json`) and its decompiler excerpt (`evidence/decomp/`).\n",
                 _json_code_block(rendered),
             ]
@@ -688,7 +693,8 @@ def build_pack_markdown_docs(
                             "operation": output_example.get("operation"),
                             "channel": channel,
                             "template_preview": template_value,
-                            "callsite_ref": output_example.get("callsite_ref"),
+                            "callsite_id": output_example.get("callsite_id"),
+                            "callsites_ref": output_payload.get("callsites_ref"),
                             "function_id": output_example.get("function_id"),
                         }
                     ),
@@ -709,7 +715,8 @@ def build_pack_markdown_docs(
                         {
                             "operation": env_example.get("operation"),
                             "var": env_example.get("var"),
-                            "callsite_ref": env_example.get("callsite_ref"),
+                            "callsite_id": env_example.get("callsite_id"),
+                            "callsites_ref": env_payload.get("callsites_ref"),
                             "function_id": env_example.get("function_id"),
                         }
                     ),
@@ -738,7 +745,8 @@ def build_pack_markdown_docs(
                         {
                             "operation": fs_example.get("operation"),
                             "path_preview": path_preview,
-                            "callsite_ref": fs_example.get("callsite_ref"),
+                            "callsite_id": fs_example.get("callsite_id"),
+                            "callsites_ref": fs_payload.get("callsites_ref"),
                             "function_id": fs_example.get("function_id"),
                         }
                     ),
@@ -794,6 +802,7 @@ def build_pack_markdown_docs(
         "This directory documents the on-disk layout and conventions for this pack.\n\n"
         "## Conventions\n\n"
         "- `*_ref` / `*_refs` paths are relative to the pack root.\n"
+        "- `callsites_ref` points at the shared callsite evidence index (sharded list).\n"
         "- Large inventories are sharded (`format: sharded_list/v1`); evidence excerpts may be bounded.\n"
         "- Consult `manifest.json` for coverage and known omissions.\n"
         "- `unknown` indicates the exporter could not establish a value.\n"
@@ -807,6 +816,9 @@ def build_pack_markdown_docs(
         "## Callgraph\n\n"
         "- `callgraph.json` is a sharded list of call edges; edges include `callsite`, `from`, and `to` addresses.\n"
         "- `callgraph/nodes.json` is a sharded list of node metadata keyed by address (names/libraries/signatures).\n"
+        "\n"
+        "## Callsites\n\n"
+        "- `evidence/callsites.json` is a sharded list of callsite evidence keyed by `callsite`.\n"
     )
 
     return docs

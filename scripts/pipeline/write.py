@@ -5,8 +5,7 @@ from __future__ import annotations
 from typing import Any
 
 from export_bounds import Bounds
-from export_primitives import addr_filename
-from outputs.io import ensure_dir, pack_path, write_json, write_text
+from outputs.io import ensure_dir, write_json, write_text
 from outputs.writers import write_function_exports
 from pipeline.layout import PackLayout
 from pipeline.phases import phase
@@ -56,14 +55,11 @@ def write_outputs(
         ensure_dir(layout.contracts_dir / "modes")
         ensure_dir(layout.functions_dir / "index")
 
-        for callsite, record in derived.callsite_evidence.items():
-            rel_path = pack_path("evidence", "callsites", addr_filename("cs", callsite, "json"))
-            write_json(layout.root / rel_path, record)
-
         write_json(layout.root / "index.json", derived.pack_index_payload)
         write_json(layout.root / "manifest.json", derived.manifest)
         write_json(layout.root / "binary.json", collected.binary_info)
         write_json(layout.root / "imports.json", collected.imports)
+        write_json(layout.root / "evidence" / "callsites.json", derived.callsites_index)
         write_json(layout.root / "strings.json", derived.strings_index)
         write_json(layout.root / "callgraph.json", derived.callgraph_index)
         write_json(layout.root / "callgraph" / "nodes.json", derived.callgraph_nodes_index)
@@ -82,6 +78,8 @@ def write_outputs(
         write_json(layout.cli_dir / "options.json", derived.cli_options_index)
         write_json(layout.cli_dir / "parse_loops.json", derived.cli_parse_loops_index)
         write_json(layout.contracts_dir / "index.json", derived.contracts_index)
+        for rel_path, content in derived.callsites_shards.items():
+            write_json(layout.root / rel_path, content)
         for rel_path, content in derived.modes_slices_shards.items():
             write_json(layout.root / rel_path, content)
         for rel_path, content in derived.cli_parse_loops_shards.items():
