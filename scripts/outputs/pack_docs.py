@@ -656,7 +656,7 @@ def build_pack_markdown_docs(
         "## Interfaces (`interfaces/`)\n\n"
         "Each entry is anchored to a `callsite_id` (resolve owning functions via `callsites_ref`); string-valued fields prefer `string_id` and omit value/address when resolved.\n\n"
         "- `env.json`: getenv/setenv/etc; `var` may be `resolved`, `unresolved`, or `unknown`.\n"
-        "- `fs.json`: open/chdir/stat/etc; `paths[*]` may be `resolved`, `unresolved`, or `unknown`.\n"
+        "- `fs.json`: open/chdir/stat/etc; `paths[*]` may be `resolved`, `unresolved`, or `unknown`; `flags`/`mode` omitted when unknown.\n"
         "- `process.json`: exec*/spawn/system; `commands[*]` may be `resolved`, `unresolved`, or `unknown`.\n"
         "- `net.json`: socket/connect/getaddrinfo/etc; `hosts[*]`/`ports` are best-effort.\n"
         "- `output.json`: printf/fprintf/write/etc; `templates[*]` and `channel` are best-effort.\n\n"

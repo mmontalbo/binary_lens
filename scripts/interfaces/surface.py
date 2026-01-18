@@ -264,8 +264,13 @@ def _build_entry(
         else:
             mode, used_mode = const_value_for_index(args, spec.mode_arg_index)
         entry["paths"] = paths
-        entry["flags"] = flags
-        entry["mode"] = mode
+        for path in entry["paths"]:
+            if isinstance(path, dict) and path.get("string_id"):
+                path.pop("address", None)
+        if flags != {"status": "unknown"}:
+            entry["flags"] = flags
+        if mode != {"status": "unknown"}:
+            entry["mode"] = mode
         has_known_arg = used_paths or used_flags or used_mode
     elif surface == "process":
         commands, used_commands = _build_string_list(
