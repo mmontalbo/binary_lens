@@ -376,8 +376,7 @@ def _scan_observed_callsites(
 ) -> dict[str, Any] | None:
     """Scan a subset of emitter callsites and attach observed callsite links.
 
-    `observed_scan` is only emitted when auto-limits are enabled or scanning is
-    truncated via explicit limits.
+    Returns scan stats when auto-limits are enabled or scanning is truncated.
     """
     apply_observed_limits = bool(max_observed_strings or max_observed_callsites or max_observed_functions)
     if not apply_observed_limits:
@@ -637,14 +636,13 @@ def derive_error_messages(
         function_meta_by_addr,
         ERROR_EMITTER_NAMES,
     )
-    emitter_callsites_total = len(emitter_callsites)
     candidate_ids = set(candidates.keys())
     candidate_func_ids = _collect_candidate_function_ids(string_refs_by_func, candidate_ids)
 
     max_emitters = bounds.max_error_emitter_callsites
-    considered_callsites, truncated_emitters = _prioritize_emitter_callsites(
+    considered_callsites = _prioritize_emitter_callsites(
         emitter_callsites, candidate_func_ids, max_emitters
-    )
+    )[0]
 
     links_by_string = {}
     observed_strings = set()
@@ -666,7 +664,7 @@ def derive_error_messages(
                 max_observed_callsites = 800
                 max_observed_functions = 250
 
-    observed_scan = _scan_observed_callsites(
+    _scan_observed_callsites(
         considered_callsites,
         program=program,
         monitor=monitor,
@@ -723,11 +721,6 @@ def derive_error_messages(
         "max_messages": max_messages,
         "max_callsites_per_message": max_callsites,
         "max_functions_per_message": max_funcs,
-        "emitter_callsites_total": emitter_callsites_total,
-        "emitter_callsites_considered": len(considered_callsites),
-        "emitter_callsites_truncated": truncated_emitters,
         "messages": messages,
     }
-    if observed_scan is not None:
-        payload["observed_scan"] = observed_scan
     return payload, emitter_callsites_by_func, call_args_cache

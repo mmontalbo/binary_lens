@@ -76,7 +76,6 @@ def build_callgraph_payload(
         "selected_edges": len(call_edges),
         "truncated": truncated_edges,
         "max_edges": bounds.optional("max_call_edges"),
-        "metrics": call_edge_stats,
         "edges": call_edges,
     }
     if nodes_ref:
@@ -310,24 +309,6 @@ def build_strings_payload(
         "total_strings": total_strings,
         "truncated": strings_truncated,
         "max_strings": bounds.optional("max_strings"),
-        "buckets": {
-            "env_vars": {
-                "limit": string_bucket_limits.get("env_vars"),
-                "selected": string_bucket_counts.get("env_vars", 0),
-            },
-            "usage": {
-                "limit": string_bucket_limits.get("usage"),
-                "selected": string_bucket_counts.get("usage", 0),
-            },
-            "format": {
-                "limit": string_bucket_limits.get("format"),
-                "selected": string_bucket_counts.get("format", 0),
-            },
-            "path": {
-                "limit": string_bucket_limits.get("path"),
-                "selected": string_bucket_counts.get("path", 0),
-            },
-        },
         "strings": slim_strings,
     }
 

@@ -25,7 +25,6 @@ def derive_exit_paths(
     )
     direct_calls = []
     max_exit_call_arg_function_size = DEFAULT_MAX_DECOMPILE_FUNCTION_SIZE
-    skipped_large_exit_call_args = 0
     missing_exit_callsites = []
     for callsite in exit_callsites:
         callsite_id = callsite.get("callsite_id")
@@ -41,7 +40,6 @@ def derive_exit_paths(
         except Exception:
             size = 0
         if size and size > max_exit_call_arg_function_size:
-            skipped_large_exit_call_args += 1
             continue
         missing_exit_callsites.append(callsite_id)
     if missing_exit_callsites:
@@ -79,6 +77,4 @@ def derive_exit_paths(
         "max_exit_calls": max_exit_paths,
         "direct_calls": direct_calls,
     }
-    if skipped_large_exit_call_args:
-        payload["exit_code_call_args_skipped_due_to_size"] = skipped_large_exit_call_args
     return payload, exit_callsites_by_func, call_args_cache
