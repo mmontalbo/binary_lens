@@ -613,7 +613,7 @@ def build_pack_markdown_docs(
         "- `contracts/`: mode-scoped contract views (joins over modes/cli/interfaces/errors)\n"
         "- `interfaces/`: callsite-anchored external interface inventory (env/fs/process/net/output)\n"
         "- `cli/`: CLI option inventory and parse loop localization\n"
-        "- `errors/`: error message catalog + emitting sites + exit paths\n\n"
+        "- `errors/`: error message catalog + emitting callsites + exit paths\n\n"
         "## Low-level inventories\n\n"
         "- `functions/`: selected full function exports\n"
         "- `strings.json`: string inventory (`id` + `value`, sharded index)\n"
@@ -656,9 +656,9 @@ def build_pack_markdown_docs(
         "- `cli/options.json`: option token inventory (ids + parse loop/callsite refs).\n"
         "- `cli/parse_loops.json`: localized parse loops (`function_id` + callsite refs; sharded index).\n\n"
         "## Errors (`errors/`)\n\n"
-        "- `errors/messages.json`: `string_id` + emitting callsite/function ids (preview via `strings.json`).\n"
+        "- `errors/messages.json`: `string_id`, `bucket`, and emitting callsite ids (resolve values via `strings.json`).\n"
         "- `errors/exit_paths.json`: exit/abort callsites with recovered exit codes when possible (sharded index).\n"
-        "- `errors/error_sites.json`: error-emitter callsites (sharded index).\n"
+        "- `errors/error_sites.json`: error emitter aggregates with `callsites[{callsite_id,status}]` (`status_arg_zero|status_arg_nonzero|unknown`), plus `imports` and `severity` (sharded index).\n"
         "\n"
         "## Callgraph (`callgraph/`)\n\n"
         "- `callgraph.json`: call edges; each edge includes `callsite`, `from`, and `to` addresses.\n"
@@ -815,7 +815,6 @@ def build_pack_markdown_docs(
         message = _first_dict_entry(messages)
         if isinstance(message, Mapping):
             string_id = _as_str(message.get("string_id"))
-            preview = _escape_preview(string_value_by_id.get(string_id)) if string_id else ""
             examples_sections.extend(
                 [
                     "## Example: an error/usage message\n",
@@ -823,9 +822,7 @@ def build_pack_markdown_docs(
                         {
                             "bucket": message.get("bucket"),
                             "string_id": string_id,
-                            "preview": preview or None,
                             "emitting_callsites": message.get("emitting_callsites"),
-                            "emitting_functions": message.get("emitting_functions"),
                             "callsites_ref": error_messages.get("callsites_ref"),
                             "strings_ref": "strings.json",
                         }
@@ -860,6 +857,11 @@ def build_pack_markdown_docs(
         "\n"
         "## Callsites\n\n"
         "- `evidence/callsites.json` is a sharded list of callsite ids with `from`/`targets` addresses.\n"
+        "\n"
+        "## Errors\n\n"
+        "- `errors/messages.json` is a sharded list of `{string_id, bucket, emitting_callsites}` records.\n"
+        "- `errors/error_sites.json` is a sharded list of `{callsites, imports, severity}` aggregates (each callsite includes `callsite_id` + `status` (`status_arg_zero|status_arg_nonzero|unknown`)).\n"
+        "- `errors/exit_paths.json` is a sharded list of `{callsite_id, exit_code}` records.\n"
     )
 
     return docs

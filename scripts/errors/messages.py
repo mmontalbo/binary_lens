@@ -575,13 +575,9 @@ def _build_messages(
             if not func_id:
                 continue
             function_counts[func_id] = function_counts.get(func_id, 0) + 1
-        functions = []
-        for func_id, count in function_counts.items():
-            functions.append((func_id, count))
-        functions.sort(key=lambda item: (-item[1], addr_to_int(item[0])))
+        function_count = len(function_counts)
         if max_funcs:
-            functions = functions[:max_funcs]
-        function_ids = [func_id for func_id, _ in functions if func_id]
+            function_count = min(function_count, max_funcs)
         links_sorted = sort_links(links, max_callsites)
         callsite_ids = []
         seen_callsites = set()
@@ -597,7 +593,7 @@ def _build_messages(
             BUCKET_PRIORITY.get(bucket, 99),
             0 if has_direct else 1,
             -len(callsite_ids),
-            -len(function_ids),
+            -function_count,
             addr_to_int(meta.get("address")),
         )
         messages.append(
@@ -606,7 +602,6 @@ def _build_messages(
                 {
                     "string_id": string_id,
                     "bucket": bucket,
-                    "emitting_functions": function_ids,
                     "emitting_callsites": callsite_ids,
                 },
             )
@@ -720,7 +715,6 @@ def derive_error_messages(
         "truncated": truncated,
         "max_messages": max_messages,
         "max_callsites_per_message": max_callsites,
-        "max_functions_per_message": max_funcs,
         "messages": messages,
     }
     return payload, emitter_callsites_by_func, call_args_cache

@@ -71,52 +71,41 @@ def derive_error_sites(
                 key=addr_to_int,
             )
 
-        status_arg_nonzero = []
-        status_arg_zero = []
-        status_arg_unknown = []
+        status_by_callsite = {}
+        has_status_nonzero = False
+        has_status_zero = False
         for callsite_id in all_callsite_ids:
             emitter = callsite_imports.get(callsite_id)
-            if emitter not in STATUS_EMITTERS:
-                status_arg_unknown.append(callsite_id)
-                continue
-            args = call_args_cache.get(callsite_id) or {}
-            const_value = args.get("const_args_by_index", {}).get(0)
-            if isinstance(const_value, INT_TYPES):
-                if int(const_value) == 0:
-                    status_arg_zero.append(callsite_id)
-                else:
-                    status_arg_nonzero.append(callsite_id)
-            else:
-                status_arg_unknown.append(callsite_id)
+            status = "unknown"
+            if emitter in STATUS_EMITTERS:
+                args = call_args_cache.get(callsite_id) or {}
+                const_value = args.get("const_args_by_index", {}).get(0)
+                if isinstance(const_value, INT_TYPES):
+                    if int(const_value) == 0:
+                        status = "status_arg_zero"
+                        has_status_zero = True
+                    else:
+                        status = "status_arg_nonzero"
+                        has_status_nonzero = True
+            status_by_callsite[callsite_id] = status
 
         if direct_exit_callsites:
             severity = "fatal"
-        elif status_arg_nonzero:
+        elif has_status_nonzero:
             severity = "fatal"
-        elif status_arg_zero:
+        elif has_status_zero:
             severity = "non_fatal"
 
-        def cap_callsites(values):
-            if not max_callsites:
-                return values
-            return values[:max_callsites]
-
-        followed_by = {
-            "direct_exit_callsites": cap_callsites(direct_exit_callsites),
-            "status_arg_nonzero": cap_callsites(status_arg_nonzero),
-            "status_arg_zero": cap_callsites(status_arg_zero),
-            "unknown": cap_callsites(status_arg_unknown),
-        }
+        callsites = []
+        for callsite_id in callsite_ids:
+            callsites.append({
+                "callsite_id": callsite_id,
+                "status": status_by_callsite.get(callsite_id) or "unknown",
+            })
         results.append({
-            "function_id": site["function_id"],
-            "callsite_ids": callsite_ids,
+            "callsites": callsites,
             "imports": imports,
             "severity": severity,
-            "followed_by": followed_by,
-            "evidence": {
-                "callsites": callsite_ids,
-                "functions": [site["function_id"]],
-            },
         })
 
     results.sort(key=lambda item: addr_to_int(item.get("function_id")))

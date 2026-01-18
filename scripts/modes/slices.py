@@ -54,21 +54,34 @@ def build_mode_slices(
     string_refs_by_func = string_refs_by_func or {}
     selected_string_ids = selected_string_ids or set()
 
+    callsite_to_function = callsite_to_function or {}
     messages_by_func = {}
     if error_messages_payload:
         for message in error_messages_payload.get("messages", []):
             string_id = message.get("string_id") or message.get("string_address")
             if not string_id:
                 continue
+            func_ids = []
             for func_entry in message.get("emitting_functions", []):
                 func_id = func_entry
                 if isinstance(func_entry, dict):
                     func_id = func_entry.get("function_id")
-                if not func_id:
-                    continue
+                if func_id:
+                    func_ids.append(func_id)
+            if not func_ids and callsite_to_function:
+                for entry in message.get("emitting_callsites", []) or []:
+                    callsite_id = None
+                    if isinstance(entry, str):
+                        callsite_id = entry
+                    elif isinstance(entry, dict):
+                        callsite_id = entry.get("callsite_id")
+                    if not callsite_id:
+                        continue
+                    func_id = callsite_to_function.get(callsite_id)
+                    if func_id:
+                        func_ids.append(func_id)
+            for func_id in set(func_ids):
                 messages_by_func.setdefault(func_id, []).append(string_id)
-
-    callsite_to_function = callsite_to_function or {}
     exit_calls_by_func = {}
     if exit_paths_payload:
         for entry in exit_paths_payload.get("direct_calls", []):

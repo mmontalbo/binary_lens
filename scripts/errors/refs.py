@@ -19,6 +19,16 @@ def collect_error_callsites(messages_payload, exit_paths_payload, error_sites_pa
         if callsite_id:
             callsite_ids.add(callsite_id)
     for site in error_sites_payload.get("sites", []):
+        if not isinstance(site, dict):
+            continue
+        for entry in site.get("callsites", []) or []:
+            callsite_id = None
+            if isinstance(entry, str):
+                callsite_id = entry
+            elif isinstance(entry, dict):
+                callsite_id = entry.get("callsite_id")
+            if callsite_id:
+                callsite_ids.add(callsite_id)
         for callsite_id in site.get("callsite_ids", []):
             if callsite_id:
                 callsite_ids.add(callsite_id)

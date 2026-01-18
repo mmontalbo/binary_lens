@@ -154,7 +154,27 @@ def _callsite_ids_for_message(message: Mapping[str, Any]) -> list[str]:
     return _unique(callsite_ids)
 
 
-def _function_ids_for_message(message: Mapping[str, Any]) -> list[str]:
+def _callsite_ids_for_error_site(site: Mapping[str, Any]) -> list[str]:
+    callsite_ids: list[str] = []
+    for entry in site.get("callsites") or []:
+        callsite_id = None
+        if isinstance(entry, str):
+            callsite_id = _as_str(entry)
+        elif isinstance(entry, Mapping):
+            callsite_id = _as_str(entry.get("callsite_id"))
+        if callsite_id:
+            callsite_ids.append(callsite_id)
+    for entry in site.get("callsite_ids") or []:
+        callsite_id = _as_str(entry)
+        if callsite_id:
+            callsite_ids.append(callsite_id)
+    return _unique(callsite_ids)
+
+
+def _function_ids_for_message(
+    message: Mapping[str, Any],
+    callsite_to_function: Mapping[str, str] | None = None,
+) -> list[str]:
     func_ids: list[str] = []
     for entry in message.get("emitting_functions") or []:
         func_id = None
@@ -164,11 +184,34 @@ def _function_ids_for_message(message: Mapping[str, Any]) -> list[str]:
             func_id = _as_str(entry.get("function_id"))
         if func_id:
             func_ids.append(func_id)
+    if callsite_to_function:
+        for callsite_id in _callsite_ids_for_message(message):
+            func_id = _as_str(callsite_to_function.get(callsite_id))
+            if func_id:
+                func_ids.append(func_id)
     return _unique(func_ids)
 
 
+def _primary_callsite_id(entry: Mapping[str, Any]) -> str | None:
+    callsite_id = _as_str(entry.get("callsite_id"))
+    if callsite_id:
+        return callsite_id
+    for field in ("callsites", "callsite_ids"):
+        raw = entry.get(field)
+        if not isinstance(raw, list):
+            continue
+        for item in raw:
+            if isinstance(item, Mapping):
+                callsite_id = _as_str(item.get("callsite_id"))
+            else:
+                callsite_id = _as_str(item)
+            if callsite_id:
+                return callsite_id
+    return None
+
+
 def _sort_entries_by_callsite(entries: list[Mapping[str, Any]]) -> list[Mapping[str, Any]]:
-    return sorted(entries, key=lambda item: addr_to_int(_as_str(item.get("callsite_id"))))
+    return sorted(entries, key=lambda item: addr_to_int(_primary_callsite_id(item)))
 
 
 def _format_table(headers: list[str], rows: list[list[str]]) -> str:
@@ -417,7 +460,7 @@ def build_contract_views(
         msg_id = _as_str(message.get("string_id")) or _as_str(message.get("string_address"))
         if msg_id and msg_id not in message_by_id:
             message_by_id[msg_id] = message
-        for func_id in _function_ids_for_message(message):
+        for func_id in _function_ids_for_message(message, callsite_to_function):
             messages_by_function.setdefault(func_id, []).append(message)
             if bucket == "usage":
                 usage_message_function_ids.add(func_id)
@@ -427,10 +470,16 @@ def build_contract_views(
     for site in error_sites:
         if not isinstance(site, Mapping):
             continue
+        func_ids = []
         func_id = _as_str(site.get("function_id"))
-        if not func_id:
-            continue
-        error_sites_by_function.setdefault(func_id, []).append(site)
+        if func_id:
+            func_ids.append(func_id)
+        for callsite_id in _callsite_ids_for_error_site(site):
+            mapped = _as_str(callsite_to_function.get(callsite_id))
+            if mapped:
+                func_ids.append(mapped)
+        for func_id in _unique(func_ids):
+            error_sites_by_function.setdefault(func_id, []).append(site)
 
     exit_calls = exit_paths_payload.get("direct_calls", []) if isinstance(exit_paths_payload, Mapping) else []
     exit_by_callsite: dict[str, Mapping[str, Any]] = {}
@@ -986,8 +1035,7 @@ def build_contract_views(
         if error_site_candidates:
             for site in error_site_candidates:
                 severity = _as_str(site.get("severity")) or "unknown"
-                refs = site.get("callsite_ids") if isinstance(site.get("callsite_ids"), list) else []
-                refs = [ref for ref in refs if _as_str(ref)][:MAX_CALLSITE_REFS]
+                refs = _callsite_ids_for_error_site(site)[:MAX_CALLSITE_REFS]
                 lines.append(
                     f"- severity: `{severity}`, callsites: {_format_list([f'`{ref}`' for ref in refs])}"
                 )
