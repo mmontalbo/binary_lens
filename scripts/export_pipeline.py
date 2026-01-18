@@ -7,6 +7,8 @@ area small and reduce cognitive overhead.
 
 from __future__ import annotations
 
+import shutil
+from pathlib import Path
 from typing import Any, Callable
 
 from export_bounds import Bounds
@@ -37,6 +39,14 @@ def ensure_profiler_enabled(pack_root: str, options: dict[str, Any]):
     return ensure_profiler(pack_root, enabled=True)
 
 
+def _clear_pack_root(pack_root: str) -> None:
+    root = Path(pack_root)
+    if root.is_dir():
+        shutil.rmtree(root)
+    elif root.exists():
+        root.unlink()
+
+
 def write_context_pack(
     pack_root: str,
     program: Any,
@@ -52,6 +62,7 @@ def write_context_pack(
         profiler = ensure_profiler_enabled(pack_root, options)
     profile_enabled = is_profiling_enabled(options)
 
+    _clear_pack_root(pack_root)
     layout = PackLayout.from_root(pack_root)
     for dir_path in layout.iter_dirs():
         ensure_dir(dir_path)
