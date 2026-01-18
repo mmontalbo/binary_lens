@@ -13,33 +13,25 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         },
         {
           "callsite_count": 1,
           "compare_callsite_count": 2,
-          "function_id": "0011a5d0",
-          "function_name": "usage"
+          "function_id": "0011a5d0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 2,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "001196f8"
         },
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "0011a5d0",
-            "name": "usage"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "0011a5d0",
           "callsite_id": "0011a7bc"
         }
       ],
@@ -67,7 +59,6 @@
             ]
           },
           "function_id": "00129ac0",
-          "function_name": "single_binary_main__",
           "sources": [
             "compare_chain_handler"
           ]
@@ -82,7 +73,6 @@
             ]
           },
           "function_id": "001fd910",
-          "function_name": "emit_bug_reporting_address",
           "sources": [
             "compare_chain"
           ]
@@ -106,19 +96,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "0011970f"
         }
       ],
@@ -146,7 +132,6 @@
             ]
           },
           "function_id": "0012a4d0",
-          "function_name": "single_binary_main_b2sum",
           "sources": [
             "compare_chain_handler"
           ]
@@ -156,11 +141,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_00207038",
-      "name": "b2sum",
+      "name": null,
       "token": {
         "address": "00207038",
-        "string_id": "s_00207038",
-        "value": "b2sum"
+        "string_id": "s_00207038"
       },
       "unknown_name": false
     },
@@ -170,19 +154,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119726"
         }
       ],
@@ -210,7 +190,6 @@
             ]
           },
           "function_id": "0012eed0",
-          "function_name": "single_binary_main_base32",
           "sources": [
             "compare_chain_handler"
           ]
@@ -220,11 +199,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_0020703e",
-      "name": "base32",
+      "name": null,
       "token": {
         "address": "0020703e",
-        "string_id": "s_0020703e",
-        "value": "base32"
+        "string_id": "s_0020703e"
       },
       "unknown_name": false
     },
@@ -234,19 +212,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "0011973d"
         }
       ],
@@ -274,7 +248,6 @@
             ]
           },
           "function_id": "0012e250",
-          "function_name": "single_binary_main_base64",
           "sources": [
             "compare_chain_handler"
           ]
@@ -284,11 +257,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_00207045",
-      "name": "base64",
+      "name": null,
       "token": {
         "address": "00207045",
-        "string_id": "s_00207045",
-        "value": "base64"
+        "string_id": "s_00207045"
       },
       "unknown_name": false
     },
@@ -298,19 +270,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119754"
         }
       ],
@@ -338,7 +306,6 @@
             ]
           },
           "function_id": "00132470",
-          "function_name": "single_binary_main_basename",
           "sources": [
             "compare_chain_handler"
           ]
@@ -348,11 +315,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_0020704c",
-      "name": "basename",
+      "name": null,
       "token": {
         "address": "0020704c",
-        "string_id": "s_0020704c",
-        "value": "basename"
+        "string_id": "s_0020704c"
       },
       "unknown_name": false
     },
@@ -362,19 +328,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "0011976b"
         }
       ],
@@ -402,7 +364,6 @@
             ]
           },
           "function_id": "00131370",
-          "function_name": "single_binary_main_basenc",
           "sources": [
             "compare_chain_handler"
           ]
@@ -412,11 +373,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_00207055",
-      "name": "basenc",
+      "name": null,
       "token": {
         "address": "00207055",
-        "string_id": "s_00207055",
-        "value": "basenc"
+        "string_id": "s_00207055"
       },
       "unknown_name": false
     },
@@ -426,19 +386,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119782"
         }
       ],
@@ -464,7 +420,6 @@
             ]
           },
           "function_id": "00132b30",
-          "function_name": "single_binary_main_cat",
           "sources": [
             "compare_chain_handler"
           ]
@@ -488,19 +443,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119799"
         }
       ],
@@ -528,7 +479,6 @@
             ]
           },
           "function_id": "00133e20",
-          "function_name": "single_binary_main_chcon",
           "sources": [
             "compare_chain_handler"
           ]
@@ -538,11 +488,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_00207060",
-      "name": "chcon",
+      "name": null,
       "token": {
         "address": "00207060",
-        "string_id": "s_00207060",
-        "value": "chcon"
+        "string_id": "s_00207060"
       },
       "unknown_name": false
     },
@@ -552,19 +501,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "001197b0"
         }
       ],
@@ -592,7 +537,6 @@
             ]
           },
           "function_id": "00134910",
-          "function_name": "single_binary_main_chgrp",
           "sources": [
             "compare_chain_handler"
           ]
@@ -602,11 +546,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_00207066",
-      "name": "chgrp",
+      "name": null,
       "token": {
         "address": "00207066",
-        "string_id": "s_00207066",
-        "value": "chgrp"
+        "string_id": "s_00207066"
       },
       "unknown_name": false
     },
@@ -616,19 +559,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "001197c7"
         }
       ],
@@ -656,7 +595,6 @@
             ]
           },
           "function_id": "00135610",
-          "function_name": "single_binary_main_chmod",
           "sources": [
             "compare_chain_handler"
           ]
@@ -666,11 +604,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_0020706c",
-      "name": "chmod",
+      "name": null,
       "token": {
         "address": "0020706c",
-        "string_id": "s_0020706c",
-        "value": "chmod"
+        "string_id": "s_0020706c"
       },
       "unknown_name": false
     },
@@ -680,19 +617,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "001197de"
         }
       ],
@@ -720,7 +653,6 @@
             ]
           },
           "function_id": "00136190",
-          "function_name": "single_binary_main_chown",
           "sources": [
             "compare_chain_handler"
           ]
@@ -730,11 +662,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_00207072",
-      "name": "chown",
+      "name": null,
       "token": {
         "address": "00207072",
-        "string_id": "s_00207072",
-        "value": "chown"
+        "string_id": "s_00207072"
       },
       "unknown_name": false
     },
@@ -744,19 +675,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "001197f5"
         }
       ],
@@ -784,7 +711,6 @@
             ]
           },
           "function_id": "0011afd0",
-          "function_name": "single_binary_main_chroot",
           "sources": [
             "compare_chain_handler"
           ]
@@ -794,11 +720,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_00207078",
-      "name": "chroot",
+      "name": null,
       "token": {
         "address": "00207078",
-        "string_id": "s_00207078",
-        "value": "chroot"
+        "string_id": "s_00207078"
       },
       "unknown_name": false
     },
@@ -808,19 +733,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "0011980c"
         }
       ],
@@ -848,7 +769,6 @@
             ]
           },
           "function_id": "00138990",
-          "function_name": "single_binary_main_cksum",
           "sources": [
             "compare_chain_handler"
           ]
@@ -858,11 +778,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_0020707f",
-      "name": "cksum",
+      "name": null,
       "token": {
         "address": "0020707f",
-        "string_id": "s_0020707f",
-        "value": "cksum"
+        "string_id": "s_0020707f"
       },
       "unknown_name": false
     },
@@ -872,19 +791,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119823"
         }
       ],
@@ -910,7 +825,6 @@
             ]
           },
           "function_id": "0013bea0",
-          "function_name": "single_binary_main_comm",
           "sources": [
             "compare_chain_handler"
           ]
@@ -934,19 +848,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "0011983a"
         }
       ],
@@ -972,7 +882,6 @@
             ]
           },
           "function_id": "0013daf0",
-          "function_name": "single_binary_main_cp",
           "sources": [
             "compare_chain_handler"
           ]
@@ -996,19 +905,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119851"
         }
       ],
@@ -1036,7 +941,6 @@
             ]
           },
           "function_id": "00146780",
-          "function_name": "single_binary_main_csplit",
           "sources": [
             "compare_chain_handler"
           ]
@@ -1046,11 +950,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_0020708a",
-      "name": "csplit",
+      "name": null,
       "token": {
         "address": "0020708a",
-        "string_id": "s_0020708a",
-        "value": "csplit"
+        "string_id": "s_0020708a"
       },
       "unknown_name": false
     },
@@ -1060,19 +963,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119868"
         }
       ],
@@ -1098,7 +997,6 @@
             ]
           },
           "function_id": "00148520",
-          "function_name": "single_binary_main_cut",
           "sources": [
             "compare_chain_handler"
           ]
@@ -1122,19 +1020,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "0011987f"
         }
       ],
@@ -1160,7 +1054,6 @@
             ]
           },
           "function_id": "001499b0",
-          "function_name": "single_binary_main_date",
           "sources": [
             "compare_chain_handler"
           ]
@@ -1184,19 +1077,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119896"
         }
       ],
@@ -1222,7 +1111,6 @@
             ]
           },
           "function_id": "0014c7d0",
-          "function_name": "single_binary_main_dd",
           "sources": [
             "compare_chain_handler"
           ]
@@ -1246,19 +1134,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "001198ad"
         }
       ],
@@ -1284,7 +1168,6 @@
             ]
           },
           "function_id": "001258d0",
-          "function_name": "single_binary_main_df",
           "sources": [
             "compare_chain_handler"
           ]
@@ -1308,19 +1191,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "001198c4"
         }
       ],
@@ -1346,7 +1225,6 @@
             ]
           },
           "function_id": "0014e9c0",
-          "function_name": "single_binary_main_dir",
           "sources": [
             "compare_chain_handler"
           ]
@@ -1370,19 +1248,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "001198db"
         }
       ],
@@ -1410,7 +1284,6 @@
             ]
           },
           "function_id": "0014f5e0",
-          "function_name": "single_binary_main_dircolors",
           "sources": [
             "compare_chain_handler"
           ]
@@ -1420,11 +1293,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_00207095",
-      "name": "dircolors",
+      "name": null,
       "token": {
         "address": "00207095",
-        "string_id": "s_00207095",
-        "value": "dircolors"
+        "string_id": "s_00207095"
       },
       "unknown_name": false
     },
@@ -1434,19 +1306,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "001198f2"
         }
       ],
@@ -1474,7 +1342,6 @@
             ]
           },
           "function_id": "0014fe30",
-          "function_name": "single_binary_main_dirname",
           "sources": [
             "compare_chain_handler"
           ]
@@ -1484,11 +1351,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_0020709f",
-      "name": "dirname",
+      "name": null,
       "token": {
         "address": "0020709f",
-        "string_id": "s_0020709f",
-        "value": "dirname"
+        "string_id": "s_0020709f"
       },
       "unknown_name": false
     },
@@ -1498,19 +1364,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119909"
         }
       ],
@@ -1536,7 +1398,6 @@
             ]
           },
           "function_id": "00150650",
-          "function_name": "single_binary_main_du",
           "sources": [
             "compare_chain_handler"
           ]
@@ -1560,19 +1421,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119920"
         }
       ],
@@ -1598,7 +1455,6 @@
             ]
           },
           "function_id": "001523a0",
-          "function_name": "single_binary_main_echo",
           "sources": [
             "compare_chain_handler"
           ]
@@ -1622,19 +1478,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119937"
         }
       ],
@@ -1660,7 +1512,6 @@
             ]
           },
           "function_id": "00153500",
-          "function_name": "single_binary_main_env",
           "sources": [
             "compare_chain_handler"
           ]
@@ -1684,19 +1535,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "0011994e"
         }
       ],
@@ -1722,7 +1569,6 @@
             ]
           },
           "function_id": "001552d0",
-          "function_name": "single_binary_main_expand",
           "sources": [
             "compare_chain_handler"
           ]
@@ -1746,19 +1592,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119965"
         }
       ],
@@ -1784,7 +1626,6 @@
             ]
           },
           "function_id": "00158070",
-          "function_name": "single_binary_main_expr",
           "sources": [
             "compare_chain_handler"
           ]
@@ -1808,19 +1649,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "0011997c"
         }
       ],
@@ -1848,7 +1685,6 @@
             ]
           },
           "function_id": "0015ba90",
-          "function_name": "single_binary_main_factor",
           "sources": [
             "compare_chain_handler"
           ]
@@ -1858,11 +1694,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_002070af",
-      "name": "factor",
+      "name": null,
       "token": {
         "address": "002070af",
-        "string_id": "s_002070af",
-        "value": "factor"
+        "string_id": "s_002070af"
       },
       "unknown_name": false
     },
@@ -1872,19 +1707,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119993"
         }
       ],
@@ -1912,7 +1743,6 @@
             ]
           },
           "function_id": "0015bff0",
-          "function_name": "single_binary_main_false",
           "sources": [
             "compare_chain_handler"
           ]
@@ -1922,11 +1752,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_002070b6",
-      "name": "false",
+      "name": null,
       "token": {
         "address": "002070b6",
-        "string_id": "s_002070b6",
-        "value": "false"
+        "string_id": "s_002070b6"
       },
       "unknown_name": false
     },
@@ -1936,19 +1765,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "001199aa"
         }
       ],
@@ -1974,7 +1799,6 @@
             ]
           },
           "function_id": "0015d6f0",
-          "function_name": "single_binary_main_fmt",
           "sources": [
             "compare_chain_handler"
           ]
@@ -1998,19 +1822,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "001199c1"
         }
       ],
@@ -2036,7 +1856,6 @@
             ]
           },
           "function_id": "0015e7e0",
-          "function_name": "single_binary_main_fold",
           "sources": [
             "compare_chain_handler"
           ]
@@ -2060,19 +1879,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "001199d8"
         }
       ],
@@ -2100,7 +1915,6 @@
             ]
           },
           "function_id": "0015f990",
-          "function_name": "single_binary_main_ginstall",
           "sources": [
             "compare_chain_handler"
           ]
@@ -2110,11 +1924,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_002070bc",
-      "name": "ginstall",
+      "name": null,
       "token": {
         "address": "002070bc",
-        "string_id": "s_002070bc",
-        "value": "ginstall"
+        "string_id": "s_002070bc"
       },
       "unknown_name": false
     },
@@ -2124,19 +1937,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "001199ef"
         }
       ],
@@ -2164,7 +1973,6 @@
             ]
           },
           "function_id": "00160a90",
-          "function_name": "single_binary_main_groups",
           "sources": [
             "compare_chain_handler"
           ]
@@ -2174,11 +1982,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_002070c5",
-      "name": "groups",
+      "name": null,
       "token": {
         "address": "002070c5",
-        "string_id": "s_002070c5",
-        "value": "groups"
+        "string_id": "s_002070c5"
       },
       "unknown_name": false
     },
@@ -2188,19 +1995,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119a06"
         }
       ],
@@ -2226,7 +2029,6 @@
             ]
           },
           "function_id": "00161c80",
-          "function_name": "single_binary_main_head",
           "sources": [
             "compare_chain_handler"
           ]
@@ -2250,19 +2052,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119a1d"
         }
       ],
@@ -2290,7 +2088,6 @@
             ]
           },
           "function_id": "0011b9d0",
-          "function_name": "single_binary_main_hostid",
           "sources": [
             "compare_chain_handler"
           ]
@@ -2300,11 +2097,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_002070d1",
-      "name": "hostid",
+      "name": null,
       "token": {
         "address": "002070d1",
-        "string_id": "s_002070d1",
-        "value": "hostid"
+        "string_id": "s_002070d1"
       },
       "unknown_name": false
     },
@@ -2314,19 +2110,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119a34"
         }
       ],
@@ -2352,7 +2144,6 @@
             ]
           },
           "function_id": "001639d0",
-          "function_name": "single_binary_main_id",
           "sources": [
             "compare_chain_handler"
           ]
@@ -2376,19 +2167,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119a4b"
         }
       ],
@@ -2414,7 +2201,6 @@
             ]
           },
           "function_id": "00165510",
-          "function_name": "single_binary_main_join",
           "sources": [
             "compare_chain_handler"
           ]
@@ -2438,19 +2224,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119a62"
         }
       ],
@@ -2476,7 +2258,6 @@
             ]
           },
           "function_id": "001669b0",
-          "function_name": "single_binary_main_kill",
           "sources": [
             "compare_chain_handler"
           ]
@@ -2500,19 +2281,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119a79"
         }
       ],
@@ -2538,7 +2315,6 @@
             ]
           },
           "function_id": "00167370",
-          "function_name": "single_binary_main_link",
           "sources": [
             "compare_chain_handler"
           ]
@@ -2562,19 +2338,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119a90"
         }
       ],
@@ -2600,7 +2372,6 @@
             ]
           },
           "function_id": "001684b0",
-          "function_name": "single_binary_main_ln",
           "sources": [
             "compare_chain_handler"
           ]
@@ -2624,19 +2395,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119aa7"
         }
       ],
@@ -2664,7 +2431,6 @@
             ]
           },
           "function_id": "001692b0",
-          "function_name": "single_binary_main_logname",
           "sources": [
             "compare_chain_handler"
           ]
@@ -2674,11 +2440,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_002070e0",
-      "name": "logname",
+      "name": null,
       "token": {
         "address": "002070e0",
-        "string_id": "s_002070e0",
-        "value": "logname"
+        "string_id": "s_002070e0"
       },
       "unknown_name": false
     },
@@ -2688,19 +2453,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119abe"
         }
       ],
@@ -2726,7 +2487,6 @@
             ]
           },
           "function_id": "00171d70",
-          "function_name": "single_binary_main_ls",
           "sources": [
             "compare_chain_handler"
           ]
@@ -2750,19 +2510,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119ad5"
         }
       ],
@@ -2790,7 +2546,6 @@
             ]
           },
           "function_id": "001748d0",
-          "function_name": "single_binary_main_md5sum",
           "sources": [
             "compare_chain_handler"
           ]
@@ -2800,11 +2555,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_002070e8",
-      "name": "md5sum",
+      "name": null,
       "token": {
         "address": "002070e8",
-        "string_id": "s_002070e8",
-        "value": "md5sum"
+        "string_id": "s_002070e8"
       },
       "unknown_name": false
     },
@@ -2814,19 +2568,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119aec"
         }
       ],
@@ -2854,7 +2604,6 @@
             ]
           },
           "function_id": "00176120",
-          "function_name": "single_binary_main_mkdir",
           "sources": [
             "compare_chain_handler"
           ]
@@ -2864,11 +2613,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_002070ef",
-      "name": "mkdir",
+      "name": null,
       "token": {
         "address": "002070ef",
-        "string_id": "s_002070ef",
-        "value": "mkdir"
+        "string_id": "s_002070ef"
       },
       "unknown_name": false
     },
@@ -2878,19 +2626,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119b03"
         }
       ],
@@ -2916,7 +2660,6 @@
             ]
           },
           "function_id": "001767a0",
-          "function_name": "single_binary_main_mkfifo",
           "sources": [
             "compare_chain_handler"
           ]
@@ -2940,19 +2683,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119b1a"
         }
       ],
@@ -2980,7 +2719,6 @@
             ]
           },
           "function_id": "00176e90",
-          "function_name": "single_binary_main_mknod",
           "sources": [
             "compare_chain_handler"
           ]
@@ -2990,11 +2728,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_002070fc",
-      "name": "mknod",
+      "name": null,
       "token": {
         "address": "002070fc",
-        "string_id": "s_002070fc",
-        "value": "mknod"
+        "string_id": "s_002070fc"
       },
       "unknown_name": false
     },
@@ -3004,19 +2741,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119b31"
         }
       ],
@@ -3044,7 +2777,6 @@
             ]
           },
           "function_id": "00177940",
-          "function_name": "single_binary_main_mktemp",
           "sources": [
             "compare_chain_handler"
           ]
@@ -3054,11 +2786,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_00207102",
-      "name": "mktemp",
+      "name": null,
       "token": {
         "address": "00207102",
-        "string_id": "s_00207102",
-        "value": "mktemp"
+        "string_id": "s_00207102"
       },
       "unknown_name": false
     },
@@ -3068,19 +2799,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119b48"
         }
       ],
@@ -3106,7 +2833,6 @@
             ]
           },
           "function_id": "001785b0",
-          "function_name": "single_binary_main_mv",
           "sources": [
             "compare_chain_handler"
           ]
@@ -3130,19 +2856,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119b5f"
         }
       ],
@@ -3168,7 +2890,6 @@
             ]
           },
           "function_id": "0011d180",
-          "function_name": "single_binary_main_nice",
           "sources": [
             "compare_chain_handler"
           ]
@@ -3192,19 +2913,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119b76"
         }
       ],
@@ -3230,7 +2947,6 @@
             ]
           },
           "function_id": "0017abf0",
-          "function_name": "single_binary_main_nl",
           "sources": [
             "compare_chain_handler"
           ]
@@ -3254,19 +2970,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119b8d"
         }
       ],
@@ -3294,7 +3006,6 @@
             ]
           },
           "function_id": "0017bb60",
-          "function_name": "single_binary_main_nohup",
           "sources": [
             "compare_chain_handler"
           ]
@@ -3304,11 +3015,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_00207111",
-      "name": "nohup",
+      "name": null,
       "token": {
         "address": "00207111",
-        "string_id": "s_00207111",
-        "value": "nohup"
+        "string_id": "s_00207111"
       },
       "unknown_name": false
     },
@@ -3318,19 +3028,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119ba4"
         }
       ],
@@ -3356,7 +3062,6 @@
             ]
           },
           "function_id": "0017b5f0",
-          "function_name": "single_binary_main_nproc",
           "sources": [
             "compare_chain_handler"
           ]
@@ -3380,19 +3085,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119bbb"
         }
       ],
@@ -3418,7 +3119,6 @@
             ]
           },
           "function_id": "0017eb80",
-          "function_name": "single_binary_main_numfmt",
           "sources": [
             "compare_chain_handler"
           ]
@@ -3442,19 +3142,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119bd2"
         }
       ],
@@ -3480,7 +3176,6 @@
             ]
           },
           "function_id": "00182550",
-          "function_name": "single_binary_main_od",
           "sources": [
             "compare_chain_handler"
           ]
@@ -3504,19 +3199,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119be9"
         }
       ],
@@ -3544,7 +3235,6 @@
             ]
           },
           "function_id": "001845d0",
-          "function_name": "single_binary_main_paste",
           "sources": [
             "compare_chain_handler"
           ]
@@ -3554,11 +3244,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_00207124",
-      "name": "paste",
+      "name": null,
       "token": {
         "address": "00207124",
-        "string_id": "s_00207124",
-        "value": "paste"
+        "string_id": "s_00207124"
       },
       "unknown_name": false
     },
@@ -3568,19 +3257,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119c00"
         }
       ],
@@ -3608,7 +3293,6 @@
             ]
           },
           "function_id": "00184c50",
-          "function_name": "single_binary_main_pathchk",
           "sources": [
             "compare_chain_handler"
           ]
@@ -3618,11 +3302,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_0020712a",
-      "name": "pathchk",
+      "name": null,
       "token": {
         "address": "0020712a",
-        "string_id": "s_0020712a",
-        "value": "pathchk"
+        "string_id": "s_0020712a"
       },
       "unknown_name": false
     },
@@ -3632,19 +3315,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119c17"
         }
       ],
@@ -3672,7 +3351,6 @@
             ]
           },
           "function_id": "00120460",
-          "function_name": "single_binary_main_pinky",
           "sources": [
             "compare_chain_handler"
           ]
@@ -3682,11 +3360,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_00207132",
-      "name": "pinky",
+      "name": null,
       "token": {
         "address": "00207132",
-        "string_id": "s_00207132",
-        "value": "pinky"
+        "string_id": "s_00207132"
       },
       "unknown_name": false
     },
@@ -3696,19 +3373,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119c2e"
         }
       ],
@@ -3734,7 +3407,6 @@
             ]
           },
           "function_id": "00188760",
-          "function_name": "single_binary_main_pr",
           "sources": [
             "compare_chain_handler"
           ]
@@ -3758,19 +3430,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119c45"
         }
       ],
@@ -3798,7 +3466,6 @@
             ]
           },
           "function_id": "00189520",
-          "function_name": "single_binary_main_printenv",
           "sources": [
             "compare_chain_handler"
           ]
@@ -3808,11 +3475,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_00207138",
-      "name": "printenv",
+      "name": null,
       "token": {
         "address": "00207138",
-        "string_id": "s_00207138",
-        "value": "printenv"
+        "string_id": "s_00207138"
       },
       "unknown_name": false
     },
@@ -3822,19 +3488,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119c5c"
         }
       ],
@@ -3862,7 +3524,6 @@
             ]
           },
           "function_id": "0018b460",
-          "function_name": "single_binary_main_printf",
           "sources": [
             "compare_chain_handler"
           ]
@@ -3872,11 +3533,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_00207141",
-      "name": "printf",
+      "name": null,
       "token": {
         "address": "00207141",
-        "string_id": "s_00207141",
-        "value": "printf"
+        "string_id": "s_00207141"
       },
       "unknown_name": false
     },
@@ -3886,19 +3546,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119c73"
         }
       ],
@@ -3924,7 +3580,6 @@
             ]
           },
           "function_id": "0018c360",
-          "function_name": "single_binary_main_ptx",
           "sources": [
             "compare_chain_handler"
           ]
@@ -3948,19 +3603,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119c8a"
         }
       ],
@@ -3986,7 +3637,6 @@
             ]
           },
           "function_id": "0018f4b0",
-          "function_name": "single_binary_main_pwd",
           "sources": [
             "compare_chain_handler"
           ]
@@ -4010,19 +3660,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119ca1"
         }
       ],
@@ -4050,7 +3696,6 @@
             ]
           },
           "function_id": "0018fe00",
-          "function_name": "single_binary_main_readlink",
           "sources": [
             "compare_chain_handler"
           ]
@@ -4060,11 +3705,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_00207150",
-      "name": "readlink",
+      "name": null,
       "token": {
         "address": "00207150",
-        "string_id": "s_00207150",
-        "value": "readlink"
+        "string_id": "s_00207150"
       },
       "unknown_name": false
     },
@@ -4074,19 +3718,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119cb8"
         }
       ],
@@ -4114,7 +3754,6 @@
             ]
           },
           "function_id": "001905a0",
-          "function_name": "single_binary_main_realpath",
           "sources": [
             "compare_chain_handler"
           ]
@@ -4124,11 +3763,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_00207159",
-      "name": "realpath",
+      "name": null,
       "token": {
         "address": "00207159",
-        "string_id": "s_00207159",
-        "value": "realpath"
+        "string_id": "s_00207159"
       },
       "unknown_name": false
     },
@@ -4138,19 +3776,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119ccf"
         }
       ],
@@ -4176,7 +3810,6 @@
             ]
           },
           "function_id": "00191070",
-          "function_name": "single_binary_main_rm",
           "sources": [
             "compare_chain_handler"
           ]
@@ -4200,19 +3833,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119ce6"
         }
       ],
@@ -4240,7 +3869,6 @@
             ]
           },
           "function_id": "00191b70",
-          "function_name": "single_binary_main_rmdir",
           "sources": [
             "compare_chain_handler"
           ]
@@ -4250,11 +3878,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_00207162",
-      "name": "rmdir",
+      "name": null,
       "token": {
         "address": "00207162",
-        "string_id": "s_00207162",
-        "value": "rmdir"
+        "string_id": "s_00207162"
       },
       "unknown_name": false
     },
@@ -4264,19 +3891,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119cfd"
         }
       ],
@@ -4304,7 +3927,6 @@
             ]
           },
           "function_id": "00192390",
-          "function_name": "single_binary_main_runcon",
           "sources": [
             "compare_chain_handler"
           ]
@@ -4314,11 +3936,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_00207168",
-      "name": "runcon",
+      "name": null,
       "token": {
         "address": "00207168",
-        "string_id": "s_00207168",
-        "value": "runcon"
+        "string_id": "s_00207168"
       },
       "unknown_name": false
     },
@@ -4328,19 +3949,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119d14"
         }
       ],
@@ -4366,7 +3983,6 @@
             ]
           },
           "function_id": "00193260",
-          "function_name": "single_binary_main_seq",
           "sources": [
             "compare_chain_handler"
           ]
@@ -4390,19 +4006,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119d2b"
         }
       ],
@@ -4428,7 +4040,6 @@
             ]
           },
           "function_id": "00194c50",
-          "function_name": "single_binary_main_sha1sum",
           "sources": [
             "compare_chain_handler"
           ]
@@ -4452,19 +4063,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119d42"
         }
       ],
@@ -4492,7 +4099,6 @@
             ]
           },
           "function_id": "001966f0",
-          "function_name": "single_binary_main_sha224sum",
           "sources": [
             "compare_chain_handler"
           ]
@@ -4502,11 +4108,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_0020717b",
-      "name": "sha224sum",
+      "name": null,
       "token": {
         "address": "0020717b",
-        "string_id": "s_0020717b",
-        "value": "sha224sum"
+        "string_id": "s_0020717b"
       },
       "unknown_name": false
     },
@@ -4516,19 +4121,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119d59"
         }
       ],
@@ -4556,7 +4157,6 @@
             ]
           },
           "function_id": "001981c0",
-          "function_name": "single_binary_main_sha256sum",
           "sources": [
             "compare_chain_handler"
           ]
@@ -4566,11 +4166,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_00207185",
-      "name": "sha256sum",
+      "name": null,
       "token": {
         "address": "00207185",
-        "string_id": "s_00207185",
-        "value": "sha256sum"
+        "string_id": "s_00207185"
       },
       "unknown_name": false
     },
@@ -4580,19 +4179,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119d70"
         }
       ],
@@ -4620,7 +4215,6 @@
             ]
           },
           "function_id": "00199c90",
-          "function_name": "single_binary_main_sha384sum",
           "sources": [
             "compare_chain_handler"
           ]
@@ -4630,11 +4224,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_0020718f",
-      "name": "sha384sum",
+      "name": null,
       "token": {
         "address": "0020718f",
-        "string_id": "s_0020718f",
-        "value": "sha384sum"
+        "string_id": "s_0020718f"
       },
       "unknown_name": false
     },
@@ -4644,19 +4237,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119d87"
         }
       ],
@@ -4684,7 +4273,6 @@
             ]
           },
           "function_id": "0019b770",
-          "function_name": "single_binary_main_sha512sum",
           "sources": [
             "compare_chain_handler"
           ]
@@ -4694,11 +4282,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_00207199",
-      "name": "sha512sum",
+      "name": null,
       "token": {
         "address": "00207199",
-        "string_id": "s_00207199",
-        "value": "sha512sum"
+        "string_id": "s_00207199"
       },
       "unknown_name": false
     },
@@ -4708,19 +4295,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119d9e"
         }
       ],
@@ -4748,7 +4331,6 @@
             ]
           },
           "function_id": "0019e1c0",
-          "function_name": "single_binary_main_shred",
           "sources": [
             "compare_chain_handler"
           ]
@@ -4758,11 +4340,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_002071a3",
-      "name": "shred",
+      "name": null,
       "token": {
         "address": "002071a3",
-        "string_id": "s_002071a3",
-        "value": "shred"
+        "string_id": "s_002071a3"
       },
       "unknown_name": false
     },
@@ -4772,19 +4353,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119db5"
         }
       ],
@@ -4810,7 +4387,6 @@
             ]
           },
           "function_id": "0019ee80",
-          "function_name": "single_binary_main_shuf",
           "sources": [
             "compare_chain_handler"
           ]
@@ -4834,19 +4410,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119dcc"
         }
       ],
@@ -4874,7 +4446,6 @@
             ]
           },
           "function_id": "001a0380",
-          "function_name": "single_binary_main_sleep",
           "sources": [
             "compare_chain_handler"
           ]
@@ -4884,11 +4455,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_002071ae",
-      "name": "sleep",
+      "name": null,
       "token": {
         "address": "002071ae",
-        "string_id": "s_002071ae",
-        "value": "sleep"
+        "string_id": "s_002071ae"
       },
       "unknown_name": false
     },
@@ -4898,19 +4468,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119de3"
         }
       ],
@@ -4936,7 +4502,6 @@
             ]
           },
           "function_id": "001a65b0",
-          "function_name": "single_binary_main_sort",
           "sources": [
             "compare_chain_handler"
           ]
@@ -4960,19 +4525,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119dfa"
         }
       ],
@@ -4998,7 +4559,6 @@
             ]
           },
           "function_id": "001aacc0",
-          "function_name": "single_binary_main_split",
           "sources": [
             "compare_chain_handler"
           ]
@@ -5022,19 +4582,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119e11"
         }
       ],
@@ -5060,7 +4616,6 @@
             ]
           },
           "function_id": "001afe10",
-          "function_name": "single_binary_main_stat",
           "sources": [
             "compare_chain_handler"
           ]
@@ -5084,19 +4639,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119e28"
         }
       ],
@@ -5124,7 +4675,6 @@
             ]
           },
           "function_id": "001278a0",
-          "function_name": "single_binary_main_stdbuf",
           "sources": [
             "compare_chain_handler"
           ]
@@ -5134,11 +4684,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_002071b9",
-      "name": "stdbuf",
+      "name": null,
       "token": {
         "address": "002071b9",
-        "string_id": "s_002071b9",
-        "value": "stdbuf"
+        "string_id": "s_002071b9"
       },
       "unknown_name": false
     },
@@ -5148,19 +4697,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119e3f"
         }
       ],
@@ -5186,7 +4731,6 @@
             ]
           },
           "function_id": "00123580",
-          "function_name": "single_binary_main_stty",
           "sources": [
             "compare_chain_handler"
           ]
@@ -5210,19 +4754,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119e56"
         }
       ],
@@ -5248,7 +4788,6 @@
             ]
           },
           "function_id": "001b06e0",
-          "function_name": "single_binary_main_sum",
           "sources": [
             "compare_chain_handler"
           ]
@@ -5272,19 +4811,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119e6d"
         }
       ],
@@ -5310,7 +4845,6 @@
             ]
           },
           "function_id": "001b0e20",
-          "function_name": "single_binary_main_sync",
           "sources": [
             "compare_chain_handler"
           ]
@@ -5334,19 +4868,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119e84"
         }
       ],
@@ -5372,7 +4902,6 @@
             ]
           },
           "function_id": "001b1d00",
-          "function_name": "single_binary_main_tac",
           "sources": [
             "compare_chain_handler"
           ]
@@ -5396,19 +4925,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119e9b"
         }
       ],
@@ -5434,7 +4959,6 @@
             ]
           },
           "function_id": "001b4a60",
-          "function_name": "single_binary_main_tail",
           "sources": [
             "compare_chain_handler"
           ]
@@ -5458,19 +4982,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119eb2"
         }
       ],
@@ -5496,7 +5016,6 @@
             ]
           },
           "function_id": "001b7c20",
-          "function_name": "single_binary_main_tee",
           "sources": [
             "compare_chain_handler"
           ]
@@ -5520,19 +5039,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119ec9"
         }
       ],
@@ -5558,7 +5073,6 @@
             ]
           },
           "function_id": "001b9a80",
-          "function_name": "single_binary_main_test",
           "sources": [
             "compare_chain_handler"
           ]
@@ -5582,19 +5096,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119ee0"
         }
       ],
@@ -5622,7 +5132,6 @@
             ]
           },
           "function_id": "0011c4f0",
-          "function_name": "single_binary_main_timeout",
           "sources": [
             "compare_chain_handler"
           ]
@@ -5632,11 +5141,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_002071d2",
-      "name": "timeout",
+      "name": null,
       "token": {
         "address": "002071d2",
-        "string_id": "s_002071d2",
-        "value": "timeout"
+        "string_id": "s_002071d2"
       },
       "unknown_name": false
     },
@@ -5646,19 +5154,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119ef7"
         }
       ],
@@ -5686,7 +5190,6 @@
             ]
           },
           "function_id": "001b9f60",
-          "function_name": "single_binary_main_touch",
           "sources": [
             "compare_chain_handler"
           ]
@@ -5696,11 +5199,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_002071da",
-      "name": "touch",
+      "name": null,
       "token": {
         "address": "002071da",
-        "string_id": "s_002071da",
-        "value": "touch"
+        "string_id": "s_002071da"
       },
       "unknown_name": false
     },
@@ -5710,19 +5212,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119f0e"
         }
       ],
@@ -5748,7 +5246,6 @@
             ]
           },
           "function_id": "001bc8b0",
-          "function_name": "single_binary_main_tr",
           "sources": [
             "compare_chain_handler"
           ]
@@ -5772,19 +5269,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119f25"
         }
       ],
@@ -5810,7 +5303,6 @@
             ]
           },
           "function_id": "001bde70",
-          "function_name": "single_binary_main_true",
           "sources": [
             "compare_chain_handler"
           ]
@@ -5834,19 +5326,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119f3c"
         }
       ],
@@ -5874,7 +5362,6 @@
             ]
           },
           "function_id": "001be350",
-          "function_name": "single_binary_main_truncate",
           "sources": [
             "compare_chain_handler"
           ]
@@ -5884,11 +5371,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_002071e5",
-      "name": "truncate",
+      "name": null,
       "token": {
         "address": "002071e5",
-        "string_id": "s_002071e5",
-        "value": "truncate"
+        "string_id": "s_002071e5"
       },
       "unknown_name": false
     },
@@ -5898,19 +5384,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119f53"
         }
       ],
@@ -5938,7 +5420,6 @@
             ]
           },
           "function_id": "001c25f0",
-          "function_name": "single_binary_main_tsort",
           "sources": [
             "compare_chain_handler"
           ]
@@ -5948,11 +5429,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_002071ee",
-      "name": "tsort",
+      "name": null,
       "token": {
         "address": "002071ee",
-        "string_id": "s_002071ee",
-        "value": "tsort"
+        "string_id": "s_002071ee"
       },
       "unknown_name": false
     },
@@ -5962,19 +5442,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119f6a"
         }
       ],
@@ -6000,7 +5476,6 @@
             ]
           },
           "function_id": "001c2a40",
-          "function_name": "single_binary_main_tty",
           "sources": [
             "compare_chain_handler"
           ]
@@ -6024,19 +5499,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119f81"
         }
       ],
@@ -6064,7 +5535,6 @@
             ]
           },
           "function_id": "001c2fe0",
-          "function_name": "single_binary_main_uname",
           "sources": [
             "compare_chain_handler"
           ]
@@ -6074,11 +5544,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_002071f4",
-      "name": "uname",
+      "name": null,
       "token": {
         "address": "002071f4",
-        "string_id": "s_002071f4",
-        "value": "uname"
+        "string_id": "s_002071f4"
       },
       "unknown_name": false
     },
@@ -6088,19 +5557,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119f98"
         }
       ],
@@ -6128,7 +5593,6 @@
             ]
           },
           "function_id": "001c38a0",
-          "function_name": "single_binary_main_unexpand",
           "sources": [
             "compare_chain_handler"
           ]
@@ -6138,11 +5602,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_002071fa",
-      "name": "unexpand",
+      "name": null,
       "token": {
         "address": "002071fa",
-        "string_id": "s_002071fa",
-        "value": "unexpand"
+        "string_id": "s_002071fa"
       },
       "unknown_name": false
     },
@@ -6152,19 +5615,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119faf"
         }
       ],
@@ -6190,7 +5649,6 @@
             ]
           },
           "function_id": "001c47c0",
-          "function_name": "single_binary_main_uniq",
           "sources": [
             "compare_chain_handler"
           ]
@@ -6214,19 +5672,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119fc6"
         }
       ],
@@ -6254,7 +5708,6 @@
             ]
           },
           "function_id": "001c5660",
-          "function_name": "single_binary_main_unlink",
           "sources": [
             "compare_chain_handler"
           ]
@@ -6264,11 +5717,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_00207208",
-      "name": "unlink",
+      "name": null,
       "token": {
         "address": "00207208",
-        "string_id": "s_00207208",
-        "value": "unlink"
+        "string_id": "s_00207208"
       },
       "unknown_name": false
     },
@@ -6278,19 +5730,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119fdd"
         }
       ],
@@ -6316,7 +5764,6 @@
             ]
           },
           "function_id": "001c5ee0",
-          "function_name": "single_binary_main_uptime",
           "sources": [
             "compare_chain_handler"
           ]
@@ -6340,19 +5787,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "00119ff4"
         }
       ],
@@ -6378,7 +5821,6 @@
             ]
           },
           "function_id": "0011f400",
-          "function_name": "single_binary_main_users",
           "sources": [
             "compare_chain_handler"
           ]
@@ -6402,19 +5844,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "0011a00b"
         }
       ],
@@ -6440,7 +5878,6 @@
             ]
           },
           "function_id": "001c6020",
-          "function_name": "single_binary_main_vdir",
           "sources": [
             "compare_chain_handler"
           ]
@@ -6464,19 +5901,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "0011a022"
         }
       ],
@@ -6502,7 +5935,6 @@
             ]
           },
           "function_id": "001c7550",
-          "function_name": "single_binary_main_wc",
           "sources": [
             "compare_chain_handler"
           ]
@@ -6526,19 +5958,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "0011a039"
         }
       ],
@@ -6564,7 +5992,6 @@
             ]
           },
           "function_id": "0011eb40",
-          "function_name": "single_binary_main_who",
           "sources": [
             "compare_chain_handler"
           ]
@@ -6588,19 +6015,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "0011a050"
         }
       ],
@@ -6628,7 +6051,6 @@
             ]
           },
           "function_id": "001c8770",
-          "function_name": "single_binary_main_whoami",
           "sources": [
             "compare_chain_handler"
           ]
@@ -6638,11 +6060,10 @@
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_0020721b",
-      "name": "whoami",
+      "name": null,
       "token": {
         "address": "0020721b",
-        "string_id": "s_0020721b",
-        "value": "whoami"
+        "string_id": "s_0020721b"
       },
       "unknown_name": false
     },
@@ -6652,19 +6073,15 @@
         {
           "callsite_count": 1,
           "compare_callsite_count": 106,
-          "function_id": "001196b0",
-          "function_name": "launch_program"
+          "function_id": "001196b0"
         }
       ],
       "dispatch_roots_truncated": false,
       "dispatch_site_count": 1,
       "dispatch_sites": [
         {
-          "callee": "strcmp",
-          "caller": {
-            "address": "001196b0",
-            "name": "launch_program"
-          },
+          "callee_id": "EXTERNAL:0000017e",
+          "caller_id": "001196b0",
           "callsite_id": "0011a067"
         }
       ],
@@ -6690,7 +6107,6 @@
             ]
           },
           "function_id": "001c8be0",
-          "function_name": "single_binary_main_yes",
           "sources": [
             "compare_chain_handler"
           ]

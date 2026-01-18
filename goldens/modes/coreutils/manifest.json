@@ -99,12 +99,6 @@
       "selected": 50,
       "truncated": true
     },
-    "functions_index": {
-      "max": null,
-      "selected": 2330,
-      "total": 2330,
-      "truncated": false
-    },
     "interfaces_env": {
       "max": null,
       "selected": 74,
@@ -180,7 +174,7 @@
   "target_endian": "little",
   "tool": {
     "name": "binary_lens",
-    "revision": "12bb203bcf9fb7fe8292ec30680d3cae519c45be",
+    "revision": "52fe2cb6997a51fd75f98745efc72b1fbf6a353f",
     "version": "0.1.0-dev"
   }
 }

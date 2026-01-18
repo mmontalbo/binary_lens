@@ -2,10 +2,6 @@
   "callsites_ref": "evidence/callsites.json",
   "dispatch_sites": [
     {
-      "callee_names": [
-        "strcmp",
-        "strncmp"
-      ],
       "callsite_ids": [
         "004067f8",
         "00406826",
@@ -67,10 +63,7 @@
         "strings": []
       },
       "excluded_token_count": 33,
-      "function": {
-        "address": "00406790",
-        "name": "handle_options"
-      },
+      "function_id": "00406790",
       "ignored_tokens": [],
       "ignored_tokens_truncated": false,
       "omitted_token_count": 0,
@@ -83,9 +76,6 @@
       "token_candidates_truncated": false
     },
     {
-      "callee_names": [
-        "strcmp"
-      ],
       "callsite_ids": [
         "00407763",
         "00407bf0",
@@ -121,10 +111,7 @@
         ]
       },
       "excluded_token_count": 2,
-      "function": {
-        "address": "00407640",
-        "name": "cmd_main"
-      },
+      "function_id": "00407640",
       "ignored_tokens": [],
       "ignored_tokens_truncated": false,
       "omitted_token_count": 123,
@@ -274,7 +261,7 @@
           "address": "006df48c",
           "kind": "unknown",
           "mode_id": "s_006df48c",
-          "name": "checkout--worker",
+          "name": null,
           "occurrence_count": 1,
           "string_id": "s_006df48c"
         },
@@ -298,9 +285,6 @@
       "token_candidates_truncated": true
     },
     {
-      "callee_names": [
-        "strcmp"
-      ],
       "callsite_ids": [
         "005929d5",
         "00592a00",
@@ -328,10 +312,7 @@
         "strings": []
       },
       "excluded_token_count": 0,
-      "function": {
-        "address": "00592930",
-        "name": "load_command_list"
-      },
+      "function_id": "00592930",
       "ignored_tokens": [],
       "ignored_tokens_truncated": false,
       "omitted_token_count": 0,
@@ -344,9 +325,6 @@
       "token_candidates_truncated": false
     },
     {
-      "callee_names": [
-        "strcmp"
-      ],
       "callsite_ids": [
         "004062bf",
         "004062f3"
@@ -374,10 +352,7 @@
         ]
       },
       "excluded_token_count": 1,
-      "function": {
-        "address": "00406280",
-        "name": "handle_builtin"
-      },
+      "function_id": "00406280",
       "ignored_tokens": [],
       "ignored_tokens_truncated": false,
       "omitted_token_count": 123,
@@ -527,7 +502,7 @@
           "address": "006df48c",
           "kind": "unknown",
           "mode_id": "s_006df48c",
-          "name": "checkout--worker",
+          "name": null,
           "occurrence_count": 1,
           "string_id": "s_006df48c"
         },
@@ -551,9 +526,6 @@
       "token_candidates_truncated": true
     },
     {
-      "callee_names": [
-        "strcmp"
-      ],
       "callsite_ids": [
         "00593646",
         "00593663"
@@ -579,10 +551,7 @@
         "strings": []
       },
       "excluded_token_count": 0,
-      "function": {
-        "address": "00593510",
-        "name": "help_unknown_cmd"
-      },
+      "function_id": "00593510",
       "ignored_tokens": [],
       "ignored_tokens_truncated": false,
       "omitted_token_count": 0,
@@ -595,9 +564,6 @@
       "token_candidates_truncated": false
     },
     {
-      "callee_names": [
-        "strcmp"
-      ],
       "callsite_ids": [
         "0040755f"
       ],
@@ -623,10 +589,7 @@
         ]
       },
       "excluded_token_count": 0,
-      "function": {
-        "address": "00407530",
-        "name": "is_builtin"
-      },
+      "function_id": "00407530",
       "ignored_tokens": [],
       "ignored_tokens_truncated": false,
       "omitted_token_count": 123,
@@ -776,7 +739,7 @@
           "address": "006df48c",
           "kind": "unknown",
           "mode_id": "s_006df48c",
-          "name": "checkout--worker",
+          "name": null,
           "occurrence_count": 1,
           "string_id": "s_006df48c"
         },
@@ -800,9 +763,6 @@
       "token_candidates_truncated": true
     },
     {
-      "callee_names": [
-        "strcmp"
-      ],
       "callsite_ids": [
         "004f543d"
       ],
@@ -826,10 +786,7 @@
         "strings": []
       },
       "excluded_token_count": 0,
-      "function": {
-        "address": "004f53e0",
-        "name": "strbuf_add_absolute_path"
-      },
+      "function_id": "004f53e0",
       "ignored_tokens": [],
       "ignored_tokens_truncated": false,
       "omitted_token_count": 0,
@@ -842,9 +799,6 @@
       "token_candidates_truncated": false
     },
     {
-      "callee_names": [
-        "strcmp"
-      ],
       "callsite_ids": [
         "00592e35"
       ],
@@ -868,10 +822,7 @@
         "strings": []
       },
       "excluded_token_count": 1,
-      "function": {
-        "address": "00592e00",
-        "name": "list_cmds_by_category"
-      },
+      "function_id": "00592e00",
       "ignored_tokens": [],
       "ignored_tokens_truncated": false,
       "omitted_token_count": 0,
@@ -884,9 +835,6 @@
       "token_candidates_truncated": false
     },
     {
-      "callee_names": [
-        "strcmp"
-      ],
       "callsite_ids": [
         "00649698"
       ],
@@ -910,10 +858,7 @@
         "strings": []
       },
       "excluded_token_count": 0,
-      "function": {
-        "address": "00648c10",
-        "name": "start_command"
-      },
+      "function_id": "00648c10",
       "ignored_tokens": [],
       "ignored_tokens_truncated": false,
       "omitted_token_count": 0,
@@ -926,9 +871,6 @@
       "token_candidates_truncated": false
     },
     {
-      "callee_names": [
-        "strcmp"
-      ],
       "callsite_ids": [
         "00668300"
       ],
@@ -952,10 +894,7 @@
         "strings": []
       },
       "excluded_token_count": 0,
-      "function": {
-        "address": "006682a0",
-        "name": "set_git_work_tree"
-      },
+      "function_id": "006682a0",
       "ignored_tokens": [],
       "ignored_tokens_truncated": false,
       "omitted_token_count": 0,
@@ -968,9 +907,6 @@
       "token_candidates_truncated": false
     },
     {
-      "callee_names": [
-        "strcmp"
-      ],
       "callsite_ids": [
         "00668466"
       ],
@@ -994,10 +930,7 @@
         "strings": []
       },
       "excluded_token_count": 0,
-      "function": {
-        "address": "00668390",
-        "name": "setup_explicit_git_dir.constprop.0"
-      },
+      "function_id": "00668390",
       "ignored_tokens": [],
       "ignored_tokens_truncated": false,
       "omitted_token_count": 0,
@@ -1010,9 +943,6 @@
       "token_candidates_truncated": false
     },
     {
-      "callee_names": [
-        "strcmp"
-      ],
       "callsite_ids": [
         "00668f1d"
       ],
@@ -1036,10 +966,7 @@
         "strings": []
       },
       "excluded_token_count": 1,
-      "function": {
-        "address": "006686e0",
-        "name": "setup_git_directory_gently"
-      },
+      "function_id": "006686e0",
       "ignored_tokens": [],
       "ignored_tokens_truncated": false,
       "omitted_token_count": 0,

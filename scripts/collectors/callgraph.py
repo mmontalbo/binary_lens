@@ -462,13 +462,6 @@ def build_callgraph_nodes(call_edges, function_meta_by_addr=None):
             name = to_entry.get("name")
             if name and not to_node.get("name"):
                 to_node["name"] = name
-            if "external" in to_entry and "external" not in to_node:
-                external = to_entry.get("external")
-                if external is not None:
-                    to_node["external"] = external
-            library = to_entry.get("library")
-            if library and not to_node.get("library"):
-                to_node["library"] = library
 
     for addr, meta in (function_meta_by_addr or {}).items():
         if addr not in nodes_by_addr:
@@ -480,8 +473,6 @@ def build_callgraph_nodes(call_edges, function_meta_by_addr=None):
         signature = meta.get("signature")
         if signature and not node.get("signature"):
             node["signature"] = signature
-        if "is_external" in meta and "external" not in node:
-            node["external"] = meta.get("is_external")
 
     nodes = list(nodes_by_addr.values())
     nodes.sort(key=lambda item: addr_to_int(item.get("address")))

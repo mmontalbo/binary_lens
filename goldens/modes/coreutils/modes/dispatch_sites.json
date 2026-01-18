@@ -2,9 +2,6 @@
   "callsites_ref": "evidence/callsites.json",
   "dispatch_sites": [
     {
-      "callee_names": [
-        "strcmp"
-      ],
       "callsite_ids": [
         "001196f8",
         "0011970f",
@@ -79,10 +76,7 @@
         ]
       },
       "excluded_token_count": 0,
-      "function": {
-        "address": "001196b0",
-        "name": "launch_program"
-      },
+      "function_id": "001196b0",
       "ignored_tokens": [],
       "ignored_tokens_truncated": false,
       "omitted_token_count": 86,
@@ -104,7 +98,7 @@
           "address": "00207038",
           "kind": "unknown",
           "mode_id": "s_00207038",
-          "name": "b2sum",
+          "name": null,
           "occurrence_count": 1,
           "string_id": "s_00207038"
         },
@@ -112,7 +106,7 @@
           "address": "0020703e",
           "kind": "unknown",
           "mode_id": "s_0020703e",
-          "name": "base32",
+          "name": null,
           "occurrence_count": 1,
           "string_id": "s_0020703e"
         },
@@ -120,7 +114,7 @@
           "address": "00207045",
           "kind": "unknown",
           "mode_id": "s_00207045",
-          "name": "base64",
+          "name": null,
           "occurrence_count": 1,
           "string_id": "s_00207045"
         },
@@ -128,7 +122,7 @@
           "address": "0020704c",
           "kind": "unknown",
           "mode_id": "s_0020704c",
-          "name": "basename",
+          "name": null,
           "occurrence_count": 1,
           "string_id": "s_0020704c"
         },
@@ -136,7 +130,7 @@
           "address": "00207055",
           "kind": "unknown",
           "mode_id": "s_00207055",
-          "name": "basenc",
+          "name": null,
           "occurrence_count": 1,
           "string_id": "s_00207055"
         },
@@ -152,7 +146,7 @@
           "address": "00207060",
           "kind": "unknown",
           "mode_id": "s_00207060",
-          "name": "chcon",
+          "name": null,
           "occurrence_count": 1,
           "string_id": "s_00207060"
         },
@@ -160,7 +154,7 @@
           "address": "00207066",
           "kind": "unknown",
           "mode_id": "s_00207066",
-          "name": "chgrp",
+          "name": null,
           "occurrence_count": 1,
           "string_id": "s_00207066"
         },
@@ -168,7 +162,7 @@
           "address": "0020706c",
           "kind": "unknown",
           "mode_id": "s_0020706c",
-          "name": "chmod",
+          "name": null,
           "occurrence_count": 1,
           "string_id": "s_0020706c"
         },
@@ -176,7 +170,7 @@
           "address": "00207072",
           "kind": "unknown",
           "mode_id": "s_00207072",
-          "name": "chown",
+          "name": null,
           "occurrence_count": 1,
           "string_id": "s_00207072"
         },
@@ -184,7 +178,7 @@
           "address": "00207078",
           "kind": "unknown",
           "mode_id": "s_00207078",
-          "name": "chroot",
+          "name": null,
           "occurrence_count": 1,
           "string_id": "s_00207078"
         },
@@ -192,7 +186,7 @@
           "address": "0020707f",
           "kind": "unknown",
           "mode_id": "s_0020707f",
-          "name": "cksum",
+          "name": null,
           "occurrence_count": 1,
           "string_id": "s_0020707f"
         },
@@ -216,7 +210,7 @@
           "address": "0020708a",
           "kind": "unknown",
           "mode_id": "s_0020708a",
-          "name": "csplit",
+          "name": null,
           "occurrence_count": 1,
           "string_id": "s_0020708a"
         },
@@ -256,10 +250,6 @@
       "token_candidates_truncated": true
     },
     {
-      "callee_names": [
-        "strcmp",
-        "strncmp"
-      ],
       "callsite_ids": [
         "00125d07",
         "001261f8",
@@ -309,10 +299,7 @@
         "strings": []
       },
       "excluded_token_count": 1,
-      "function": {
-        "address": "001258d0",
-        "name": "single_binary_main_df"
-      },
+      "function_id": "001258d0",
       "ignored_tokens": [],
       "ignored_tokens_truncated": false,
       "omitted_token_count": 0,
@@ -325,10 +312,6 @@
       "token_candidates_truncated": false
     },
     {
-      "callee_names": [
-        "strcmp",
-        "strncmp"
-      ],
       "callsite_ids": [
         "00118069",
         "001180a1",
@@ -358,10 +341,7 @@
         "strings": []
       },
       "excluded_token_count": 4,
-      "function": {
-        "address": "00118020",
-        "name": "main"
-      },
+      "function_id": "00118020",
       "ignored_tokens": [],
       "ignored_tokens_truncated": false,
       "omitted_token_count": 0,
@@ -374,10 +354,6 @@
       "token_candidates_truncated": false
     },
     {
-      "callee_names": [
-        "c_strncasecmp",
-        "strncmp"
-      ],
       "callsite_ids": [
         "001720e3",
         "001731f9",
@@ -411,10 +387,7 @@
         "strings": []
       },
       "excluded_token_count": 2,
-      "function": {
-        "address": "00171d70",
-        "name": "single_binary_main_ls"
-      },
+      "function_id": "00171d70",
       "ignored_tokens": [
         {
           "count": 1,
@@ -438,9 +411,6 @@
       "token_candidates_truncated": false
     },
     {
-      "callee_names": [
-        "strcmp"
-      ],
       "callsite_ids": [
         "001a736c",
         "001a7679",
@@ -472,10 +442,7 @@
         "strings": []
       },
       "excluded_token_count": 0,
-      "function": {
-        "address": "001a65b0",
-        "name": "single_binary_main_sort"
-      },
+      "function_id": "001a65b0",
       "ignored_tokens": [],
       "ignored_tokens_truncated": false,
       "omitted_token_count": 0,
@@ -488,10 +455,6 @@
       "token_candidates_truncated": false
     },
     {
-      "callee_names": [
-        "strcmp",
-        "strncmp"
-      ],
       "callsite_ids": [
         "0011a7bc",
         "0011a7f7"
@@ -517,10 +480,7 @@
         "strings": []
       },
       "excluded_token_count": 2,
-      "function": {
-        "address": "0011a5d0",
-        "name": "usage"
-      },
+      "function_id": "0011a5d0",
       "ignored_tokens": [],
       "ignored_tokens_truncated": false,
       "omitted_token_count": 0,
@@ -542,10 +502,6 @@
       "token_candidates_truncated": false
     },
     {
-      "callee_names": [
-        "strcmp",
-        "strncmp"
-      ],
       "callsite_ids": [
         "0013902b",
         "00139067"
@@ -571,10 +527,7 @@
         "strings": []
       },
       "excluded_token_count": 0,
-      "function": {
-        "address": "00138990",
-        "name": "single_binary_main_cksum"
-      },
+      "function_id": "00138990",
       "ignored_tokens": [],
       "ignored_tokens_truncated": false,
       "omitted_token_count": 0,
@@ -587,9 +540,6 @@
       "token_candidates_truncated": false
     },
     {
-      "callee_names": [
-        "strcmp"
-      ],
       "callsite_ids": [
         "00141425",
         "00142a4b"
@@ -615,10 +565,7 @@
         "strings": []
       },
       "excluded_token_count": 0,
-      "function": {
-        "address": "0013f040",
-        "name": "copy_internal"
-      },
+      "function_id": "0013f040",
       "ignored_tokens": [],
       "ignored_tokens_truncated": false,
       "omitted_token_count": 0,
@@ -631,10 +578,6 @@
       "token_candidates_truncated": false
     },
     {
-      "callee_names": [
-        "strcmp",
-        "strncmp"
-      ],
       "callsite_ids": [
         "00151b09",
         "00151b3d"
@@ -660,10 +603,7 @@
         "strings": []
       },
       "excluded_token_count": 2,
-      "function": {
-        "address": "00150650",
-        "name": "single_binary_main_du"
-      },
+      "function_id": "00150650",
       "ignored_tokens": [],
       "ignored_tokens_truncated": false,
       "omitted_token_count": 0,
@@ -676,9 +616,6 @@
       "token_candidates_truncated": false
     },
     {
-      "callee_names": [
-        "strcmp"
-      ],
       "callsite_ids": [
         "001657c0",
         "0016587e"
@@ -708,10 +645,7 @@
         "strings": []
       },
       "excluded_token_count": 1,
-      "function": {
-        "address": "00165510",
-        "name": "single_binary_main_join"
-      },
+      "function_id": "00165510",
       "ignored_tokens": [],
       "ignored_tokens_truncated": false,
       "omitted_token_count": 0,
@@ -724,9 +658,6 @@
       "token_candidates_truncated": false
     },
     {
-      "callee_names": [
-        "strcmp"
-      ],
       "callsite_ids": [
         "0019efbc",
         "0019effd"
@@ -752,10 +683,7 @@
         "strings": []
       },
       "excluded_token_count": 0,
-      "function": {
-        "address": "0019ee80",
-        "name": "single_binary_main_shuf"
-      },
+      "function_id": "0019ee80",
       "ignored_tokens": [],
       "ignored_tokens_truncated": false,
       "omitted_token_count": 0,
@@ -768,9 +696,6 @@
       "token_candidates_truncated": false
     },
     {
-      "callee_names": [
-        "strcmp"
-      ],
       "callsite_ids": [
         "001b68a1"
       ],
@@ -794,10 +719,7 @@
         "strings": []
       },
       "excluded_token_count": 0,
-      "function": {
-        "address": "001b4a60",
-        "name": "single_binary_main_tail"
-      },
+      "function_id": "001b4a60",
       "ignored_tokens": [],
       "ignored_tokens_truncated": false,
       "omitted_token_count": 0,
