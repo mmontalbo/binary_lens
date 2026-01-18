@@ -167,7 +167,6 @@ def derive_payloads(
             collected.error_sites_payload,
             collected.interfaces_payloads,
             collected.modes_payload,
-            collected.dispatch_sites_payload,
             modes_slices_payload,
         )
         callsite_evidence = build_callsite_records(
@@ -373,12 +372,6 @@ def derive_payloads(
             "max": collected.modes_payload.get("max_modes"),
             "candidate_total": mode_candidates,
             "excluded": mode_excluded,
-        },
-        "mode_dispatch_sites": {
-            "total": collected.dispatch_sites_payload.get("total_dispatch_sites"),
-            "selected": collected.dispatch_sites_payload.get("selected_dispatch_sites"),
-            "truncated": collected.dispatch_sites_payload.get("truncated"),
-            "max": collected.dispatch_sites_payload.get("max_dispatch_sites"),
         },
         "mode_slices": {
             "total": modes_slices_payload.get("total_modes"),

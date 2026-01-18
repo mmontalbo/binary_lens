@@ -131,12 +131,8 @@ Add a `modes/` (or `dispatch/`) section to the context pack:
      - `evidence` (strings/callsites/functions)
      - `strength/confidence` tags for all non-trivial fields
 
-2. `modes/dispatch_sites.json` (optional, but recommended)
-   - A compact list of dispatch decision regions:
-     - function ID(s)
-     - representative compare/lookup callsites
-     - candidate tokens observed (bounded)
-     - notes like “strcmp-chain”, “table lookup”, “switch/jumptable” (heuristic)
+2. `modes/dispatch_sites.json` (optional debug surface; no longer emitted by default)
+   - Use `modes/index.json` dispatch sites + `evidence/callsites.json` instead.
 
 3. `modes/slices.json` (optional, but recommended)
    - Bounded per-mode “start here” slices to make consumers efficient:

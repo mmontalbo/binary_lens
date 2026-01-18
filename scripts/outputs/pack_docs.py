@@ -104,7 +104,6 @@ def _coverage_table(manifest: Mapping[str, Any]) -> str:
         ("error_sites", "errors/error_sites.json"),
         ("exit_calls", "errors/exit_paths.json"),
         ("modes_index", "modes/index.json"),
-        ("mode_dispatch_sites", "modes/dispatch_sites.json"),
         ("mode_slices", "modes/slices.json"),
         ("interfaces_env", "interfaces/env.json"),
         ("interfaces_fs", "interfaces/fs.json"),
@@ -596,7 +595,7 @@ def build_pack_markdown_docs(
         "\n"
         "## Two-minute walkthrough\n\n"
         "1. Pick a mode from `modes/index.json` \u2192 `modes[*]`.\n"
-        "2. Use `dispatch_sites[*].callsite_id` with `evidence/callsites.json` to locate the callsite record.\n"
+        "2. From `modes/index.json`, use `dispatch_sites[*].callsite_id` with `evidence/callsites.json` to locate the callsite record.\n"
         "3. From the callsite record, note the `from` function address and open `functions/f_<addr>.json`.\n"
         "4. Use that function record to pivot to `strings.json`, `errors/`, `cli/`, and (if present) `evidence/decomp/`.\n"
     )
@@ -642,7 +641,6 @@ def build_pack_markdown_docs(
         "- `evidence/decomp/f_<addr>.json`: bounded decompiler excerpt for a function.\n\n"
         "## Modes (`modes/`)\n\n"
         "- `modes/index.json`: mode inventory; each mode includes `mode_id`, `kind`, and dispatch evidence (resolve names via `token.string_id` + `strings.json`).\n"
-        "- `modes/dispatch_sites.json`: localized dispatch regions and token candidates (`function_id` + `callsite_ids`).\n"
         "- `modes/slices.json`: per-mode \"start here\" slices (sharded index).\n\n"
         "## Contracts (`contracts/`)\n\n"
         "- `contracts/index.json`: mode contract index (sharded list).\n"
@@ -700,7 +698,7 @@ def build_pack_markdown_docs(
                 "Start from a mode and pivot into evidence and owning functions.\n\n"
                 "Steps:\n\n"
                 "1. Open `modes/index.json` and locate the mode by `mode_id`.\n"
-                "2. Use `dispatch_sites[*].callsite_id` with `callsites_ref` to locate the callsite record.\n"
+                "2. Use `dispatch_sites[*].callsite_id` from `modes/index.json` with `callsites_ref` to locate the callsite record.\n"
                 "3. From the callsite record, open the owning function (`functions/f_<addr>.json`) and its decompiler excerpt (`evidence/decomp/`).\n",
                 _json_code_block(rendered),
             ]

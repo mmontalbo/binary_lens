@@ -76,7 +76,6 @@ def write_outputs(
         write_json(layout.errors_dir / "exit_paths.json", derived.exit_paths_index)
         write_json(layout.errors_dir / "error_sites.json", derived.error_sites_index)
         write_json(layout.modes_dir / "index.json", collected.modes_payload)
-        write_json(layout.modes_dir / "dispatch_sites.json", collected.dispatch_sites_payload)
         write_json(layout.modes_dir / "slices.json", derived.modes_slices_index)
         write_json(layout.interfaces_dir / "index.json", collected.interfaces_index_payload)
         write_json(layout.interfaces_dir / "env.json", derived.interfaces_env_index)

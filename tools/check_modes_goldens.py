@@ -19,7 +19,6 @@ from typing import Any
 MODES_RELATIVE_JSON_FILES = (
     Path("manifest.json"),
     Path("modes/index.json"),
-    Path("modes/dispatch_sites.json"),
     Path("modes/slices.json"),
 )
 

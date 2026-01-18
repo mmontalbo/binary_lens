@@ -102,7 +102,6 @@ Goldens live in:
 Each golden includes only these modes-relevant JSON files:
 - `manifest.json`
 - `modes/index.json`
-- `modes/dispatch_sites.json`
 - `modes/slices.json`
 
 Binary SHA256s (from `manifest.json`):

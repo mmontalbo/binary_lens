@@ -194,7 +194,6 @@ def build_pack_index_payload(format_version: str) -> dict[str, object]:
             "schema_readme_ref": "schema/README.md",
             "manifest_ref": "manifest.json",
             "modes_index_ref": "modes/index.json",
-            "modes_dispatch_sites_ref": "modes/dispatch_sites.json",
             "modes_slices_ref": "modes/slices.json",
             "interfaces_index_ref": "interfaces/index.json",
             "interfaces_env_ref": "interfaces/env.json",

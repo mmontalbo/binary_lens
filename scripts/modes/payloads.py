@@ -2,7 +2,7 @@
 
 These helpers build the Milestone 3 "modes" JSON artifacts:
 - `modes/index.json` (mode candidate index)
-- `modes/dispatch_sites.json` (per-dispatch-function token evidence)
+- dispatch-site payloads (token evidence; optional/debug-only)
 
 They should remain schema-stable; refactors in this module should avoid altering
 field meanings, ordering, or truncation behavior.
