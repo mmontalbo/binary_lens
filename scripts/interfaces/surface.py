@@ -241,13 +241,9 @@ def _build_entry(
     has_known_arg = False
     entry: dict[str, Any] = {
         "callsite_id": match.callsite_id,
-        "function_id": match.function_id,
         "operation": spec.name,
         "arg_recovery_status": args.get("status") or "unknown",
     }
-    callee_id = match.target.get("address") if isinstance(match.target, dict) else None
-    if callee_id:
-        entry["callee_id"] = callee_id
 
     if surface == "env":
         var_entry, used_arg = _build_single_string(

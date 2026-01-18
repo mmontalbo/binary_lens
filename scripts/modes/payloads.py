@@ -101,15 +101,9 @@ def _build_modes_index_payload(
         callsite_ids = sorted(mode.get("dispatch_sites") or [], key=addr_to_int)
         dispatch_sites = []
         for callsite_id in callsite_ids:
-            meta = callsite_meta.get(callsite_id, {})
-            caller_id = meta.get("caller_id")
-            if not caller_id:
-                caller_id = (meta.get("caller") or {}).get("address")
             dispatch_sites.append(
                 {
                     "callsite_id": callsite_id,
-                    "caller_id": caller_id,
-                    "callee_id": meta.get("callee_id"),
                 }
             )
         sites_truncated = False

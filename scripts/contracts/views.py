@@ -68,6 +68,40 @@ def _node_name_map(callgraph_nodes: Any) -> dict[str, str]:
     return name_by_id
 
 
+def _callsite_to_function_map(callsites: Any) -> dict[str, str]:
+    records = []
+    if isinstance(callsites, Mapping):
+        records = callsites.get("callsites", [])
+    elif isinstance(callsites, list):
+        records = callsites
+    mapping: dict[str, str] = {}
+    for record in records or []:
+        if not isinstance(record, Mapping):
+            continue
+        callsite_id = _as_str(record.get("callsite") or record.get("callsite_id"))
+        from_entry = record.get("from")
+        if isinstance(from_entry, Mapping):
+            from_addr = _as_str(from_entry.get("address"))
+        else:
+            from_addr = _as_str(from_entry)
+        if callsite_id and from_addr:
+            mapping[callsite_id] = from_addr
+    return mapping
+
+
+def _function_id_for_callsite(
+    entry: Mapping[str, Any],
+    callsite_to_function: Mapping[str, str],
+) -> str | None:
+    func_id = _as_str(entry.get("function_id"))
+    if func_id:
+        return func_id
+    callsite_id = _as_str(entry.get("callsite_id"))
+    if callsite_id:
+        return _as_str(callsite_to_function.get(callsite_id))
+    return None
+
+
 def _mode_name_in_function(func_name: str, mode_name: str) -> bool:
     if not func_name or not mode_name:
         return False
@@ -314,6 +348,7 @@ def build_contract_views(
     string_tags_by_id: Mapping[str, Any] | None,
     string_value_by_id: Mapping[str, Any] | None,
     string_refs_by_func: Mapping[str, Any] | None,
+    callsite_evidence: Any,
     callgraph_payload: Mapping[str, Any] | None,
     callgraph_nodes: Any,
     exported_function_ids: set[str] | None = None,
@@ -334,6 +369,7 @@ def build_contract_views(
     string_value_by_id = string_value_by_id or {}
     string_refs_by_func = string_refs_by_func or {}
     node_name_by_id = _node_name_map(callgraph_nodes)
+    callsite_to_function = _callsite_to_function_map(callsite_evidence)
     name_hints = load_name_hints(name_hints_source)
     use_name_hints = name_hints_enabled(name_hints_source)
     help_marker_string_ids = _help_marker_string_ids(string_tags_by_id, string_value_by_id)
@@ -403,7 +439,7 @@ def build_contract_views(
         if not isinstance(entry, Mapping):
             continue
         callsite_id = _as_str(entry.get("callsite_id"))
-        func_id = _as_str(entry.get("function_id"))
+        func_id = _function_id_for_callsite(entry, callsite_to_function)
         if callsite_id:
             exit_by_callsite[callsite_id] = entry
         if func_id:
@@ -413,7 +449,7 @@ def build_contract_views(
     for entry in env_entries:
         if not isinstance(entry, Mapping):
             continue
-        func_id = _as_str(entry.get("function_id"))
+        func_id = _function_id_for_callsite(entry, callsite_to_function)
         if func_id:
             env_by_function.setdefault(func_id, []).append(entry)
 
@@ -421,7 +457,7 @@ def build_contract_views(
     for entry in output_entries:
         if not isinstance(entry, Mapping):
             continue
-        func_id = _as_str(entry.get("function_id"))
+        func_id = _function_id_for_callsite(entry, callsite_to_function)
         if func_id:
             output_by_function.setdefault(func_id, []).append(entry)
 
@@ -821,7 +857,7 @@ def build_contract_views(
                 callsite_id = _as_str(entry.get("callsite_id")) or "unknown"
                 operation = _as_str(entry.get("operation")) or "unknown"
                 var_value = _env_var_value(entry, string_value_by_id)
-                func_id = _as_str(entry.get("function_id")) or "unknown"
+                func_id = _function_id_for_callsite(entry, callsite_to_function) or "unknown"
                 env_rows.append(
                     [f"`{var_value}`", f"`{operation}`", f"`{callsite_id}`", f"`{func_id}`"]
                 )

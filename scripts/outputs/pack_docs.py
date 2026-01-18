@@ -647,7 +647,7 @@ def build_pack_markdown_docs(
         "- `contracts/index.json`: mode contract index (sharded list).\n"
         "- `contracts/modes/<mode_id>.md`: per-mode contract view (inputs/outputs/diagnostics with evidence refs).\n\n"
         "## Interfaces (`interfaces/`)\n\n"
-        "Each entry is anchored to a `callsite_id` and resolved via `callsites_ref`; string-valued fields prefer `string_id` and resolve via `strings.json`.\n\n"
+        "Each entry is anchored to a `callsite_id` (resolve owning functions via `callsites_ref`); string-valued fields prefer `string_id` and omit value/address when resolved.\n\n"
         "- `env.json`: getenv/setenv/etc; `var` may be `known` (constant string) or `unknown`.\n"
         "- `fs.json`: open/chdir/stat/etc; `paths[*]` may be `known` (constant) or `unknown`.\n"
         "- `process.json`: exec*/spawn/system; `commands[*]` may be constant or unknown.\n"
@@ -658,7 +658,7 @@ def build_pack_markdown_docs(
         "- `cli/parse_loops.json`: localized parse loops (`function_id` + callsite refs; sharded index).\n\n"
         "## Errors (`errors/`)\n\n"
         "- `errors/messages.json`: `string_id` + emitting callsite/function ids (preview via `strings.json`).\n"
-        "- `errors/exit_paths.json`: exit/abort callsites with recovered exit codes when possible (sharded index; optional `target_id`).\n"
+        "- `errors/exit_paths.json`: exit/abort callsites with recovered exit codes when possible (sharded index).\n"
         "- `errors/error_sites.json`: error-emitter callsites (sharded index).\n"
         "\n"
         "## Callgraph (`callgraph/`)\n\n"
@@ -735,7 +735,6 @@ def build_pack_markdown_docs(
                             "template_preview": template_value,
                             "callsite_id": output_example.get("callsite_id"),
                             "callsites_ref": output_payload.get("callsites_ref"),
-                            "function_id": output_example.get("function_id"),
                         }
                     ),
                 ]
@@ -757,7 +756,6 @@ def build_pack_markdown_docs(
                             "var": env_example.get("var"),
                             "callsite_id": env_example.get("callsite_id"),
                             "callsites_ref": env_payload.get("callsites_ref"),
-                            "function_id": env_example.get("function_id"),
                         }
                     ),
                 ]
@@ -787,7 +785,6 @@ def build_pack_markdown_docs(
                             "path_preview": path_preview,
                             "callsite_id": fs_example.get("callsite_id"),
                             "callsites_ref": fs_payload.get("callsites_ref"),
-                            "function_id": fs_example.get("function_id"),
                         }
                     ),
                 ]

@@ -38,6 +38,7 @@ def build_mode_slices(
     selected_string_ids=None,
     error_messages_payload=None,
     exit_paths_payload=None,
+    callsite_to_function=None,
 ):
     max_slices = bounds.optional("max_mode_slices")
     max_roots = bounds.max_mode_slice_roots
@@ -67,11 +68,12 @@ def build_mode_slices(
                     continue
                 messages_by_func.setdefault(func_id, []).append(string_id)
 
+    callsite_to_function = callsite_to_function or {}
     exit_calls_by_func = {}
     if exit_paths_payload:
         for entry in exit_paths_payload.get("direct_calls", []):
-            func_id = entry.get("function_id")
             callsite_id = entry.get("callsite_id")
+            func_id = entry.get("function_id") or callsite_to_function.get(callsite_id)
             if func_id and callsite_id:
                 exit_calls_by_func.setdefault(func_id, []).append(callsite_id)
 

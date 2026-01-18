@@ -78,6 +78,23 @@ def _collect_exported_callsites(*payloads: Any) -> list[str]:
     return sorted(callsite_ids, key=addr_to_int)
 
 
+def _callsite_to_function(callsite_records: Mapping[str, Any] | None) -> dict[str, str]:
+    callsite_to_function: dict[str, str] = {}
+    for callsite_id, record in (callsite_records or {}).items():
+        if not callsite_id or not isinstance(record, Mapping):
+            continue
+        from_entry = record.get("from")
+        if isinstance(from_entry, Mapping):
+            func_id = from_entry.get("address")
+        elif isinstance(from_entry, str):
+            func_id = from_entry
+        else:
+            func_id = None
+        if func_id:
+            callsite_to_function[callsite_id] = func_id
+    return callsite_to_function
+
+
 def derive_payloads(
     collected: CollectedData,
     bounds: Bounds,
@@ -115,6 +132,7 @@ def derive_payloads(
             collected.cli_inputs.check_sites_by_flag_addr,
         )
     with phase(profiler, "build_mode_slices"):
+        callsite_to_function = _callsite_to_function(collected.callsite_records)
         modes_slices_payload = build_mode_slices(
             collected.modes_payload,
             cli_surface,
@@ -123,6 +141,7 @@ def derive_payloads(
             selected_string_ids=collected.selected_string_ids,
             error_messages_payload=collected.error_messages_payload,
             exit_paths_payload=collected.exit_paths_payload,
+            callsite_to_function=callsite_to_function,
         )
 
     callsite_evidence_mode = (bounds.get("callsite_evidence") or "referenced").strip().lower()
@@ -457,6 +476,7 @@ def derive_payloads(
         collected.string_tags_by_id,
         collected.string_value_by_id,
         collected.string_refs_by_func,
+        callsite_evidence,
         callgraph_for_contracts,
         callgraph_nodes,
         exported_function_ids,

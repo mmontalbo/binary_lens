@@ -63,13 +63,7 @@ def derive_exit_paths(
                 exit_code = int(const_value)
         direct_calls.append({
             "callsite_id": callsite_id,
-            "function_id": callsite["function_id"],
-            "target_id": callsite.get("target_id"),
             "exit_code": exit_code,
-            "evidence": {
-                "callsites": [callsite_id],
-                "functions": [callsite.get("function_id")],
-            },
         })
     direct_calls.sort(key=lambda item: addr_to_int(item.get("callsite_id")))
     max_exit_paths = bounds.optional("max_exit_paths")
