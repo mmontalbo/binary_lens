@@ -395,18 +395,10 @@ def collect_interfaces(
 def build_interfaces_index_payload(surfaces: dict[str, dict[str, Any]]) -> dict[str, Any]:
     entries = []
     for name in SURFACE_ORDER:
-        payload = surfaces.get(name, {})
-        max_entries = payload.get("max_entries")
-        if isinstance(max_entries, bool):
-            max_entries = None
         entries.append(
             {
                 "name": name,
                 "path": f"interfaces/{name}.json",
-                "entry_count": len(payload.get("entries") or []),
-                "total_candidates": payload.get("total_candidates", 0),
-                "truncated": payload.get("truncated", False),
-                "max_entries": max_entries,
             }
         )
     return {
