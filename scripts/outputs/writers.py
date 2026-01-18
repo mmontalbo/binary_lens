@@ -54,6 +54,13 @@ def _looks_like_help_printer(func_id, string_refs_by_func, string_tags_by_id, st
 
 def build_callsite_records(callsite_records, call_edges, extra_callsites=None, callsite_ids=None):
     """Prepare callsite evidence records for the sharded callsites surface."""
+    def _addr_from_entry(entry):
+        if isinstance(entry, str):
+            return entry
+        if isinstance(entry, dict):
+            return entry.get("address")
+        return None
+
     # Only emit callsite evidence for selected edges plus explicitly requested extras.
     selected_callsite_records = {}
     if callsite_ids is None:
@@ -64,14 +71,16 @@ def build_callsite_records(callsite_records, call_edges, extra_callsites=None, c
                 continue
             record = selected_callsite_records.get(callsite)
             if record is None:
+                from_addr = _addr_from_entry(base_record.get("from"))
                 record = {
                     "callsite": base_record.get("callsite"),
-                    "from": base_record.get("from"),
-                    "instruction": base_record.get("instruction"),
+                    "from": from_addr,
                     "targets": [],
                 }
                 selected_callsite_records[callsite] = record
-            record["targets"].append(edge.get("to"))
+            to_addr = _addr_from_entry(edge.get("to"))
+            if to_addr:
+                record["targets"].append(to_addr)
 
         if extra_callsites:
             for callsite in extra_callsites:
@@ -80,11 +89,16 @@ def build_callsite_records(callsite_records, call_edges, extra_callsites=None, c
                 base_record = callsite_records.get(callsite)
                 if base_record is None:
                     continue
+                from_addr = _addr_from_entry(base_record.get("from"))
+                targets = []
+                for target in base_record.get("targets") or []:
+                    target_addr = _addr_from_entry(target)
+                    if target_addr:
+                        targets.append(target_addr)
                 selected_callsite_records[callsite] = {
                     "callsite": base_record.get("callsite"),
-                    "from": base_record.get("from"),
-                    "instruction": base_record.get("instruction"),
-                    "targets": list(base_record.get("targets") or []),
+                    "from": from_addr,
+                    "targets": targets,
                 }
     else:
         ordered_callsites = []
@@ -110,25 +124,32 @@ def build_callsite_records(callsite_records, call_edges, extra_callsites=None, c
                 continue
             record = selected_callsite_records.get(callsite)
             if record is None:
+                from_addr = _addr_from_entry(base_record.get("from"))
                 record = {
                     "callsite": base_record.get("callsite"),
-                    "from": base_record.get("from"),
-                    "instruction": base_record.get("instruction"),
+                    "from": from_addr,
                     "targets": [],
                 }
                 selected_callsite_records[callsite] = record
-            record["targets"].append(edge.get("to"))
+            to_addr = _addr_from_entry(edge.get("to"))
+            if to_addr:
+                record["targets"].append(to_addr)
         for callsite in ordered_callsites:
             if callsite in selected_callsite_records:
                 continue
             base_record = callsite_records.get(callsite)
             if base_record is None:
                 continue
+            from_addr = _addr_from_entry(base_record.get("from"))
+            targets = []
+            for target in base_record.get("targets") or []:
+                target_addr = _addr_from_entry(target)
+                if target_addr:
+                    targets.append(target_addr)
             selected_callsite_records[callsite] = {
                 "callsite": base_record.get("callsite"),
-                "from": base_record.get("from"),
-                "instruction": base_record.get("instruction"),
-                "targets": list(base_record.get("targets") or []),
+                "from": from_addr,
+                "targets": targets,
             }
 
     ordered_callsites = sorted(selected_callsite_records.keys(), key=addr_to_int)
