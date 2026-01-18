@@ -6,7 +6,9 @@ from collections.abc import Mapping
 from typing import Any
 
 from collectors.callgraph import (
+    build_callgraph_nodes,
     build_function_metrics,
+    build_minimal_call_edges,
     build_signal_set,
     collect_function_calls,
     select_call_edges,
@@ -25,6 +27,7 @@ from modes.refs import attach_mode_callsite_refs
 from modes.slices import build_mode_slices
 from outputs.pack_docs import build_pack_markdown_docs
 from outputs.payloads import (
+    build_callgraph_nodes_payload,
     build_callgraph_payload,
     build_cli_options_payload,
     build_cli_parse_loops_payload,
@@ -105,6 +108,9 @@ def derive_payloads(
         signal_set,
         bounds.max_call_edges,
     )
+    callgraph_for_contracts = {"edges": call_edges}
+    callgraph_nodes = build_callgraph_nodes(call_edges, collected.function_meta_by_addr)
+    callgraph_edges = build_minimal_call_edges(call_edges)
     with phase(profiler, "derive_cli_surface"):
         cli_surface = derive_cli_surface(
             collected.cli_inputs.parse_groups,
@@ -168,11 +174,13 @@ def derive_payloads(
     attach_cli_callsite_refs(cli_surface, callsite_paths)
 
     callgraph = build_callgraph_payload(
-        call_edges,
+        callgraph_edges,
         total_edges,
         truncated_edges,
         bounds,
         collected.call_edge_stats,
+        nodes_ref="callgraph/nodes.json",
+        nodes_total=len(callgraph_nodes),
     )
 
     calls_by_func = collect_function_calls(call_edges)
@@ -225,6 +233,14 @@ def derive_payloads(
         shard_dir="callgraph/edges",
         item_id_key=None,
         item_kind="callgraph_edges",
+    )
+    callgraph_nodes_payload = build_callgraph_nodes_payload(callgraph_nodes)
+    callgraph_nodes_index, callgraph_nodes_shards = build_sharded_list_index(
+        callgraph_nodes_payload,
+        list_key="nodes",
+        shard_dir="callgraph/nodes",
+        item_id_key=None,
+        item_kind="callgraph_nodes",
     )
     cli_options_index, cli_options_shards = build_sharded_list_index(
         cli_options_payload,
@@ -459,7 +475,7 @@ def derive_payloads(
         collected.string_tags_by_id,
         collected.string_value_by_id,
         collected.string_refs_by_func,
-        callgraph,
+        callgraph_for_contracts,
         collected.function_meta_by_addr,
         exported_function_ids,
         name_hints_source=bounds,
@@ -481,6 +497,7 @@ def derive_payloads(
         modes_slices_index=modes_slices_index,
         strings_index=strings_index,
         callgraph_index=callgraph_index,
+        callgraph_nodes_index=callgraph_nodes_index,
         error_messages_index=error_messages_index,
         exit_paths_index=exit_paths_index,
         error_sites_index=error_sites_index,
@@ -495,6 +512,7 @@ def derive_payloads(
         modes_slices_shards=modes_slices_shards,
         strings_shards=strings_shards,
         callgraph_shards=callgraph_shards,
+        callgraph_nodes_shards=callgraph_nodes_shards,
         cli_options_shards=cli_options_shards,
         error_messages_shards=error_messages_shards,
         exit_paths_shards=exit_paths_shards,

@@ -61,14 +61,35 @@ def build_binary_info(program):
     return info, hashes
 
 
-def build_callgraph_payload(call_edges, total_edges, truncated_edges, bounds: Bounds, call_edge_stats):
-    return {
+def build_callgraph_payload(
+    call_edges,
+    total_edges,
+    truncated_edges,
+    bounds: Bounds,
+    call_edge_stats,
+    *,
+    nodes_ref: str | None = None,
+    nodes_total: int | None = None,
+):
+    payload = {
         "total_edges": total_edges,
         "selected_edges": len(call_edges),
         "truncated": truncated_edges,
         "max_edges": bounds.optional("max_call_edges"),
         "metrics": call_edge_stats,
         "edges": call_edges,
+    }
+    if nodes_ref:
+        payload["nodes_ref"] = nodes_ref
+    if nodes_total is not None:
+        payload["nodes_total"] = nodes_total
+    return payload
+
+
+def build_callgraph_nodes_payload(nodes):
+    return {
+        "total_nodes": len(nodes),
+        "nodes": nodes,
     }
 
 
@@ -192,6 +213,7 @@ def build_pack_index_payload(format_version: str) -> dict[str, object]:
             "functions_index_ref": "functions/index.json",
             "imports_ref": "imports.json",
             "callgraph_ref": "callgraph.json",
+            "callgraph_nodes_ref": "callgraph/nodes.json",
         },
         "conventions": {
             "refs": "Paths in *_ref / *_refs are relative to the pack root.",

@@ -363,6 +363,10 @@ def build_function_meta(functions):
     meta = {}
     for func in functions:
         addr = addr_str(func.getEntryPoint())
+        try:
+            signature = func.getSignature().toString()
+        except Exception:
+            signature = None
         meta[addr] = {
             "name": func.getName(),
             "address": addr,
@@ -370,6 +374,8 @@ def build_function_meta(functions):
             "is_thunk": func.isThunk(),
             "size": function_size(func),
         }
+        if signature:
+            meta[addr]["signature"] = signature
     return meta
 
 
@@ -407,3 +413,76 @@ def select_call_edges(call_edges_all, signal_set, max_edges):
         call_edges = call_edges[:max_edges]
         truncated_edges = True
     return call_edges, total_edges, truncated_edges
+
+
+def build_minimal_call_edges(call_edges):
+    minimal = []
+    for edge in call_edges or []:
+        if not isinstance(edge, dict):
+            continue
+        callsite = edge.get("callsite")
+        from_addr = (edge.get("from") or {}).get("address")
+        to_addr = (edge.get("to") or {}).get("address")
+        if not callsite or not from_addr or not to_addr:
+            continue
+        minimal.append({
+            "callsite": callsite,
+            "from": from_addr,
+            "to": to_addr,
+        })
+    return minimal
+
+
+def build_callgraph_nodes(call_edges, function_meta_by_addr=None):
+    nodes_by_addr = {}
+
+    def ensure_node(addr):
+        if not addr:
+            return None
+        node = nodes_by_addr.get(addr)
+        if node is None:
+            node = {"address": addr}
+            nodes_by_addr[addr] = node
+        return node
+
+    for edge in call_edges or []:
+        if not isinstance(edge, dict):
+            continue
+        from_entry = edge.get("from") or {}
+        to_entry = edge.get("to") or {}
+        from_addr = from_entry.get("address")
+        to_addr = to_entry.get("address")
+        from_node = ensure_node(from_addr)
+        if from_node is not None:
+            name = from_entry.get("function")
+            if name and not from_node.get("name"):
+                from_node["name"] = name
+        to_node = ensure_node(to_addr)
+        if to_node is not None:
+            name = to_entry.get("name")
+            if name and not to_node.get("name"):
+                to_node["name"] = name
+            if "external" in to_entry and "external" not in to_node:
+                external = to_entry.get("external")
+                if external is not None:
+                    to_node["external"] = external
+            library = to_entry.get("library")
+            if library and not to_node.get("library"):
+                to_node["library"] = library
+
+    for addr, meta in (function_meta_by_addr or {}).items():
+        if addr not in nodes_by_addr:
+            continue
+        node = nodes_by_addr[addr]
+        name = meta.get("name")
+        if name and not node.get("name"):
+            node["name"] = name
+        signature = meta.get("signature")
+        if signature and not node.get("signature"):
+            node["signature"] = signature
+        if "is_external" in meta and "external" not in node:
+            node["external"] = meta.get("is_external")
+
+    nodes = list(nodes_by_addr.values())
+    nodes.sort(key=lambda item: addr_to_int(item.get("address")))
+    return nodes

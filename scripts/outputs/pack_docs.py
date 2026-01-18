@@ -549,7 +549,8 @@ def build_pack_markdown_docs(
         "`callsite_evidence=all` to include evidence for every callgraph callsite.\n\n"
         "## IDs and lookups\n\n"
         "- `function_id` values are addresses as hex strings (e.g., `00118020`). Resolve via `functions/index.json` (sharded index).\n"
-        "- `string_id` values (e.g., `s_0020733a`) resolve via `strings.json` (sharded index).\n\n"
+        "- `string_id` values (e.g., `s_0020733a`) resolve via `strings.json` (sharded index).\n"
+        "- `callgraph.json` edges use `from`/`to` addresses; resolve names/signatures via `callgraph/nodes.json` (sharded index).\n\n"
         "## Truncation and unknowns\n\n"
         "- `truncated: true` means the exporter bounded that record/list; treat as partial coverage.\n"
         "- `status: unknown` means argument recovery did not resolve a constant value at that site.\n"
@@ -580,7 +581,8 @@ def build_pack_markdown_docs(
         "- `functions/`: function index and selected full function exports\n"
         "- `imports.json`: external symbol inventory\n"
         "- `strings.json`: string inventory (sharded index)\n"
-        "- `callgraph.json`: call edges (sharded index)\n\n"
+        "- `callgraph.json`: call edges (sharded index)\n"
+        "- `callgraph/nodes.json`: callgraph node metadata (sharded index)\n\n"
         "## Raw evidence\n\n"
         "- `evidence/callsites/`: bounded callsite context + best-effort recovered args\n"
         "- `evidence/decomp/`: bounded decompiler excerpts\n\n"
@@ -620,6 +622,10 @@ def build_pack_markdown_docs(
         "- `errors/messages.json`: message strings + emitting callsites (sharded index).\n"
         "- `errors/exit_paths.json`: exit/abort callsites with recovered exit codes when possible (sharded index).\n"
         "- `errors/error_sites.json`: error-emitter callsites (sharded index).\n"
+        "\n"
+        "## Callgraph (`callgraph/`)\n\n"
+        "- `callgraph.json`: call edges; each edge includes `callsite`, `from`, and `to` addresses.\n"
+        "- `callgraph/nodes.json`: node metadata keyed by address (name/library/signature when available).\n"
     )
 
     examples_sections: list[str] = [
@@ -796,6 +802,10 @@ def build_pack_markdown_docs(
         "- `manifest.json`\n"
         "- `docs/overview.md`\n"
         "- `docs/field_guide.md`\n"
+        "\n"
+        "## Callgraph\n\n"
+        "- `callgraph.json` is a sharded list of call edges; edges include `callsite`, `from`, and `to` addresses.\n"
+        "- `callgraph/nodes.json` is a sharded list of node metadata keyed by address (names/libraries/signatures).\n"
     )
 
     return docs

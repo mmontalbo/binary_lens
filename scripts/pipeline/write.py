@@ -40,6 +40,7 @@ def write_outputs(
     with phase(profiler, "write_outputs"):
         ensure_dir(layout.root / "strings")
         ensure_dir(layout.root / "callgraph" / "edges")
+        ensure_dir(layout.root / "callgraph" / "nodes")
         ensure_dir(layout.modes_dir / "slices")
         ensure_dir(layout.cli_dir / "parse_loops")
         ensure_dir(layout.cli_dir / "options")
@@ -65,6 +66,7 @@ def write_outputs(
         write_json(layout.root / "imports.json", collected.imports)
         write_json(layout.root / "strings.json", derived.strings_index)
         write_json(layout.root / "callgraph.json", derived.callgraph_index)
+        write_json(layout.root / "callgraph" / "nodes.json", derived.callgraph_nodes_index)
         write_json(layout.errors_dir / "messages.json", derived.error_messages_index)
         write_json(layout.errors_dir / "exit_paths.json", derived.exit_paths_index)
         write_json(layout.errors_dir / "error_sites.json", derived.error_sites_index)
@@ -87,6 +89,8 @@ def write_outputs(
         for rel_path, content in derived.strings_shards.items():
             write_json(layout.root / rel_path, content)
         for rel_path, content in derived.callgraph_shards.items():
+            write_json(layout.root / rel_path, content)
+        for rel_path, content in derived.callgraph_nodes_shards.items():
             write_json(layout.root / rel_path, content)
         for rel_path, content in derived.cli_options_shards.items():
             write_json(layout.root / rel_path, content)
