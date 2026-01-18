@@ -236,6 +236,19 @@ def _parse_loop_function_ids(cli_parse_loops_payload: Mapping[str, Any] | None) 
     return parse_loop_by_id
 
 
+def _resolve_mode_name(mode: Mapping[str, Any], string_value_by_id: Mapping[str, Any]) -> str:
+    name = _as_str(mode.get("name"))
+    if name:
+        return name
+    token = mode.get("token") if isinstance(mode.get("token"), Mapping) else {}
+    string_id = _as_str(token.get("string_id"))
+    if string_id:
+        resolved = _as_str(string_value_by_id.get(string_id))
+        if resolved:
+            return resolved
+    return "(unknown)"
+
+
 def _format_function_evidence_refs(func_id: str, exported_function_ids: set[str] | None) -> str:
     func_filename = addr_filename("f", func_id, "json")
     function_ref = pack_path("functions", func_filename)
@@ -265,13 +278,19 @@ def _build_callgraph_neighbors(callgraph_payload: Mapping[str, Any] | None) -> t
     return forward, reverse
 
 
-def _env_var_value(entry: Mapping[str, Any]) -> str:
+def _env_var_value(entry: Mapping[str, Any], string_value_by_id: Mapping[str, Any]) -> str:
     var = entry.get("var")
     if not isinstance(var, Mapping):
         return "unknown"
     if var.get("status") != "known":
         return "unknown"
-    return _as_str(var.get("value")) or "unknown"
+    value = _as_str(var.get("value"))
+    if value:
+        return value
+    string_id = _as_str(var.get("string_id"))
+    if string_id:
+        return _as_str(string_value_by_id.get(string_id)) or "unknown"
+    return "unknown"
 
 
 def _template_status(entry: Mapping[str, Any]) -> tuple[int, int]:
@@ -415,7 +434,7 @@ def build_contract_views(
         mode_id = _as_str(mode.get("mode_id"))
         if not mode_id:
             continue
-        mode_name = _as_str(mode.get("name")) or "(unknown)"
+        mode_name = _resolve_mode_name(mode, string_value_by_id)
         slice_entry = slices_by_id.get(mode_id, {})
 
         implementation_roots = mode.get("implementation_roots") or []
@@ -505,7 +524,9 @@ def build_contract_views(
         env_full_candidates = env_scoped_entries or env_entries
         env_total_count = len(env_full_candidates)
         env_unknown_count = sum(
-            1 for entry in env_full_candidates if _env_var_value(entry) == "unknown"
+            1
+            for entry in env_full_candidates
+            if _env_var_value(entry, string_value_by_id) == "unknown"
         )
         env_candidates, env_truncated = _truncate(env_full_candidates, MAX_ENV_ENTRIES)
 
@@ -799,7 +820,7 @@ def build_contract_views(
             for entry in env_candidates:
                 callsite_id = _as_str(entry.get("callsite_id")) or "unknown"
                 operation = _as_str(entry.get("operation")) or "unknown"
-                var_value = _env_var_value(entry)
+                var_value = _env_var_value(entry, string_value_by_id)
                 func_id = _as_str(entry.get("function_id")) or "unknown"
                 env_rows.append(
                     [f"`{var_value}`", f"`{operation}`", f"`{callsite_id}`", f"`{func_id}`"]

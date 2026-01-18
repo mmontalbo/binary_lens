@@ -62,9 +62,10 @@ def string_candidates_for_index(
             "status": "known",
             "address": addr,
             "string_id": string_id,
-            "value": value,
             "arg_index": index,
         }
+        if string_id is None and value is not None:
+            value_entry["value"] = value
         source = entry.get("source")
         if source:
             value_entry["source"] = source

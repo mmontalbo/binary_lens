@@ -136,11 +136,17 @@ def _coverage_table(manifest: Mapping[str, Any]) -> str:
     return "\n".join(lines)
 
 
-def _interface_value(entry: Mapping[str, Any]) -> str | None:
+def _interface_value(entry: Mapping[str, Any], string_value_by_id: Mapping[str, str]) -> str | None:
     status = entry.get("status")
     if status != "known":
         return None
-    return _as_str(entry.get("value"))
+    value = _as_str(entry.get("value"))
+    if value:
+        return value
+    string_id = _as_str(entry.get("string_id"))
+    if string_id:
+        return _as_str(string_value_by_id.get(string_id))
+    return None
 
 
 def _interface_operation_counts(entries: list[Mapping[str, Any]], *, max_items: int = 8) -> list[tuple[str, int]]:
@@ -156,13 +162,14 @@ def _interface_known_values(
     entries: list[Mapping[str, Any]],
     *,
     field: str,
+    string_value_by_id: Mapping[str, str],
     max_items: int = 25,
 ) -> list[str]:
     values: set[str] = set()
     for entry in entries:
         raw = entry.get(field)
         if isinstance(raw, Mapping):
-            value = _interface_value(raw)
+            value = _interface_value(raw, string_value_by_id)
             if value:
                 values.add(value)
     return sorted(values)[:max_items]
@@ -172,6 +179,7 @@ def _interface_known_values_list(
     entries: list[Mapping[str, Any]],
     *,
     list_field: str,
+    string_value_by_id: Mapping[str, str],
     max_items: int = 25,
 ) -> list[str]:
     values: set[str] = set()
@@ -182,7 +190,7 @@ def _interface_known_values_list(
         for item in raw:
             if not isinstance(item, Mapping):
                 continue
-            value = _interface_value(item)
+            value = _interface_value(item, string_value_by_id)
             if value:
                 values.add(value)
     return sorted(values)[:max_items]
@@ -631,14 +639,14 @@ def build_pack_markdown_docs(
         "- `evidence/callsites.json`: callsite ids with `from`/`targets` addresses (resolve names via `callgraph/nodes.json`).\n"
         "- `evidence/decomp/f_<addr>.json`: bounded decompiler excerpt for a function.\n\n"
         "## Modes (`modes/`)\n\n"
-        "- `modes/index.json`: mode inventory; each mode includes `mode_id`, `name`, `kind`, and dispatch evidence.\n"
-        "- `modes/dispatch_sites.json`: localized dispatch regions and token candidates.\n"
+        "- `modes/index.json`: mode inventory; each mode includes `mode_id`, `kind`, and dispatch evidence (resolve names via `token.string_id` + `strings.json`).\n"
+        "- `modes/dispatch_sites.json`: localized dispatch regions and token candidates (`function_id` + `callsite_ids`).\n"
         "- `modes/slices.json`: per-mode \"start here\" slices (sharded index).\n\n"
         "## Contracts (`contracts/`)\n\n"
         "- `contracts/index.json`: mode contract index (sharded list).\n"
         "- `contracts/modes/<mode_id>.md`: per-mode contract view (inputs/outputs/diagnostics with evidence refs).\n\n"
         "## Interfaces (`interfaces/`)\n\n"
-        "Each entry is anchored to a `callsite_id` and resolved via `callsites_ref`.\n\n"
+        "Each entry is anchored to a `callsite_id` and resolved via `callsites_ref`; string-valued fields prefer `string_id` and resolve via `strings.json`.\n\n"
         "- `env.json`: getenv/setenv/etc; `var` may be `known` (constant string) or `unknown`.\n"
         "- `fs.json`: open/chdir/stat/etc; `paths[*]` may be `known` (constant) or `unknown`.\n"
         "- `process.json`: exec*/spawn/system; `commands[*]` may be constant or unknown.\n"
@@ -646,15 +654,15 @@ def build_pack_markdown_docs(
         "- `output.json`: printf/fprintf/write/etc; `templates[*]` and `channel` are best-effort.\n\n"
         "## CLI (`cli/`)\n\n"
         "- `cli/options.json`: option token inventory (ids + parse loop/callsite refs).\n"
-        "- `cli/parse_loops.json`: localized parse loops (sharded index).\n\n"
+        "- `cli/parse_loops.json`: localized parse loops (`function_id` + callsite refs; sharded index).\n\n"
         "## Errors (`errors/`)\n\n"
         "- `errors/messages.json`: `string_id` + emitting callsite/function ids (preview via `strings.json`).\n"
-        "- `errors/exit_paths.json`: exit/abort callsites with recovered exit codes when possible (sharded index).\n"
+        "- `errors/exit_paths.json`: exit/abort callsites with recovered exit codes when possible (sharded index; optional `target_id`).\n"
         "- `errors/error_sites.json`: error-emitter callsites (sharded index).\n"
         "\n"
         "## Callgraph (`callgraph/`)\n\n"
         "- `callgraph.json`: call edges; each edge includes `callsite`, `from`, and `to` addresses.\n"
-        "- `callgraph/nodes.json`: node metadata keyed by address (name/library/signature when available).\n"
+        "- `callgraph/nodes.json`: node metadata keyed by address (name/signature when available).\n"
     )
 
     examples_sections: list[str] = [
@@ -667,9 +675,15 @@ def build_pack_markdown_docs(
         mode_id = _as_str(top_mode.get("mode_id"))
         dispatch_site = _first_dict_entry(top_mode.get("dispatch_sites"))
         rep_callsite = _as_str(dispatch_site.get("callsite_id")) if isinstance(dispatch_site, Mapping) else None
+        mode_name = _as_str(top_mode.get("name"))
+        if not mode_name:
+            token = top_mode.get("token") if isinstance(top_mode.get("token"), Mapping) else {}
+            string_id = _as_str(token.get("string_id"))
+            if string_id:
+                mode_name = _as_str(string_value_by_id.get(string_id))
         rendered = {
             "mode_id": mode_id,
-            "name": _as_str(top_mode.get("name")),
+            "name": mode_name,
             "kind": top_mode.get("kind"),
             "dispatch_sites": (top_mode.get("dispatch_sites") or [])[:1],
             "dispatch_roots": (top_mode.get("dispatch_roots") or [])[:1],
@@ -707,7 +721,7 @@ def build_pack_markdown_docs(
             if isinstance(templates, list):
                 for template in templates:
                     if isinstance(template, Mapping) and template.get("status") == "known":
-                        template_value = _as_str(template.get("value"))
+                        template_value = _interface_value(template, string_value_by_id)
                         break
             examples_sections.extend(
                 [
@@ -761,7 +775,7 @@ def build_pack_markdown_docs(
             if isinstance(paths, list):
                 for path in paths:
                     if isinstance(path, Mapping) and path.get("status") == "known":
-                        path_preview = _as_str(path.get("value"))
+                        path_preview = _interface_value(path, string_value_by_id)
                         break
             examples_sections.extend(
                 [
@@ -845,7 +859,7 @@ def build_pack_markdown_docs(
         "\n"
         "## Callgraph\n\n"
         "- `callgraph.json` is a sharded list of call edges; edges include `callsite`, `from`, and `to` addresses.\n"
-        "- `callgraph/nodes.json` is a sharded list of node metadata keyed by address (names/libraries/signatures).\n"
+        "- `callgraph/nodes.json` is a sharded list of node metadata keyed by address (names/signatures).\n"
         "\n"
         "## Callsites\n\n"
         "- `evidence/callsites.json` is a sharded list of callsite ids with `from`/`targets` addresses.\n"

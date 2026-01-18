@@ -144,10 +144,12 @@ def _build_modes_index_payload(
         name = mode.get("name")
         string_id = mode.get("string_id")
         token = {
-            "value": name,
             "string_id": string_id,
             "address": mode.get("address"),
         }
+        if not string_id and name:
+            token["value"] = name
+        sort_name = name or ""
         kind, kind_basis = _derive_mode_kind(
             mode,
             dispatch_kind_by_callsite,
@@ -192,8 +194,8 @@ def _build_modes_index_payload(
             impl_roots_truncated = True
         entry = {
             "mode_id": mode.get("mode_id"),
-            "name": name,
-            "unknown_name": not bool(name),
+            "name": name if not string_id else None,
+            "unknown_name": not bool(name or string_id),
             "token": token,
             "kind": kind,
             "dispatch_roots": root_entries,
@@ -210,6 +212,7 @@ def _build_modes_index_payload(
                 "callsites": callsite_ids,
                 "functions": sorted((mode.get("dispatch_roots") or {}).keys(), key=addr_to_int),
             },
+            "_sort_name": sort_name,
         }
         if kind_basis:
             entry["kind_basis"] = kind_basis
@@ -220,7 +223,7 @@ def _build_modes_index_payload(
             -item.get("dispatch_site_count", 0),
             -item.get("dispatch_root_count", 0),
             -item.get("implementation_root_count", 0),
-            item.get("name") or "",
+            item.get("_sort_name") or "",
             item.get("mode_id") or "",
         )
     )
@@ -229,6 +232,9 @@ def _build_modes_index_payload(
     if max_modes and total_modes > max_modes:
         modes = modes[:max_modes]
         truncated = True
+
+    for entry in modes:
+        entry.pop("_sort_name", None)
 
     selected_mode_ids = set([entry.get("mode_id") for entry in modes if entry.get("mode_id")])
 
@@ -325,24 +331,29 @@ def _build_dispatch_sites_payload(
         token_entries = []
         for key, count in token_counts_selected.items():
             token = token_meta_selected.get(key, {})
+            name = token.get("value")
+            string_id = token.get("string_id")
             token_entries.append(
                 {
                     "mode_id": token.get("mode_id"),
-                    "name": token.get("value"),
-                    "string_id": token.get("string_id"),
+                    "name": name if not string_id else None,
+                    "string_id": string_id,
                     "address": token.get("address"),
                     "kind": token.get("kind"),
                     "occurrence_count": count,
+                    "_sort_name": name or "",
                 }
             )
 
         token_entries.sort(
             key=lambda item: (
                 -item.get("occurrence_count", 0),
-                item.get("name") or "",
+                item.get("_sort_name") or "",
                 item.get("mode_id") or "",
             )
         )
+        for entry in token_entries:
+            entry.pop("_sort_name", None)
         token_truncated = False
         if max_tokens and len(token_entries) > max_tokens:
             token_entries = token_entries[:max_tokens]
