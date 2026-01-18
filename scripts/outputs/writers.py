@@ -7,7 +7,7 @@ from export_primitives import addr_filename, addr_str
 from export_profile import profiled_decompile
 from ghidra.app.decompiler import DecompInterface
 
-from .io import pack_path, write_json, write_text
+from .io import pack_path, write_json
 
 MAX_HELP_DECOMP_LINES = 600
 
@@ -177,7 +177,6 @@ def write_function_exports(
     for func in full_functions:
         entry_addr = addr_str(func.getEntryPoint())
         func_filename = addr_filename("f", entry_addr, "json")
-        func_md_filename = addr_filename("f", entry_addr, "md")
         decomp_filename = addr_filename("f", entry_addr, "json")
         decomp_ref = pack_path("evidence", "decomp", decomp_filename)
 
@@ -230,13 +229,6 @@ def write_function_exports(
         }
 
         write_json(os.path.join(functions_dir, func_filename), detail)
-
-        md_content = "# Function %s (%s)\n\n" % (func.getName(), entry_addr)
-        md_content += "Evidence:\n\n"
-        md_content += "- JSON: %s\n" % pack_path("functions", func_filename)
-        md_content += "- Decompiler excerpt: %s\n\n" % decomp_ref
-        md_content += "Notes:\n\n- [ ] Observations\n- [ ] Questions\n"
-        write_text(os.path.join(functions_dir, func_md_filename), md_content)
 
         # Decompiler excerpts are bounded to keep evidence lightweight.
         timeout_seconds = 30
