@@ -68,10 +68,7 @@ def _init_option(long_name, short_name, has_arg):
         "long_name": long_name,
         "short_name": short_name,
         "has_arg": has_arg or "unknown",
-        "evidence": [],
         "parse_sites": [],
-        "flag_vars": [],
-        "check_sites": [],
         "parse_loop_ids": [],
     }
 
@@ -85,7 +82,6 @@ def _add_parse_site(option, callsite_id, caller, max_sites):
         return
     option["parse_sites"].append({
         "callsite_id": callsite_id,
-        "function": caller,
     })
 
 
@@ -186,25 +182,14 @@ def _collect_parse_option_entries(
         detail = parse_details_by_callsite.get(callsite_id)
         if not detail:
             continue
-        caller = detail.get("caller")
         loop_id = parse_loop_id_by_callsite.get(callsite_id)
         optstring = detail.get("optstring")
         if optstring:
             for opt in optstring.get("options", []):
                 short_name = opt.get("short_name")
                 option = _init_option(None, short_name, opt.get("has_arg"))
-                _add_parse_site(option, callsite_id, caller, max_parse_sites)
+                _add_parse_site(option, callsite_id, None, max_parse_sites)
                 _add_parse_loop_id(option, loop_id)
-                _add_evidence(
-                    option,
-                    {
-                        "kind": "optstring",
-                        "callsite_id": callsite_id,
-                        "optstring_address": optstring.get("address"),
-                        "string_id": optstring.get("string_id"),
-                    },
-                    max_evidence,
-                )
                 raw_options.append(option)
 
         longopts = detail.get("longopts")
@@ -213,30 +198,8 @@ def _collect_parse_option_entries(
                 long_name = entry.get("name")
                 short_name = _short_from_val(entry.get("val"))
                 option = _init_option(long_name, short_name, entry.get("has_arg"))
-                _add_parse_site(option, callsite_id, caller, max_parse_sites)
+                _add_parse_site(option, callsite_id, None, max_parse_sites)
                 _add_parse_loop_id(option, loop_id)
-                _add_evidence(
-                    option,
-                    {
-                        "kind": "longopt_entry",
-                        "callsite_id": callsite_id,
-                        "table_address": longopts.get("address"),
-                        "entry_address": entry.get("entry_address"),
-                        "name_address": entry.get("name_address"),
-                        "string_id": entry.get("string_id"),
-                    },
-                    max_evidence,
-                )
-                flag_addr = entry.get("flag_address")
-                if flag_addr:
-                    _add_flag_var(
-                        option,
-                        flag_addr,
-                        entry.get("entry_address"),
-                        entry.get("name_address"),
-                        max_flag_vars,
-                    )
-                    _add_check_sites(option, flag_addr, check_sites_by_flag_addr, max_check_sites)
                 raw_options.append(option)
     return raw_options
 
@@ -254,7 +217,6 @@ def _collect_compare_option_entries(
         detail = compare_details_by_callsite.get(callsite_id)
         if not detail:
             continue
-        caller = detail.get("caller")
         loop_id = parse_loop_id_by_callsite.get(callsite_id)
         for token in detail.get("option_tokens", []):
             option = _init_option(
@@ -262,19 +224,8 @@ def _collect_compare_option_entries(
                 token.get("short_name"),
                 token.get("has_arg"),
             )
-            _add_parse_site(option, callsite_id, caller, max_parse_sites)
+            _add_parse_site(option, callsite_id, None, max_parse_sites)
             _add_parse_loop_id(option, loop_id)
-            _add_evidence(
-                option,
-                {
-                    "kind": "direct_compare",
-                    "callsite_id": callsite_id,
-                    "string_id": token.get("string_id"),
-                    "string_address": token.get("address"),
-                    "compare_callee": detail.get("callee"),
-                },
-                max_evidence,
-            )
             raw_options.append(option)
     return raw_options
 
@@ -298,21 +249,9 @@ def _merge_option_entries(raw_options, max_parse_sites, max_evidence, max_flag_v
             _add_parse_site(
                 option,
                 site.get("callsite_id"),
-                site.get("function"),
+                None,
                 max_parse_sites,
             )
-        for evidence in entry.get("evidence", []):
-            _add_evidence(option, evidence, max_evidence)
-        for flag_var in entry.get("flag_vars", []):
-            _add_flag_var(
-                option,
-                flag_var.get("address"),
-                flag_var.get("entry_address"),
-                flag_var.get("name_address"),
-                max_flag_vars,
-            )
-        for site in entry.get("check_sites", []):
-            _add_check_site_entry(option, site, max_check_sites)
         for loop_id in entry.get("parse_loop_ids", []):
             _add_parse_loop_id(option, loop_id)
     options_list = list(options_map.values())
@@ -325,7 +264,6 @@ def _merge_option_entries(raw_options, max_parse_sites, max_evidence, max_flag_v
     options_list.sort(
         key=lambda item: (
             -len(item.get("parse_sites") or []),
-            -len(item.get("evidence") or []),
             item.get("long_name") or "",
             item.get("short_name") or "",
         )
@@ -342,10 +280,7 @@ def _finalize_option_entries(options_list, max_options):
 
     for idx, option in enumerate(options_list, start=1):
         option["id"] = "opt_%03d" % idx
-        option.pop("_seen_evidence", None)
         option.pop("_seen_parse_sites", None)
-        option.pop("_seen_flag_vars", None)
-        option.pop("_seen_check_sites", None)
         option.pop("_seen_parse_loops", None)
     return options_list, total_options, truncated_options
 

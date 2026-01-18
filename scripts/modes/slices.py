@@ -10,8 +10,8 @@ from export_primitives import addr_to_int
 from modes.name_heuristics import prefer_cmd_table_roots
 
 
-def _collect_option_ids_from_parse_sites(options_list, func_ids, max_options):
-    if not func_ids:
+def _collect_option_ids_from_parse_sites(options_list, func_ids, max_options, parse_loop_by_id):
+    if not func_ids or not parse_loop_by_id:
         return []
     option_ids = []
     seen = set()
@@ -19,8 +19,8 @@ def _collect_option_ids_from_parse_sites(options_list, func_ids, max_options):
         opt_id = option.get("id")
         if not opt_id or opt_id in seen:
             continue
-        for site in option.get("parse_sites", []):
-            func_addr = (site.get("function") or {}).get("address")
+        for loop_id in option.get("parse_loop_ids", []):
+            func_addr = parse_loop_by_id.get(loop_id)
             if func_addr and func_addr in func_ids:
                 option_ids.append(opt_id)
                 seen.add(opt_id)
@@ -76,11 +76,14 @@ def build_mode_slices(
                 exit_calls_by_func.setdefault(func_id, []).append(callsite_id)
 
     parse_loop_by_function = {}
+    parse_loop_by_id = {}
     for loop in parse_loops:
         func = loop.get("function") or {}
         func_addr = func.get("address")
-        if func_addr:
-            parse_loop_by_function[func_addr] = loop.get("id")
+        loop_id = loop.get("id")
+        if func_addr and loop_id:
+            parse_loop_by_function[func_addr] = loop_id
+            parse_loop_by_id[loop_id] = func_addr
 
     options_by_loop_id = {}
     for option in options_list:
@@ -140,6 +143,7 @@ def build_mode_slices(
             options_list,
             implementation_func_ids,
             max_options,
+            parse_loop_by_id,
         )
 
         if option_ids:
