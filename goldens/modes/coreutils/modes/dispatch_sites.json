@@ -1,4 +1,5 @@
 {
+  "callsites_ref": "evidence/callsites.json",
   "dispatch_sites": [
     {
       "callee_names": [
@@ -25,28 +26,6 @@
         "0011987f",
         "00119896",
         "001198ad"
-      ],
-      "callsite_refs": [
-        "evidence/callsites/cs_001196f8.json",
-        "evidence/callsites/cs_0011970f.json",
-        "evidence/callsites/cs_00119726.json",
-        "evidence/callsites/cs_0011973d.json",
-        "evidence/callsites/cs_00119754.json",
-        "evidence/callsites/cs_0011976b.json",
-        "evidence/callsites/cs_00119782.json",
-        "evidence/callsites/cs_00119799.json",
-        "evidence/callsites/cs_001197b0.json",
-        "evidence/callsites/cs_001197c7.json",
-        "evidence/callsites/cs_001197de.json",
-        "evidence/callsites/cs_001197f5.json",
-        "evidence/callsites/cs_0011980c.json",
-        "evidence/callsites/cs_00119823.json",
-        "evidence/callsites/cs_0011983a.json",
-        "evidence/callsites/cs_00119851.json",
-        "evidence/callsites/cs_00119868.json",
-        "evidence/callsites/cs_0011987f.json",
-        "evidence/callsites/cs_00119896.json",
-        "evidence/callsites/cs_001198ad.json"
       ],
       "callsite_status_counts": [
         {
@@ -109,7 +88,6 @@
       "omitted_token_count": 86,
       "omitted_token_occurrence_count": 0,
       "representative_callsite_id": "001196f8",
-      "representative_callsite_ref": "evidence/callsites/cs_001196f8.json",
       "token_candidate_count": 106,
       "token_candidate_occurrence_count": 106,
       "token_candidate_total_count": 106,
@@ -296,20 +274,6 @@
         "00126ed9",
         "00126ef0"
       ],
-      "callsite_refs": [
-        "evidence/callsites/cs_00125d07.json",
-        "evidence/callsites/cs_001261f8.json",
-        "evidence/callsites/cs_00126227.json",
-        "evidence/callsites/cs_0012626e.json",
-        "evidence/callsites/cs_00126377.json",
-        "evidence/callsites/cs_0012687c.json",
-        "evidence/callsites/cs_001269c8.json",
-        "evidence/callsites/cs_00126b86.json",
-        "evidence/callsites/cs_00126cc6.json",
-        "evidence/callsites/cs_00126d98.json",
-        "evidence/callsites/cs_00126ed9.json",
-        "evidence/callsites/cs_00126ef0.json"
-      ],
       "callsite_status_counts": [
         {
           "count": 10,
@@ -354,7 +318,6 @@
       "omitted_token_count": 0,
       "omitted_token_occurrence_count": 0,
       "representative_callsite_id": "00125d07",
-      "representative_callsite_ref": "evidence/callsites/cs_00125d07.json",
       "token_candidate_count": 0,
       "token_candidate_occurrence_count": 2,
       "token_candidate_total_count": 1,
@@ -371,12 +334,6 @@
         "001180a1",
         "001180bd",
         "001181a9"
-      ],
-      "callsite_refs": [
-        "evidence/callsites/cs_00118069.json",
-        "evidence/callsites/cs_001180a1.json",
-        "evidence/callsites/cs_001180bd.json",
-        "evidence/callsites/cs_001181a9.json"
       ],
       "callsite_status_counts": [
         {
@@ -410,7 +367,6 @@
       "omitted_token_count": 0,
       "omitted_token_occurrence_count": 0,
       "representative_callsite_id": "00118069",
-      "representative_callsite_ref": "evidence/callsites/cs_00118069.json",
       "token_candidate_count": 0,
       "token_candidate_occurrence_count": 4,
       "token_candidate_total_count": 4,
@@ -427,12 +383,6 @@
         "001731f9",
         "0017337a",
         "00173a5e"
-      ],
-      "callsite_refs": [
-        "evidence/callsites/cs_001720e3.json",
-        "evidence/callsites/cs_001731f9.json",
-        "evidence/callsites/cs_0017337a.json",
-        "evidence/callsites/cs_00173a5e.json"
       ],
       "callsite_status_counts": [
         {
@@ -481,7 +431,6 @@
       "omitted_token_count": 0,
       "omitted_token_occurrence_count": 0,
       "representative_callsite_id": "001720e3",
-      "representative_callsite_ref": "evidence/callsites/cs_001720e3.json",
       "token_candidate_count": 0,
       "token_candidate_occurrence_count": 2,
       "token_candidate_total_count": 2,
@@ -496,11 +445,6 @@
         "001a736c",
         "001a7679",
         "001a7794"
-      ],
-      "callsite_refs": [
-        "evidence/callsites/cs_001a736c.json",
-        "evidence/callsites/cs_001a7679.json",
-        "evidence/callsites/cs_001a7794.json"
       ],
       "callsite_status_counts": [
         {
@@ -537,7 +481,6 @@
       "omitted_token_count": 0,
       "omitted_token_occurrence_count": 0,
       "representative_callsite_id": "001a736c",
-      "representative_callsite_ref": "evidence/callsites/cs_001a736c.json",
       "token_candidate_count": 0,
       "token_candidate_occurrence_count": 0,
       "token_candidate_total_count": 0,
@@ -552,10 +495,6 @@
       "callsite_ids": [
         "0011a7bc",
         "0011a7f7"
-      ],
-      "callsite_refs": [
-        "evidence/callsites/cs_0011a7bc.json",
-        "evidence/callsites/cs_0011a7f7.json"
       ],
       "callsite_status_counts": [
         {
@@ -587,7 +526,6 @@
       "omitted_token_count": 0,
       "omitted_token_occurrence_count": 0,
       "representative_callsite_id": "0011a7bc",
-      "representative_callsite_ref": "evidence/callsites/cs_0011a7bc.json",
       "token_candidate_count": 1,
       "token_candidate_occurrence_count": 3,
       "token_candidate_total_count": 3,
@@ -611,10 +549,6 @@
       "callsite_ids": [
         "0013902b",
         "00139067"
-      ],
-      "callsite_refs": [
-        "evidence/callsites/cs_0013902b.json",
-        "evidence/callsites/cs_00139067.json"
       ],
       "callsite_status_counts": [
         {
@@ -646,7 +580,6 @@
       "omitted_token_count": 0,
       "omitted_token_occurrence_count": 0,
       "representative_callsite_id": "0013902b",
-      "representative_callsite_ref": "evidence/callsites/cs_0013902b.json",
       "token_candidate_count": 0,
       "token_candidate_occurrence_count": 0,
       "token_candidate_total_count": 0,
@@ -660,10 +593,6 @@
       "callsite_ids": [
         "00141425",
         "00142a4b"
-      ],
-      "callsite_refs": [
-        "evidence/callsites/cs_00141425.json",
-        "evidence/callsites/cs_00142a4b.json"
       ],
       "callsite_status_counts": [
         {
@@ -695,7 +624,6 @@
       "omitted_token_count": 0,
       "omitted_token_occurrence_count": 0,
       "representative_callsite_id": "00141425",
-      "representative_callsite_ref": "evidence/callsites/cs_00141425.json",
       "token_candidate_count": 0,
       "token_candidate_occurrence_count": 0,
       "token_candidate_total_count": 0,
@@ -710,10 +638,6 @@
       "callsite_ids": [
         "00151b09",
         "00151b3d"
-      ],
-      "callsite_refs": [
-        "evidence/callsites/cs_00151b09.json",
-        "evidence/callsites/cs_00151b3d.json"
       ],
       "callsite_status_counts": [
         {
@@ -745,7 +669,6 @@
       "omitted_token_count": 0,
       "omitted_token_occurrence_count": 0,
       "representative_callsite_id": "00151b09",
-      "representative_callsite_ref": "evidence/callsites/cs_00151b09.json",
       "token_candidate_count": 0,
       "token_candidate_occurrence_count": 2,
       "token_candidate_total_count": 2,
@@ -759,10 +682,6 @@
       "callsite_ids": [
         "001657c0",
         "0016587e"
-      ],
-      "callsite_refs": [
-        "evidence/callsites/cs_001657c0.json",
-        "evidence/callsites/cs_0016587e.json"
       ],
       "callsite_status_counts": [
         {
@@ -798,7 +717,6 @@
       "omitted_token_count": 0,
       "omitted_token_occurrence_count": 0,
       "representative_callsite_id": "001657c0",
-      "representative_callsite_ref": "evidence/callsites/cs_001657c0.json",
       "token_candidate_count": 0,
       "token_candidate_occurrence_count": 1,
       "token_candidate_total_count": 1,
@@ -812,10 +730,6 @@
       "callsite_ids": [
         "0019efbc",
         "0019effd"
-      ],
-      "callsite_refs": [
-        "evidence/callsites/cs_0019efbc.json",
-        "evidence/callsites/cs_0019effd.json"
       ],
       "callsite_status_counts": [
         {
@@ -847,7 +761,6 @@
       "omitted_token_count": 0,
       "omitted_token_occurrence_count": 0,
       "representative_callsite_id": "0019efbc",
-      "representative_callsite_ref": "evidence/callsites/cs_0019efbc.json",
       "token_candidate_count": 0,
       "token_candidate_occurrence_count": 0,
       "token_candidate_total_count": 0,
@@ -860,9 +773,6 @@
       ],
       "callsite_ids": [
         "001b68a1"
-      ],
-      "callsite_refs": [
-        "evidence/callsites/cs_001b68a1.json"
       ],
       "callsite_status_counts": [
         {
@@ -893,7 +803,6 @@
       "omitted_token_count": 0,
       "omitted_token_occurrence_count": 0,
       "representative_callsite_id": "001b68a1",
-      "representative_callsite_ref": "evidence/callsites/cs_001b68a1.json",
       "token_candidate_count": 0,
       "token_candidate_occurrence_count": 0,
       "token_candidate_total_count": 0,

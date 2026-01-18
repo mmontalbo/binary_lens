@@ -180,7 +180,7 @@
   "target_endian": "little",
   "tool": {
     "name": "binary_lens",
-    "revision": "fa7f002ea5b14c6213dabe4871d36dbff3449d80",
+    "revision": "12bb203bcf9fb7fe8292ec30680d3cae519c45be",
     "version": "0.1.0-dev"
   }
 }

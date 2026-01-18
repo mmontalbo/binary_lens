@@ -1,4 +1,5 @@
 {
+  "callsites_ref": "evidence/callsites.json",
   "filtered_out_modes": 11,
   "max_dispatch_roots_per_mode": 6,
   "max_dispatch_sites_per_mode": 12,
@@ -31,8 +32,7 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "001196f8",
-          "callsite_ref": "evidence/callsites/cs_001196f8.json"
+          "callsite_id": "001196f8"
         },
         {
           "callee": "strcmp",
@@ -40,16 +40,11 @@
             "address": "0011a5d0",
             "name": "usage"
           },
-          "callsite_id": "0011a7bc",
-          "callsite_ref": "evidence/callsites/cs_0011a7bc.json"
+          "callsite_id": "0011a7bc"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_001196f8.json",
-          "evidence/callsites/cs_0011a7bc.json"
-        ],
         "callsites": [
           "001196f8",
           "0011a7bc"
@@ -124,15 +119,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "0011970f",
-          "callsite_ref": "evidence/callsites/cs_0011970f.json"
+          "callsite_id": "0011970f"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_0011970f.json"
-        ],
         "callsites": [
           "0011970f"
         ],
@@ -192,15 +183,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119726",
-          "callsite_ref": "evidence/callsites/cs_00119726.json"
+          "callsite_id": "00119726"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119726.json"
-        ],
         "callsites": [
           "00119726"
         ],
@@ -260,15 +247,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "0011973d",
-          "callsite_ref": "evidence/callsites/cs_0011973d.json"
+          "callsite_id": "0011973d"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_0011973d.json"
-        ],
         "callsites": [
           "0011973d"
         ],
@@ -328,15 +311,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119754",
-          "callsite_ref": "evidence/callsites/cs_00119754.json"
+          "callsite_id": "00119754"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119754.json"
-        ],
         "callsites": [
           "00119754"
         ],
@@ -396,15 +375,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "0011976b",
-          "callsite_ref": "evidence/callsites/cs_0011976b.json"
+          "callsite_id": "0011976b"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_0011976b.json"
-        ],
         "callsites": [
           "0011976b"
         ],
@@ -464,15 +439,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119782",
-          "callsite_ref": "evidence/callsites/cs_00119782.json"
+          "callsite_id": "00119782"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119782.json"
-        ],
         "callsites": [
           "00119782"
         ],
@@ -530,15 +501,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119799",
-          "callsite_ref": "evidence/callsites/cs_00119799.json"
+          "callsite_id": "00119799"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119799.json"
-        ],
         "callsites": [
           "00119799"
         ],
@@ -598,15 +565,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "001197b0",
-          "callsite_ref": "evidence/callsites/cs_001197b0.json"
+          "callsite_id": "001197b0"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_001197b0.json"
-        ],
         "callsites": [
           "001197b0"
         ],
@@ -666,15 +629,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "001197c7",
-          "callsite_ref": "evidence/callsites/cs_001197c7.json"
+          "callsite_id": "001197c7"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_001197c7.json"
-        ],
         "callsites": [
           "001197c7"
         ],
@@ -734,15 +693,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "001197de",
-          "callsite_ref": "evidence/callsites/cs_001197de.json"
+          "callsite_id": "001197de"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_001197de.json"
-        ],
         "callsites": [
           "001197de"
         ],
@@ -802,15 +757,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "001197f5",
-          "callsite_ref": "evidence/callsites/cs_001197f5.json"
+          "callsite_id": "001197f5"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_001197f5.json"
-        ],
         "callsites": [
           "001197f5"
         ],
@@ -870,15 +821,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "0011980c",
-          "callsite_ref": "evidence/callsites/cs_0011980c.json"
+          "callsite_id": "0011980c"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_0011980c.json"
-        ],
         "callsites": [
           "0011980c"
         ],
@@ -938,15 +885,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119823",
-          "callsite_ref": "evidence/callsites/cs_00119823.json"
+          "callsite_id": "00119823"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119823.json"
-        ],
         "callsites": [
           "00119823"
         ],
@@ -1004,15 +947,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "0011983a",
-          "callsite_ref": "evidence/callsites/cs_0011983a.json"
+          "callsite_id": "0011983a"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_0011983a.json"
-        ],
         "callsites": [
           "0011983a"
         ],
@@ -1070,15 +1009,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119851",
-          "callsite_ref": "evidence/callsites/cs_00119851.json"
+          "callsite_id": "00119851"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119851.json"
-        ],
         "callsites": [
           "00119851"
         ],
@@ -1138,15 +1073,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119868",
-          "callsite_ref": "evidence/callsites/cs_00119868.json"
+          "callsite_id": "00119868"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119868.json"
-        ],
         "callsites": [
           "00119868"
         ],
@@ -1204,15 +1135,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "0011987f",
-          "callsite_ref": "evidence/callsites/cs_0011987f.json"
+          "callsite_id": "0011987f"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_0011987f.json"
-        ],
         "callsites": [
           "0011987f"
         ],
@@ -1270,15 +1197,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119896",
-          "callsite_ref": "evidence/callsites/cs_00119896.json"
+          "callsite_id": "00119896"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119896.json"
-        ],
         "callsites": [
           "00119896"
         ],
@@ -1336,15 +1259,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "001198ad",
-          "callsite_ref": "evidence/callsites/cs_001198ad.json"
+          "callsite_id": "001198ad"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_001198ad.json"
-        ],
         "callsites": [
           "001198ad"
         ],
@@ -1402,15 +1321,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "001198c4",
-          "callsite_ref": "evidence/callsites/cs_001198c4.json"
+          "callsite_id": "001198c4"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_001198c4.json"
-        ],
         "callsites": [
           "001198c4"
         ],
@@ -1468,15 +1383,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "001198db",
-          "callsite_ref": "evidence/callsites/cs_001198db.json"
+          "callsite_id": "001198db"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_001198db.json"
-        ],
         "callsites": [
           "001198db"
         ],
@@ -1536,15 +1447,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "001198f2",
-          "callsite_ref": "evidence/callsites/cs_001198f2.json"
+          "callsite_id": "001198f2"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_001198f2.json"
-        ],
         "callsites": [
           "001198f2"
         ],
@@ -1604,15 +1511,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119909",
-          "callsite_ref": "evidence/callsites/cs_00119909.json"
+          "callsite_id": "00119909"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119909.json"
-        ],
         "callsites": [
           "00119909"
         ],
@@ -1670,15 +1573,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119920",
-          "callsite_ref": "evidence/callsites/cs_00119920.json"
+          "callsite_id": "00119920"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119920.json"
-        ],
         "callsites": [
           "00119920"
         ],
@@ -1736,15 +1635,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119937",
-          "callsite_ref": "evidence/callsites/cs_00119937.json"
+          "callsite_id": "00119937"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119937.json"
-        ],
         "callsites": [
           "00119937"
         ],
@@ -1802,15 +1697,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "0011994e",
-          "callsite_ref": "evidence/callsites/cs_0011994e.json"
+          "callsite_id": "0011994e"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_0011994e.json"
-        ],
         "callsites": [
           "0011994e"
         ],
@@ -1868,15 +1759,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119965",
-          "callsite_ref": "evidence/callsites/cs_00119965.json"
+          "callsite_id": "00119965"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119965.json"
-        ],
         "callsites": [
           "00119965"
         ],
@@ -1934,15 +1821,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "0011997c",
-          "callsite_ref": "evidence/callsites/cs_0011997c.json"
+          "callsite_id": "0011997c"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_0011997c.json"
-        ],
         "callsites": [
           "0011997c"
         ],
@@ -2002,15 +1885,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119993",
-          "callsite_ref": "evidence/callsites/cs_00119993.json"
+          "callsite_id": "00119993"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119993.json"
-        ],
         "callsites": [
           "00119993"
         ],
@@ -2070,15 +1949,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "001199aa",
-          "callsite_ref": "evidence/callsites/cs_001199aa.json"
+          "callsite_id": "001199aa"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_001199aa.json"
-        ],
         "callsites": [
           "001199aa"
         ],
@@ -2136,15 +2011,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "001199c1",
-          "callsite_ref": "evidence/callsites/cs_001199c1.json"
+          "callsite_id": "001199c1"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_001199c1.json"
-        ],
         "callsites": [
           "001199c1"
         ],
@@ -2202,15 +2073,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "001199d8",
-          "callsite_ref": "evidence/callsites/cs_001199d8.json"
+          "callsite_id": "001199d8"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_001199d8.json"
-        ],
         "callsites": [
           "001199d8"
         ],
@@ -2270,15 +2137,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "001199ef",
-          "callsite_ref": "evidence/callsites/cs_001199ef.json"
+          "callsite_id": "001199ef"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_001199ef.json"
-        ],
         "callsites": [
           "001199ef"
         ],
@@ -2338,15 +2201,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119a06",
-          "callsite_ref": "evidence/callsites/cs_00119a06.json"
+          "callsite_id": "00119a06"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119a06.json"
-        ],
         "callsites": [
           "00119a06"
         ],
@@ -2404,15 +2263,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119a1d",
-          "callsite_ref": "evidence/callsites/cs_00119a1d.json"
+          "callsite_id": "00119a1d"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119a1d.json"
-        ],
         "callsites": [
           "00119a1d"
         ],
@@ -2472,15 +2327,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119a34",
-          "callsite_ref": "evidence/callsites/cs_00119a34.json"
+          "callsite_id": "00119a34"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119a34.json"
-        ],
         "callsites": [
           "00119a34"
         ],
@@ -2538,15 +2389,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119a4b",
-          "callsite_ref": "evidence/callsites/cs_00119a4b.json"
+          "callsite_id": "00119a4b"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119a4b.json"
-        ],
         "callsites": [
           "00119a4b"
         ],
@@ -2604,15 +2451,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119a62",
-          "callsite_ref": "evidence/callsites/cs_00119a62.json"
+          "callsite_id": "00119a62"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119a62.json"
-        ],
         "callsites": [
           "00119a62"
         ],
@@ -2670,15 +2513,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119a79",
-          "callsite_ref": "evidence/callsites/cs_00119a79.json"
+          "callsite_id": "00119a79"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119a79.json"
-        ],
         "callsites": [
           "00119a79"
         ],
@@ -2736,15 +2575,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119a90",
-          "callsite_ref": "evidence/callsites/cs_00119a90.json"
+          "callsite_id": "00119a90"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119a90.json"
-        ],
         "callsites": [
           "00119a90"
         ],
@@ -2802,15 +2637,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119aa7",
-          "callsite_ref": "evidence/callsites/cs_00119aa7.json"
+          "callsite_id": "00119aa7"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119aa7.json"
-        ],
         "callsites": [
           "00119aa7"
         ],
@@ -2870,15 +2701,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119abe",
-          "callsite_ref": "evidence/callsites/cs_00119abe.json"
+          "callsite_id": "00119abe"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119abe.json"
-        ],
         "callsites": [
           "00119abe"
         ],
@@ -2936,15 +2763,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119ad5",
-          "callsite_ref": "evidence/callsites/cs_00119ad5.json"
+          "callsite_id": "00119ad5"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119ad5.json"
-        ],
         "callsites": [
           "00119ad5"
         ],
@@ -3004,15 +2827,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119aec",
-          "callsite_ref": "evidence/callsites/cs_00119aec.json"
+          "callsite_id": "00119aec"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119aec.json"
-        ],
         "callsites": [
           "00119aec"
         ],
@@ -3072,15 +2891,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119b03",
-          "callsite_ref": "evidence/callsites/cs_00119b03.json"
+          "callsite_id": "00119b03"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119b03.json"
-        ],
         "callsites": [
           "00119b03"
         ],
@@ -3138,15 +2953,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119b1a",
-          "callsite_ref": "evidence/callsites/cs_00119b1a.json"
+          "callsite_id": "00119b1a"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119b1a.json"
-        ],
         "callsites": [
           "00119b1a"
         ],
@@ -3206,15 +3017,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119b31",
-          "callsite_ref": "evidence/callsites/cs_00119b31.json"
+          "callsite_id": "00119b31"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119b31.json"
-        ],
         "callsites": [
           "00119b31"
         ],
@@ -3274,15 +3081,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119b48",
-          "callsite_ref": "evidence/callsites/cs_00119b48.json"
+          "callsite_id": "00119b48"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119b48.json"
-        ],
         "callsites": [
           "00119b48"
         ],
@@ -3340,15 +3143,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119b5f",
-          "callsite_ref": "evidence/callsites/cs_00119b5f.json"
+          "callsite_id": "00119b5f"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119b5f.json"
-        ],
         "callsites": [
           "00119b5f"
         ],
@@ -3406,15 +3205,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119b76",
-          "callsite_ref": "evidence/callsites/cs_00119b76.json"
+          "callsite_id": "00119b76"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119b76.json"
-        ],
         "callsites": [
           "00119b76"
         ],
@@ -3472,15 +3267,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119b8d",
-          "callsite_ref": "evidence/callsites/cs_00119b8d.json"
+          "callsite_id": "00119b8d"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119b8d.json"
-        ],
         "callsites": [
           "00119b8d"
         ],
@@ -3540,15 +3331,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119ba4",
-          "callsite_ref": "evidence/callsites/cs_00119ba4.json"
+          "callsite_id": "00119ba4"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119ba4.json"
-        ],
         "callsites": [
           "00119ba4"
         ],
@@ -3606,15 +3393,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119bbb",
-          "callsite_ref": "evidence/callsites/cs_00119bbb.json"
+          "callsite_id": "00119bbb"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119bbb.json"
-        ],
         "callsites": [
           "00119bbb"
         ],
@@ -3672,15 +3455,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119bd2",
-          "callsite_ref": "evidence/callsites/cs_00119bd2.json"
+          "callsite_id": "00119bd2"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119bd2.json"
-        ],
         "callsites": [
           "00119bd2"
         ],
@@ -3738,15 +3517,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119be9",
-          "callsite_ref": "evidence/callsites/cs_00119be9.json"
+          "callsite_id": "00119be9"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119be9.json"
-        ],
         "callsites": [
           "00119be9"
         ],
@@ -3806,15 +3581,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119c00",
-          "callsite_ref": "evidence/callsites/cs_00119c00.json"
+          "callsite_id": "00119c00"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119c00.json"
-        ],
         "callsites": [
           "00119c00"
         ],
@@ -3874,15 +3645,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119c17",
-          "callsite_ref": "evidence/callsites/cs_00119c17.json"
+          "callsite_id": "00119c17"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119c17.json"
-        ],
         "callsites": [
           "00119c17"
         ],
@@ -3942,15 +3709,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119c2e",
-          "callsite_ref": "evidence/callsites/cs_00119c2e.json"
+          "callsite_id": "00119c2e"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119c2e.json"
-        ],
         "callsites": [
           "00119c2e"
         ],
@@ -4008,15 +3771,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119c45",
-          "callsite_ref": "evidence/callsites/cs_00119c45.json"
+          "callsite_id": "00119c45"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119c45.json"
-        ],
         "callsites": [
           "00119c45"
         ],
@@ -4076,15 +3835,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119c5c",
-          "callsite_ref": "evidence/callsites/cs_00119c5c.json"
+          "callsite_id": "00119c5c"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119c5c.json"
-        ],
         "callsites": [
           "00119c5c"
         ],
@@ -4144,15 +3899,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119c73",
-          "callsite_ref": "evidence/callsites/cs_00119c73.json"
+          "callsite_id": "00119c73"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119c73.json"
-        ],
         "callsites": [
           "00119c73"
         ],
@@ -4210,15 +3961,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119c8a",
-          "callsite_ref": "evidence/callsites/cs_00119c8a.json"
+          "callsite_id": "00119c8a"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119c8a.json"
-        ],
         "callsites": [
           "00119c8a"
         ],
@@ -4276,15 +4023,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119ca1",
-          "callsite_ref": "evidence/callsites/cs_00119ca1.json"
+          "callsite_id": "00119ca1"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119ca1.json"
-        ],
         "callsites": [
           "00119ca1"
         ],
@@ -4344,15 +4087,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119cb8",
-          "callsite_ref": "evidence/callsites/cs_00119cb8.json"
+          "callsite_id": "00119cb8"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119cb8.json"
-        ],
         "callsites": [
           "00119cb8"
         ],
@@ -4412,15 +4151,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119ccf",
-          "callsite_ref": "evidence/callsites/cs_00119ccf.json"
+          "callsite_id": "00119ccf"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119ccf.json"
-        ],
         "callsites": [
           "00119ccf"
         ],
@@ -4478,15 +4213,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119ce6",
-          "callsite_ref": "evidence/callsites/cs_00119ce6.json"
+          "callsite_id": "00119ce6"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119ce6.json"
-        ],
         "callsites": [
           "00119ce6"
         ],
@@ -4546,15 +4277,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119cfd",
-          "callsite_ref": "evidence/callsites/cs_00119cfd.json"
+          "callsite_id": "00119cfd"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119cfd.json"
-        ],
         "callsites": [
           "00119cfd"
         ],
@@ -4614,15 +4341,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119d14",
-          "callsite_ref": "evidence/callsites/cs_00119d14.json"
+          "callsite_id": "00119d14"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119d14.json"
-        ],
         "callsites": [
           "00119d14"
         ],
@@ -4680,15 +4403,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119d2b",
-          "callsite_ref": "evidence/callsites/cs_00119d2b.json"
+          "callsite_id": "00119d2b"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119d2b.json"
-        ],
         "callsites": [
           "00119d2b"
         ],
@@ -4746,15 +4465,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119d42",
-          "callsite_ref": "evidence/callsites/cs_00119d42.json"
+          "callsite_id": "00119d42"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119d42.json"
-        ],
         "callsites": [
           "00119d42"
         ],
@@ -4814,15 +4529,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119d59",
-          "callsite_ref": "evidence/callsites/cs_00119d59.json"
+          "callsite_id": "00119d59"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119d59.json"
-        ],
         "callsites": [
           "00119d59"
         ],
@@ -4882,15 +4593,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119d70",
-          "callsite_ref": "evidence/callsites/cs_00119d70.json"
+          "callsite_id": "00119d70"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119d70.json"
-        ],
         "callsites": [
           "00119d70"
         ],
@@ -4950,15 +4657,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119d87",
-          "callsite_ref": "evidence/callsites/cs_00119d87.json"
+          "callsite_id": "00119d87"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119d87.json"
-        ],
         "callsites": [
           "00119d87"
         ],
@@ -5018,15 +4721,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119d9e",
-          "callsite_ref": "evidence/callsites/cs_00119d9e.json"
+          "callsite_id": "00119d9e"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119d9e.json"
-        ],
         "callsites": [
           "00119d9e"
         ],
@@ -5086,15 +4785,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119db5",
-          "callsite_ref": "evidence/callsites/cs_00119db5.json"
+          "callsite_id": "00119db5"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119db5.json"
-        ],
         "callsites": [
           "00119db5"
         ],
@@ -5152,15 +4847,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119dcc",
-          "callsite_ref": "evidence/callsites/cs_00119dcc.json"
+          "callsite_id": "00119dcc"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119dcc.json"
-        ],
         "callsites": [
           "00119dcc"
         ],
@@ -5220,15 +4911,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119de3",
-          "callsite_ref": "evidence/callsites/cs_00119de3.json"
+          "callsite_id": "00119de3"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119de3.json"
-        ],
         "callsites": [
           "00119de3"
         ],
@@ -5286,15 +4973,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119dfa",
-          "callsite_ref": "evidence/callsites/cs_00119dfa.json"
+          "callsite_id": "00119dfa"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119dfa.json"
-        ],
         "callsites": [
           "00119dfa"
         ],
@@ -5352,15 +5035,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119e11",
-          "callsite_ref": "evidence/callsites/cs_00119e11.json"
+          "callsite_id": "00119e11"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119e11.json"
-        ],
         "callsites": [
           "00119e11"
         ],
@@ -5418,15 +5097,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119e28",
-          "callsite_ref": "evidence/callsites/cs_00119e28.json"
+          "callsite_id": "00119e28"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119e28.json"
-        ],
         "callsites": [
           "00119e28"
         ],
@@ -5486,15 +5161,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119e3f",
-          "callsite_ref": "evidence/callsites/cs_00119e3f.json"
+          "callsite_id": "00119e3f"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119e3f.json"
-        ],
         "callsites": [
           "00119e3f"
         ],
@@ -5552,15 +5223,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119e56",
-          "callsite_ref": "evidence/callsites/cs_00119e56.json"
+          "callsite_id": "00119e56"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119e56.json"
-        ],
         "callsites": [
           "00119e56"
         ],
@@ -5618,15 +5285,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119e6d",
-          "callsite_ref": "evidence/callsites/cs_00119e6d.json"
+          "callsite_id": "00119e6d"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119e6d.json"
-        ],
         "callsites": [
           "00119e6d"
         ],
@@ -5684,15 +5347,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119e84",
-          "callsite_ref": "evidence/callsites/cs_00119e84.json"
+          "callsite_id": "00119e84"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119e84.json"
-        ],
         "callsites": [
           "00119e84"
         ],
@@ -5750,15 +5409,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119e9b",
-          "callsite_ref": "evidence/callsites/cs_00119e9b.json"
+          "callsite_id": "00119e9b"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119e9b.json"
-        ],
         "callsites": [
           "00119e9b"
         ],
@@ -5816,15 +5471,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119eb2",
-          "callsite_ref": "evidence/callsites/cs_00119eb2.json"
+          "callsite_id": "00119eb2"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119eb2.json"
-        ],
         "callsites": [
           "00119eb2"
         ],
@@ -5882,15 +5533,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119ec9",
-          "callsite_ref": "evidence/callsites/cs_00119ec9.json"
+          "callsite_id": "00119ec9"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119ec9.json"
-        ],
         "callsites": [
           "00119ec9"
         ],
@@ -5948,15 +5595,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119ee0",
-          "callsite_ref": "evidence/callsites/cs_00119ee0.json"
+          "callsite_id": "00119ee0"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119ee0.json"
-        ],
         "callsites": [
           "00119ee0"
         ],
@@ -6016,15 +5659,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119ef7",
-          "callsite_ref": "evidence/callsites/cs_00119ef7.json"
+          "callsite_id": "00119ef7"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119ef7.json"
-        ],
         "callsites": [
           "00119ef7"
         ],
@@ -6084,15 +5723,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119f0e",
-          "callsite_ref": "evidence/callsites/cs_00119f0e.json"
+          "callsite_id": "00119f0e"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119f0e.json"
-        ],
         "callsites": [
           "00119f0e"
         ],
@@ -6150,15 +5785,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119f25",
-          "callsite_ref": "evidence/callsites/cs_00119f25.json"
+          "callsite_id": "00119f25"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119f25.json"
-        ],
         "callsites": [
           "00119f25"
         ],
@@ -6216,15 +5847,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119f3c",
-          "callsite_ref": "evidence/callsites/cs_00119f3c.json"
+          "callsite_id": "00119f3c"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119f3c.json"
-        ],
         "callsites": [
           "00119f3c"
         ],
@@ -6284,15 +5911,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119f53",
-          "callsite_ref": "evidence/callsites/cs_00119f53.json"
+          "callsite_id": "00119f53"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119f53.json"
-        ],
         "callsites": [
           "00119f53"
         ],
@@ -6352,15 +5975,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119f6a",
-          "callsite_ref": "evidence/callsites/cs_00119f6a.json"
+          "callsite_id": "00119f6a"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119f6a.json"
-        ],
         "callsites": [
           "00119f6a"
         ],
@@ -6418,15 +6037,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119f81",
-          "callsite_ref": "evidence/callsites/cs_00119f81.json"
+          "callsite_id": "00119f81"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119f81.json"
-        ],
         "callsites": [
           "00119f81"
         ],
@@ -6486,15 +6101,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119f98",
-          "callsite_ref": "evidence/callsites/cs_00119f98.json"
+          "callsite_id": "00119f98"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119f98.json"
-        ],
         "callsites": [
           "00119f98"
         ],
@@ -6554,15 +6165,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119faf",
-          "callsite_ref": "evidence/callsites/cs_00119faf.json"
+          "callsite_id": "00119faf"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119faf.json"
-        ],
         "callsites": [
           "00119faf"
         ],
@@ -6620,15 +6227,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119fc6",
-          "callsite_ref": "evidence/callsites/cs_00119fc6.json"
+          "callsite_id": "00119fc6"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119fc6.json"
-        ],
         "callsites": [
           "00119fc6"
         ],
@@ -6688,15 +6291,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119fdd",
-          "callsite_ref": "evidence/callsites/cs_00119fdd.json"
+          "callsite_id": "00119fdd"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119fdd.json"
-        ],
         "callsites": [
           "00119fdd"
         ],
@@ -6754,15 +6353,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "00119ff4",
-          "callsite_ref": "evidence/callsites/cs_00119ff4.json"
+          "callsite_id": "00119ff4"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_00119ff4.json"
-        ],
         "callsites": [
           "00119ff4"
         ],
@@ -6820,15 +6415,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "0011a00b",
-          "callsite_ref": "evidence/callsites/cs_0011a00b.json"
+          "callsite_id": "0011a00b"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_0011a00b.json"
-        ],
         "callsites": [
           "0011a00b"
         ],
@@ -6886,15 +6477,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "0011a022",
-          "callsite_ref": "evidence/callsites/cs_0011a022.json"
+          "callsite_id": "0011a022"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_0011a022.json"
-        ],
         "callsites": [
           "0011a022"
         ],
@@ -6952,15 +6539,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "0011a039",
-          "callsite_ref": "evidence/callsites/cs_0011a039.json"
+          "callsite_id": "0011a039"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_0011a039.json"
-        ],
         "callsites": [
           "0011a039"
         ],
@@ -7018,15 +6601,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "0011a050",
-          "callsite_ref": "evidence/callsites/cs_0011a050.json"
+          "callsite_id": "0011a050"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_0011a050.json"
-        ],
         "callsites": [
           "0011a050"
         ],
@@ -7086,15 +6665,11 @@
             "address": "001196b0",
             "name": "launch_program"
           },
-          "callsite_id": "0011a067",
-          "callsite_ref": "evidence/callsites/cs_0011a067.json"
+          "callsite_id": "0011a067"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_0011a067.json"
-        ],
         "callsites": [
           "0011a067"
         ],

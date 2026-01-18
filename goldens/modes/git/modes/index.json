@@ -1,4 +1,5 @@
 {
+  "callsites_ref": "evidence/callsites.json",
   "filtered_out_modes": 35,
   "max_dispatch_roots_per_mode": 6,
   "max_dispatch_sites_per_mode": 12,
@@ -37,8 +38,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -46,8 +46,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062f3",
-          "callsite_ref": "evidence/callsites/cs_004062f3.json"
+          "callsite_id": "004062f3"
         },
         {
           "callee": "strcmp",
@@ -55,8 +54,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -64,8 +62,7 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         },
         {
           "callee": "strcmp",
@@ -73,19 +70,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407cc9",
-          "callsite_ref": "evidence/callsites/cs_00407cc9.json"
+          "callsite_id": "00407cc9"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_004062f3.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json",
-          "evidence/callsites/cs_00407cc9.json"
-        ],
         "callsites": [
           "004062bf",
           "004062f3",
@@ -191,8 +180,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -200,8 +188,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062f3",
-          "callsite_ref": "evidence/callsites/cs_004062f3.json"
+          "callsite_id": "004062f3"
         },
         {
           "callee": "strcmp",
@@ -209,8 +196,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -218,18 +204,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_004062f3.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "004062f3",
@@ -319,8 +298,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -328,8 +306,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -337,17 +314,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -421,8 +392,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -430,8 +400,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -439,17 +408,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -523,8 +486,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -532,8 +494,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -541,17 +502,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -625,8 +580,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -634,8 +588,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -643,17 +596,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -727,8 +674,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -736,8 +682,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -745,17 +690,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -829,8 +768,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -838,8 +776,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -847,17 +784,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -931,8 +862,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -940,8 +870,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -949,17 +878,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -1033,8 +956,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -1042,8 +964,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -1051,17 +972,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -1135,8 +1050,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -1144,8 +1058,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -1153,17 +1066,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -1237,8 +1144,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -1246,8 +1152,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -1255,17 +1160,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -1339,8 +1238,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -1348,8 +1246,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -1357,17 +1254,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -1441,8 +1332,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -1450,8 +1340,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -1459,17 +1348,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -1543,8 +1426,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -1552,8 +1434,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -1561,17 +1442,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -1645,8 +1520,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -1654,8 +1528,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -1663,17 +1536,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -1747,8 +1614,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -1756,8 +1622,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -1765,17 +1630,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -1849,8 +1708,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -1858,8 +1716,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -1867,17 +1724,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -1951,8 +1802,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -1960,8 +1810,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -1969,17 +1818,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -2055,8 +1898,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -2064,8 +1906,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -2073,17 +1914,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -2157,8 +1992,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -2166,8 +2000,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -2175,17 +2008,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -2259,8 +2086,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -2268,8 +2094,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -2277,17 +2102,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -2361,8 +2180,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -2370,8 +2188,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -2379,17 +2196,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -2463,8 +2274,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -2472,8 +2282,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -2481,17 +2290,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -2565,8 +2368,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -2574,8 +2376,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -2583,17 +2384,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -2667,8 +2462,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -2676,8 +2470,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -2685,17 +2478,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -2769,8 +2556,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -2778,8 +2564,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -2787,17 +2572,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -2871,8 +2650,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -2880,8 +2658,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -2889,17 +2666,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -2973,8 +2744,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -2982,8 +2752,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -2991,17 +2760,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -3075,8 +2838,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -3084,8 +2846,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -3093,17 +2854,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -3177,8 +2932,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -3186,8 +2940,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -3195,17 +2948,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -3279,8 +3026,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -3288,8 +3034,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -3297,17 +3042,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -3383,8 +3122,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -3392,8 +3130,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -3401,17 +3138,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -3485,8 +3216,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -3494,8 +3224,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -3503,17 +3232,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -3587,8 +3310,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -3596,8 +3318,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -3605,17 +3326,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -3689,8 +3404,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -3698,8 +3412,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -3707,17 +3420,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -3791,8 +3498,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -3800,8 +3506,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -3809,17 +3514,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -3893,8 +3592,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -3902,8 +3600,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -3911,17 +3608,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -3995,8 +3686,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -4004,8 +3694,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -4013,17 +3702,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -4097,8 +3780,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -4106,8 +3788,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -4115,17 +3796,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -4199,8 +3874,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -4208,8 +3882,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -4217,17 +3890,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -4301,8 +3968,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -4310,8 +3976,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -4319,17 +3984,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -4403,8 +4062,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -4412,8 +4070,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -4421,17 +4078,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -4505,8 +4156,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -4514,8 +4164,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -4523,17 +4172,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -4607,8 +4250,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -4616,8 +4258,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -4625,17 +4266,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -4709,8 +4344,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -4718,8 +4352,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -4727,17 +4360,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -4811,8 +4438,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -4820,8 +4446,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -4829,17 +4454,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -4913,8 +4532,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -4922,8 +4540,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -4931,17 +4548,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -5015,8 +4626,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -5024,8 +4634,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -5033,17 +4642,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -5117,8 +4720,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -5126,8 +4728,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -5135,17 +4736,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -5219,8 +4814,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -5228,8 +4822,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -5237,17 +4830,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -5321,8 +4908,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -5330,8 +4916,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -5339,17 +4924,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -5423,8 +5002,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -5432,8 +5010,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -5441,17 +5018,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -5525,8 +5096,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -5534,8 +5104,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -5543,17 +5112,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -5627,8 +5190,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -5636,8 +5198,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -5645,17 +5206,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -5729,8 +5284,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -5738,8 +5292,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -5747,17 +5300,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -5831,8 +5378,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -5840,8 +5386,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -5849,17 +5394,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -5933,8 +5472,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -5942,8 +5480,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -5951,17 +5488,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -6035,8 +5566,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -6044,8 +5574,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -6053,17 +5582,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -6137,8 +5660,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -6146,8 +5668,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -6155,17 +5676,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -6241,8 +5756,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -6250,8 +5764,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -6259,17 +5772,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -6343,8 +5850,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -6352,8 +5858,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -6361,17 +5866,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -6445,8 +5944,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -6454,8 +5952,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -6463,17 +5960,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -6547,8 +6038,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -6556,8 +6046,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -6565,17 +6054,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -6649,8 +6132,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -6658,8 +6140,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -6667,17 +6148,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -6751,8 +6226,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -6760,8 +6234,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -6769,17 +6242,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -6853,8 +6320,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -6862,8 +6328,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -6871,17 +6336,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -6955,8 +6414,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -6964,8 +6422,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -6973,17 +6430,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -7057,8 +6508,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -7066,8 +6516,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -7075,17 +6524,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -7159,8 +6602,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -7168,8 +6610,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -7177,17 +6618,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -7261,8 +6696,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -7270,8 +6704,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -7279,17 +6712,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -7363,8 +6790,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -7372,8 +6798,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -7381,17 +6806,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -7465,8 +6884,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -7474,8 +6892,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -7483,17 +6900,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -7567,8 +6978,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -7576,8 +6986,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -7585,17 +6994,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -7671,8 +7074,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -7680,8 +7082,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -7689,17 +7090,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -7775,8 +7170,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -7784,8 +7178,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -7793,17 +7186,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -7879,8 +7266,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -7888,8 +7274,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -7897,17 +7282,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -7983,8 +7362,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -7992,8 +7370,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -8001,17 +7378,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -8085,8 +7456,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -8094,8 +7464,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -8103,17 +7472,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -8187,8 +7550,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -8196,8 +7558,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -8205,17 +7566,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -8289,8 +7644,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -8298,8 +7652,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -8307,17 +7660,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -8391,8 +7738,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -8400,8 +7746,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -8409,17 +7754,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -8493,8 +7832,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -8502,8 +7840,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -8511,17 +7848,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -8595,8 +7926,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -8604,8 +7934,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -8613,17 +7942,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -8697,8 +8020,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -8706,8 +8028,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -8715,17 +8036,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -8799,8 +8114,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -8808,8 +8122,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -8817,17 +8130,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -8901,8 +8208,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -8910,8 +8216,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -8919,17 +8224,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -9003,8 +8302,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -9012,8 +8310,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -9021,17 +8318,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -9105,8 +8396,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -9114,8 +8404,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -9123,17 +8412,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -9207,8 +8490,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -9216,8 +8498,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -9225,17 +8506,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -9309,8 +8584,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -9318,8 +8592,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -9327,17 +8600,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -9411,8 +8678,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -9420,8 +8686,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -9429,17 +8694,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -9513,8 +8772,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -9522,8 +8780,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -9531,17 +8788,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -9615,8 +8866,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -9624,8 +8874,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -9633,17 +8882,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -9717,8 +8960,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -9726,8 +8968,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -9735,17 +8976,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -9819,8 +9054,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -9828,8 +9062,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -9837,17 +9070,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -9921,8 +9148,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -9930,8 +9156,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -9939,17 +9164,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -10023,8 +9242,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -10032,8 +9250,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -10041,17 +9258,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -10125,8 +9336,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -10134,8 +9344,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -10143,17 +9352,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -10227,8 +9430,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -10236,8 +9438,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -10245,17 +9446,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -10329,8 +9524,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -10338,8 +9532,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -10347,17 +9540,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -10433,8 +9620,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -10442,8 +9628,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -10451,17 +9636,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -10535,8 +9714,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -10544,8 +9722,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -10553,17 +9730,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -10637,8 +9808,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -10646,8 +9816,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -10655,17 +9824,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -10739,8 +9902,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -10748,8 +9910,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -10757,17 +9918,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -10841,8 +9996,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -10850,8 +10004,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -10859,17 +10012,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -10943,8 +10090,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -10952,8 +10098,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -10961,17 +10106,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -11045,8 +10184,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -11054,8 +10192,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -11063,17 +10200,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -11147,8 +10278,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -11156,8 +10286,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -11165,17 +10294,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -11249,8 +10372,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -11258,8 +10380,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -11267,17 +10388,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -11351,8 +10466,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -11360,8 +10474,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -11369,17 +10482,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -11453,8 +10560,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -11462,8 +10568,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -11471,17 +10576,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -11555,8 +10654,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -11564,8 +10662,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -11573,17 +10670,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -11657,8 +10748,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -11666,8 +10756,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -11675,17 +10764,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -11759,8 +10842,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -11768,8 +10850,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -11777,17 +10858,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -11861,8 +10936,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -11870,8 +10944,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -11879,17 +10952,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -11963,8 +11030,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -11972,8 +11038,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -11981,17 +11046,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -12065,8 +11124,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -12074,8 +11132,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -12083,17 +11140,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -12167,8 +11218,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -12176,8 +11226,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -12185,17 +11234,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -12269,8 +11312,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -12278,8 +11320,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -12287,17 +11328,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -12371,8 +11406,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -12380,8 +11414,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -12389,17 +11422,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -12473,8 +11500,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -12482,8 +11508,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -12491,17 +11516,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -12575,8 +11594,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -12584,8 +11602,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -12593,17 +11610,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -12677,8 +11688,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -12686,8 +11696,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -12695,17 +11704,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -12781,8 +11784,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -12790,8 +11792,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -12799,17 +11800,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -12883,8 +11878,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -12892,8 +11886,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -12901,17 +11894,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -12985,8 +11972,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -12994,8 +11980,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -13003,17 +11988,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -13087,8 +12066,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -13096,8 +12074,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -13105,17 +12082,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -13189,8 +12160,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -13198,8 +12168,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -13207,17 +12176,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -13291,8 +12254,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -13300,8 +12262,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -13309,17 +12270,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -13393,8 +12348,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -13402,8 +12356,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -13411,17 +12364,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -13495,8 +12442,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -13504,8 +12450,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -13513,17 +12458,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -13597,8 +12536,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -13606,8 +12544,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -13615,17 +12552,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -13699,8 +12630,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -13708,8 +12638,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -13717,17 +12646,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -13803,8 +12726,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -13812,8 +12734,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -13821,17 +12742,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -13905,8 +12820,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -13914,8 +12828,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -13923,17 +12836,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -14007,8 +12914,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -14016,8 +12922,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -14025,17 +12930,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -14109,8 +13008,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -14118,8 +13016,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -14127,17 +13024,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -14211,8 +13102,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -14220,8 +13110,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -14229,17 +13118,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -14313,8 +13196,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -14322,8 +13204,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -14331,17 +13212,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -14415,8 +13290,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -14424,8 +13298,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -14433,17 +13306,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -14517,8 +13384,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -14526,8 +13392,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -14535,17 +13400,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
@@ -14619,8 +13478,7 @@
             "address": "00406280",
             "name": "handle_builtin"
           },
-          "callsite_id": "004062bf",
-          "callsite_ref": "evidence/callsites/cs_004062bf.json"
+          "callsite_id": "004062bf"
         },
         {
           "callee": "strcmp",
@@ -14628,8 +13486,7 @@
             "address": "00407530",
             "name": "is_builtin"
           },
-          "callsite_id": "0040755f",
-          "callsite_ref": "evidence/callsites/cs_0040755f.json"
+          "callsite_id": "0040755f"
         },
         {
           "callee": "strcmp",
@@ -14637,17 +13494,11 @@
             "address": "00407640",
             "name": "cmd_main"
           },
-          "callsite_id": "00407763",
-          "callsite_ref": "evidence/callsites/cs_00407763.json"
+          "callsite_id": "00407763"
         }
       ],
       "dispatch_sites_truncated": false,
       "evidence": {
-        "callsite_refs": [
-          "evidence/callsites/cs_004062bf.json",
-          "evidence/callsites/cs_0040755f.json",
-          "evidence/callsites/cs_00407763.json"
-        ],
         "callsites": [
           "004062bf",
           "0040755f",
