@@ -524,7 +524,7 @@ def build_pack_markdown_docs(
         "- When `truncated: true`, treat the record/list as partial; missing entries may exist.\n"
         "- Coverage `Candidates`/`Excluded` are pre-classification counts when available; `Total` "
         "is the exportable/discovered count.\n"
-        "- `manifest.json` is the canonical metadata source; `binary.json` is a supplemental detail view.\n"
+        "- `manifest.json` is the canonical metadata source.\n"
         "- Callsite evidence lives in `evidence/callsites.json` (sharded list); resolve by `callsite_id`.\n"
         "- Callsite evidence is emitted on-demand for referenced callsites; re-export with "
         "`callsite_evidence=all` to include every callgraph callsite.\n",
@@ -572,7 +572,6 @@ def build_pack_markdown_docs(
         "- `README.md`: top-level pointer into docs and key entry files\n"
         "- `index.json`: machine-readable index of canonical entrypoints and conventions\n"
         "- `manifest.json`: canonical export metadata and coverage summary\n"
-        "- `binary.json`: supplemental target binary facts (format, arch, hashes, ranges)\n"
         "\n"
         "## Evidence-linked lenses\n\n"
         "- `modes/`: multiplexing/subcommand surfaces (mode inventory, dispatch sites, per-mode slices)\n"

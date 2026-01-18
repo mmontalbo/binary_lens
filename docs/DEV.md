@@ -100,7 +100,6 @@ Goldens live in:
 - `goldens/modes/coreutils/`
 
 Each golden includes only these modes-relevant JSON files:
-- `binary.json`
 - `manifest.json`
 - `modes/index.json`
 - `modes/dispatch_sites.json`

@@ -17,7 +17,6 @@ from pathlib import Path
 from typing import Any
 
 MODES_RELATIVE_JSON_FILES = (
-    Path("binary.json"),
     Path("manifest.json"),
     Path("modes/index.json"),
     Path("modes/dispatch_sites.json"),
@@ -91,18 +90,13 @@ def load_json(path: Path) -> Any:
 def pack_identity(pack_root: Path) -> PackIdentity:
     name = None
     sha256 = None
-    try:
-        binary = load_json(pack_root / "binary.json")
-        if isinstance(binary, dict):
-            value = binary.get("name")
-            if isinstance(value, str) and value.strip():
-                name = value.strip()
-    except FileNotFoundError:
-        pass
 
     try:
         manifest = load_json(pack_root / "manifest.json")
         if isinstance(manifest, dict):
+            value = manifest.get("binary_name")
+            if isinstance(value, str) and value.strip():
+                name = value.strip()
             hashes = manifest.get("binary_hashes")
             if isinstance(hashes, dict):
                 value = hashes.get("sha256")
@@ -168,11 +162,6 @@ def normalize_for_diff(rel_path: Path, value: Any) -> Any:
             normalized_tool = dict(tool)
             normalized_tool.pop("revision", None)
             cleaned["tool"] = normalized_tool
-        return cleaned
-
-    if rel_path == Path("binary.json") and isinstance(value, dict):
-        cleaned = deepcopy(value)
-        cleaned.pop("executable_path", None)
         return cleaned
 
     return value

@@ -192,7 +192,6 @@ def build_pack_index_payload(format_version: str) -> dict[str, object]:
             "docs_field_guide_ref": "docs/field_guide.md",
             "docs_examples_ref": "docs/examples.md",
             "schema_readme_ref": "schema/README.md",
-            "binary_ref": "binary.json",
             "manifest_ref": "manifest.json",
             "modes_index_ref": "modes/index.json",
             "modes_dispatch_sites_ref": "modes/dispatch_sites.json",

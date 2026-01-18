@@ -57,7 +57,6 @@ def write_outputs(
 
         write_json(layout.root / "index.json", derived.pack_index_payload)
         write_json(layout.root / "manifest.json", derived.manifest)
-        write_json(layout.root / "binary.json", collected.binary_info)
         write_json(layout.root / "evidence" / "callsites.json", derived.callsites_index)
         write_json(layout.root / "strings.json", derived.strings_index)
         write_json(layout.root / "callgraph.json", derived.callgraph_index)
