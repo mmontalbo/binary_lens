@@ -14,6 +14,7 @@ from typing import Any
 from export_bounds import Bounds
 from export_primitives import addr_to_int
 from modes.common import _source_rank
+from utils.text import string_ref_status
 
 
 @dataclass(order=True)
@@ -134,15 +135,11 @@ def _build_modes_index_payload(
         name = mode.get("name")
         string_id = mode.get("string_id")
         token: dict[str, object] = {}
+        address = mode.get("address")
+        token["status"] = string_ref_status(string_id, address, value=name if name else None)
         if string_id:
-            token["status"] = "resolved"
             token["string_id"] = string_id
         else:
-            address = mode.get("address")
-            if name or address:
-                token["status"] = "unresolved"
-            else:
-                token["status"] = "unknown"
             if name:
                 token["value"] = name
             if address:
@@ -294,20 +291,16 @@ def _build_dispatch_sites_payload(
             token = token_meta_selected.get(key, {})
             name = token.get("value")
             string_id = token.get("string_id")
+            address = token.get("address")
             entry = {
                 "mode_id": token.get("mode_id"),
                 "kind": token.get("kind"),
                 "occurrence_count": count,
             }
+            entry["status"] = string_ref_status(string_id, address, value=name if name else None)
             if string_id:
-                entry["status"] = "resolved"
                 entry["string_id"] = string_id
             else:
-                address = token.get("address")
-                if name or address:
-                    entry["status"] = "unresolved"
-                else:
-                    entry["status"] = "unknown"
                 entry["name"] = name
                 if address:
                     entry["address"] = address
