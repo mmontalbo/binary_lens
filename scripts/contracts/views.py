@@ -8,6 +8,7 @@ from typing import Any, Mapping
 from export_bounds import Bounds
 from export_primitives import addr_filename, addr_to_int
 from outputs.io import pack_path
+from utils.markdown import format_table as _format_table
 from utils.text import as_int as _as_int
 from utils.text import as_str as _as_str
 from utils.text import escape_preview as _escape_preview
@@ -201,15 +202,6 @@ def _primary_callsite_id(entry: Mapping[str, Any]) -> str | None:
 
 def _sort_entries_by_callsite(entries: list[Mapping[str, Any]]) -> list[Mapping[str, Any]]:
     return sorted(entries, key=lambda item: addr_to_int(_primary_callsite_id(item)))
-
-
-def _format_table(headers: list[str], rows: list[list[str]]) -> str:
-    if not rows:
-        return ""
-    header_line = "| " + " | ".join(headers) + " |"
-    divider_line = "| " + " | ".join("---" for _ in headers) + " |"
-    body = "\n".join("| " + " | ".join(row) + " |" for row in rows)
-    return "\n".join([header_line, divider_line, body])
 
 
 def _format_truncated(value: Any) -> str:

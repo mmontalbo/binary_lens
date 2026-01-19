@@ -4,6 +4,7 @@ import json
 from collections import Counter
 from typing import Any, Mapping
 
+from utils.markdown import format_table
 from utils.text import as_bool as _as_bool
 from utils.text import as_str as _as_str
 
@@ -36,7 +37,7 @@ def _coverage_row(
     *,
     label: str | None = None,
     path: str | None = None,
-) -> str | None:
+) -> list[str] | None:
     entry = coverage.get(key)
     if not isinstance(entry, Mapping):
         return None
@@ -47,11 +48,16 @@ def _coverage_row(
     max_entries = entry.get("max")
     truncated = entry.get("truncated")
     rendered_path = path or "\u2014"
-    return (
-        f"| {label or key} | {rendered_path} | {_fmt_optional(selected)} | "
-        f"{_fmt_optional(total)} | {_fmt_optional(candidates)} | {_fmt_optional(excluded)} | "
-        f"{_fmt_optional(max_entries)} | {_fmt_bool(truncated)} |"
-    )
+    return [
+        label or key,
+        rendered_path,
+        _fmt_optional(selected),
+        _fmt_optional(total),
+        _fmt_optional(candidates),
+        _fmt_optional(excluded),
+        _fmt_optional(max_entries),
+        _fmt_bool(truncated),
+    ]
 
 
 def _coverage_table(manifest: Mapping[str, Any]) -> str:
@@ -77,7 +83,7 @@ def _coverage_table(manifest: Mapping[str, Any]) -> str:
         ("interfaces_output", "interfaces/output.json"),
     ]
     covered = set()
-    rows: list[str] = []
+    rows: list[list[str]] = []
     for key, path in preferred:
         row = _coverage_row(coverage, key, label=key, path=path)
         if row is None:
@@ -91,13 +97,19 @@ def _coverage_table(manifest: Mapping[str, Any]) -> str:
             continue
         rows.append(row)
 
-    lines = [
-        "| Surface | Path | Exported | Total | Candidates | Excluded | Max | Truncated |",
-        "| --- | --- | ---: | ---: | ---: | ---: | ---: | --- |",
-        *rows,
-        "",
+    headers = [
+        "Surface",
+        "Path",
+        "Exported",
+        "Total",
+        "Candidates",
+        "Excluded",
+        "Max",
+        "Truncated",
     ]
-    return "\n".join(lines)
+    divider = ["---", "---", "---:", "---:", "---:", "---:", "---:", "---"]
+    table = format_table(headers, rows, divider=divider, render_empty=True)
+    return table + "\n"
 
 
 def _string_entry_known(entry: Mapping[str, Any]) -> bool:
