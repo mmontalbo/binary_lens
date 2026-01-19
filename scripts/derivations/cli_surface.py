@@ -2,45 +2,28 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any
 
 from derivations.constants import INT_TYPES
 from export_bounds import Bounds
 from export_primitives import addr_to_int
+from utils.text import string_ref_status
 
 
 @dataclass(frozen=True)
 class CliSurfaceBounds:
     max_options: int
-    max_parse_loops: int
-    max_evidence: int
     max_parse_sites: int
     max_callsites_per_loop: int
-    max_flag_vars: int
-    max_check_sites: int
 
     @classmethod
     def from_bounds(cls, bounds: Bounds) -> CliSurfaceBounds:
         return cls(
             max_options=bounds.max_cli_options,
-            max_parse_loops=bounds.max_cli_parse_loops,
-            max_evidence=bounds.max_cli_option_evidence,
             max_parse_sites=bounds.max_cli_parse_sites_per_option,
             max_callsites_per_loop=bounds.max_cli_callsites_per_parse_loop,
-            max_flag_vars=bounds.max_cli_flag_vars,
-            max_check_sites=bounds.max_cli_check_sites,
         )
-
-
-def _merge_has_arg(current, new):
-    if not current or current == "unknown":
-        return new or "unknown"
-    if not new or new == "unknown":
-        return current
-    if current == new:
-        return current
-    return "unknown"
 
 
 def _short_from_val(val):
@@ -57,106 +40,64 @@ def _short_from_val(val):
 
 
 def _option_identity(long_name, short_name, has_arg):
-    has_arg = has_arg or "unknown"
+    has_arg = _normalize_has_arg(has_arg)
     if long_name:
         return (long_name, short_name, has_arg)
     return (None, short_name, has_arg)
 
 
-def _init_option(long_name, short_name, has_arg):
-    return {
-        "long_name": long_name,
-        "short_name": short_name,
-        "has_arg": has_arg or "unknown",
-        "parse_sites": [],
-        "parse_loop_ids": [],
-    }
+def _normalize_has_arg(has_arg):
+    return has_arg or "unknown"
 
 
-def _string_ref_status(string_id: str | None, address: str | None) -> str:
-    if string_id:
-        return "resolved"
-    if address:
-        return "unresolved"
-    return "unknown"
+@dataclass(frozen=True)
+class OptionObservation:
+    long_name: str | None
+    short_name: str | None
+    has_arg: str
+    callsite_id: str | None
+    parse_loop_id: str | None
 
 
-def _add_parse_site(option, callsite_id, caller, max_sites):
-    seen = option.setdefault("_seen_parse_sites", set())
-    if callsite_id in seen:
-        return
-    seen.add(callsite_id)
-    if len(option["parse_sites"]) >= max_sites:
-        return
-    option["parse_sites"].append(callsite_id)
+@dataclass
+class OptionAccumulator:
+    long_name: str | None
+    short_name: str | None
+    has_arg: str
+    parse_sites: list[str] = field(default_factory=list)
+    parse_loop_ids: list[str] = field(default_factory=list)
+    _seen_parse_sites: set[str] = field(default_factory=set, repr=False)
+    _seen_parse_loops: set[str] = field(default_factory=set, repr=False)
 
+    def merge_names(self, long_name: str | None, short_name: str | None) -> None:
+        if long_name and not self.long_name:
+            self.long_name = long_name
+        if short_name and not self.short_name:
+            self.short_name = short_name
 
-def _add_parse_loop_id(option, loop_id):
-    if not loop_id:
-        return
-    seen = option.setdefault("_seen_parse_loops", set())
-    if loop_id in seen:
-        return
-    seen.add(loop_id)
-    option.setdefault("parse_loop_ids", []).append(loop_id)
+    def add_parse_site(self, callsite_id: str | None, max_sites: int) -> None:
+        if not callsite_id or callsite_id in self._seen_parse_sites:
+            return
+        self._seen_parse_sites.add(callsite_id)
+        if len(self.parse_sites) >= max_sites:
+            return
+        self.parse_sites.append(callsite_id)
 
+    def add_parse_loop_id(self, loop_id: str | None) -> None:
+        if not loop_id or loop_id in self._seen_parse_loops:
+            return
+        self._seen_parse_loops.add(loop_id)
+        self.parse_loop_ids.append(loop_id)
 
-def _add_evidence(option, evidence, max_evidence):
-    seen = option.setdefault("_seen_evidence", set())
-    key = (
-        evidence.get("kind"),
-        evidence.get("callsite_id"),
-        evidence.get("entry_address"),
-        evidence.get("optstring_address"),
-    )
-    if key in seen:
-        return
-    seen.add(key)
-    if len(option["evidence"]) >= max_evidence:
-        return
-    option["evidence"].append(evidence)
-
-
-def _add_flag_var(option, flag_addr, entry_addr, name_addr, max_vars):
-    seen = option.setdefault("_seen_flag_vars", set())
-    if flag_addr in seen:
-        return
-    seen.add(flag_addr)
-    if len(option["flag_vars"]) >= max_vars:
-        return
-    option["flag_vars"].append({
-        "address": flag_addr,
-        "entry_address": entry_addr,
-        "name_address": name_addr,
-    })
-
-
-def _add_check_sites(option, flag_addr, check_sites_by_flag_addr, max_sites):
-    sites = check_sites_by_flag_addr.get(flag_addr, [])
-    seen = option.setdefault("_seen_check_sites", set())
-    for site in sites:
-        addr = site.get("address")
-        if addr is None or addr in seen:
-            continue
-        if len(option["check_sites"]) >= max_sites:
-            break
-        seen.add(addr)
-        cleaned = {key: value for key, value in site.items() if key not in ("strength", "confidence")}
-        option["check_sites"].append(cleaned)
-
-
-def _add_check_site_entry(option, site, max_sites):
-    addr = site.get("address")
-    if addr is None:
-        return
-    seen = option.setdefault("_seen_check_sites", set())
-    if addr in seen:
-        return
-    if len(option["check_sites"]) >= max_sites:
-        return
-    seen.add(addr)
-    cleaned = {key: value for key, value in site.items() if key not in ("strength", "confidence")}
-    option["check_sites"].append(cleaned)
+    def to_payload(self, option_id: str) -> dict[str, Any]:
+        return {
+            "id": option_id,
+            "long_name": self.long_name,
+            "short_name": self.short_name,
+            "has_arg": self.has_arg,
+            "parse_sites": sorted(self.parse_sites, key=addr_to_int),
+            "parse_loop_ids": sorted(self.parse_loop_ids),
+        }
 
 
 def _build_parse_loop_lookup(parse_groups):
@@ -176,13 +117,8 @@ def _build_parse_loop_lookup(parse_groups):
 def _collect_parse_option_entries(
     parse_details_by_callsite,
     parse_loop_id_by_callsite,
-    max_parse_sites,
-    max_evidence,
-    max_flag_vars,
-    max_check_sites,
-    check_sites_by_flag_addr,
 ):
-    raw_options = []
+    raw_options: list[OptionObservation] = []
     callsite_ids = sorted(parse_details_by_callsite.keys(), key=addr_to_int)
     for callsite_id in callsite_ids:
         detail = parse_details_by_callsite.get(callsite_id)
@@ -192,31 +128,36 @@ def _collect_parse_option_entries(
         optstring = detail.get("optstring")
         if optstring:
             for opt in optstring.get("options", []):
-                short_name = opt.get("short_name")
-                option = _init_option(None, short_name, opt.get("has_arg"))
-                _add_parse_site(option, callsite_id, None, max_parse_sites)
-                _add_parse_loop_id(option, loop_id)
-                raw_options.append(option)
+                raw_options.append(
+                    OptionObservation(
+                        long_name=None,
+                        short_name=opt.get("short_name"),
+                        has_arg=_normalize_has_arg(opt.get("has_arg")),
+                        callsite_id=callsite_id,
+                        parse_loop_id=loop_id,
+                    )
+                )
 
         longopts = detail.get("longopts")
         if longopts:
             for entry in longopts.get("entries", []):
-                long_name = entry.get("name")
-                short_name = _short_from_val(entry.get("val"))
-                option = _init_option(long_name, short_name, entry.get("has_arg"))
-                _add_parse_site(option, callsite_id, None, max_parse_sites)
-                _add_parse_loop_id(option, loop_id)
-                raw_options.append(option)
+                raw_options.append(
+                    OptionObservation(
+                        long_name=entry.get("name"),
+                        short_name=_short_from_val(entry.get("val")),
+                        has_arg=_normalize_has_arg(entry.get("has_arg")),
+                        callsite_id=callsite_id,
+                        parse_loop_id=loop_id,
+                    )
+                )
     return raw_options
 
 
 def _collect_compare_option_entries(
     compare_details_by_callsite,
     parse_loop_id_by_callsite,
-    max_parse_sites,
-    max_evidence,
 ):
-    raw_options = []
+    raw_options: list[OptionObservation] = []
     compare_details_by_callsite = compare_details_by_callsite or {}
     compare_callsite_ids = sorted(compare_details_by_callsite.keys(), key=addr_to_int)
     for callsite_id in compare_callsite_ids:
@@ -225,57 +166,39 @@ def _collect_compare_option_entries(
             continue
         loop_id = parse_loop_id_by_callsite.get(callsite_id)
         for token in detail.get("option_tokens", []):
-            option = _init_option(
-                token.get("long_name"),
-                token.get("short_name"),
-                token.get("has_arg"),
+            raw_options.append(
+                OptionObservation(
+                    long_name=token.get("long_name"),
+                    short_name=token.get("short_name"),
+                    has_arg=_normalize_has_arg(token.get("has_arg")),
+                    callsite_id=callsite_id,
+                    parse_loop_id=loop_id,
+                )
             )
-            _add_parse_site(option, callsite_id, None, max_parse_sites)
-            _add_parse_loop_id(option, loop_id)
-            raw_options.append(option)
     return raw_options
 
 
-def _merge_option_entries(raw_options, max_parse_sites, max_evidence, max_flag_vars, max_check_sites):
+def _merge_option_entries(raw_options, max_parse_sites):
     # Deduplicate per-option observations across parse loops in multicall binaries.
     options_map = {}
     for entry in raw_options:
-        key = _option_identity(entry.get("long_name"), entry.get("short_name"), entry.get("has_arg"))
+        key = _option_identity(entry.long_name, entry.short_name, entry.has_arg)
         option = options_map.get(key)
         if option is None:
-            option = _init_option(entry.get("long_name"), entry.get("short_name"), entry.get("has_arg"))
+            option = OptionAccumulator(entry.long_name, entry.short_name, entry.has_arg)
             options_map[key] = option
         else:
-            if entry.get("long_name") and not option.get("long_name"):
-                option["long_name"] = entry.get("long_name")
-            if entry.get("short_name") and not option.get("short_name"):
-                option["short_name"] = entry.get("short_name")
+            option.merge_names(entry.long_name, entry.short_name)
 
-        for site in entry.get("parse_sites", []):
-            if isinstance(site, dict):
-                callsite_id = site.get("callsite_id")
-            else:
-                callsite_id = site
-            _add_parse_site(
-                option,
-                callsite_id,
-                None,
-                max_parse_sites,
-            )
-        for loop_id in entry.get("parse_loop_ids", []):
-            _add_parse_loop_id(option, loop_id)
+        option.add_parse_site(entry.callsite_id, max_parse_sites)
+        option.add_parse_loop_id(entry.parse_loop_id)
     options_list = list(options_map.values())
-    for option in options_list:
-        if option.get("parse_sites"):
-            option["parse_sites"].sort(key=addr_to_int)
-        if option.get("parse_loop_ids"):
-            option["parse_loop_ids"] = sorted(set(option["parse_loop_ids"]))
 
     options_list.sort(
         key=lambda item: (
-            -len(item.get("parse_sites") or []),
-            item.get("long_name") or "",
-            item.get("short_name") or "",
+            -len(item.parse_sites),
+            item.long_name or "",
+            item.short_name or "",
         )
     )
     return options_list
@@ -288,11 +211,10 @@ def _finalize_option_entries(options_list, max_options):
         options_list = options_list[:max_options]
         truncated_options = True
 
-    for idx, option in enumerate(options_list, start=1):
-        option["id"] = "opt_%03d" % idx
-        option.pop("_seen_parse_sites", None)
-        option.pop("_seen_parse_loops", None)
-    return options_list, total_options, truncated_options
+    payloads = [
+        option.to_payload("opt_%03d" % idx) for idx, option in enumerate(options_list, start=1)
+    ]
+    return payloads, total_options, truncated_options
 
 
 def _build_parse_loops(
@@ -333,7 +255,7 @@ def _build_parse_loops(
                 string_id = optstring.get("string_id")
                 address = optstring.get("address")
                 optstring_entry = {
-                    "status": _string_ref_status(string_id, address),
+                    "status": string_ref_status(string_id, address),
                     "option_count": len(optstring.get("options") or []),
                 }
                 if string_id:
@@ -353,7 +275,7 @@ def _build_parse_loops(
     return parse_loops
 
 
-def _finalize_parse_loops(parse_loops, max_parse_loops):
+def _finalize_parse_loops(parse_loops):
     def _loop_sort_id(item):
         rep_callsite = None
         callsites = item.get("callsite_ids") or []
@@ -377,7 +299,6 @@ class _CliSurfaceDeriver:
     parse_groups: list[dict[str, Any]]
     parse_details_by_callsite: dict[str, Any]
     compare_details_by_callsite: dict[str, Any]
-    check_sites_by_flag_addr: dict[str, Any]
     bounds: CliSurfaceBounds
 
     def derive(self) -> dict[str, Any]:
@@ -386,27 +307,17 @@ class _CliSurfaceDeriver:
         raw_options = _collect_parse_option_entries(
             self.parse_details_by_callsite,
             parse_loop_id_by_callsite,
-            self.bounds.max_parse_sites,
-            self.bounds.max_evidence,
-            self.bounds.max_flag_vars,
-            self.bounds.max_check_sites,
-            self.check_sites_by_flag_addr,
         )
         raw_options.extend(
             _collect_compare_option_entries(
                 self.compare_details_by_callsite,
                 parse_loop_id_by_callsite,
-                self.bounds.max_parse_sites,
-                self.bounds.max_evidence,
             )
         )
 
         options_list = _merge_option_entries(
             raw_options,
             self.bounds.max_parse_sites,
-            self.bounds.max_evidence,
-            self.bounds.max_flag_vars,
-            self.bounds.max_check_sites,
         )
         options_list, total_options, truncated_options = _finalize_option_entries(
             options_list,
@@ -420,9 +331,8 @@ class _CliSurfaceDeriver:
             self.bounds.max_callsites_per_loop,
         )
         parse_loops, total_parse_loops, truncated_parse_loops = _finalize_parse_loops(
-            parse_loops,
-            self.bounds.max_parse_loops,
-        )
+        parse_loops,
+    )
 
         return {
             "options": options_list,
@@ -439,13 +349,12 @@ def derive_cli_surface(
     parse_details_by_callsite,
     compare_details_by_callsite,
     bounds: Bounds,
-    check_sites_by_flag_addr,
 ):
     """Derive CLI surface artifacts.
 
     Invariants:
     - Options are merged across parse sites (multi-call binaries) and then sorted by
-      parse-site/evidence counts with stable tie-breakers.
+      parse-site counts with stable tie-breakers.
     - `truncated` flags indicate exporter bounds were hit; missing entries may exist.
     """
 
@@ -454,6 +363,5 @@ def derive_cli_surface(
         parse_groups=parse_groups or [],
         parse_details_by_callsite=parse_details_by_callsite or {},
         compare_details_by_callsite=compare_details_by_callsite or {},
-        check_sites_by_flag_addr=check_sites_by_flag_addr or {},
         bounds=cli_bounds,
     ).derive()

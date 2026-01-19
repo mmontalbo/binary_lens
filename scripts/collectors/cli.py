@@ -4,7 +4,6 @@ This module groups the exporter logic that:
 - locates CLI parse loops (getopt/argp style)
 - locates string-compare sites used for option/mode selection (strcmp-chain style)
 - decodes option tokens and `struct option` longopt tables from memory
-- extracts "flag check" sites (conditionals that reference known flag addresses)
 
 All of these are heuristics designed to be stable and bounded; they bias toward
 not emitting noisy/ambiguous data.
@@ -18,8 +17,7 @@ from collectors.cli_tokens import (
     decode_short_opt_string,
     parse_option_token,
 )
-from collectors.ghidra_memory import _to_address
-from export_primitives import addr_str, addr_to_int, normalize_symbol_name
+from export_primitives import addr_to_int, normalize_symbol_name
 
 
 def normalize_symbol_names(names):
@@ -41,22 +39,6 @@ CLI_COMPARE_SIGNAL_NAMES = set([
     "strncasecmp",
 ])
 CLI_COMPARE_SIGNAL_NAMES = normalize_symbol_names(CLI_COMPARE_SIGNAL_NAMES)
-CLI_COMPARE_MNEMONICS = set([
-    "CMP",
-    "CMPL",
-    "CMPQ",
-    "CMPW",
-    "CMPB",
-    "TEST",
-    "TESTL",
-    "TESTQ",
-    "TESTW",
-    "TESTB",
-    "TST",
-    "CMN",
-])
-
-
 def collect_cli_parse_sites(call_edges, function_meta_by_addr):
     parse_sites = []
     sites_by_function = {}
@@ -247,90 +229,3 @@ def build_cli_compare_details(compare_sites, call_args_by_callsite, string_addr_
             "option_tokens": option_tokens,
         }
     return details_by_callsite
-
-
-def _classify_check_site(listing, instr):
-    try:
-        flow = instr.getFlowType()
-    except Exception:
-        flow = None
-    if flow and flow.isConditional():
-        return {}
-    try:
-        mnemonic = instr.getMnemonicString()
-    except Exception:
-        mnemonic = None
-    if mnemonic and mnemonic.upper() in CLI_COMPARE_MNEMONICS:
-        try:
-            next_instr = listing.getInstructionAfter(instr.getAddress())
-        except Exception:
-            next_instr = None
-        if next_instr is not None:
-            try:
-                next_flow = next_instr.getFlowType()
-            except Exception:
-                next_flow = None
-            if next_flow and next_flow.isConditional():
-                return {
-                    "branch_address": addr_str(next_instr.getAddress()),
-                }
-        return {}
-    return None
-
-
-def collect_flag_check_sites(program, flag_addresses, max_sites_per_flag):
-    listing = program.getListing()
-    ref_manager = program.getReferenceManager()
-    func_manager = program.getFunctionManager()
-    results = {}
-    for addr_text in flag_addresses:
-        addr = _to_address(program, addr_text)
-        if addr is None:
-            continue
-        sites = []
-        seen = set()
-        try:
-            ref_iter = ref_manager.getReferencesTo(addr)
-        except Exception:
-            ref_iter = None
-        if ref_iter is None:
-            continue
-        while ref_iter.hasNext():
-            ref = ref_iter.next()
-            from_addr = ref.getFromAddress()
-            if from_addr is None:
-                continue
-            from_text = addr_str(from_addr)
-            if from_text in seen:
-                continue
-            instr = listing.getInstructionAt(from_addr)
-            if instr is None:
-                continue
-            # Heuristic: only keep sites that look like conditionals or compares.
-            classification = _classify_check_site(listing, instr)
-            if classification is None:
-                continue
-            func = func_manager.getFunctionContaining(from_addr)
-            func_entry = None
-            func_name = None
-            if func:
-                func_entry = addr_str(func.getEntryPoint())
-                func_name = func.getName()
-            site = {
-                "address": from_text,
-                "function": {
-                    "address": func_entry,
-                    "name": func_name,
-                },
-                "instruction": instr.toString(),
-            }
-            branch_addr = classification.get("branch_address")
-            if branch_addr:
-                site["branch_address"] = branch_addr
-            sites.append(site)
-            seen.add(from_text)
-            if max_sites_per_flag and len(sites) >= max_sites_per_flag:
-                break
-        if sites:
-            results[addr_text] = sites
-    return results

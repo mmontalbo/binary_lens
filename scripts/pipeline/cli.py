@@ -3,7 +3,7 @@
 This is intentionally *not* the core CLI collection logic (that lives in
 `scripts/collectors/cli.py`). Instead, this module wires together the collector
 primitives needed by the export pipeline (batch call-arg recovery, compare-site
-scoping, and parse/check-site enrichment).
+scoping, and parse-site enrichment).
 """
 
 from __future__ import annotations
@@ -17,7 +17,6 @@ from collectors.cli import (
     build_cli_parse_details,
     collect_cli_option_compare_sites,
     collect_cli_parse_sites,
-    collect_flag_check_sites,
 )
 from collectors.cli_tokens import parse_option_token
 from export_bounds import Bounds
@@ -28,7 +27,6 @@ class CliInputs:
     parse_groups: list[dict[str, Any]]
     parse_details_by_callsite: dict[str, Any]
     compare_details_by_callsite: dict[str, Any]
-    check_sites_by_flag_addr: dict[str, Any]
     parse_callsite_ids: list[str]
     compare_callsite_ids: list[str]
 
@@ -95,19 +93,6 @@ def collect_cli_inputs(
         bounds.max_cli_longopt_entries,
     )
 
-    flag_addresses = set()
-    for detail in parse_details_by_callsite.values():
-        longopts = detail.get("longopts") or {}
-        for entry in longopts.get("entries", []):
-            flag_addr = entry.get("flag_address")
-            if flag_addr:
-                flag_addresses.add(flag_addr)
-    check_sites_by_flag_addr = collect_flag_check_sites(
-        program,
-        sorted(flag_addresses),
-        bounds.max_cli_check_sites,
-    )
-
     compare_details_by_callsite = build_cli_compare_details(
         compare_sites,
         call_args_by_callsite,
@@ -118,7 +103,6 @@ def collect_cli_inputs(
         parse_groups=parse_groups,
         parse_details_by_callsite=parse_details_by_callsite,
         compare_details_by_callsite=compare_details_by_callsite,
-        check_sites_by_flag_addr=check_sites_by_flag_addr,
         parse_callsite_ids=parse_callsite_ids,
         compare_callsite_ids=compare_callsite_ids,
     )
