@@ -8,9 +8,18 @@ They should remain schema-stable; refactors in this module should avoid altering
 field meanings, ordering, or truncation behavior.
 """
 
+from dataclasses import dataclass, field
+from typing import Any
+
 from export_bounds import Bounds
 from export_primitives import addr_to_int
 from modes.common import _source_rank
+
+
+@dataclass(order=True)
+class _SortKeyedEntry:
+    sort_key: tuple[Any, ...]
+    entry: dict[str, Any] = field(compare=False)
 
 
 def _derive_mode_kind(mode, dispatch_kind_by_callsite):
@@ -96,7 +105,7 @@ def _build_modes_index_payload(
 
     filtered_out_modes = max(0, total_mode_candidates - len(filtered_modes))
 
-    modes = []
+    sortable_modes: list[_SortKeyedEntry] = []
     for mode in filtered_modes:
         callsite_ids = sorted(mode.get("dispatch_sites") or [], key=addr_to_int)
         dispatch_sites = list(callsite_ids)
@@ -168,29 +177,25 @@ def _build_modes_index_payload(
             "dispatch_roots": dispatch_roots,
             "dispatch_sites": dispatch_sites,
             "implementation_roots": implementation_roots,
-            "_sort_name": sort_name,
         }
         if kind_basis:
             entry["kind_basis"] = kind_basis
-        modes.append(entry)
-
-    modes.sort(
-        key=lambda item: (
-            -len(item.get("dispatch_sites") or []),
-            -len(item.get("dispatch_roots") or []),
-            -len(item.get("implementation_roots") or []),
-            item.get("_sort_name") or "",
-            item.get("mode_id") or "",
+        sort_key = (
+            -len(dispatch_sites),
+            -len(dispatch_roots),
+            -len(implementation_roots),
+            sort_name,
+            entry.get("mode_id") or "",
         )
-    )
+        sortable_modes.append(_SortKeyedEntry(sort_key, entry))
+
+    sortable_modes.sort()
+    modes = [item.entry for item in sortable_modes]
     total_modes = len(modes)
     truncated = False
     if max_modes and total_modes > max_modes:
         modes = modes[:max_modes]
         truncated = True
-
-    for entry in modes:
-        entry.pop("_sort_name", None)
 
     selected_mode_ids = set([entry.get("mode_id") for entry in modes if entry.get("mode_id")])
 
@@ -284,7 +289,7 @@ def _build_dispatch_sites_payload(
                 if key not in token_counts_selected:
                     token_counts_selected[key] = 1
 
-        token_entries = []
+        sortable_tokens: list[_SortKeyedEntry] = []
         for key, count in token_counts_selected.items():
             token = token_meta_selected.get(key, {})
             name = token.get("value")
@@ -293,7 +298,6 @@ def _build_dispatch_sites_payload(
                 "mode_id": token.get("mode_id"),
                 "kind": token.get("kind"),
                 "occurrence_count": count,
-                "_sort_name": name or "",
             }
             if string_id:
                 entry["status"] = "resolved"
@@ -307,17 +311,15 @@ def _build_dispatch_sites_payload(
                 entry["name"] = name
                 if address:
                     entry["address"] = address
-            token_entries.append(entry)
-
-        token_entries.sort(
-            key=lambda item: (
-                -item.get("occurrence_count", 0),
-                item.get("_sort_name") or "",
-                item.get("mode_id") or "",
+            sort_key = (
+                -count,
+                name or "",
+                entry.get("mode_id") or "",
             )
-        )
-        for entry in token_entries:
-            entry.pop("_sort_name", None)
+            sortable_tokens.append(_SortKeyedEntry(sort_key, entry))
+
+        sortable_tokens.sort()
+        token_entries = [item.entry for item in sortable_tokens]
         token_truncated = False
         if max_tokens and len(token_entries) > max_tokens:
             token_entries = token_entries[:max_tokens]

@@ -27,6 +27,15 @@ def _dispatch_root_entries(roots) -> list[dict[str, str]]:
     return entries
 
 
+def _slice_sort_key(entry) -> tuple[int, int, str, str]:
+    return (
+        -len(entry.get("dispatch_sites") or []),
+        -len(entry.get("root_functions") or []),
+        entry.get("name") or "",
+        entry.get("mode_id") or "",
+    )
+
+
 def _collect_option_ids_from_parse_sites(options_list, func_ids, max_options, parse_loop_by_id):
     if not func_ids or not parse_loop_by_id:
         return []
@@ -167,7 +176,6 @@ def build_mode_slices(
                 if func_id:
                     implementation_func_ids.add(func_id)
 
-        option_ids = []
         parse_loop_ids = []
         scope_kind = "unknown"
         scope_basis = "no_parse_loop_overlap"
@@ -312,14 +320,7 @@ def build_mode_slices(
             slice_entry["top_exit_paths_ref"] = "errors/exit_paths.json"
         slices.append(slice_entry)
 
-    slices.sort(
-        key=lambda item: (
-            -len(item.get("dispatch_sites") or []),
-            -len(item.get("root_functions") or []),
-            item.get("name") or "",
-            item.get("mode_id") or "",
-        )
-    )
+    slices.sort(key=_slice_sort_key)
 
     total_slices = len(slices)
     truncated = False
