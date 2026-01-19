@@ -6,7 +6,13 @@ This document defines near-term milestones for adding **LM-tailored interface le
 
 ## Milestone 4 — Contract Anchors (Callsites + Tables + Strings)
 
-Status: planned
+Status: complete
+
+Acceptance snapshot:
+- Pack navigation: `binary.lens/index.json` (`start_here` + `entrypoints`)
+- Mode contracts: `binary.lens/contracts/index.json` + `binary.lens/contracts/modes/*.md`
+- Pack docs: `binary.lens/docs/overview.md` + `binary.lens/docs/navigation.md` + `binary.lens/docs/examples.md`
+- Fast verification: `tools/check_pack_refs.py` (no Ghidra)
 
 ### Goal
 Shift the pack’s primary interface toward a **user-facing contract model** (commands/modes, inputs, outputs, diagnostics), backed by evidence. Low-level implementation conventions (`getopt_long`, `strcmp` chains, custom parsers, `fprintf`, etc.) should be treated as *evidence sources*, not the interface.
@@ -28,11 +34,11 @@ Many binaries encode “user contracts” through multiple mechanisms:
 - keeping the pack comprehensive without becoming unreadable (sharding + small indexes)
 
 ### Deliverables
-1) **Sharded list outputs (no dropped records)**
-- Replace “top-N truncation” for large lists with a sharded layout:
-  - Keep a small index file at the stable path (e.g., `modes/slices.json`, `cli/parse_loops.json`).
-  - Store the full set in shard files under a sibling directory (e.g., `modes/slices/`, `cli/parse_loops/`).
-  - Index includes totals, shard refs, and `truncated: false`.
+1) **Sharded inventories (no dropped records)**
+- Large inventories are exported via `format=sharded_list/v1`:
+  - Small index file at a stable path (e.g., `strings.json`, `callgraph.json`, `cli/options.json`).
+  - Full set stored in shard files under a sibling directory.
+  - Reruns clear the pack root before writing to prevent stale shards from accumulating.
 
 2) **Mode-scoped contract views (Markdown-first)**
 - Add a mode-first “start here” surface that joins existing inventories into a per-mode contract view, with explicit coverage/unknowns and evidence trails.
@@ -50,11 +56,15 @@ Maintain the existing `interfaces/` surfaces as atomic, evidence-linked inventor
 
 For `interfaces/*` specifics, keep the existing surface split (`env`, `fs`, `process`, `net`, `output`) and preserve explicit unknowns + evidence refs.
 
-### Implementation hygiene (required)
-To keep the pack generic and reduce future churn while adding new pattern families:
-- Factor shared “signal-driven callsite scan” logic into reusable helpers (CLI/errors/interfaces should not each re-implement the same walk-and-filter loop).
-- Centralize symbol/import normalization and make matching policy explicit (casefolding, `_chk`/version suffix stripping, substring vs exact matches).
-- Isolate name-convention heuristics (e.g., `cmd_*`/`cmd_main`) behind clearly-labeled modules/flags so they don’t become the generic story.
+4) **Pack-embedded docs and schema guide**
+- Packs include `README.md`, `index.json`, `docs/`, and `schema/` so humans and LMs can navigate without repo context.
+
+5) **Ref integrity guardrail**
+- `tools/check_pack_refs.py` validates JSON refs and contract/doc links against the exported artifact set.
+
+### Implementation notes
+- Name-based heuristics are explicit and overrideable (wordlists), and should not be treated as canonical “interface truth”.
+- Contract views avoid misleading attributions when localization is missing (prefer explicit unknowns over weak inference).
 
 ### Approach (static-first)
 - Prefer **import-signal anchors** + existing callgraph/callsite evidence to localize sites.
@@ -63,17 +73,17 @@ To keep the pack generic and reduce future churn while adding new pattern famili
 - Emit evidence-linked records with explicit `unknown` fields and coverage summaries rather than narrative claims.
 - Keep outputs comprehensive via sharding; keep navigation small via indexes and per-mode docs.
 
-### Acceptance Criteria
+### Acceptance Criteria (met)
 **A. Mode-first UX**
 - For both `git` and `coreutils`, consumers can pick an arbitrary mode from `modes/index.json` and find a single mode-scoped contract view that links to options/env/output/diagnostics evidence with explicit coverage/unknowns.
-- No mode is “missing” from key routing surfaces due to truncation (sharded lists instead of top-N).
+- No mode is “missing” from key routing surfaces due to top-N truncation (sharded inventories instead).
 
 **B. Generic-first**
 - Core functionality does not depend on binary-specific symbol naming conventions; any name-based shortcuts are optional and labeled as heuristic.
 
 **C. Comprehensive + navigable**
 - Large lists are comprehensive via sharding; small indexes and Markdown views keep navigation tractable.
-- Every contract claim links back to evidence (callsites, functions, string IDs/addresses), and missing data is represented explicitly (unknown vs truncated).
+- Every contract claim links back to evidence (callsites, functions, string IDs/addresses), and missing data is represented explicitly (unknown vs missing).
 
 ## Milestone 3 — Dispatch & Mode Surface Lens
 
