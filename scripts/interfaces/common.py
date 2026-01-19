@@ -104,7 +104,7 @@ def unknown_value(**extra: Any) -> dict[str, Any]:
 def const_value_for_index(
     args: dict[str, Any],
     index: int,
-) -> tuple[dict[str, Any], bool]:
+) -> dict[str, Any]:
     const_args = args.get("const_args_by_index", {}) or {}
     if index in const_args:
         return (
@@ -112,7 +112,6 @@ def const_value_for_index(
                 "status": "known",
                 "value": const_args.get(index),
                 "arg_index": index,
-            },
-            True,
+            }
         )
-    return (unknown_value(), False)
+    return unknown_value()
