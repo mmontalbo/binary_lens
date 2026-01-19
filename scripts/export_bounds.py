@@ -10,10 +10,7 @@ from export_config import (
     DEFAULT_MAX_CALL_EDGES,
     DEFAULT_MAX_CALLS_PER_FUNCTION,
     DEFAULT_MAX_CLI_CALLSITES_PER_PARSE_LOOP,
-    DEFAULT_MAX_CLI_CHECK_SITES,
-    DEFAULT_MAX_CLI_FLAG_VARS,
     DEFAULT_MAX_CLI_LONGOPT_ENTRIES,
-    DEFAULT_MAX_CLI_OPTION_EVIDENCE,
     DEFAULT_MAX_CLI_OPTIONS,
     DEFAULT_MAX_CLI_PARSE_LOOPS,
     DEFAULT_MAX_CLI_PARSE_SITES_PER_OPTION,
@@ -64,12 +61,9 @@ BOUND_OPTION_DEFAULTS: tuple[tuple[str, int], ...] = (
     ("max_decomp_lines", DEFAULT_MAX_DECOMP_LINES),
     ("max_cli_options", DEFAULT_MAX_CLI_OPTIONS),
     ("max_cli_parse_loops", DEFAULT_MAX_CLI_PARSE_LOOPS),
-    ("max_cli_option_evidence", DEFAULT_MAX_CLI_OPTION_EVIDENCE),
     ("max_cli_parse_sites_per_option", DEFAULT_MAX_CLI_PARSE_SITES_PER_OPTION),
     ("max_cli_longopt_entries", DEFAULT_MAX_CLI_LONGOPT_ENTRIES),
     ("max_cli_callsites_per_parse_loop", DEFAULT_MAX_CLI_CALLSITES_PER_PARSE_LOOP),
-    ("max_cli_flag_vars", DEFAULT_MAX_CLI_FLAG_VARS),
-    ("max_cli_check_sites", DEFAULT_MAX_CLI_CHECK_SITES),
     ("max_error_messages", DEFAULT_MAX_ERROR_MESSAGES),
     ("max_error_message_callsites", DEFAULT_MAX_ERROR_MESSAGE_CALLSITES),
     ("max_error_message_functions", DEFAULT_MAX_ERROR_MESSAGE_FUNCTIONS),
@@ -147,12 +141,9 @@ class Bounds:
     max_decomp_lines: int
     max_cli_options: int
     max_cli_parse_loops: int
-    max_cli_option_evidence: int
     max_cli_parse_sites_per_option: int
     max_cli_longopt_entries: int
     max_cli_callsites_per_parse_loop: int
-    max_cli_flag_vars: int
-    max_cli_check_sites: int
     max_error_messages: int
     max_error_message_callsites: int
     max_error_message_functions: int
