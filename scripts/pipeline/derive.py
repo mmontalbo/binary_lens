@@ -63,6 +63,8 @@ _CALLSITE_KEYS = {
     "parse_sites",
 }
 
+INTERFACE_SURFACES = ("env", "fs", "process", "net", "output")
+
 
 def _collect_callsite_ids(value: Any, callsite_ids: set[str]) -> None:
     if isinstance(value, Mapping):
@@ -106,6 +108,34 @@ def _strip_index_metadata(payload: Mapping[str, Any] | None) -> Mapping[str, Any
     return cleaned
 
 
+def _shard_payload(
+    payload: Mapping[str, Any] | None,
+    *,
+    list_key: str,
+    shard_dir: str,
+    item_kind: str,
+    item_id_key: str | None = None,
+    shard_size: int | None = None,
+) -> tuple[dict[str, Any], dict[str, Any]]:
+    cleaned = _strip_index_metadata(payload)
+    if shard_size is None:
+        return build_sharded_list_index(
+            cleaned or {},
+            list_key=list_key,
+            shard_dir=shard_dir,
+            item_id_key=item_id_key,
+            item_kind=item_kind,
+        )
+    return build_sharded_list_index(
+        cleaned or {},
+        list_key=list_key,
+        shard_dir=shard_dir,
+        item_id_key=item_id_key,
+        item_kind=item_kind,
+        shard_size=shard_size,
+    )
+
+
 def _callsite_to_function(callsite_records: Mapping[str, Any] | None) -> dict[str, str]:
     callsite_to_function: dict[str, str] = {}
     for callsite_id, record in (callsite_records or {}).items():
@@ -121,6 +151,18 @@ def _callsite_to_function(callsite_records: Mapping[str, Any] | None) -> dict[st
         if func_id:
             callsite_to_function[callsite_id] = func_id
     return callsite_to_function
+
+
+def _interface_coverage(payload: Mapping[str, Any] | None) -> dict[str, Any]:
+    if not isinstance(payload, Mapping):
+        return {"total": None, "selected": 0, "truncated": None, "max": None}
+    entries = payload.get("entries") if isinstance(payload.get("entries"), list) else []
+    return {
+        "total": payload.get("total_candidates"),
+        "selected": len(entries),
+        "truncated": payload.get("truncated"),
+        "max": payload.get("max_entries"),
+    }
 
 
 def derive_payloads(
@@ -157,7 +199,6 @@ def derive_payloads(
             collected.cli_inputs.parse_details_by_callsite,
             collected.cli_inputs.compare_details_by_callsite,
             bounds,
-            collected.cli_inputs.check_sites_by_flag_addr,
         )
     with phase(profiler, "build_mode_slices"):
         callsite_to_function = _callsite_to_function(collected.callsite_records)
@@ -236,25 +277,23 @@ def derive_payloads(
         bounds,
     )
     cli_parse_loops_payload["callsites_ref"] = callsites_ref
-    callsites_index, callsites_shards = build_sharded_list_index(
+    callsites_index, callsites_shards = _shard_payload(
         {"callsites": callsite_evidence},
         list_key="callsites",
         shard_dir="evidence/callsites",
-        item_id_key=None,
         item_kind="callsites",
     )
-    cli_parse_loops_index, cli_parse_loops_shards = build_sharded_list_index(
-        _strip_index_metadata(cli_parse_loops_payload),
+    cli_parse_loops_index, cli_parse_loops_shards = _shard_payload(
+        cli_parse_loops_payload,
         list_key="parse_loops",
         shard_dir="cli/parse_loops",
         item_id_key="id",
         item_kind="cli_parse_loops",
     )
-    modes_slices_index, modes_slices_shards = build_sharded_list_index(
-        _strip_index_metadata(modes_slices_payload),
+    modes_slices_index, modes_slices_shards = _shard_payload(
+        modes_slices_payload,
         list_key="slices",
         shard_dir="modes/slices",
-        item_id_key=None,
         item_kind="mode_slices",
     )
 
@@ -266,92 +305,71 @@ def derive_payloads(
         collected.string_bucket_counts,
         collected.string_bucket_limits,
     )
-    strings_index, strings_shards = build_sharded_list_index(
-        _strip_index_metadata(strings_payload),
+    strings_index, strings_shards = _shard_payload(
+        strings_payload,
         list_key="strings",
         shard_dir="strings",
-        item_id_key=None,
         item_kind="strings",
     )
-    callgraph_index, callgraph_shards = build_sharded_list_index(
-        _strip_index_metadata(callgraph),
+    callgraph_index, callgraph_shards = _shard_payload(
+        callgraph,
         list_key="edges",
         shard_dir="callgraph/edges",
-        item_id_key=None,
         item_kind="callgraph_edges",
         shard_size=DEFAULT_CALLGRAPH_EDGE_SHARD_SIZE,
     )
     callgraph_nodes_payload = build_callgraph_nodes_payload(callgraph_nodes)
-    callgraph_nodes_index, callgraph_nodes_shards = build_sharded_list_index(
-        _strip_index_metadata(callgraph_nodes_payload),
+    callgraph_nodes_index, callgraph_nodes_shards = _shard_payload(
+        callgraph_nodes_payload,
         list_key="nodes",
         shard_dir="callgraph/nodes",
-        item_id_key=None,
         item_kind="callgraph_nodes",
     )
-    cli_options_index, cli_options_shards = build_sharded_list_index(
-        _strip_index_metadata(cli_options_payload),
+    cli_options_index, cli_options_shards = _shard_payload(
+        cli_options_payload,
         list_key="options",
         shard_dir="cli/options",
-        item_id_key=None,
         item_kind="cli_options",
     )
-    error_messages_index, error_messages_shards = build_sharded_list_index(
-        _strip_index_metadata(collected.error_messages_payload),
+    error_messages_index, error_messages_shards = _shard_payload(
+        collected.error_messages_payload,
         list_key="messages",
         shard_dir="errors/messages",
-        item_id_key=None,
         item_kind="error_messages",
     )
-    exit_paths_index, exit_paths_shards = build_sharded_list_index(
-        _strip_index_metadata(collected.exit_paths_payload),
+    exit_paths_index, exit_paths_shards = _shard_payload(
+        collected.exit_paths_payload,
         list_key="direct_calls",
         shard_dir="errors/exit_paths",
-        item_id_key=None,
         item_kind="exit_calls",
     )
-    error_sites_index, error_sites_shards = build_sharded_list_index(
-        _strip_index_metadata(collected.error_sites_payload),
+    error_sites_index, error_sites_shards = _shard_payload(
+        collected.error_sites_payload,
         list_key="sites",
         shard_dir="errors/error_sites",
-        item_id_key=None,
         item_kind="error_sites",
     )
-    interfaces_env_index, interfaces_env_shards = build_sharded_list_index(
-        _strip_index_metadata(collected.interfaces_payloads.get("env", {})),
-        list_key="entries",
-        shard_dir="interfaces/env",
-        item_id_key=None,
-        item_kind="interfaces_env",
-    )
-    interfaces_fs_index, interfaces_fs_shards = build_sharded_list_index(
-        _strip_index_metadata(collected.interfaces_payloads.get("fs", {})),
-        list_key="entries",
-        shard_dir="interfaces/fs",
-        item_id_key=None,
-        item_kind="interfaces_fs",
-    )
-    interfaces_process_index, interfaces_process_shards = build_sharded_list_index(
-        _strip_index_metadata(collected.interfaces_payloads.get("process", {})),
-        list_key="entries",
-        shard_dir="interfaces/process",
-        item_id_key=None,
-        item_kind="interfaces_process",
-    )
-    interfaces_net_index, interfaces_net_shards = build_sharded_list_index(
-        _strip_index_metadata(collected.interfaces_payloads.get("net", {})),
-        list_key="entries",
-        shard_dir="interfaces/net",
-        item_id_key=None,
-        item_kind="interfaces_net",
-    )
-    interfaces_output_index, interfaces_output_shards = build_sharded_list_index(
-        _strip_index_metadata(collected.interfaces_payloads.get("output", {})),
-        list_key="entries",
-        shard_dir="interfaces/output",
-        item_id_key=None,
-        item_kind="interfaces_output",
-    )
+    interface_indices: dict[str, dict[str, Any]] = {}
+    interface_shards: dict[str, dict[str, Any]] = {}
+    for surface in INTERFACE_SURFACES:
+        index, shards = _shard_payload(
+            collected.interfaces_payloads.get(surface, {}),
+            list_key="entries",
+            shard_dir=f"interfaces/{surface}",
+            item_kind=f"interfaces_{surface}",
+        )
+        interface_indices[surface] = index
+        interface_shards[surface] = shards
+    interfaces_env_index = interface_indices["env"]
+    interfaces_fs_index = interface_indices["fs"]
+    interfaces_process_index = interface_indices["process"]
+    interfaces_net_index = interface_indices["net"]
+    interfaces_output_index = interface_indices["output"]
+    interfaces_env_shards = interface_shards["env"]
+    interfaces_fs_shards = interface_shards["fs"]
+    interfaces_process_shards = interface_shards["process"]
+    interfaces_net_shards = interface_shards["net"]
+    interfaces_output_shards = interface_shards["output"]
     error_candidates = collected.error_messages_payload.get("total_candidates")
     error_total = collected.error_messages_payload.get("total_messages")
     error_excluded = None
@@ -407,36 +425,6 @@ def derive_payloads(
             "truncated": modes_slices_payload.get("truncated"),
             "max": modes_slices_payload.get("max_slices"),
         },
-        "interfaces_env": {
-            "total": collected.interfaces_payloads.get("env", {}).get("total_candidates"),
-            "selected": len(collected.interfaces_payloads.get("env", {}).get("entries") or []),
-            "truncated": collected.interfaces_payloads.get("env", {}).get("truncated"),
-            "max": collected.interfaces_payloads.get("env", {}).get("max_entries"),
-        },
-        "interfaces_fs": {
-            "total": collected.interfaces_payloads.get("fs", {}).get("total_candidates"),
-            "selected": len(collected.interfaces_payloads.get("fs", {}).get("entries") or []),
-            "truncated": collected.interfaces_payloads.get("fs", {}).get("truncated"),
-            "max": collected.interfaces_payloads.get("fs", {}).get("max_entries"),
-        },
-        "interfaces_process": {
-            "total": collected.interfaces_payloads.get("process", {}).get("total_candidates"),
-            "selected": len(collected.interfaces_payloads.get("process", {}).get("entries") or []),
-            "truncated": collected.interfaces_payloads.get("process", {}).get("truncated"),
-            "max": collected.interfaces_payloads.get("process", {}).get("max_entries"),
-        },
-        "interfaces_net": {
-            "total": collected.interfaces_payloads.get("net", {}).get("total_candidates"),
-            "selected": len(collected.interfaces_payloads.get("net", {}).get("entries") or []),
-            "truncated": collected.interfaces_payloads.get("net", {}).get("truncated"),
-            "max": collected.interfaces_payloads.get("net", {}).get("max_entries"),
-        },
-        "interfaces_output": {
-            "total": collected.interfaces_payloads.get("output", {}).get("total_candidates"),
-            "selected": len(collected.interfaces_payloads.get("output", {}).get("entries") or []),
-            "truncated": collected.interfaces_payloads.get("output", {}).get("truncated"),
-            "max": collected.interfaces_payloads.get("output", {}).get("max_entries"),
-        },
         "error_messages": {
             "total": error_total,
             "selected": collected.error_messages_payload.get("selected_messages"),
@@ -458,6 +446,10 @@ def derive_payloads(
             "max": collected.exit_paths_payload.get("max_exit_calls"),
         },
     }
+    for surface in INTERFACE_SURFACES:
+        coverage_summary[f"interfaces_{surface}"] = _interface_coverage(
+            collected.interfaces_payloads.get(surface)
+        )
 
     manifest = build_manifest(
         bounds,
@@ -503,11 +495,10 @@ def derive_payloads(
         exported_function_ids,
         name_hints_source=bounds,
     )
-    contracts_index, contracts_shards = build_sharded_list_index(
-        _strip_index_metadata(contracts_payload),
+    contracts_index, contracts_shards = _shard_payload(
+        contracts_payload,
         list_key="modes",
         shard_dir="contracts/index",
-        item_id_key=None,
         item_kind="mode_contracts",
     )
 

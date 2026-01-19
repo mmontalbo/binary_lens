@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import shutil
-from typing import Any
+from typing import Any, Iterable
 
 from export_bounds import Bounds
 from outputs.io import ensure_dir, write_json, write_text
@@ -21,6 +21,39 @@ def _remove_deprecated_function_index(layout: PackLayout) -> None:
             shutil.rmtree(path)
         elif path.exists():
             path.unlink()
+
+
+def _ensure_pack_dirs(layout: PackLayout) -> None:
+    for path in (
+        layout.root / "strings",
+        layout.root / "callgraph" / "edges",
+        layout.root / "callgraph" / "nodes",
+        layout.modes_dir / "slices",
+        layout.cli_dir / "parse_loops",
+        layout.cli_dir / "options",
+        layout.errors_dir / "messages",
+        layout.errors_dir / "exit_paths",
+        layout.errors_dir / "error_sites",
+        layout.interfaces_dir / "env",
+        layout.interfaces_dir / "fs",
+        layout.interfaces_dir / "process",
+        layout.interfaces_dir / "net",
+        layout.interfaces_dir / "output",
+        layout.contracts_dir / "index",
+        layout.contracts_dir / "modes",
+    ):
+        ensure_dir(path)
+
+
+def _write_json_payloads(items: Iterable[tuple[Any, Any]]) -> None:
+    for path, payload in items:
+        write_json(path, payload)
+
+
+def _write_shards(layout: PackLayout, *shard_maps: dict[str, Any]) -> None:
+    for shard_map in shard_maps:
+        for rel_path, content in shard_map.items():
+            write_json(layout.root / rel_path, content)
 
 
 def write_outputs(
@@ -49,75 +82,51 @@ def write_outputs(
         )
 
     with phase(profiler, "write_outputs"):
-        ensure_dir(layout.root / "strings")
-        ensure_dir(layout.root / "callgraph" / "edges")
-        ensure_dir(layout.root / "callgraph" / "nodes")
-        ensure_dir(layout.modes_dir / "slices")
-        ensure_dir(layout.cli_dir / "parse_loops")
-        ensure_dir(layout.cli_dir / "options")
-        ensure_dir(layout.errors_dir / "messages")
-        ensure_dir(layout.errors_dir / "exit_paths")
-        ensure_dir(layout.errors_dir / "error_sites")
-        ensure_dir(layout.interfaces_dir / "env")
-        ensure_dir(layout.interfaces_dir / "fs")
-        ensure_dir(layout.interfaces_dir / "process")
-        ensure_dir(layout.interfaces_dir / "net")
-        ensure_dir(layout.interfaces_dir / "output")
-        ensure_dir(layout.contracts_dir / "index")
-        ensure_dir(layout.contracts_dir / "modes")
+        _ensure_pack_dirs(layout)
 
-        write_json(layout.root / "index.json", derived.pack_index_payload)
-        write_json(layout.root / "manifest.json", derived.manifest)
-        write_json(layout.root / "evidence" / "callsites.json", derived.callsites_index)
-        write_json(layout.root / "strings.json", derived.strings_index)
-        write_json(layout.root / "callgraph.json", derived.callgraph_index)
-        write_json(layout.root / "callgraph" / "nodes.json", derived.callgraph_nodes_index)
-        write_json(layout.errors_dir / "messages.json", derived.error_messages_index)
-        write_json(layout.errors_dir / "exit_paths.json", derived.exit_paths_index)
-        write_json(layout.errors_dir / "error_sites.json", derived.error_sites_index)
-        write_json(layout.modes_dir / "index.json", collected.modes_payload)
-        write_json(layout.modes_dir / "slices.json", derived.modes_slices_index)
-        write_json(layout.interfaces_dir / "index.json", collected.interfaces_index_payload)
-        write_json(layout.interfaces_dir / "env.json", derived.interfaces_env_index)
-        write_json(layout.interfaces_dir / "fs.json", derived.interfaces_fs_index)
-        write_json(layout.interfaces_dir / "process.json", derived.interfaces_process_index)
-        write_json(layout.interfaces_dir / "net.json", derived.interfaces_net_index)
-        write_json(layout.interfaces_dir / "output.json", derived.interfaces_output_index)
-        write_json(layout.cli_dir / "options.json", derived.cli_options_index)
-        write_json(layout.cli_dir / "parse_loops.json", derived.cli_parse_loops_index)
-        write_json(layout.contracts_dir / "index.json", derived.contracts_index)
-        for rel_path, content in derived.callsites_shards.items():
-            write_json(layout.root / rel_path, content)
-        for rel_path, content in derived.modes_slices_shards.items():
-            write_json(layout.root / rel_path, content)
-        for rel_path, content in derived.cli_parse_loops_shards.items():
-            write_json(layout.root / rel_path, content)
-        for rel_path, content in derived.strings_shards.items():
-            write_json(layout.root / rel_path, content)
-        for rel_path, content in derived.callgraph_shards.items():
-            write_json(layout.root / rel_path, content)
-        for rel_path, content in derived.callgraph_nodes_shards.items():
-            write_json(layout.root / rel_path, content)
-        for rel_path, content in derived.cli_options_shards.items():
-            write_json(layout.root / rel_path, content)
-        for rel_path, content in derived.error_messages_shards.items():
-            write_json(layout.root / rel_path, content)
-        for rel_path, content in derived.exit_paths_shards.items():
-            write_json(layout.root / rel_path, content)
-        for rel_path, content in derived.error_sites_shards.items():
-            write_json(layout.root / rel_path, content)
-        for rel_path, content in derived.interfaces_env_shards.items():
-            write_json(layout.root / rel_path, content)
-        for rel_path, content in derived.interfaces_fs_shards.items():
-            write_json(layout.root / rel_path, content)
-        for rel_path, content in derived.interfaces_process_shards.items():
-            write_json(layout.root / rel_path, content)
-        for rel_path, content in derived.interfaces_net_shards.items():
-            write_json(layout.root / rel_path, content)
-        for rel_path, content in derived.interfaces_output_shards.items():
-            write_json(layout.root / rel_path, content)
-        for rel_path, content in derived.contracts_shards.items():
-            write_json(layout.root / rel_path, content)
+        _write_json_payloads(
+            [
+                (layout.root / "index.json", derived.pack_index_payload),
+                (layout.root / "manifest.json", derived.manifest),
+                (layout.root / "evidence" / "callsites.json", derived.callsites_index),
+                (layout.root / "strings.json", derived.strings_index),
+                (layout.root / "callgraph.json", derived.callgraph_index),
+                (layout.root / "callgraph" / "nodes.json", derived.callgraph_nodes_index),
+                (layout.errors_dir / "messages.json", derived.error_messages_index),
+                (layout.errors_dir / "exit_paths.json", derived.exit_paths_index),
+                (layout.errors_dir / "error_sites.json", derived.error_sites_index),
+                (layout.modes_dir / "index.json", collected.modes_payload),
+                (layout.modes_dir / "slices.json", derived.modes_slices_index),
+                (layout.interfaces_dir / "index.json", collected.interfaces_index_payload),
+                (layout.interfaces_dir / "env.json", derived.interfaces_env_index),
+                (layout.interfaces_dir / "fs.json", derived.interfaces_fs_index),
+                (layout.interfaces_dir / "process.json", derived.interfaces_process_index),
+                (layout.interfaces_dir / "net.json", derived.interfaces_net_index),
+                (layout.interfaces_dir / "output.json", derived.interfaces_output_index),
+                (layout.cli_dir / "options.json", derived.cli_options_index),
+                (layout.cli_dir / "parse_loops.json", derived.cli_parse_loops_index),
+                (layout.contracts_dir / "index.json", derived.contracts_index),
+            ]
+        )
+        _write_shards(
+            layout,
+            derived.callsites_shards,
+            derived.modes_slices_shards,
+            derived.cli_parse_loops_shards,
+            derived.strings_shards,
+            derived.callgraph_shards,
+            derived.callgraph_nodes_shards,
+            derived.cli_options_shards,
+            derived.error_messages_shards,
+            derived.exit_paths_shards,
+            derived.error_sites_shards,
+            derived.interfaces_env_shards,
+            derived.interfaces_fs_shards,
+            derived.interfaces_process_shards,
+            derived.interfaces_net_shards,
+            derived.interfaces_output_shards,
+            derived.contracts_shards,
+        )
         write_text(layout.root / "README.md", derived.pack_readme)
         for rel_path, content in derived.pack_docs.items():
             write_text(layout.root / rel_path, content)
