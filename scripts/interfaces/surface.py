@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Callable, TypedDict
 
 from collectors.call_args import extract_call_args_for_callsites
 from collectors.callsites import collect_callsite_matches
@@ -40,6 +40,50 @@ XSTAT_VARIANTS = {
     "lxstat",
     "lxstat64",
 }
+
+
+class InterfaceEntryBase(TypedDict):
+    callsite_id: str
+    operation: str
+    arg_recovery_status: str
+
+
+class EnvInterfaceEntry(InterfaceEntryBase):
+    var: dict[str, Any]
+
+
+class FsInterfaceEntry(InterfaceEntryBase, total=False):
+    paths: list[dict[str, Any]]
+    flags: dict[str, Any]
+    mode: dict[str, Any]
+
+
+class ProcessInterfaceEntry(InterfaceEntryBase):
+    commands: list[dict[str, Any]]
+
+
+class NetInterfaceEntry(InterfaceEntryBase):
+    hosts: list[dict[str, Any]]
+    ports: dict[str, Any]
+
+
+class OutputInterfaceEntry(InterfaceEntryBase):
+    templates: list[dict[str, Any]]
+    channel: dict[str, Any]
+
+
+class UnknownInterfaceEntry(InterfaceEntryBase, total=False):
+    details: dict[str, Any]
+
+
+SurfaceEntry = (
+    EnvInterfaceEntry
+    | FsInterfaceEntry
+    | ProcessInterfaceEntry
+    | NetInterfaceEntry
+    | OutputInterfaceEntry
+    | UnknownInterfaceEntry
+)
 
 
 def _callee_base_name(callee_name: str | None) -> str | None:
@@ -165,7 +209,7 @@ def _port_value(
     string_addr_map_all: dict[str, str] | None,
 ) -> tuple[dict[str, Any], bool]:
     if index is None:
-        return {"status": "unknown"}, False
+        return unknown_value(), False
     const_entry, used_const = const_value_for_index(args, index)
     if used_const:
         return const_entry, True
@@ -183,7 +227,7 @@ def _port_value(
                 )
             except Exception:
                 continue
-    return {"status": "unknown"}, False
+    return unknown_value(), False
 
 
 def _channel_from_fixed_kind(spec: OperationSpec) -> tuple[dict[str, Any], bool] | None:
@@ -194,7 +238,7 @@ def _channel_from_fixed_kind(spec: OperationSpec) -> tuple[dict[str, Any], bool]
 
 def _channel_from_stream_arg(spec: OperationSpec, args: dict[str, Any]) -> tuple[dict[str, Any], bool]:
     if spec.stream_arg_index is None:
-        return {"status": "unknown", "kind": "unknown"}, False
+        return unknown_value(kind="unknown"), False
     symbol_args = args.get("symbol_args_by_index", {}) or {}
     entries = symbol_args.get(spec.stream_arg_index, []) or []
     for entry in entries:
@@ -206,13 +250,13 @@ def _channel_from_stream_arg(spec: OperationSpec, args: dict[str, Any]) -> tuple
             return {"status": "known", "kind": "stderr"}, True
         if "stdout" in lowered:
             return {"status": "known", "kind": "stdout"}, True
-    return {"status": "unknown", "kind": "unknown"}, False
+    return unknown_value(kind="unknown"), False
 
 
 def _channel_from_fd_arg(spec: OperationSpec, args: dict[str, Any]) -> tuple[dict[str, Any], bool]:
     const_args = args.get("const_args_by_index", {}) or {}
     if spec.fd_arg_index not in const_args:
-        return {"status": "unknown", "kind": "unknown"}, False
+        return unknown_value(kind="unknown"), False
     fd_value = const_args.get(spec.fd_arg_index)
     if fd_value == 1:
         return {"status": "known", "kind": "stdout", "fd": fd_value}, True
@@ -230,74 +274,138 @@ def _channel_value(spec: OperationSpec, args: dict[str, Any]) -> tuple[dict[str,
     return _channel_from_fd_arg(spec, args)
 
 
-def _build_entry(
-    surface: str,
-    spec,
-    match,
-    args: dict[str, Any],
-    string_addr_map_all: dict[str, str] | None,
-) -> tuple[dict[str, Any], bool]:
-    spec = _adjust_spec_for_callee(surface, spec, match.callee_name)
-    has_known_arg = False
-    entry: dict[str, Any] = {
+def _base_entry(spec: OperationSpec, match, args: dict[str, Any]) -> InterfaceEntryBase:
+    return {
         "callsite_id": match.callsite_id,
         "operation": spec.name,
         "arg_recovery_status": args.get("status") or "unknown",
     }
 
-    if surface == "env":
-        var_entry, used_arg = _build_single_string(
-            args, spec.var_arg_index, string_addr_map_all
-        )
-        entry["var"] = var_entry
-        has_known_arg = used_arg
-    elif surface == "fs":
-        paths, used_paths = _build_string_list(
-            args, spec.string_arg_indices, string_addr_map_all
-        )
-        if spec.flags_arg_index is None:
-            flags, used_flags = {"status": "unknown"}, False
-        else:
-            flags, used_flags = const_value_for_index(args, spec.flags_arg_index)
-        if spec.mode_arg_index is None:
-            mode, used_mode = {"status": "unknown"}, False
-        else:
-            mode, used_mode = const_value_for_index(args, spec.mode_arg_index)
-        entry["paths"] = paths
-        for path in entry["paths"]:
-            if isinstance(path, dict) and path.get("string_id"):
-                path.pop("address", None)
-        if flags != {"status": "unknown"}:
-            entry["flags"] = flags
-        if mode != {"status": "unknown"}:
-            entry["mode"] = mode
-        has_known_arg = used_paths or used_flags or used_mode
-    elif surface == "process":
-        commands, used_commands = _build_string_list(
-            args, spec.string_arg_indices, string_addr_map_all
-        )
-        entry["commands"] = commands
-        has_known_arg = used_commands
-    elif surface == "net":
-        hosts, used_hosts = _build_string_list(
-            args, spec.string_arg_indices, string_addr_map_all
-        )
-        port, used_port = _port_value(args, spec.port_arg_index, string_addr_map_all)
-        entry["hosts"] = hosts
-        entry["ports"] = port
-        has_known_arg = used_hosts or used_port
-    elif surface == "output":
-        templates, used_templates = _build_string_list(
-            args, spec.string_arg_indices, string_addr_map_all
-        )
-        channel, used_channel = _channel_value(spec, args)
-        entry["templates"] = templates
-        entry["channel"] = channel
-        has_known_arg = used_templates or used_channel
-    else:
-        entry["details"] = {}
 
-    return entry, has_known_arg
+def _strip_address_for_string_ids(paths: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    cleaned: list[dict[str, Any]] = []
+    for path in paths:
+        if isinstance(path, dict) and path.get("string_id"):
+            if "address" in path:
+                path = dict(path)
+                path.pop("address", None)
+        cleaned.append(path)
+    return cleaned
+
+
+def _build_env_entry(
+    spec: OperationSpec,
+    match,
+    args: dict[str, Any],
+    string_addr_map_all: dict[str, str] | None,
+) -> tuple[EnvInterfaceEntry, bool]:
+    var_entry, used_arg = _build_single_string(args, spec.var_arg_index, string_addr_map_all)
+    entry: EnvInterfaceEntry = {**_base_entry(spec, match, args), "var": var_entry}
+    return entry, used_arg
+
+
+def _build_fs_entry(
+    spec: OperationSpec,
+    match,
+    args: dict[str, Any],
+    string_addr_map_all: dict[str, str] | None,
+) -> tuple[FsInterfaceEntry, bool]:
+    paths, used_paths = _build_string_list(args, spec.string_arg_indices, string_addr_map_all)
+    paths = _strip_address_for_string_ids(paths)
+    unknown = unknown_value()
+    if spec.flags_arg_index is None:
+        flags, used_flags = unknown, False
+    else:
+        flags, used_flags = const_value_for_index(args, spec.flags_arg_index)
+    if spec.mode_arg_index is None:
+        mode, used_mode = unknown, False
+    else:
+        mode, used_mode = const_value_for_index(args, spec.mode_arg_index)
+    entry: FsInterfaceEntry = {**_base_entry(spec, match, args), "paths": paths}
+    if flags != unknown:
+        entry["flags"] = flags
+    if mode != unknown:
+        entry["mode"] = mode
+    return entry, used_paths or used_flags or used_mode
+
+
+def _build_process_entry(
+    spec: OperationSpec,
+    match,
+    args: dict[str, Any],
+    string_addr_map_all: dict[str, str] | None,
+) -> tuple[ProcessInterfaceEntry, bool]:
+    commands, used_commands = _build_string_list(args, spec.string_arg_indices, string_addr_map_all)
+    entry: ProcessInterfaceEntry = {**_base_entry(spec, match, args), "commands": commands}
+    return entry, used_commands
+
+
+def _build_net_entry(
+    spec: OperationSpec,
+    match,
+    args: dict[str, Any],
+    string_addr_map_all: dict[str, str] | None,
+) -> tuple[NetInterfaceEntry, bool]:
+    hosts, used_hosts = _build_string_list(args, spec.string_arg_indices, string_addr_map_all)
+    port, used_port = _port_value(args, spec.port_arg_index, string_addr_map_all)
+    entry: NetInterfaceEntry = {
+        **_base_entry(spec, match, args),
+        "hosts": hosts,
+        "ports": port,
+    }
+    return entry, used_hosts or used_port
+
+
+def _build_output_entry(
+    spec: OperationSpec,
+    match,
+    args: dict[str, Any],
+    string_addr_map_all: dict[str, str] | None,
+) -> tuple[OutputInterfaceEntry, bool]:
+    templates, used_templates = _build_string_list(args, spec.string_arg_indices, string_addr_map_all)
+    channel, used_channel = _channel_value(spec, args)
+    entry: OutputInterfaceEntry = {
+        **_base_entry(spec, match, args),
+        "templates": templates,
+        "channel": channel,
+    }
+    return entry, used_templates or used_channel
+
+
+def _build_unknown_entry(
+    spec: OperationSpec,
+    match,
+    args: dict[str, Any],
+    _string_addr_map_all: dict[str, str] | None,
+) -> tuple[UnknownInterfaceEntry, bool]:
+    entry: UnknownInterfaceEntry = {**_base_entry(spec, match, args), "details": {}}
+    return entry, False
+
+
+SurfaceBuilder = Callable[
+    [OperationSpec, Any, dict[str, Any], dict[str, str] | None],
+    tuple[SurfaceEntry, bool],
+]
+
+SURFACE_BUILDERS: dict[str, SurfaceBuilder] = {
+    "env": _build_env_entry,
+    "fs": _build_fs_entry,
+    "process": _build_process_entry,
+    "net": _build_net_entry,
+    "output": _build_output_entry,
+}
+
+
+def _build_entry(
+    surface: str,
+    spec: OperationSpec,
+    match,
+    args: dict[str, Any],
+    string_addr_map_all: dict[str, str] | None,
+) -> tuple[SurfaceEntry, bool]:
+    spec = _adjust_spec_for_callee(surface, spec, match.callee_name)
+    builder = SURFACE_BUILDERS.get(surface, _build_unknown_entry)
+    return builder(spec, match, args, string_addr_map_all)
 
 
 def _resolve_call_args(

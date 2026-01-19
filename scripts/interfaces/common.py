@@ -94,8 +94,11 @@ def string_candidates_for_index(
     return entries
 
 
-def unknown_value() -> dict[str, Any]:
-    return {"status": "unknown"}
+def unknown_value(**extra: Any) -> dict[str, Any]:
+    payload = {"status": "unknown"}
+    if extra:
+        payload.update(extra)
+    return payload
 
 
 def const_value_for_index(
@@ -112,4 +115,4 @@ def const_value_for_index(
             },
             True,
         )
-    return ({"status": "unknown"}, False)
+    return (unknown_value(), False)
