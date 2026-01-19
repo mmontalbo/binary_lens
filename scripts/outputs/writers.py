@@ -156,24 +156,6 @@ def build_callsite_records(callsite_records, call_edges, extra_callsites=None, c
     return [selected_callsite_records[callsite] for callsite in ordered_callsites]
 
 
-def write_callsite_records(
-    callsite_records,
-    call_edges,
-    evidence_callsites_dir,
-    extra_callsites=None,
-    callsite_ids=None,
-):
-    """Deprecated: callsite evidence is now written via sharded list outputs."""
-    _ = (
-        callsite_records,
-        call_edges,
-        evidence_callsites_dir,
-        extra_callsites,
-        callsite_ids,
-    )
-    return {}
-
-
 def write_function_exports(
     program,
     full_functions,
