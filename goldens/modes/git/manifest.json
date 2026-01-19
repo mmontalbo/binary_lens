@@ -126,12 +126,6 @@
       "total": 7,
       "truncated": false
     },
-    "mode_dispatch_sites": {
-      "max": 12,
-      "selected": 12,
-      "total": 675,
-      "truncated": true
-    },
     "mode_slices": {
       "max": null,
       "selected": 143,
@@ -171,7 +165,7 @@
   "target_endian": "little",
   "tool": {
     "name": "binary_lens",
-    "revision": "52fe2cb6997a51fd75f98745efc72b1fbf6a353f",
+    "revision": "79394750d00262a781ee22a76213c7b5fa5f9e40",
     "version": "0.1.0-dev"
   }
 }

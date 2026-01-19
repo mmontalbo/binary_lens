@@ -8,6118 +8,2716 @@
   "max_modes": null,
   "modes": [
     {
-      "dispatch_root_count": 2,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        },
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 2,
-          "function_id": "0011a5d0"
-        }
+        "001196b0",
+        "0011a5d0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 2,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "001196f8"
-        },
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "0011a5d0",
-          "callsite_id": "0011a7bc"
-        }
+        "001196f8",
+        "0011a7bc"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "001196f8",
-          "0011a7bc"
-        ],
-        "functions": [
-          "001196b0",
-          "0011a5d0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 2,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "001196f8"
-            ],
-            "string_addresses": [
-              "002091aa"
-            ]
-          },
           "function_id": "00129ac0",
           "sources": [
             "compare_chain_handler"
           ]
         },
         {
-          "evidence": {
-            "compare_callsites": [
-              "0011a7bc"
-            ],
-            "handler_callsites": [
-              "0011a7d2"
-            ]
-          },
           "function_id": "001fd910",
           "sources": [
             "compare_chain"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_002091aa",
       "name": "[",
       "token": {
         "address": "002091aa",
-        "string_id": null,
+        "status": "unresolved",
         "value": "["
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "0011970f"
-        }
+        "0011970f"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "0011970f"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_00207038"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "0011970f"
-            ],
-            "strings": [
-              "s_00207038"
-            ]
-          },
           "function_id": "0012a4d0",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_00207038",
       "name": null,
       "token": {
-        "address": "00207038",
+        "status": "resolved",
         "string_id": "s_00207038"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119726"
-        }
+        "00119726"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119726"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_0020703e"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119726"
-            ],
-            "strings": [
-              "s_0020703e"
-            ]
-          },
           "function_id": "0012eed0",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_0020703e",
       "name": null,
       "token": {
-        "address": "0020703e",
+        "status": "resolved",
         "string_id": "s_0020703e"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "0011973d"
-        }
+        "0011973d"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "0011973d"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_00207045"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "0011973d"
-            ],
-            "strings": [
-              "s_00207045"
-            ]
-          },
           "function_id": "0012e250",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_00207045",
       "name": null,
       "token": {
-        "address": "00207045",
+        "status": "resolved",
         "string_id": "s_00207045"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119754"
-        }
+        "00119754"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119754"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_0020704c"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119754"
-            ],
-            "strings": [
-              "s_0020704c"
-            ]
-          },
           "function_id": "00132470",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_0020704c",
       "name": null,
       "token": {
-        "address": "0020704c",
+        "status": "resolved",
         "string_id": "s_0020704c"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "0011976b"
-        }
+        "0011976b"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "0011976b"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_00207055"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "0011976b"
-            ],
-            "strings": [
-              "s_00207055"
-            ]
-          },
           "function_id": "00131370",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_00207055",
       "name": null,
       "token": {
-        "address": "00207055",
+        "status": "resolved",
         "string_id": "s_00207055"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119782"
-        }
+        "00119782"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119782"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119782"
-            ],
-            "string_addresses": [
-              "0020705c"
-            ]
-          },
           "function_id": "00132b30",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_0020705c",
       "name": "cat",
       "token": {
         "address": "0020705c",
-        "string_id": null,
+        "status": "unresolved",
         "value": "cat"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119799"
-        }
+        "00119799"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119799"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_00207060"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119799"
-            ],
-            "strings": [
-              "s_00207060"
-            ]
-          },
           "function_id": "00133e20",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_00207060",
       "name": null,
       "token": {
-        "address": "00207060",
+        "status": "resolved",
         "string_id": "s_00207060"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "001197b0"
-        }
+        "001197b0"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "001197b0"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_00207066"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "001197b0"
-            ],
-            "strings": [
-              "s_00207066"
-            ]
-          },
           "function_id": "00134910",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_00207066",
       "name": null,
       "token": {
-        "address": "00207066",
+        "status": "resolved",
         "string_id": "s_00207066"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "001197c7"
-        }
+        "001197c7"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "001197c7"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_0020706c"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "001197c7"
-            ],
-            "strings": [
-              "s_0020706c"
-            ]
-          },
           "function_id": "00135610",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_0020706c",
       "name": null,
       "token": {
-        "address": "0020706c",
+        "status": "resolved",
         "string_id": "s_0020706c"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "001197de"
-        }
+        "001197de"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "001197de"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_00207072"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "001197de"
-            ],
-            "strings": [
-              "s_00207072"
-            ]
-          },
           "function_id": "00136190",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_00207072",
       "name": null,
       "token": {
-        "address": "00207072",
+        "status": "resolved",
         "string_id": "s_00207072"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "001197f5"
-        }
+        "001197f5"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "001197f5"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_00207078"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "001197f5"
-            ],
-            "strings": [
-              "s_00207078"
-            ]
-          },
           "function_id": "0011afd0",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_00207078",
       "name": null,
       "token": {
-        "address": "00207078",
+        "status": "resolved",
         "string_id": "s_00207078"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "0011980c"
-        }
+        "0011980c"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "0011980c"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_0020707f"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "0011980c"
-            ],
-            "strings": [
-              "s_0020707f"
-            ]
-          },
           "function_id": "00138990",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_0020707f",
       "name": null,
       "token": {
-        "address": "0020707f",
+        "status": "resolved",
         "string_id": "s_0020707f"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119823"
-        }
+        "00119823"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119823"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119823"
-            ],
-            "string_addresses": [
-              "00207085"
-            ]
-          },
           "function_id": "0013bea0",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_00207085",
       "name": "comm",
       "token": {
         "address": "00207085",
-        "string_id": null,
+        "status": "unresolved",
         "value": "comm"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "0011983a"
-        }
+        "0011983a"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "0011983a"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "0011983a"
-            ],
-            "string_addresses": [
-              "00209228"
-            ]
-          },
           "function_id": "0013daf0",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_00209228",
       "name": "cp",
       "token": {
         "address": "00209228",
-        "string_id": null,
+        "status": "unresolved",
         "value": "cp"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119851"
-        }
+        "00119851"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119851"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_0020708a"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119851"
-            ],
-            "strings": [
-              "s_0020708a"
-            ]
-          },
           "function_id": "00146780",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_0020708a",
       "name": null,
       "token": {
-        "address": "0020708a",
+        "status": "resolved",
         "string_id": "s_0020708a"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119868"
-        }
+        "00119868"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119868"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119868"
-            ],
-            "string_addresses": [
-              "00207091"
-            ]
-          },
           "function_id": "00148520",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_00207091",
       "name": "cut",
       "token": {
         "address": "00207091",
-        "string_id": null,
+        "status": "unresolved",
         "value": "cut"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "0011987f"
-        }
+        "0011987f"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "0011987f"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "0011987f"
-            ],
-            "string_addresses": [
-              "00208f54"
-            ]
-          },
           "function_id": "001499b0",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_00208f54",
       "name": "date",
       "token": {
         "address": "00208f54",
-        "string_id": null,
+        "status": "unresolved",
         "value": "date"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119896"
-        }
+        "00119896"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119896"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119896"
-            ],
-            "string_addresses": [
-              "002076da"
-            ]
-          },
           "function_id": "0014c7d0",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_002076da",
       "name": "dd",
       "token": {
         "address": "002076da",
-        "string_id": null,
+        "status": "unresolved",
         "value": "dd"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "001198ad"
-        }
+        "001198ad"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "001198ad"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "001198ad"
-            ],
-            "string_addresses": [
-              "0020b9f3"
-            ]
-          },
           "function_id": "001258d0",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_0020b9f3",
       "name": "df",
       "token": {
         "address": "0020b9f3",
-        "string_id": null,
+        "status": "unresolved",
         "value": "df"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "001198c4"
-        }
+        "001198c4"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "001198c4"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "001198c4"
-            ],
-            "string_addresses": [
-              "00207396"
-            ]
-          },
           "function_id": "0014e9c0",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_00207396",
       "name": "dir",
       "token": {
         "address": "00207396",
-        "string_id": null,
+        "status": "unresolved",
         "value": "dir"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "001198db"
-        }
+        "001198db"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "001198db"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_00207095"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "001198db"
-            ],
-            "strings": [
-              "s_00207095"
-            ]
-          },
           "function_id": "0014f5e0",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_00207095",
       "name": null,
       "token": {
-        "address": "00207095",
+        "status": "resolved",
         "string_id": "s_00207095"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "001198f2"
-        }
+        "001198f2"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "001198f2"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_0020709f"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "001198f2"
-            ],
-            "strings": [
-              "s_0020709f"
-            ]
-          },
           "function_id": "0014fe30",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_0020709f",
       "name": null,
       "token": {
-        "address": "0020709f",
+        "status": "resolved",
         "string_id": "s_0020709f"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119909"
-        }
+        "00119909"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119909"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119909"
-            ],
-            "string_addresses": [
-              "002070a7"
-            ]
-          },
           "function_id": "00150650",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_002070a7",
       "name": "du",
       "token": {
         "address": "002070a7",
-        "string_id": null,
+        "status": "unresolved",
         "value": "du"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119920"
-        }
+        "00119920"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119920"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119920"
-            ],
-            "string_addresses": [
-              "00207c1e"
-            ]
-          },
           "function_id": "001523a0",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_00207c1e",
       "name": "echo",
       "token": {
         "address": "00207c1e",
-        "string_id": null,
+        "status": "unresolved",
         "value": "echo"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119937"
-        }
+        "00119937"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119937"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119937"
-            ],
-            "string_addresses": [
-              "0020713d"
-            ]
-          },
           "function_id": "00153500",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_0020713d",
       "name": "env",
       "token": {
         "address": "0020713d",
-        "string_id": null,
+        "status": "unresolved",
         "value": "env"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "0011994e"
-        }
+        "0011994e"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "0011994e"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "0011994e"
-            ],
-            "string_addresses": [
-              "002071fc"
-            ]
-          },
           "function_id": "001552d0",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_002071fc",
       "name": "expand",
       "token": {
         "address": "002071fc",
-        "string_id": null,
+        "status": "unresolved",
         "value": "expand"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119965"
-        }
+        "00119965"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119965"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119965"
-            ],
-            "string_addresses": [
-              "002070aa"
-            ]
-          },
           "function_id": "00158070",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_002070aa",
       "name": "expr",
       "token": {
         "address": "002070aa",
-        "string_id": null,
+        "status": "unresolved",
         "value": "expr"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "0011997c"
-        }
+        "0011997c"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "0011997c"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_002070af"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "0011997c"
-            ],
-            "strings": [
-              "s_002070af"
-            ]
-          },
           "function_id": "0015ba90",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_002070af",
       "name": null,
       "token": {
-        "address": "002070af",
+        "status": "resolved",
         "string_id": "s_002070af"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119993"
-        }
+        "00119993"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119993"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_002070b6"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119993"
-            ],
-            "strings": [
-              "s_002070b6"
-            ]
-          },
           "function_id": "0015bff0",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_002070b6",
       "name": null,
       "token": {
-        "address": "002070b6",
+        "status": "resolved",
         "string_id": "s_002070b6"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "001199aa"
-        }
+        "001199aa"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "001199aa"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "001199aa"
-            ],
-            "string_addresses": [
-              "00207120"
-            ]
-          },
           "function_id": "0015d6f0",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_00207120",
       "name": "fmt",
       "token": {
         "address": "00207120",
-        "string_id": null,
+        "status": "unresolved",
         "value": "fmt"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "001199c1"
-        }
+        "001199c1"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "001199c1"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "001199c1"
-            ],
-            "string_addresses": [
-              "0020ba34"
-            ]
-          },
           "function_id": "0015e7e0",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_0020ba34",
       "name": "fold",
       "token": {
         "address": "0020ba34",
-        "string_id": null,
+        "status": "unresolved",
         "value": "fold"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "001199d8"
-        }
+        "001199d8"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "001199d8"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_002070bc"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "001199d8"
-            ],
-            "strings": [
-              "s_002070bc"
-            ]
-          },
           "function_id": "0015f990",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_002070bc",
       "name": null,
       "token": {
-        "address": "002070bc",
+        "status": "resolved",
         "string_id": "s_002070bc"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "001199ef"
-        }
+        "001199ef"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "001199ef"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_002070c5"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "001199ef"
-            ],
-            "strings": [
-              "s_002070c5"
-            ]
-          },
           "function_id": "00160a90",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_002070c5",
       "name": null,
       "token": {
-        "address": "002070c5",
+        "status": "resolved",
         "string_id": "s_002070c5"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119a06"
-        }
+        "00119a06"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119a06"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119a06"
-            ],
-            "string_addresses": [
-              "002070cc"
-            ]
-          },
           "function_id": "00161c80",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_002070cc",
       "name": "head",
       "token": {
         "address": "002070cc",
-        "string_id": null,
+        "status": "unresolved",
         "value": "head"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119a1d"
-        }
+        "00119a1d"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119a1d"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_002070d1"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119a1d"
-            ],
-            "strings": [
-              "s_002070d1"
-            ]
-          },
           "function_id": "0011b9d0",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_002070d1",
       "name": null,
       "token": {
-        "address": "002070d1",
+        "status": "resolved",
         "string_id": "s_002070d1"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119a34"
-        }
+        "00119a34"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119a34"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119a34"
-            ],
-            "string_addresses": [
-              "00209d58"
-            ]
-          },
           "function_id": "001639d0",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_00209d58",
       "name": "id",
       "token": {
         "address": "00209d58",
-        "string_id": null,
+        "status": "unresolved",
         "value": "id"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119a4b"
-        }
+        "00119a4b"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119a4b"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119a4b"
-            ],
-            "string_addresses": [
-              "002070d8"
-            ]
-          },
           "function_id": "00165510",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_002070d8",
       "name": "join",
       "token": {
         "address": "002070d8",
-        "string_id": null,
+        "status": "unresolved",
         "value": "join"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119a62"
-        }
+        "00119a62"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119a62"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119a62"
-            ],
-            "string_addresses": [
-              "00207c26"
-            ]
-          },
           "function_id": "001669b0",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_00207c26",
       "name": "kill",
       "token": {
         "address": "00207c26",
-        "string_id": null,
+        "status": "unresolved",
         "value": "kill"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119a79"
-        }
+        "00119a79"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119a79"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119a79"
-            ],
-            "string_addresses": [
-              "0020d271"
-            ]
-          },
           "function_id": "00167370",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_0020d271",
       "name": "link",
       "token": {
         "address": "0020d271",
-        "string_id": null,
+        "status": "unresolved",
         "value": "link"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119a90"
-        }
+        "00119a90"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119a90"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119a90"
-            ],
-            "string_addresses": [
-              "002070dd"
-            ]
-          },
           "function_id": "001684b0",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_002070dd",
       "name": "ln",
       "token": {
         "address": "002070dd",
-        "string_id": null,
+        "status": "unresolved",
         "value": "ln"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119aa7"
-        }
+        "00119aa7"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119aa7"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_002070e0"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119aa7"
-            ],
-            "strings": [
-              "s_002070e0"
-            ]
-          },
           "function_id": "001692b0",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_002070e0",
       "name": null,
       "token": {
-        "address": "002070e0",
+        "status": "resolved",
         "string_id": "s_002070e0"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119abe"
-        }
+        "00119abe"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119abe"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119abe"
-            ],
-            "string_addresses": [
-              "002072e7"
-            ]
-          },
           "function_id": "00171d70",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_002072e7",
       "name": "ls",
       "token": {
         "address": "002072e7",
-        "string_id": null,
+        "status": "unresolved",
         "value": "ls"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119ad5"
-        }
+        "00119ad5"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119ad5"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_002070e8"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119ad5"
-            ],
-            "strings": [
-              "s_002070e8"
-            ]
-          },
           "function_id": "001748d0",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_002070e8",
       "name": null,
       "token": {
-        "address": "002070e8",
+        "status": "resolved",
         "string_id": "s_002070e8"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119aec"
-        }
+        "00119aec"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119aec"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_002070ef"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119aec"
-            ],
-            "strings": [
-              "s_002070ef"
-            ]
-          },
           "function_id": "00176120",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_002070ef",
       "name": null,
       "token": {
-        "address": "002070ef",
+        "status": "resolved",
         "string_id": "s_002070ef"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119b03"
-        }
+        "00119b03"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119b03"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119b03"
-            ],
-            "string_addresses": [
-              "002070f5"
-            ]
-          },
           "function_id": "001767a0",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_002070f5",
       "name": "mkfifo",
       "token": {
         "address": "002070f5",
-        "string_id": null,
+        "status": "unresolved",
         "value": "mkfifo"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119b1a"
-        }
+        "00119b1a"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119b1a"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_002070fc"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119b1a"
-            ],
-            "strings": [
-              "s_002070fc"
-            ]
-          },
           "function_id": "00176e90",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_002070fc",
       "name": null,
       "token": {
-        "address": "002070fc",
+        "status": "resolved",
         "string_id": "s_002070fc"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119b31"
-        }
+        "00119b31"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119b31"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_00207102"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119b31"
-            ],
-            "strings": [
-              "s_00207102"
-            ]
-          },
           "function_id": "00177940",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_00207102",
       "name": null,
       "token": {
-        "address": "00207102",
+        "status": "resolved",
         "string_id": "s_00207102"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119b48"
-        }
+        "00119b48"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119b48"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119b48"
-            ],
-            "string_addresses": [
-              "00207109"
-            ]
-          },
           "function_id": "001785b0",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_00207109",
       "name": "mv",
       "token": {
         "address": "00207109",
-        "string_id": null,
+        "status": "unresolved",
         "value": "mv"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119b5f"
-        }
+        "00119b5f"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119b5f"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119b5f"
-            ],
-            "string_addresses": [
-              "0020710c"
-            ]
-          },
           "function_id": "0011d180",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_0020710c",
       "name": "nice",
       "token": {
         "address": "0020710c",
-        "string_id": null,
+        "status": "unresolved",
         "value": "nice"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119b76"
-        }
+        "00119b76"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119b76"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119b76"
-            ],
-            "string_addresses": [
-              "00207beb"
-            ]
-          },
           "function_id": "0017abf0",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_00207beb",
       "name": "nl",
       "token": {
         "address": "00207beb",
-        "string_id": null,
+        "status": "unresolved",
         "value": "nl"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119b8d"
-        }
+        "00119b8d"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119b8d"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_00207111"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119b8d"
-            ],
-            "strings": [
-              "s_00207111"
-            ]
-          },
           "function_id": "0017bb60",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_00207111",
       "name": null,
       "token": {
-        "address": "00207111",
+        "status": "resolved",
         "string_id": "s_00207111"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119ba4"
-        }
+        "00119ba4"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119ba4"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119ba4"
-            ],
-            "string_addresses": [
-              "00207117"
-            ]
-          },
           "function_id": "0017b5f0",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_00207117",
       "name": "nproc",
       "token": {
         "address": "00207117",
-        "string_id": null,
+        "status": "unresolved",
         "value": "nproc"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119bbb"
-        }
+        "00119bbb"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119bbb"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119bbb"
-            ],
-            "string_addresses": [
-              "0020711d"
-            ]
-          },
           "function_id": "0017eb80",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_0020711d",
       "name": "numfmt",
       "token": {
         "address": "0020711d",
-        "string_id": null,
+        "status": "unresolved",
         "value": "numfmt"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119bd2"
-        }
+        "00119bd2"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119bd2"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119bd2"
-            ],
-            "string_addresses": [
-              "0020706f"
-            ]
-          },
           "function_id": "00182550",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_0020706f",
       "name": "od",
       "token": {
         "address": "0020706f",
-        "string_id": null,
+        "status": "unresolved",
         "value": "od"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119be9"
-        }
+        "00119be9"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119be9"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_00207124"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119be9"
-            ],
-            "strings": [
-              "s_00207124"
-            ]
-          },
           "function_id": "001845d0",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_00207124",
       "name": null,
       "token": {
-        "address": "00207124",
+        "status": "resolved",
         "string_id": "s_00207124"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119c00"
-        }
+        "00119c00"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119c00"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_0020712a"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119c00"
-            ],
-            "strings": [
-              "s_0020712a"
-            ]
-          },
           "function_id": "00184c50",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_0020712a",
       "name": null,
       "token": {
-        "address": "0020712a",
+        "status": "resolved",
         "string_id": "s_0020712a"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119c17"
-        }
+        "00119c17"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119c17"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_00207132"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119c17"
-            ],
-            "strings": [
-              "s_00207132"
-            ]
-          },
           "function_id": "00120460",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_00207132",
       "name": null,
       "token": {
-        "address": "00207132",
+        "status": "resolved",
         "string_id": "s_00207132"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119c2e"
-        }
+        "00119c2e"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119c2e"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119c2e"
-            ],
-            "string_addresses": [
-              "002070ac"
-            ]
-          },
           "function_id": "00188760",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_002070ac",
       "name": "pr",
       "token": {
         "address": "002070ac",
-        "string_id": null,
+        "status": "unresolved",
         "value": "pr"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119c45"
-        }
+        "00119c45"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119c45"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_00207138"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119c45"
-            ],
-            "strings": [
-              "s_00207138"
-            ]
-          },
           "function_id": "00189520",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_00207138",
       "name": null,
       "token": {
-        "address": "00207138",
+        "status": "resolved",
         "string_id": "s_00207138"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119c5c"
-        }
+        "00119c5c"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119c5c"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_00207141"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119c5c"
-            ],
-            "strings": [
-              "s_00207141"
-            ]
-          },
           "function_id": "0018b460",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_00207141",
       "name": null,
       "token": {
-        "address": "00207141",
+        "status": "resolved",
         "string_id": "s_00207141"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119c73"
-        }
+        "00119c73"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119c73"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119c73"
-            ],
-            "string_addresses": [
-              "00207148"
-            ]
-          },
           "function_id": "0018c360",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_00207148",
       "name": "ptx",
       "token": {
         "address": "00207148",
-        "string_id": null,
+        "status": "unresolved",
         "value": "ptx"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119c8a"
-        }
+        "00119c8a"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119c8a"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119c8a"
-            ],
-            "string_addresses": [
-              "0020714c"
-            ]
-          },
           "function_id": "0018f4b0",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_0020714c",
       "name": "pwd",
       "token": {
         "address": "0020714c",
-        "string_id": null,
+        "status": "unresolved",
         "value": "pwd"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119ca1"
-        }
+        "00119ca1"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119ca1"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_00207150"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119ca1"
-            ],
-            "strings": [
-              "s_00207150"
-            ]
-          },
           "function_id": "0018fe00",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_00207150",
       "name": null,
       "token": {
-        "address": "00207150",
+        "status": "resolved",
         "string_id": "s_00207150"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119cb8"
-        }
+        "00119cb8"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119cb8"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_00207159"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119cb8"
-            ],
-            "strings": [
-              "s_00207159"
-            ]
-          },
           "function_id": "001905a0",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_00207159",
       "name": null,
       "token": {
-        "address": "00207159",
+        "status": "resolved",
         "string_id": "s_00207159"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119ccf"
-        }
+        "00119ccf"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119ccf"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119ccf"
-            ],
-            "string_addresses": [
-              "0020c129"
-            ]
-          },
           "function_id": "00191070",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_0020c129",
       "name": "rm",
       "token": {
         "address": "0020c129",
-        "string_id": null,
+        "status": "unresolved",
         "value": "rm"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119ce6"
-        }
+        "00119ce6"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119ce6"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_00207162"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119ce6"
-            ],
-            "strings": [
-              "s_00207162"
-            ]
-          },
           "function_id": "00191b70",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_00207162",
       "name": null,
       "token": {
-        "address": "00207162",
+        "status": "resolved",
         "string_id": "s_00207162"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119cfd"
-        }
+        "00119cfd"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119cfd"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_00207168"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119cfd"
-            ],
-            "strings": [
-              "s_00207168"
-            ]
-          },
           "function_id": "00192390",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_00207168",
       "name": null,
       "token": {
-        "address": "00207168",
+        "status": "resolved",
         "string_id": "s_00207168"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119d14"
-        }
+        "00119d14"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119d14"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119d14"
-            ],
-            "string_addresses": [
-              "0020716f"
-            ]
-          },
           "function_id": "00193260",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_0020716f",
       "name": "seq",
       "token": {
         "address": "0020716f",
-        "string_id": null,
+        "status": "unresolved",
         "value": "seq"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119d2b"
-        }
+        "00119d2b"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119d2b"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119d2b"
-            ],
-            "string_addresses": [
-              "00207173"
-            ]
-          },
           "function_id": "00194c50",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_00207173",
       "name": "sha1sum",
       "token": {
         "address": "00207173",
-        "string_id": null,
+        "status": "unresolved",
         "value": "sha1sum"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119d42"
-        }
+        "00119d42"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119d42"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_0020717b"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119d42"
-            ],
-            "strings": [
-              "s_0020717b"
-            ]
-          },
           "function_id": "001966f0",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_0020717b",
       "name": null,
       "token": {
-        "address": "0020717b",
+        "status": "resolved",
         "string_id": "s_0020717b"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119d59"
-        }
+        "00119d59"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119d59"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_00207185"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119d59"
-            ],
-            "strings": [
-              "s_00207185"
-            ]
-          },
           "function_id": "001981c0",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_00207185",
       "name": null,
       "token": {
-        "address": "00207185",
+        "status": "resolved",
         "string_id": "s_00207185"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119d70"
-        }
+        "00119d70"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119d70"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_0020718f"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119d70"
-            ],
-            "strings": [
-              "s_0020718f"
-            ]
-          },
           "function_id": "00199c90",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_0020718f",
       "name": null,
       "token": {
-        "address": "0020718f",
+        "status": "resolved",
         "string_id": "s_0020718f"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119d87"
-        }
+        "00119d87"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119d87"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_00207199"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119d87"
-            ],
-            "strings": [
-              "s_00207199"
-            ]
-          },
           "function_id": "0019b770",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_00207199",
       "name": null,
       "token": {
-        "address": "00207199",
+        "status": "resolved",
         "string_id": "s_00207199"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119d9e"
-        }
+        "00119d9e"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119d9e"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_002071a3"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119d9e"
-            ],
-            "strings": [
-              "s_002071a3"
-            ]
-          },
           "function_id": "0019e1c0",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_002071a3",
       "name": null,
       "token": {
-        "address": "002071a3",
+        "status": "resolved",
         "string_id": "s_002071a3"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119db5"
-        }
+        "00119db5"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119db5"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119db5"
-            ],
-            "string_addresses": [
-              "002071a9"
-            ]
-          },
           "function_id": "0019ee80",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_002071a9",
       "name": "shuf",
       "token": {
         "address": "002071a9",
-        "string_id": null,
+        "status": "unresolved",
         "value": "shuf"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119dcc"
-        }
+        "00119dcc"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119dcc"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_002071ae"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119dcc"
-            ],
-            "strings": [
-              "s_002071ae"
-            ]
-          },
           "function_id": "001a0380",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_002071ae",
       "name": null,
       "token": {
-        "address": "002071ae",
+        "status": "resolved",
         "string_id": "s_002071ae"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119de3"
-        }
+        "00119de3"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119de3"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119de3"
-            ],
-            "string_addresses": [
-              "00209f60"
-            ]
-          },
           "function_id": "001a65b0",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_00209f60",
       "name": "sort",
       "token": {
         "address": "00209f60",
-        "string_id": null,
+        "status": "unresolved",
         "value": "sort"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119dfa"
-        }
+        "00119dfa"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119dfa"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119dfa"
-            ],
-            "string_addresses": [
-              "0020708b"
-            ]
-          },
           "function_id": "001aacc0",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_0020708b",
       "name": "split",
       "token": {
         "address": "0020708b",
-        "string_id": null,
+        "status": "unresolved",
         "value": "split"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119e11"
-        }
+        "00119e11"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119e11"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119e11"
-            ],
-            "string_addresses": [
-              "002071b4"
-            ]
-          },
           "function_id": "001afe10",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_002071b4",
       "name": "stat",
       "token": {
         "address": "002071b4",
-        "string_id": null,
+        "status": "unresolved",
         "value": "stat"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119e28"
-        }
+        "00119e28"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119e28"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_002071b9"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119e28"
-            ],
-            "strings": [
-              "s_002071b9"
-            ]
-          },
           "function_id": "001278a0",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_002071b9",
       "name": null,
       "token": {
-        "address": "002071b9",
+        "status": "resolved",
         "string_id": "s_002071b9"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119e3f"
-        }
+        "00119e3f"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119e3f"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119e3f"
-            ],
-            "string_addresses": [
-              "002071c0"
-            ]
-          },
           "function_id": "00123580",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_002071c0",
       "name": "stty",
       "token": {
         "address": "002071c0",
-        "string_id": null,
+        "status": "unresolved",
         "value": "stty"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119e56"
-        }
+        "00119e56"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119e56"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119e56"
-            ],
-            "string_addresses": [
-              "00207177"
-            ]
-          },
           "function_id": "001b06e0",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_00207177",
       "name": "sum",
       "token": {
         "address": "00207177",
-        "string_id": null,
+        "status": "unresolved",
         "value": "sum"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119e6d"
-        }
+        "00119e6d"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119e6d"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119e6d"
-            ],
-            "string_addresses": [
-              "00207d94"
-            ]
-          },
           "function_id": "001b0e20",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_00207d94",
       "name": "sync",
       "token": {
         "address": "00207d94",
-        "string_id": null,
+        "status": "unresolved",
         "value": "sync"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119e84"
-        }
+        "00119e84"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119e84"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119e84"
-            ],
-            "string_addresses": [
-              "002071c5"
-            ]
-          },
           "function_id": "001b1d00",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_002071c5",
       "name": "tac",
       "token": {
         "address": "002071c5",
-        "string_id": null,
+        "status": "unresolved",
         "value": "tac"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119e9b"
-        }
+        "00119e9b"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119e9b"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119e9b"
-            ],
-            "string_addresses": [
-              "002071c9"
-            ]
-          },
           "function_id": "001b4a60",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_002071c9",
       "name": "tail",
       "token": {
         "address": "002071c9",
-        "string_id": null,
+        "status": "unresolved",
         "value": "tail"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119eb2"
-        }
+        "00119eb2"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119eb2"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119eb2"
-            ],
-            "string_addresses": [
-              "002071ce"
-            ]
-          },
           "function_id": "001b7c20",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_002071ce",
       "name": "tee",
       "token": {
         "address": "002071ce",
-        "string_id": null,
+        "status": "unresolved",
         "value": "tee"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119ec9"
-        }
+        "00119ec9"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119ec9"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119ec9"
-            ],
-            "string_addresses": [
-              "0020b788"
-            ]
-          },
           "function_id": "001b9a80",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_0020b788",
       "name": "test",
       "token": {
         "address": "0020b788",
-        "string_id": null,
+        "status": "unresolved",
         "value": "test"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119ee0"
-        }
+        "00119ee0"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119ee0"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_002071d2"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119ee0"
-            ],
-            "strings": [
-              "s_002071d2"
-            ]
-          },
           "function_id": "0011c4f0",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_002071d2",
       "name": null,
       "token": {
-        "address": "002071d2",
+        "status": "resolved",
         "string_id": "s_002071d2"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119ef7"
-        }
+        "00119ef7"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119ef7"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_002071da"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119ef7"
-            ],
-            "strings": [
-              "s_002071da"
-            ]
-          },
           "function_id": "001b9f60",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_002071da",
       "name": null,
       "token": {
-        "address": "002071da",
+        "status": "resolved",
         "string_id": "s_002071da"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119f0e"
-        }
+        "00119f0e"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119f0e"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119f0e"
-            ],
-            "string_addresses": [
-              "002078d2"
-            ]
-          },
           "function_id": "001bc8b0",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_002078d2",
       "name": "tr",
       "token": {
         "address": "002078d2",
-        "string_id": null,
+        "status": "unresolved",
         "value": "tr"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119f25"
-        }
+        "00119f25"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119f25"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119f25"
-            ],
-            "string_addresses": [
-              "002071e0"
-            ]
-          },
           "function_id": "001bde70",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_002071e0",
       "name": "true",
       "token": {
         "address": "002071e0",
-        "string_id": null,
+        "status": "unresolved",
         "value": "true"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119f3c"
-        }
+        "00119f3c"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119f3c"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_002071e5"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119f3c"
-            ],
-            "strings": [
-              "s_002071e5"
-            ]
-          },
           "function_id": "001be350",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_002071e5",
       "name": null,
       "token": {
-        "address": "002071e5",
+        "status": "resolved",
         "string_id": "s_002071e5"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119f53"
-        }
+        "00119f53"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119f53"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_002071ee"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119f53"
-            ],
-            "strings": [
-              "s_002071ee"
-            ]
-          },
           "function_id": "001c25f0",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_002071ee",
       "name": null,
       "token": {
-        "address": "002071ee",
+        "status": "resolved",
         "string_id": "s_002071ee"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119f6a"
-        }
+        "00119f6a"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119f6a"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119f6a"
-            ],
-            "string_addresses": [
-              "0020c071"
-            ]
-          },
           "function_id": "001c2a40",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_0020c071",
       "name": "tty",
       "token": {
         "address": "0020c071",
-        "string_id": null,
+        "status": "unresolved",
         "value": "tty"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119f81"
-        }
+        "00119f81"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119f81"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_002071f4"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119f81"
-            ],
-            "strings": [
-              "s_002071f4"
-            ]
-          },
           "function_id": "001c2fe0",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_002071f4",
       "name": null,
       "token": {
-        "address": "002071f4",
+        "status": "resolved",
         "string_id": "s_002071f4"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119f98"
-        }
+        "00119f98"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119f98"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_002071fa"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119f98"
-            ],
-            "strings": [
-              "s_002071fa"
-            ]
-          },
           "function_id": "001c38a0",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_002071fa",
       "name": null,
       "token": {
-        "address": "002071fa",
+        "status": "resolved",
         "string_id": "s_002071fa"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119faf"
-        }
+        "00119faf"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119faf"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119faf"
-            ],
-            "string_addresses": [
-              "00207203"
-            ]
-          },
           "function_id": "001c47c0",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_00207203",
       "name": "uniq",
       "token": {
         "address": "00207203",
-        "string_id": null,
+        "status": "unresolved",
         "value": "uniq"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119fc6"
-        }
+        "00119fc6"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119fc6"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_00207208"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119fc6"
-            ],
-            "strings": [
-              "s_00207208"
-            ]
-          },
           "function_id": "001c5660",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_00207208",
       "name": null,
       "token": {
-        "address": "00207208",
+        "status": "resolved",
         "string_id": "s_00207208"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119fdd"
-        }
+        "00119fdd"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119fdd"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119fdd"
-            ],
-            "string_addresses": [
-              "0020cff7"
-            ]
-          },
           "function_id": "001c5ee0",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_0020cff7",
       "name": "uptime",
       "token": {
         "address": "0020cff7",
-        "string_id": null,
+        "status": "unresolved",
         "value": "uptime"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "00119ff4"
-        }
+        "00119ff4"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "00119ff4"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "00119ff4"
-            ],
-            "string_addresses": [
-              "0020c280"
-            ]
-          },
           "function_id": "0011f400",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_0020c280",
       "name": "users",
       "token": {
         "address": "0020c280",
-        "string_id": null,
+        "status": "unresolved",
         "value": "users"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "0011a00b"
-        }
+        "0011a00b"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "0011a00b"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "0011a00b"
-            ],
-            "string_addresses": [
-              "0020720f"
-            ]
-          },
           "function_id": "001c6020",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_0020720f",
       "name": "vdir",
       "token": {
         "address": "0020720f",
-        "string_id": null,
+        "status": "unresolved",
         "value": "vdir"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "0011a022"
-        }
+        "0011a022"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "0011a022"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "0011a022"
-            ],
-            "string_addresses": [
-              "00207214"
-            ]
-          },
           "function_id": "001c7550",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_00207214",
       "name": "wc",
       "token": {
         "address": "00207214",
-        "string_id": null,
+        "status": "unresolved",
         "value": "wc"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "0011a039"
-        }
+        "0011a039"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "0011a039"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "0011a039"
-            ],
-            "string_addresses": [
-              "00207217"
-            ]
-          },
           "function_id": "0011eb40",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_00207217",
       "name": "who",
       "token": {
         "address": "00207217",
-        "string_id": null,
+        "status": "unresolved",
         "value": "who"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "0011a050"
-        }
+        "0011a050"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "0011a050"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": [
-          "s_0020721b"
-        ]
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "0011a050"
-            ],
-            "strings": [
-              "s_0020721b"
-            ]
-          },
           "function_id": "001c8770",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "s_0020721b",
       "name": null,
       "token": {
-        "address": "0020721b",
+        "status": "resolved",
         "string_id": "s_0020721b"
       },
       "unknown_name": false
     },
     {
-      "dispatch_root_count": 1,
       "dispatch_roots": [
-        {
-          "callsite_count": 1,
-          "compare_callsite_count": 106,
-          "function_id": "001196b0"
-        }
+        "001196b0"
       ],
-      "dispatch_roots_truncated": false,
-      "dispatch_site_count": 1,
       "dispatch_sites": [
-        {
-          "callee_id": "EXTERNAL:0000017e",
-          "caller_id": "001196b0",
-          "callsite_id": "0011a067"
-        }
+        "0011a067"
       ],
-      "dispatch_sites_truncated": false,
-      "evidence": {
-        "callsites": [
-          "0011a067"
-        ],
-        "functions": [
-          "001196b0"
-        ],
-        "strings": []
-      },
-      "implementation_root_count": 1,
       "implementation_roots": [
         {
-          "evidence": {
-            "compare_callsites": [
-              "0011a067"
-            ],
-            "string_addresses": [
-              "00207222"
-            ]
-          },
           "function_id": "001c8be0",
           "sources": [
             "compare_chain_handler"
           ]
         }
       ],
-      "implementation_roots_truncated": false,
       "kind": "argv0",
       "kind_basis": "dispatch_kind:argv0_compare_chain",
       "mode_id": "mode_00207222",
       "name": "yes",
       "token": {
         "address": "00207222",
-        "string_id": null,
+        "status": "unresolved",
         "value": "yes"
       },
       "unknown_name": false

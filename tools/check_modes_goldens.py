@@ -202,8 +202,9 @@ def check_modes_index(modes_index: Any, *, mode: str, min_modes: int, min_covera
     for entry in modes:
         if not isinstance(entry, dict):
             continue
-        count = entry.get("dispatch_site_count")
-        if not isinstance(count, int) or count <= 0:
+        dispatch_sites = entry.get("dispatch_sites")
+        count = len(dispatch_sites) if isinstance(dispatch_sites, list) else 0
+        if count <= 0:
             uncovered.append(entry.get("name") or entry.get("mode_id") or "<unknown>")
     coverage = 1.0 - (len(uncovered) / max(1, len(modes)))
     if coverage < min_coverage:

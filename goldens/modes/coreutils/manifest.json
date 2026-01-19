@@ -55,8 +55,8 @@
   "coverage_summary": {
     "callgraph_edges": {
       "max": null,
-      "selected": 17756,
-      "total": 17756,
+      "selected": 17748,
+      "total": 17748,
       "truncated": false
     },
     "cli_options": {
@@ -73,10 +73,10 @@
     },
     "error_messages": {
       "candidate_total": 921,
-      "excluded": 138,
+      "excluded": 140,
       "max": null,
-      "selected": 783,
-      "total": 783,
+      "selected": 781,
+      "total": 781,
       "truncated": false
     },
     "error_sites": {
@@ -116,8 +116,8 @@
     },
     "interfaces_output": {
       "max": null,
-      "selected": 909,
-      "total": 909,
+      "selected": 906,
+      "total": 906,
       "truncated": false
     },
     "interfaces_process": {
@@ -125,12 +125,6 @@
       "selected": 10,
       "total": 10,
       "truncated": false
-    },
-    "mode_dispatch_sites": {
-      "max": 12,
-      "selected": 12,
-      "total": 183,
-      "truncated": true
     },
     "mode_slices": {
       "max": null,
@@ -171,7 +165,7 @@
   "target_endian": "little",
   "tool": {
     "name": "binary_lens",
-    "revision": "52fe2cb6997a51fd75f98745efc72b1fbf6a353f",
+    "revision": "79394750d00262a781ee22a76213c7b5fa5f9e40",
     "version": "0.1.0-dev"
   }
 }

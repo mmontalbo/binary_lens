@@ -2,8 +2,6 @@
   "format": "sharded_list/v1",
   "item_kind": "mode_slices",
   "list_key": "slices",
-  "max_slices": null,
-  "selected_slices": 106,
   "shard_count": 1,
   "shard_size": 200,
   "shard_strategy": "chunked",
@@ -15,7 +13,5 @@
       "start_index": 0
     }
   ],
-  "total_items": 106,
-  "total_modes": 106,
-  "truncated": false
+  "total_items": 106
 }
