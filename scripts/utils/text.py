@@ -60,3 +60,30 @@ def string_ref_status(
     if address or value is not None:
         return "unresolved"
     return "unknown"
+
+
+def is_help_marker_value(value: Any) -> bool:
+    if not isinstance(value, str) or not value:
+        return False
+    lowered = value.lower()
+    if "usage:" in lowered:
+        return True
+    if "--help" in value:
+        return True
+    if "try '" in lowered or "try \"" in lowered:
+        return True
+    if "options:" in lowered or "options\n" in lowered:
+        return True
+    if "report bugs" in lowered or "reporting bugs" in lowered:
+        return True
+    return False
+
+
+def has_usage_tag(tags: Any) -> bool:
+    if not tags:
+        return False
+    if isinstance(tags, set):
+        return "usage" in tags
+    if isinstance(tags, (list, tuple)):
+        return "usage" in tags
+    return False

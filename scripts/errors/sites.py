@@ -3,6 +3,7 @@
 from errors.common import INT_TYPES, STATUS_EMITTERS
 from export_bounds import Bounds
 from export_primitives import addr_to_int
+from utils.callsites import callsite_id_from_entry
 
 
 def derive_error_sites(
@@ -20,7 +21,7 @@ def derive_error_sites(
         for entry in entries:
             if not isinstance(entry, dict):
                 continue
-            callsite_id = entry.get("callsite_id")
+            callsite_id = callsite_id_from_entry(entry, keys=("callsite_id",))
             func_id = entry.get("function_id")
             if callsite_id and func_id:
                 callsite_to_function[callsite_id] = func_id
@@ -31,11 +32,7 @@ def derive_error_sites(
     sites = {}
     for message in messages_payload.get("messages", []):
         for callsite_entry in message.get("emitting_callsites", []):
-            callsite_id = None
-            if isinstance(callsite_entry, str):
-                callsite_id = callsite_entry
-            elif isinstance(callsite_entry, dict):
-                callsite_id = callsite_entry.get("callsite_id")
+            callsite_id = callsite_id_from_entry(callsite_entry, keys=("callsite_id",))
             if not callsite_id:
                 continue
             func_id = callsite_to_function.get(callsite_id)

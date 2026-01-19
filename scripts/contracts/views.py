@@ -8,10 +8,14 @@ from typing import Any, Mapping
 from export_bounds import Bounds
 from export_primitives import addr_filename, addr_to_int
 from outputs.io import pack_path
+from utils.callsites import callsite_id_from_entry as _callsite_id_from_entry
+from utils.callsites import callsite_ids_from_entries as _callsite_ids_from_entries
 from utils.markdown import format_table as _format_table
 from utils.text import as_int as _as_int
 from utils.text import as_str as _as_str
 from utils.text import escape_preview as _escape_preview
+from utils.text import has_usage_tag as _has_usage_tag
+from utils.text import is_help_marker_value as _is_help_marker_value
 from wordlists.name_hints import load_name_hints, name_hints_enabled
 
 MAX_ENV_ENTRIES = 12
@@ -63,7 +67,7 @@ def _callsite_to_function_map(callsites: Any) -> dict[str, str]:
     for record in records or []:
         if not isinstance(record, Mapping):
             continue
-        callsite_id = _as_str(record.get("callsite") or record.get("callsite_id"))
+        callsite_id = _callsite_id_from_entry(record, keys=("callsite", "callsite_id"))
         from_entry = record.get("from")
         if isinstance(from_entry, Mapping):
             from_addr = _as_str(from_entry.get("address"))
@@ -81,7 +85,7 @@ def _function_id_for_callsite(
     func_id = _as_str(entry.get("function_id"))
     if func_id:
         return func_id
-    callsite_id = _as_str(entry.get("callsite_id"))
+    callsite_id = _callsite_id_from_entry(entry, keys=("callsite_id",))
     if callsite_id:
         return _as_str(callsite_to_function.get(callsite_id))
     return None
@@ -132,32 +136,16 @@ def _truncate(entries: list[Any], max_entries: int) -> tuple[list[Any], bool]:
 
 
 def _callsite_ids_for_message(message: Mapping[str, Any]) -> list[str]:
-    callsite_ids: list[str] = []
-    for entry in message.get("emitting_callsites") or []:
-        callsite_id = None
-        if isinstance(entry, str):
-            callsite_id = _as_str(entry)
-        elif isinstance(entry, Mapping):
-            callsite_id = _as_str(entry.get("callsite_id"))
-        if callsite_id:
-            callsite_ids.append(callsite_id)
+    callsite_ids = _callsite_ids_from_entries(
+        message.get("emitting_callsites"),
+        keys=("callsite_id",),
+    )
     return _unique(callsite_ids)
 
 
 def _callsite_ids_for_error_site(site: Mapping[str, Any]) -> list[str]:
-    callsite_ids: list[str] = []
-    for entry in site.get("callsites") or []:
-        callsite_id = None
-        if isinstance(entry, str):
-            callsite_id = _as_str(entry)
-        elif isinstance(entry, Mapping):
-            callsite_id = _as_str(entry.get("callsite_id"))
-        if callsite_id:
-            callsite_ids.append(callsite_id)
-    for entry in site.get("callsite_ids") or []:
-        callsite_id = _as_str(entry)
-        if callsite_id:
-            callsite_ids.append(callsite_id)
+    callsite_ids = _callsite_ids_from_entries(site.get("callsites"), keys=("callsite_id",))
+    callsite_ids.extend(_callsite_ids_from_entries(site.get("callsite_ids")))
     return _unique(callsite_ids)
 
 
@@ -183,20 +171,16 @@ def _function_ids_for_message(
 
 
 def _primary_callsite_id(entry: Mapping[str, Any]) -> str | None:
-    callsite_id = _as_str(entry.get("callsite_id"))
+    callsite_id = _callsite_id_from_entry(entry, keys=("callsite_id",))
     if callsite_id:
         return callsite_id
     for field in ("callsites", "callsite_ids"):
         raw = entry.get(field)
         if not isinstance(raw, list):
             continue
-        for item in raw:
-            if isinstance(item, Mapping):
-                callsite_id = _as_str(item.get("callsite_id"))
-            else:
-                callsite_id = _as_str(item)
-            if callsite_id:
-                return callsite_id
+        callsite_ids = _callsite_ids_from_entries(raw)
+        if callsite_ids:
+            return callsite_ids[0]
     return None
 
 
@@ -216,33 +200,6 @@ def _format_list(values: list[str], *, empty: str = "none") -> str:
     if not values:
         return empty
     return ", ".join(values)
-
-
-def _is_help_marker_value(value: Any) -> bool:
-    if not isinstance(value, str) or not value:
-        return False
-    lowered = value.lower()
-    if "usage:" in lowered:
-        return True
-    if "--help" in value:
-        return True
-    if "try '" in lowered or "try \"" in lowered:
-        return True
-    if "options:" in lowered or "options\n" in lowered:
-        return True
-    if "report bugs" in lowered or "reporting bugs" in lowered:
-        return True
-    return False
-
-
-def _has_usage_tag(tags: Any) -> bool:
-    if not tags:
-        return False
-    if isinstance(tags, set):
-        return "usage" in tags
-    if isinstance(tags, (list, tuple)):
-        return "usage" in tags
-    return False
 
 
 def _help_marker_string_ids(

@@ -6,37 +6,12 @@ from export_config import DEFAULT_MAX_DECOMPILE_FUNCTION_SIZE
 from export_primitives import addr_filename, addr_str, addr_to_int
 from export_profile import profiled_decompile
 from ghidra.app.decompiler import DecompInterface
+from utils.text import has_usage_tag as _has_usage_tag
+from utils.text import is_help_marker_value as _is_help_marker_value
 
 from .io import pack_path, write_json
 
 MAX_HELP_DECOMP_LINES = 600
-
-
-def _is_help_marker_value(value):
-    if value is None:
-        return False
-    lowered = value.lower()
-    if "usage:" in lowered:
-        return True
-    if "--help" in value:
-        return True
-    if "try '" in lowered or "try \"" in lowered:
-        return True
-    if "options:" in lowered or "options\n" in lowered:
-        return True
-    if "report bugs" in lowered or "reporting bugs" in lowered:
-        return True
-    return False
-
-
-def _has_usage_tag(tags):
-    if not tags:
-        return False
-    if isinstance(tags, set):
-        return "usage" in tags
-    if isinstance(tags, (list, tuple)):
-        return "usage" in tags
-    return False
 
 
 def _looks_like_help_printer(func_id, string_refs_by_func, string_tags_by_id, string_value_by_id):
