@@ -42,6 +42,7 @@ from outputs.sharding import build_sharded_list_index
 from outputs.writers import build_callsite_records
 from pipeline.phases import phase
 from pipeline.types import CollectedData, DerivedPayloads
+from utils.callsites import callsite_to_function_map
 
 
 def _collect_callsite_values(value: Any, callsite_ids: set[str]) -> None:
@@ -136,23 +137,6 @@ def _shard_payload(
     )
 
 
-def _callsite_to_function(callsite_records: Mapping[str, Any] | None) -> dict[str, str]:
-    callsite_to_function: dict[str, str] = {}
-    for callsite_id, record in (callsite_records or {}).items():
-        if not callsite_id or not isinstance(record, Mapping):
-            continue
-        from_entry = record.get("from")
-        if isinstance(from_entry, Mapping):
-            func_id = from_entry.get("address")
-        elif isinstance(from_entry, str):
-            func_id = from_entry
-        else:
-            func_id = None
-        if func_id:
-            callsite_to_function[callsite_id] = func_id
-    return callsite_to_function
-
-
 def _interface_coverage(payload: Mapping[str, Any] | None) -> dict[str, Any]:
     if not isinstance(payload, Mapping):
         return {"total": None, "selected": 0, "truncated": None, "max": None}
@@ -201,7 +185,7 @@ def derive_payloads(
             bounds,
         )
     with phase(profiler, "build_mode_slices"):
-        callsite_to_function = _callsite_to_function(collected.callsite_records)
+        callsite_to_function = callsite_to_function_map(collected.callsite_records)
         modes_slices_payload = build_mode_slices(
             collected.modes_payload,
             cli_surface,

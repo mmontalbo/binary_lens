@@ -10,6 +10,7 @@ from export_primitives import addr_filename, addr_to_int
 from outputs.io import pack_path
 from utils.callsites import callsite_id_from_entry as _callsite_id_from_entry
 from utils.callsites import callsite_ids_from_entries as _callsite_ids_from_entries
+from utils.callsites import callsite_to_function_map as _callsite_to_function_map
 from utils.markdown import format_table as _format_table
 from utils.text import as_int as _as_int
 from utils.text import as_str as _as_str
@@ -55,27 +56,6 @@ def _node_name_map(callgraph_nodes: Any) -> dict[str, str]:
         if addr and name and addr not in name_by_id:
             name_by_id[addr] = name
     return name_by_id
-
-
-def _callsite_to_function_map(callsites: Any) -> dict[str, str]:
-    records = []
-    if isinstance(callsites, Mapping):
-        records = callsites.get("callsites", [])
-    elif isinstance(callsites, list):
-        records = callsites
-    mapping: dict[str, str] = {}
-    for record in records or []:
-        if not isinstance(record, Mapping):
-            continue
-        callsite_id = _callsite_id_from_entry(record, keys=("callsite", "callsite_id"))
-        from_entry = record.get("from")
-        if isinstance(from_entry, Mapping):
-            from_addr = _as_str(from_entry.get("address"))
-        else:
-            from_addr = _as_str(from_entry)
-        if callsite_id and from_addr:
-            mapping[callsite_id] = from_addr
-    return mapping
 
 
 def _function_id_for_callsite(
