@@ -6,12 +6,8 @@ string arguments recovered at those callsites, build:
 - per-token mode candidates (for modes/index payloads)
 """
 
-from modes.common import (
-    _escape_preview,
-    _mode_id,
-    _token_candidate,
-    _token_kind,
-)
+from modes.common import _mode_id, _token_candidate, _token_kind
+from utils.text import escape_preview as _escape_preview
 
 
 def _build_mode_candidates(

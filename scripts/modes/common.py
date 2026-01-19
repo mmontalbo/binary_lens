@@ -6,11 +6,6 @@ collection, table dispatch, payload shaping) without creating import cycles.
 """
 
 from export_primitives import addr_id
-from utils.text import escape_preview
-
-
-def _escape_preview(value, limit=80):
-    return escape_preview(value, limit=limit)
 
 
 def _c_string_literal(value):

@@ -8,6 +8,7 @@ Ghidra APIs so it remains easy to read and mechanically refactor.
 from export_bounds import Bounds
 from export_primitives import addr_to_int
 from modes.name_heuristics import prefer_cmd_table_roots
+from utils.callsites import callsite_id_from_entry as _callsite_id_from_entry
 
 
 def _root_function_id(root) -> str | None:
@@ -34,6 +35,82 @@ def _slice_sort_key(entry) -> tuple[int, int, str, str]:
         entry.get("name") or "",
         entry.get("mode_id") or "",
     )
+
+
+def _parse_loop_ids_for_roots(roots, parse_loop_by_function: dict[str, str]) -> list[str]:
+    loop_ids = []
+    for root in roots or []:
+        func_id = _root_function_id(root)
+        if not func_id:
+            continue
+        loop_id = parse_loop_by_function.get(func_id)
+        if loop_id:
+            loop_ids.append(loop_id)
+    return loop_ids
+
+
+def _resolve_option_scope(
+    mode,
+    roots_sorted,
+    root_kind: str,
+    implementation_func_ids: set[str],
+    options_list,
+    parse_loops,
+    parse_loop_by_function: dict[str, str],
+    parse_loop_by_id: dict[str, str],
+    options_by_loop_id: dict[str, list[str]],
+    global_option_ids: list[str],
+    max_options: int,
+) -> tuple[list[str], list[str], str, str]:
+    option_ids = _collect_option_ids_from_parse_sites(
+        options_list,
+        implementation_func_ids,
+        max_options,
+        parse_loop_by_id,
+    )
+    if option_ids:
+        parse_loop_ids = sorted(
+            {
+                parse_loop_by_function.get(func_id)
+                for func_id in implementation_func_ids
+                if parse_loop_by_function.get(func_id)
+            }
+        )
+        return option_ids, parse_loop_ids, "mode_scoped", "option_parse_sites"
+
+    loop_ids = _parse_loop_ids_for_roots(roots_sorted, parse_loop_by_function)
+    loop_source = root_kind
+    if not loop_ids and root_kind == "implementation":
+        loop_ids = _parse_loop_ids_for_roots(mode.get("dispatch_roots", []), parse_loop_by_function)
+        if loop_ids:
+            loop_source = "dispatch"
+
+    if loop_ids:
+        parse_loop_ids = sorted(set(loop_ids))
+        for loop_id in loop_ids:
+            option_ids.extend(options_by_loop_id.get(loop_id, []))
+        scope_kind = "mode_scoped"
+        dispatch_root_kinds = ("dispatch", "dispatch_shared")
+        if loop_source in dispatch_root_kinds and root_kind in dispatch_root_kinds:
+            scope_basis = "shared_parse_loop_function"
+        elif loop_source in dispatch_root_kinds:
+            scope_basis = "dispatch_root_parse_loop"
+        else:
+            scope_basis = "implementation_root_parse_loop"
+        return option_ids, parse_loop_ids, scope_kind, scope_basis
+
+    if global_option_ids:
+        option_ids = list(global_option_ids)
+        parse_loop_ids = []
+        for loop in parse_loops:
+            loop_id = loop.get("id")
+            if loop_id:
+                parse_loop_ids.append(loop_id)
+            if max_options and len(parse_loop_ids) >= max_options:
+                break
+        return option_ids, parse_loop_ids, "global", "shared_parse_loops"
+
+    return [], [], "unknown", "no_parse_loop_overlap"
 
 
 def _collect_option_ids_from_parse_sites(options_list, func_ids, max_options, parse_loop_by_id):
@@ -96,11 +173,7 @@ def build_mode_slices(
                     func_ids.append(func_id)
             if not func_ids and callsite_to_function:
                 for entry in message.get("emitting_callsites", []) or []:
-                    callsite_id = None
-                    if isinstance(entry, str):
-                        callsite_id = entry
-                    elif isinstance(entry, dict):
-                        callsite_id = entry.get("callsite_id")
+                    callsite_id = _callsite_id_from_entry(entry, keys=("callsite_id",))
                     if not callsite_id:
                         continue
                     func_id = callsite_to_function.get(callsite_id)
@@ -111,7 +184,7 @@ def build_mode_slices(
     exit_calls_by_func = {}
     if exit_paths_payload:
         for entry in exit_paths_payload.get("direct_calls", []):
-            callsite_id = entry.get("callsite_id")
+            callsite_id = _callsite_id_from_entry(entry, keys=("callsite_id",))
             func_id = entry.get("function_id") or callsite_to_function.get(callsite_id)
             if func_id and callsite_id:
                 exit_calls_by_func.setdefault(func_id, []).append(callsite_id)
@@ -176,67 +249,19 @@ def build_mode_slices(
                 if func_id:
                     implementation_func_ids.add(func_id)
 
-        parse_loop_ids = []
-        scope_kind = "unknown"
-        scope_basis = "no_parse_loop_overlap"
-
-        option_ids = _collect_option_ids_from_parse_sites(
-            options_list,
+        option_ids, parse_loop_ids, scope_kind, scope_basis = _resolve_option_scope(
+            mode,
+            roots_sorted,
+            root_kind,
             implementation_func_ids,
-            max_options,
+            options_list,
+            parse_loops,
+            parse_loop_by_function,
             parse_loop_by_id,
+            options_by_loop_id,
+            global_option_ids,
+            max_options,
         )
-
-        if option_ids:
-            parse_loop_ids = sorted(
-                {
-                    parse_loop_by_function.get(func_id)
-                    for func_id in implementation_func_ids
-                    if parse_loop_by_function.get(func_id)
-                }
-            )
-            scope_kind = "mode_scoped"
-            scope_basis = "option_parse_sites"
-        else:
-            loop_ids = []
-            loop_source = root_kind
-            for root in roots_sorted:
-                func_id = _root_function_id(root)
-                loop_id = parse_loop_by_function.get(func_id)
-                if loop_id:
-                    loop_ids.append(loop_id)
-            if not loop_ids and root_kind == "implementation":
-                fallback_roots = mode.get("dispatch_roots", [])
-                for root in fallback_roots:
-                    func_id = _root_function_id(root)
-                    loop_id = parse_loop_by_function.get(func_id)
-                    if loop_id:
-                        loop_ids.append(loop_id)
-                if loop_ids:
-                    loop_source = "dispatch"
-
-            if loop_ids:
-                parse_loop_ids = sorted(set(loop_ids))
-                for loop_id in loop_ids:
-                    option_ids.extend(options_by_loop_id.get(loop_id, []))
-                scope_kind = "mode_scoped"
-                dispatch_root_kinds = ("dispatch", "dispatch_shared")
-                if loop_source in dispatch_root_kinds and root_kind in dispatch_root_kinds:
-                    scope_basis = "shared_parse_loop_function"
-                elif loop_source in dispatch_root_kinds:
-                    scope_basis = "dispatch_root_parse_loop"
-                else:
-                    scope_basis = "implementation_root_parse_loop"
-            elif global_option_ids:
-                option_ids = list(global_option_ids)
-                for loop in parse_loops:
-                    loop_id = loop.get("id")
-                    if loop_id:
-                        parse_loop_ids.append(loop_id)
-                    if max_options and len(parse_loop_ids) >= max_options:
-                        break
-                scope_kind = "global"
-                scope_basis = "shared_parse_loops"
 
         seen_option_ids = set()
         deduped = []
