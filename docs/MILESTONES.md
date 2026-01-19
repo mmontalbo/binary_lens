@@ -4,6 +4,42 @@ This document defines near-term milestones for adding **LM-tailored interface le
 
 ---
 
+## Milestone 5 — Queryable Evidence Graph (Roots + Indexes + Reachability)
+
+Status: planned
+
+### Goal
+Make a `binary_lens` pack **mechanically queryable** as an evidence-linked graph, so consumers can answer “where/why” questions via deterministic joins and reachability, without scanning shards or relying on symbol-name conventions.
+
+### Key idea
+Keep canonical tables skinny and stable. Add small, derived **indexes** that make common joins and graph traversal cheap. Keep `contracts/` + `docs/` as the only “official views”.
+
+### Deliverables
+1) **Execution anchors (evidence-backed, not narrative)**
+- `execution/roots.json`: best-effort entry roots (entrypoint/main candidates) with evidence refs and explicit unknowns.
+- `execution/sinks.json`: termination sinks (exit/abort/return-from-main when detectable) with evidence refs and constant exit codes when directly visible.
+
+2) **Graph query accelerators**
+- `graph/outgoing/` (sharded): `from_function_id -> [{to, callsite_id}]` to support BFS/path queries with witness paths.
+- Optional `graph/incoming/` for “who calls this?” lookups without full edge scans.
+
+3) **Join indexes (minimal, deterministic)**
+- `indexes/strings_value_by_id.json` (or sharded map): `string_id -> value` for common consumer joins.
+- `indexes/callsites_by_id.json`: `callsite_id -> {from, targets}` (or `callsite_id -> {shard_path, index}`) for random-access callsite lookups.
+- `indexes/modes_by_name.json` (if `modes/` remains): `name -> [mode_id]` lookup without ranking.
+
+4) **Pack docs: query recipes**
+- Extend `binary.lens/docs/examples.md` with a small set of binary-agnostic recipes (e.g., env vars touched, top external calls, stderr templates, usage-marker strings, exit-call sites) that demonstrate evidence trails.
+
+### Non-goals (explicit)
+- No new semantic extraction (no structured help parsing, no option-description inference).
+- No new opaque ranking/scoring fields in canonical outputs (views may sort/rank, but must show derivation).
+
+### Acceptance Criteria
+- A consumer can start from `execution/roots.json`, compute reachability using `graph/*`, and land on cited evidence (callsites/strings/interfaces/errors) without full-shard scans.
+- `tools/check_pack_refs.py` remains green; all new indexes are deterministic and schema-documented.
+- Works on both `git` and `coreutils` packs without binary-specific naming heuristics being required.
+
 ## Milestone 4 — Contract Anchors (Callsites + Tables + Strings)
 
 Status: complete
