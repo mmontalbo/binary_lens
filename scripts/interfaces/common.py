@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Any
 
 from export_primitives import addr_to_int
+from utils.text import string_ref_status
 
 MAX_VALUE_LENGTH = 160
 
@@ -69,11 +70,7 @@ def string_candidates_for_index(
         addr = entry.get("address")
         value = truncate_value(entry.get("value"), value_limit)
         string_id = string_addr_map_all.get(addr) if (string_addr_map_all and addr) else None
-        status = "unknown"
-        if string_id:
-            status = "resolved"
-        elif addr or value is not None:
-            status = "unresolved"
+        status = string_ref_status(string_id, addr, value=value)
         value_entry = {
             "status": status,
             "arg_index": index,

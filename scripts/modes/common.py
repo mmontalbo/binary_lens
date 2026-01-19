@@ -6,24 +6,11 @@ collection, table dispatch, payload shaping) without creating import cycles.
 """
 
 from export_primitives import addr_id
+from utils.text import escape_preview
 
 
 def _escape_preview(value, limit=80):
-    if value is None:
-        return ""
-    escaped = value.replace("\\", "\\\\")
-    escaped = escaped.replace("\n", "\\n").replace("\r", "\\r").replace("\t", "\\t")
-    safe = []
-    for ch in escaped:
-        code = ord(ch)
-        if 32 <= code <= 126:
-            safe.append(ch)
-        else:
-            safe.append("\\u%04x" % code)
-    preview = "".join(safe)
-    if limit and len(preview) > limit:
-        preview = preview[: max(0, limit - 3)] + "..."
-    return preview
+    return escape_preview(value, limit=limit)
 
 
 def _c_string_literal(value):

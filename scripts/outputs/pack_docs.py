@@ -4,25 +4,8 @@ import json
 from collections import Counter
 from typing import Any, Mapping
 
-
-def _as_str(value: Any) -> str | None:
-    if isinstance(value, str) and value.strip():
-        return value.strip()
-    return None
-
-
-def _as_int(value: Any) -> int | None:
-    if isinstance(value, bool):
-        return None
-    if isinstance(value, int):
-        return value
-    return None
-
-
-def _as_bool(value: Any) -> bool | None:
-    if isinstance(value, bool):
-        return value
-    return None
+from utils.text import as_bool as _as_bool
+from utils.text import as_str as _as_str
 
 
 def _fmt_optional(value: Any) -> str:
@@ -36,24 +19,6 @@ def _fmt_bool(value: Any) -> str:
     if as_bool is None:
         return "unknown"
     return "yes" if as_bool else "no"
-
-
-def _escape_preview(value: Any, limit: int = 160) -> str:
-    if not isinstance(value, str) or not value:
-        return ""
-    escaped = value.replace("\\", "\\\\")
-    escaped = escaped.replace("\n", "\\n").replace("\r", "\\r").replace("\t", "\\t")
-    safe: list[str] = []
-    for ch in escaped:
-        code = ord(ch)
-        if 32 <= code <= 126:
-            safe.append(ch)
-        else:
-            safe.append("\\u%04x" % code)
-    preview = "".join(safe)
-    if limit and len(preview) > limit:
-        preview = preview[: max(0, limit - 3)] + "..."
-    return preview
 
 
 def _manifest_value(manifest: Mapping[str, Any], *keys: str) -> Any:

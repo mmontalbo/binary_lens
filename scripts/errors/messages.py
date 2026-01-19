@@ -14,6 +14,7 @@ from errors.common import (
 )
 from export_bounds import Bounds
 from export_primitives import addr_to_int
+from utils.text import escape_preview
 
 StringId = str
 FunctionId = str
@@ -53,24 +54,6 @@ BUCKET_PRIORITY = {
     "diagnostic": 3,
     "unknown": 4,
 }
-
-
-def escape_preview(value, limit=160):
-    if value is None:
-        return ""
-    escaped = value.replace("\\", "\\\\")
-    escaped = escaped.replace("\n", "\\n").replace("\r", "\\r").replace("\t", "\\t")
-    safe = []
-    for ch in escaped:
-        code = ord(ch)
-        if 32 <= code <= 126:
-            safe.append(ch)
-        else:
-            safe.append("\\u%04x" % code)
-    preview = "".join(safe)
-    if limit and len(preview) > limit:
-        preview = preview[: max(0, limit - 3)] + "..."
-    return preview
 
 
 def _keyword_hit(value, keywords):

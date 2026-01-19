@@ -2,17 +2,12 @@
 
 from __future__ import annotations
 
-import re
 from typing import Any, Mapping
 
 from outputs.io import pack_path
+from utils.text import safe_component
 
 DEFAULT_SHARD_SIZE = 200
-
-
-def _safe_component(value: str) -> str:
-    cleaned = re.sub(r"[^A-Za-z0-9_.-]+", "_", value.strip())
-    return cleaned or "item"
 
 
 def _collect_item_ids(items: list[Any], item_id_key: str | None) -> list[str] | None:
@@ -26,7 +21,7 @@ def _collect_item_ids(items: list[Any], item_id_key: str | None) -> list[str] | 
         raw = item.get(item_id_key)
         if not isinstance(raw, str) or not raw.strip():
             return None
-        safe = _safe_component(raw)
+        safe = safe_component(raw)
         if safe in seen:
             return None
         seen.add(safe)

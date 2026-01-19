@@ -8,6 +8,9 @@ from typing import Any, Mapping
 from export_bounds import Bounds
 from export_primitives import addr_filename, addr_to_int
 from outputs.io import pack_path
+from utils.text import as_int as _as_int
+from utils.text import as_str as _as_str
+from utils.text import escape_preview as _escape_preview
 from wordlists.name_hints import load_name_hints, name_hints_enabled
 
 MAX_ENV_ENTRIES = 12
@@ -19,25 +22,6 @@ MAX_USAGE_ENTRIES = 6
 MAX_CALLSITE_REFS = 3
 MAX_HELP_PRINTERS = 6
 MAX_HELP_STRING_IDS = 4
-
-
-def _as_str(value: Any) -> str | None:
-    if isinstance(value, str) and value.strip():
-        return value.strip()
-    return None
-
-
-def _as_int(value: Any) -> int | None:
-    if isinstance(value, bool):
-        return None
-    if isinstance(value, int):
-        return value
-    return None
-
-
-def _safe_component(value: str) -> str:
-    cleaned = re.sub(r"[^A-Za-z0-9_.-]+", "_", value.strip())
-    return cleaned or "item"
 
 
 def _unique(values: list[str]) -> list[str]:
@@ -240,24 +224,6 @@ def _format_list(values: list[str], *, empty: str = "none") -> str:
     if not values:
         return empty
     return ", ".join(values)
-
-
-def _escape_preview(value: Any, limit: int = 160) -> str:
-    if not isinstance(value, str) or not value:
-        return ""
-    escaped = value.replace("\\", "\\\\")
-    escaped = escaped.replace("\n", "\\n").replace("\r", "\\r").replace("\t", "\\t")
-    safe: list[str] = []
-    for ch in escaped:
-        code = ord(ch)
-        if 32 <= code <= 126:
-            safe.append(ch)
-        else:
-            safe.append("\\u%04x" % code)
-    preview = "".join(safe)
-    if limit and len(preview) > limit:
-        preview = preview[: max(0, limit - 3)] + "..."
-    return preview
 
 
 def _is_help_marker_value(value: Any) -> bool:
