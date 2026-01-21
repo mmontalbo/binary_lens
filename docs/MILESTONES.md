@@ -6,7 +6,13 @@ This document defines near-term milestones for adding **LM-tailored interface le
 
 ## Milestone 6 — Custom Lenses + Evidence Steering (binary_man UX)
 
-Status: planned
+Status: complete
+
+Acceptance snapshot:
+- Lens authoring UX: `binary.lens/README.md` documents `views/run.py` + "Create your first lens".
+- Evidence steering: `manifest.json:evidence_hints` records applied hints; hinted functions can receive deeper decomp excerpts without making the default pack unbounded.
+- Lens cookbook: `binary.lens/docs/examples.md` includes evidence-based queries, multicall heuristics, "observed arg-recovery call targets", and a coverage snapshot recipe.
+- Semantics + ordering: `binary.lens/schema/README.md` documents `callsite_arg_observations` fields/limits and canonical ordering via address-int helper columns.
 
 ### Goal
 Make it straightforward for downstream consumers (e.g., `binary_man`) to **author, run, and iterate on custom lenses** using only a generated pack, with clear guidance on when to use facts vs evidence and a small mechanism to steer decompiler evidence extraction without bloating the default pack.
