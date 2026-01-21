@@ -11,8 +11,9 @@ nix develop
 
 The dev shell provides:
 - Ghidra (Linux) and its PyGhidra components
-- Python with `pyghidra`
+- Python with `pyghidra`, `duckdb`, and `pyarrow`
 - `binary_lens` wrapper CLI
+- DuckDB CLI (`duckdb`)
 
 It also exports:
 - `GHIDRA_INSTALL_DIR`
@@ -87,44 +88,31 @@ ruff check --fix .
 
 ## Output layout (high level)
 
+- `binary.lens/README.md`: pack overview and entrypoints
 - `binary.lens/manifest.json`: export bounds + versions
-- `binary.lens/cli/options.json`: CLI option inventory
+- `binary.lens/index.json`: entrypoints + conventions
+- `binary.lens/facts/index.json`: Parquet table registry
+- `binary.lens/facts/*.parquet`: canonical facts
+- `binary.lens/views/index.json`: lens definitions + sources
+- `binary.lens/execution/roots.json`: entry roots (SQL lens)
+- `binary.lens/execution/sinks.json`: termination sinks (SQL lens)
+- `binary.lens/docs/examples.md`: DuckDB query recipes (with deterministic sample results)
+- `binary.lens/evidence/index.json`: bounded decompiler excerpt registry
 
-## Modes goldens
+## Validation (Milestone 5)
 
-The `modes/` lens output is regression-guarded via small committed goldens (since `out/`
-is ignored).
-
-Goldens live in:
-- `goldens/modes/git/`
-- `goldens/modes/coreutils/`
-
-Each golden includes only these modes-relevant JSON files:
-- `manifest.json`
-- `modes/index.json`
-- `modes/slices.json`
-
-Binary SHA256s (from `manifest.json`):
-- `git`: `4a8111d4fc1e89663de3418f19bb132f5c9a619c9a2d418001d2d1ae0834e3f2`
-- `coreutils`: `0e9328553363dc05d6de50c9d420b6b791f5e634454baf6f3a070a5e752ba722`
-
-Regenerate the packs used for these goldens:
+Regenerate git + coreutils packs:
 
 ```sh
-nix develop -c binary_lens /etc/profiles/per-user/mmontalbo/bin/git -o out/profile_git_modes profile=1 analysis_profile=full
-nix develop -c binary_lens coreutils -o out/profile_coreutils_modes profile=1 analysis_profile=full
+nix develop -c binary_lens /etc/profiles/per-user/mmontalbo/bin/git -o out/profile_git_m5_duckdb profile=1 analysis_profile=full
+nix develop -c binary_lens coreutils -o out/profile_coreutils_m5_duckdb profile=1 analysis_profile=full
 ```
 
-Run the fast checker (no Ghidra):
+Run fast checks (no Ghidra):
 
 ```sh
-python tools/check_modes_goldens.py out/profile_git_modes/binary.lens --diff
-python tools/check_modes_goldens.py out/profile_coreutils_modes/binary.lens --diff
-python tools/check_pack_refs.py out/profile_git_modes/binary.lens
-python tools/check_pack_refs.py out/profile_coreutils_modes/binary.lens
+python tools/check_pack_refs.py out/profile_git_m5_duckdb/binary.lens --include-docs
+nix develop -c python tools/check_lens_repro.py out/profile_git_m5_duckdb/binary.lens
+python tools/check_pack_refs.py out/profile_coreutils_m5_duckdb/binary.lens --include-docs
+nix develop -c python tools/check_lens_repro.py out/profile_coreutils_m5_duckdb/binary.lens
 ```
-
-When changing the modes exporter:
-- Regenerate git + coreutils packs.
-- Run `python tools/check_modes_goldens.py out/.../binary.lens` (use `--diff` for golden diffs).
-- Update `goldens/modes/...` only for intentional behavior changes.

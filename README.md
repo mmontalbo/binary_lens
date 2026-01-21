@@ -27,21 +27,20 @@ binary_lens /path/to/binary -o out/ max_full_functions=50 max_strings=200
 ## Output: context pack
 
 `binary_lens` writes a context pack to `out/binary.lens/` (or your chosen `-o` directory).
-JSON files are authoritative; evidence files are bounded excerpts.
+Facts are stored as Parquet tables; evidence files are bounded excerpts.
 
 Consumer docs are embedded in each generated pack: see `binary.lens/README.md` and `binary.lens/docs/`.
 
-Key files (high level):
+Key entrypoints:
 
-- `binary.lens/manifest.json`: export metadata and bounds
-- `binary.lens/docs/overview.md`: pack overview (tailored to the target binary)
-- `binary.lens/cli/options.json`: CLI option inventory
-- `binary.lens/errors/messages.json`: error message catalog
-- `binary.lens/errors/exit_paths.json`: exit/abort inventory
-- `binary.lens/modes/index.json`: mode inventory
-- `binary.lens/modes/slices.json`: per-mode “start here” slices
-- `binary.lens/callgraph/nodes.json`: address → name/signature lookup table
-- `binary.lens/evidence/…`: evidence callsites + decompiler excerpts
+- `binary.lens/README.md`
+- `binary.lens/docs/examples.md`
+- `binary.lens/schema/README.md`
+- `binary.lens/facts/index.json`
+- `binary.lens/views/index.json`
+- `binary.lens/execution/roots.json`
+- `binary.lens/execution/sinks.json`
+- `binary.lens/evidence/index.json`
 
 ## Design principles
 

@@ -4,45 +4,71 @@ This document defines near-term milestones for adding **LM-tailored interface le
 
 ---
 
-## Milestone 5 — Queryable Evidence Graph (Roots + Indexes + Reachability)
+## Milestone 5 — Queryable Evidence Graph (Table Pack + SQL Lenses)
 
 Status: planned
 
 ### Goal
-Make a `binary_lens` pack **mechanically queryable** as an evidence-linked graph, so consumers can answer “where/why” questions via deterministic joins and reachability, without scanning shards or relying on symbol-name conventions.
+Make a `binary_lens` pack **mechanically queryable** as an evidence-linked graph, so consumers can answer “where/why” questions via deterministic joins and reachability **using a standard query engine**, without bespoke shard-walking or relying on symbol-name conventions.
 
 ### Key idea
-Keep canonical tables skinny and stable. Add small, derived **indexes** that make common joins and graph traversal cheap. Keep `contracts/` + `docs/` as the only “official views”.
+Break pack-format compatibility in favor of a **table-first facts schema** that supports reproducible, consumer-augmentable queries.
+
+Keep **facts** skinny and stable, but represent them as typed tables (Parquet). Add small, derived **indexes** only when they materially improve common joins/traversals. Treat everything interpretive (grouping, summaries, “start here”, Markdown, and view-specific JSON) as **lenses**: default views generated from the pack’s facts and reproducible/modifiable by consumers using DuckDB + SQL.
+
+### Layers (facts → indexes → lenses) — pack format v2
+- **Facts (Parquet tables)**: comprehensive, low-interpretation inventories that describe what was observed (e.g., callgraph, strings, callsite observations), with explicit unknowns and stable IDs.
+- **Indexes (optional Parquet tables)**: deterministic accelerators for common joins/traversals (e.g., sorted edge tables, pre-joined helpers).
+- **Lenses (SQL + templates)**: default views (JSON + Markdown) whose contents are sourced from versioned SQL queries shipped with the pack; rendered outputs include a “how to reproduce” recipe (DuckDB invocation).
 
 ### Deliverables
-1) **Execution anchors (evidence-backed, not narrative)**
-- `execution/roots.json`: best-effort entry roots (entrypoint/main candidates) with evidence refs and explicit unknowns.
-- `execution/sinks.json`: termination sinks (exit/abort/return-from-main when detectable) with evidence refs and constant exit codes when directly visible.
+1) **Pack format v2: table-first facts**
+- Introduce `facts/` as the canonical fact store, backed by Parquet files and a small, machine-readable table registry (e.g., `facts/index.json`).
+- Facts must be **row-oriented** (explicit `*_id` columns), not JSON maps with dynamic keys.
+- Tables must be joinable via stable IDs (`function_id`, `callsite_id`, `string_id`, `mode_id`, `option_id`, …).
 
-2) **Graph query accelerators**
-- `graph/outgoing/` (sharded): `from_function_id -> [{to, callsite_id}]` to support BFS/path queries with witness paths.
-- Optional `graph/incoming/` for “who calls this?” lookups without full edge scans.
+2) **Callsite observations (facts that power lenses)**
+- A canonical callsite table that supports deterministic joins without re-running analysis.
+  - Minimum: `callsite_id -> from_function_id` and callsite targets.
+  - Preferred: best-effort recovered constant arguments as a normalized table (e.g., `callsite_arg_observations`) with explicit `status` + `basis` fields so lenses can be computed from the pack alone.
 
-3) **Join indexes (minimal, deterministic)**
-- `indexes/strings_value_by_id.json` (or sharded map): `string_id -> value` for common consumer joins.
-- `indexes/callsites_by_id.json`: `callsite_id -> {from, targets}` (or `callsite_id -> {shard_path, index}`) for random-access callsite lookups.
-- `indexes/modes_by_name.json` (if `modes/` remains): `name -> [mode_id]` lookup without ranking.
+3) **Graph facts (reachability-ready)**
+- A canonical edge table (e.g., `call_edges`) that supports reachability queries with callsite witnesses:
+  - Minimum columns: `from_function_id`, `to_function_id`, `callsite_id`.
+- A canonical node table (e.g., `callgraph_nodes`) for name/signature joins.
 
-4) **Pack docs: query recipes**
-- Extend `binary.lens/docs/examples.md` with a small set of binary-agnostic recipes (e.g., env vars touched, top external calls, stderr templates, usage-marker strings, exit-call sites) that demonstrate evidence trails.
+4) **Execution anchors (default lens; evidence-backed, not narrative)**
+- `execution/roots.json`: best-effort entry roots (entrypoint/main candidates) with stable `function_id` anchors and explicit unknowns.
+- `execution/sinks.json`: termination sinks (exit/abort/return-from-main when detectable) with callsite witnesses (`callsite_id`, `from_function_id`) and constant exit codes when directly visible.
+
+5) **Lens sources + pack docs (SQL-first)**
+- Pack includes `views/` containing:
+  - SQL query sources for default lenses (e.g., `views/queries/*.sql`).
+  - Templates for Markdown rendering.
+  - A small runner/wrapper that loads Parquet facts into DuckDB and renders lens outputs deterministically.
+- All shipped Markdown (`README.md`, `docs/`, `schema/`) and default lens JSON outputs are rendered from shipped SQL queries so docs can’t drift from the data without being detectable.
+
+6) **Pack docs: SQL query recipes**
+- Extend `binary.lens/docs/examples.md` with a small set of binary-agnostic DuckDB recipes (env vars touched, top external calls, stderr templates, usage-marker strings, exit-call sites, reachability pivots) that demonstrate evidence trails.
 
 ### Non-goals (explicit)
 - No new semantic extraction (no structured help parsing, no option-description inference).
 - No new opaque ranking/scoring fields in canonical outputs (views may sort/rank, but must show derivation).
+- Not optimizing for “paste the whole pack into the prompt”: consumers should use lenses + selective queries instead of ingesting all facts at once.
 
 ### Acceptance Criteria
-- A consumer can start from `execution/roots.json`, compute reachability using `graph/*`, and land on cited evidence (callsites/strings/interfaces/errors) without full-shard scans.
-- `tools/check_pack_refs.py` remains green; all new indexes are deterministic and schema-documented.
+- A consumer can start from `execution/roots.json`, compute reachability using the edge facts, and land on cited evidence (`callsite_id`/`function_id`/`string_id` joins, plus optional decompiler excerpts via `evidence/index.json`) without bespoke shard-walking.
+- The pack documents the table registry and schemas (`schema/`), and table contents are deterministic.
+- Default lenses are reproducible: the pack ships the SQL sources for default views, and the rendered Markdown/JSON outputs can be regenerated from the pack alone via DuckDB.
 - Works on both `git` and `coreutils` packs without binary-specific naming heuristics being required.
 
 ## Milestone 4 — Contract Anchors (Callsites + Tables + Strings)
 
 Status: complete
+
+Note: The v2-only lean pack no longer emits the M4-era surfaces. Treat the
+following artifacts as deprecated: `contracts/`, `interfaces/`, `errors/`,
+`modes/` contract views, and the old `docs/overview.md` + `docs/navigation.md`.
 
 Acceptance snapshot:
 - Pack navigation: `binary.lens/index.json` (`start_here` + `entrypoints`)
@@ -125,8 +151,11 @@ For `interfaces/*` specifics, keep the existing surface split (`env`, `fs`, `pro
 
 Status: complete
 
+Note: The v2-only lean pack no longer emits `modes/` or uses the modes goldens;
+`modes/index.json`, `modes/slices.json`, and `goldens/modes/*` are deprecated.
+
 Acceptance snapshot:
-- `goldens/modes/git/` + `goldens/modes/coreutils/` (see `tools/check_modes_goldens.py`)
+- `goldens/modes/git/` + `goldens/modes/coreutils/` (deprecated; `tools/check_modes_goldens.py` removed in v2-only pack)
 
 ### Goal
 Extract an **evidence-linked model of behavioral modes and dispatch**, enabling LM consumers to:
