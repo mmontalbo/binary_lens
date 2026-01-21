@@ -206,6 +206,7 @@ def _build_callgraph_nodes_table(
             is_external = True
         row = {
             "function_id": function_id,
+            "function_addr_int": _addr_sort_key(function_id),
             "name": meta.get("name") or node.get("name"),
             "signature": meta.get("signature") or node.get("signature"),
             "is_external": is_external,
@@ -216,6 +217,7 @@ def _build_callgraph_nodes_table(
     rows.sort(key=lambda entry: _addr_sort_key(entry.get("function_id")))
     schema = [
         ("function_id", "string"),
+        ("function_addr_int", "int64"),
         ("name", "string"),
         ("signature", "string"),
         ("is_external", "bool"),
@@ -292,6 +294,7 @@ def _build_callsites_table(
         rows.append(
             {
                 "callsite_id": callsite_id,
+                "callsite_addr_int": _addr_sort_key(callsite_id),
                 "from_function_id": from_function_id,
                 "instruction": instruction,
                 "arg_recovery_status": arg_status,
@@ -300,6 +303,7 @@ def _build_callsites_table(
     rows.sort(key=lambda entry: _addr_sort_key(entry.get("callsite_id")))
     schema = [
         ("callsite_id", "string"),
+        ("callsite_addr_int", "int64"),
         ("from_function_id", "string"),
         ("instruction", "string"),
         ("arg_recovery_status", "string"),
