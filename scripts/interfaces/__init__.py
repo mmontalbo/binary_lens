@@ -1,1 +1,0 @@
-"""Interface surface extraction helpers."""
