@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Check pack reference integrity for binary_lens outputs.
 
-Validates JSON *_ref / *_refs fields and contract markdown references without
-invoking Ghidra.
+Validates JSON *_ref / *_refs fields and pack-embedded markdown references
+without invoking Ghidra.
 """
 
 from __future__ import annotations
@@ -15,9 +15,13 @@ from pathlib import Path
 from typing import Any, Iterable
 
 MARKDOWN_REF_PATTERNS = (
-    re.compile(r"functions/f_[A-Za-z0-9_]+\.json"),
+    re.compile(r"facts/[A-Za-z0-9_./-]+\.(?:json|parquet)"),
+    re.compile(r"views/[A-Za-z0-9_./-]+\.(?:json|sql|md|py)"),
+    re.compile(r"execution/[A-Za-z0-9_./-]+\.json"),
+    re.compile(r"schema/[A-Za-z0-9_./-]+\.md"),
+    re.compile(r"docs/[A-Za-z0-9_./-]+\.md"),
+    re.compile(r"evidence/index\.json"),
     re.compile(r"evidence/decomp/f_[A-Za-z0-9_]+\.json"),
-    re.compile(r"evidence/callsites\.json"),
 )
 
 
@@ -81,7 +85,11 @@ def ref_exists(pack_root: Path, ref: str) -> bool:
     candidate = Path(ref)
     if not candidate.is_absolute():
         candidate = pack_root / candidate
-    return candidate.is_file()
+    if candidate.is_file():
+        return True
+    if ref.endswith("/") and candidate.is_dir():
+        return True
+    return False
 
 
 def collect_json_ref_errors(pack_root: Path) -> tuple[list[str], set[tuple[str, str]]]:
@@ -104,6 +112,70 @@ def collect_json_ref_errors(pack_root: Path) -> tuple[list[str], set[tuple[str, 
     return parse_errors, missing
 
 
+def collect_facts_index_errors(pack_root: Path) -> set[tuple[str, str]]:
+    missing: set[tuple[str, str]] = set()
+    facts_index = pack_root / "facts" / "index.json"
+    if not facts_index.is_file():
+        missing.add(("facts/index.json", "pack_root"))
+        return missing
+    try:
+        payload = json.loads(facts_index.read_text())
+    except json.JSONDecodeError:
+        missing.add(("facts/index.json (invalid JSON)", "pack_root"))
+        return missing
+    tables = payload.get("tables") if isinstance(payload, dict) else None
+    if not isinstance(tables, list):
+        missing.add(("facts/index.json (missing tables list)", "pack_root"))
+        return missing
+    for table in tables:
+        if not isinstance(table, dict):
+            continue
+        paths = table.get("paths")
+        if not isinstance(paths, list):
+            continue
+        for path in paths:
+            if not isinstance(path, str):
+                continue
+            if not ref_exists(pack_root, path):
+                missing.add((path, "facts/index.json"))
+    return missing
+
+
+def collect_views_index_errors(pack_root: Path) -> set[tuple[str, str]]:
+    missing: set[tuple[str, str]] = set()
+    views_index = pack_root / "views" / "index.json"
+    if not views_index.is_file():
+        missing.add(("views/index.json", "pack_root"))
+        return missing
+    try:
+        payload = json.loads(views_index.read_text())
+    except json.JSONDecodeError:
+        missing.add(("views/index.json (invalid JSON)", "pack_root"))
+        return missing
+    views = payload.get("views") if isinstance(payload, dict) else None
+    if not isinstance(views, list):
+        missing.add(("views/index.json (missing views list)", "pack_root"))
+        return missing
+    for view in views:
+        if not isinstance(view, dict):
+            continue
+        query_ref = view.get("query_ref")
+        if isinstance(query_ref, str) and not ref_exists(pack_root, query_ref):
+            missing.add((query_ref, "views/index.json"))
+        template_ref = view.get("template_ref")
+        if isinstance(template_ref, str) and not ref_exists(pack_root, template_ref):
+            missing.add((template_ref, "views/index.json"))
+        template_tables = view.get("template_tables")
+        if isinstance(template_tables, dict):
+            for entry in template_tables.values():
+                if isinstance(entry, str) and not ref_exists(pack_root, entry):
+                    missing.add((entry, "views/index.json"))
+    load_tables_ref = payload.get("load_tables_ref") if isinstance(payload, dict) else None
+    if isinstance(load_tables_ref, str) and not ref_exists(pack_root, load_tables_ref):
+        missing.add((load_tables_ref, "views/index.json"))
+    return missing
+
+
 def iter_markdown_refs(text: str) -> Iterable[str]:
     for pattern in MARKDOWN_REF_PATTERNS:
         for match in pattern.findall(text):
@@ -112,7 +184,15 @@ def iter_markdown_refs(text: str) -> Iterable[str]:
 
 def collect_markdown_ref_errors(pack_root: Path, *, include_docs: bool) -> set[tuple[str, str]]:
     missing: set[tuple[str, str]] = set()
-    roots = [pack_root / "contracts"]
+
+    readme_path = pack_root / "README.md"
+    if readme_path.is_file():
+        for ref in iter_markdown_refs(readme_path.read_text()):
+            ref = normalize_ref_path(ref)
+            if not ref_exists(pack_root, ref):
+                missing.add((ref, "README.md"))
+
+    roots = [pack_root / "contracts", pack_root / "schema"]
     if include_docs:
         roots.append(pack_root / "docs")
     for root in roots:
@@ -140,6 +220,8 @@ def main(argv: list[str]) -> int:
         return 2
 
     parse_errors, missing = collect_json_ref_errors(pack_root)
+    missing |= collect_facts_index_errors(pack_root)
+    missing |= collect_views_index_errors(pack_root)
     missing |= collect_markdown_ref_errors(pack_root, include_docs=args.include_docs)
 
     if parse_errors:
