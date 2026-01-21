@@ -6,7 +6,14 @@ This document defines near-term milestones for adding **LM-tailored interface le
 
 ## Milestone 5 — Queryable Evidence Graph (Table Pack + SQL Lenses)
 
-Status: planned
+Status: complete
+
+Acceptance snapshot:
+- Pack format v2: `binary.lens/facts/index.json` + Parquet facts tables.
+- Views/lenses: `binary.lens/views/index.json` + `views/queries/*.sql` + `views/run.py`.
+- Execution anchors: `binary.lens/execution/roots.json` + `binary.lens/execution/sinks.json`.
+- Pack docs from SQL: `binary.lens/README.md` + `binary.lens/docs/examples.md` + `binary.lens/schema/README.md`.
+- Validation: `tools/check_pack_refs.py` + `tools/check_lens_repro.py`.
 
 ### Goal
 Make a `binary_lens` pack **mechanically queryable** as an evidence-linked graph, so consumers can answer “where/why” questions via deterministic joins and reachability **using a standard query engine**, without bespoke shard-walking or relying on symbol-name conventions.
