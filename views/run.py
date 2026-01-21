@@ -6,7 +6,9 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import sys
+from contextlib import contextmanager
 from pathlib import Path
 from typing import Any
 
@@ -105,6 +107,16 @@ def _sql_string(value: str) -> str:
     return "'" + value.replace("'", "''") + "'"
 
 
+@contextmanager
+def _chdir(path: Path):
+    prev = Path.cwd()
+    os.chdir(path)
+    try:
+        yield
+    finally:
+        os.chdir(prev)
+
+
 def _connect_duckdb(pack_root: Path) -> duckdb.DuckDBPyConnection:
     con = duckdb.connect(database=":memory:")
     facts_index = pack_root / "facts" / "index.json"
@@ -141,6 +153,17 @@ def _connect_duckdb(pack_root: Path) -> duckdb.DuckDBPyConnection:
             + _sql_string(str(manifest_path))
             + ")"
         )
+    con.execute(
+        "CREATE OR REPLACE VIEW usage_help_functions AS "
+        "SELECT function_id, function_addr_int, name, signature "
+        "FROM callgraph_nodes "
+        "WHERE name IS NOT NULL "
+        "AND ("
+        "lower(name) like 'usage%' "
+        "OR lower(name) like '%_usage%' "
+        "OR lower(name) like '%help%'"
+        ")"
+    )
     return con
 
 
@@ -294,28 +317,30 @@ def render_views(
     output_root: Path | None = None,
     view_ids: set[str] | None = None,
 ) -> None:
+    pack_root = pack_root.resolve()
     views_index = _load_views_index(pack_root)
     views = views_index.get("views")
     if not isinstance(views, list):
         raise ValueError("views/index.json missing views list")
     views_version = views_index.get("views_version")
     load_tables_ref = views_index.get("load_tables_ref")
-    output_root = output_root or pack_root
-    con = _connect_duckdb(pack_root)
-    for view in views:
-        if not isinstance(view, dict):
-            continue
-        view_id = view.get("id") or view.get("output_path")
-        if view_ids and view_id not in view_ids:
-            continue
-        _render_view(
-            pack_root,
-            output_root,
-            view,
-            views_version=views_version,
-            load_tables_ref=load_tables_ref,
-            con=con,
-        )
+    output_root = (output_root or pack_root).resolve()
+    with _chdir(pack_root):
+        con = _connect_duckdb(pack_root)
+        for view in views:
+            if not isinstance(view, dict):
+                continue
+            view_id = view.get("id") or view.get("output_path")
+            if view_ids and view_id not in view_ids:
+                continue
+            _render_view(
+                pack_root,
+                output_root,
+                view,
+                views_version=views_version,
+                load_tables_ref=load_tables_ref,
+                con=con,
+            )
 
 
 def parse_args(argv: list[str]) -> argparse.Namespace:

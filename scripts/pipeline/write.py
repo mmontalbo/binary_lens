@@ -82,7 +82,7 @@ def _write_load_tables_sql(views_dir: Path, facts_index: dict[str, Any]) -> None
         return
     lines = [
         "-- Auto-generated DuckDB loader for pack facts.",
-        "SET home_directory='.';",
+        "-- NOTE: Run from the pack root (binary.lens). Prefer views/run.py which sets CWD.",
     ]
     for entry in tables:
         if not isinstance(entry, dict):
@@ -101,6 +101,19 @@ def _write_load_tables_sql(views_dir: Path, facts_index: dict[str, Any]) -> None
         else:
             source = f"read_parquet([{path_literals}])"
         lines.append(f"CREATE OR REPLACE VIEW {name} AS SELECT * FROM {source};")
+    lines.append("")
+    lines.append("-- Helper views.")
+    lines.append(
+        "CREATE OR REPLACE VIEW usage_help_functions AS "
+        "SELECT function_id, function_addr_int, name, signature "
+        "FROM callgraph_nodes "
+        "WHERE name IS NOT NULL "
+        "AND ("
+        "lower(name) like 'usage%' "
+        "OR lower(name) like '%_usage%' "
+        "OR lower(name) like '%help%'"
+        ");"
+    )
     content = "\n".join(lines) + "\n"
     (views_dir / "queries" / "load_tables.sql").write_text(content)
 
