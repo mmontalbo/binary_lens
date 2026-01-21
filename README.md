@@ -5,23 +5,36 @@ The exported pack is designed to be **diffable**, **bounded**, and safe for down
 
 ## Quickstart
 
-Recommended (via Nix):
+Recommended (via Nix; works from any CWD):
 
 ```sh
-nix run .#binary_lens -- /path/to/binary -o out/
+nix run .#binary_lens -- /path/to/binary -o /path/to/out
+```
+
+From another directory, point at the flake path:
+
+```sh
+nix run /path/to/binary_lens#binary_lens -- /path/to/binary -o /path/to/out
+```
+
+Re-render views from an existing pack (no Ghidra needed):
+
+```sh
+nix run .#binary_lens -- /path/to/out/binary.lens
+nix run .#binary_lens -- /path/to/out
+```
+
+You can pass export bounds as `key=value` arguments:
+
+```sh
+nix run .#binary_lens -- /path/to/binary -o /path/to/out max_full_functions=50 max_strings=200
 ```
 
 Or enter a dev shell and use the wrapper directly:
 
 ```sh
 nix develop
-binary_lens /path/to/binary -o out/
-```
-
-You can pass export bounds as `key=value` arguments:
-
-```sh
-binary_lens /path/to/binary -o out/ max_full_functions=50 max_strings=200
+binary_lens /path/to/binary -o /path/to/out
 ```
 
 ## Output: context pack

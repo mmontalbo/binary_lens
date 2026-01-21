@@ -2,12 +2,12 @@
 import json
 import os
 import shutil
+import subprocess
 import sys
 import time
 from pathlib import Path
 
 from export_cli import resolve_pack_root
-from pyghidra import core as pyghidra_core
 
 
 def usage(exit_code=1):
@@ -23,6 +23,7 @@ def parse_args(argv):
     binary_path = None
     # Default to a local out dir to keep the CLI terse for quick runs.
     out_dir = "out"
+    out_dir_set = False
     script_args = []
     idx = 0
     count = len(argv)
@@ -36,6 +37,7 @@ def parse_args(argv):
                 print("Missing value for -o/--output.", file=sys.stderr)
                 usage(1)
             out_dir = argv[idx]
+            out_dir_set = True
             idx += 1
             continue
         if arg == "--":
@@ -50,7 +52,7 @@ def parse_args(argv):
             script_args.append(arg)
     if not binary_path:
         usage(1)
-    return binary_path, out_dir, script_args
+    return binary_path, out_dir, out_dir_set, script_args
 
 
 def resolve_binary(binary_path):
@@ -66,6 +68,38 @@ def resolve_binary(binary_path):
     print(f"Binary not found: {binary_path}", file=sys.stderr)
     print("Hint: provide a full path or a binary available in PATH.", file=sys.stderr)
     raise SystemExit(1)
+
+
+def _find_pack_root(path):
+    if not path.is_dir():
+        return None
+    if path.name.endswith(".lens"):
+        return path
+    candidate = path / "binary.lens"
+    if candidate.is_dir():
+        return candidate
+    return None
+
+
+def _run_view_renderer(
+    pack_root,
+    *,
+    out_dir,
+    script_args,
+):
+    pack_root = pack_root.resolve()
+    runner_path = pack_root / "views" / "run.py"
+    if not runner_path.is_file():
+        print(f"View runner not found: {runner_path}", file=sys.stderr)
+        raise SystemExit(1)
+    cmd = [sys.executable, str(runner_path), "--pack", str(pack_root)]
+    if out_dir:
+        cmd.extend(["--out", out_dir])
+    if script_args:
+        cmd.extend(script_args)
+    result = subprocess.run(cmd)
+    if result.returncode != 0:
+        raise SystemExit(result.returncode)
 
 
 def _parse_script_options(script_args):
@@ -103,14 +137,30 @@ def _write_cli_timings(profile_dir, enter_seconds, run_seconds, exit_seconds):
 
 
 def main(argv):
-    binary_path, out_dir, script_args = parse_args(argv)
+    binary_path, out_dir, out_dir_set, script_args = parse_args(argv)
+    pack_root = _find_pack_root(Path(binary_path))
+    if pack_root is not None:
+        _run_view_renderer(
+            pack_root,
+            out_dir=out_dir if out_dir_set else None,
+            script_args=script_args,
+        )
+        return
+
     binary_file = resolve_binary(binary_path)
 
     install_dir = os.environ.get("GHIDRA_INSTALL_DIR")
     if not install_dir:
-        # PyGhidra needs a concrete Ghidra install; nix develop wires this in.
-        print("GHIDRA_INSTALL_DIR is not set. Run inside nix develop.", file=sys.stderr)
+        # PyGhidra needs a concrete Ghidra install; nix develop/nix run wires this in.
+        print(
+            "GHIDRA_INSTALL_DIR is not set. For exports, run inside nix develop "
+            "or `nix run .#binary_lens -- <binary> ...`. For view rendering, pass "
+            "a pack root (binary.lens).",
+            file=sys.stderr,
+        )
         raise SystemExit(1)
+
+    from pyghidra import core as pyghidra_core
 
     root_dir = Path(
         os.environ.get("BINARY_LENS_ROOT", Path(__file__).resolve().parent.parent)

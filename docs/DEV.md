@@ -3,7 +3,51 @@
 This document captures the local dev workflow for `binary_lens`. The flake is the source
 of truth for dependencies and the preferred way to run the exporter.
 
-## Enter the dev shell
+## Run the exporter (recommended)
+
+The `binary_lens` wrapper mirrors the intended CLI surface and runs the end-to-end
+headless pipeline via PyGhidra.
+
+```sh
+nix run .#binary_lens -- /path/to/binary -o /path/to/out
+```
+
+From another directory, point at the flake path:
+
+```sh
+nix run /path/to/binary_lens#binary_lens -- /path/to/binary -o /path/to/out
+```
+
+The output directory defaults to `out/`, so you can omit `-o`:
+
+```sh
+nix run .#binary_lens -- /path/to/binary
+```
+
+The wrapper can also resolve binaries from `PATH`:
+
+```sh
+nix run .#binary_lens -- ls -o /path/to/out
+```
+
+You can pass exporter bounds as `key=value` arguments:
+
+```sh
+nix run .#binary_lens -- /path/to/binary -o /path/to/out max_full_functions=50 max_strings=200
+```
+
+Output is written to `/path/to/out/binary.lens/`.
+
+## Re-render views from an existing pack
+
+This runs the view renderer only and does not require Ghidra.
+
+```sh
+nix run .#binary_lens -- /path/to/out/binary.lens
+nix run .#binary_lens -- /path/to/out
+```
+
+## Enter the dev shell (for development)
 
 ```sh
 nix develop
@@ -25,48 +69,14 @@ Notes:
 - Linux shells include the `ghidra` package; on other platforms, install Ghidra separately.
 - `nix fmt` runs the `alejandra` formatter for `flake.nix`.
 
-## Run the exporter (recommended)
-
-The `binary_lens` wrapper mirrors the intended CLI surface and runs the end-to-end
-headless pipeline via PyGhidra.
-
-```sh
-binary_lens /path/to/binary -o /path/to/out
-```
-
-The output directory defaults to `out/`, so you can omit `-o`:
-
-```sh
-binary_lens /path/to/binary
-```
-
-The wrapper can also resolve binaries from `PATH`:
-
-```sh
-binary_lens ls -o /path/to/out
-```
-
-You can pass exporter bounds as `key=value` arguments:
-
-```sh
-binary_lens /path/to/binary -o /path/to/out max_full_functions=50 max_strings=200
-```
-
-Output is written to `/path/to/out/binary.lens/`.
-
-You can also run it without entering a shell:
-
-```sh
-nix run .#binary_lens -- /path/to/binary -o /path/to/out
-```
-
 ## Notes and troubleshooting
 
 - The exporter is a PyGhidra script. Running `analyzeHeadless` directly will not
   execute Python scripts unless launched via PyGhidra.
-- If you see `GHIDRA_INSTALL_DIR is not set`, you are likely outside the dev shell.
-- The wrapper expects to run from the repo root. To run elsewhere, set:
-  `BINARY_LENS_ROOT=/path/to/binary_lens`.
+- If you see `GHIDRA_INSTALL_DIR is not set`, run exports via `nix run .#binary_lens -- ...`
+  or enter the dev shell. For view rendering, pass a pack root (binary.lens).
+- The wrapper defaults to an in-store source snapshot; set `BINARY_LENS_ROOT=/path/to/binary_lens`
+  to use a working tree with local edits.
 
 ## Git hooks
 

@@ -12,6 +12,25 @@
         pkgs = import nixpkgs { inherit system; };
         lib = pkgs.lib;
         ghidraPkg = pkgs.ghidra;
+        excludedNames = [
+          ".git"
+          "out"
+          "ghidra_projects"
+          ".direnv"
+          "result"
+          ".ruff_cache"
+          ".pytest_cache"
+          ".mypy_cache"
+          "__pycache__"
+        ];
+        cleanedSrc = lib.cleanSourceWith {
+          src = self;
+          filter = path: type:
+            let
+              base = builtins.baseNameOf path;
+            in
+              !(lib.elem base excludedNames);
+        };
         ghidraInstallDir = "${ghidraPkg}/lib/ghidra";
         ghidraHeadless = "${ghidraInstallDir}/support/analyzeHeadless";
         binaryLensCli = pkgs.writeShellApplication {
@@ -26,7 +45,7 @@
           text = ''
             set -euo pipefail
 
-            root="''${BINARY_LENS_ROOT:-$PWD}"
+            root="''${BINARY_LENS_ROOT:-${cleanedSrc}}"
             cli_path="$root/scripts/binary_lens_cli.py"
             if [ ! -f "$cli_path" ]; then
               echo "Could not locate scripts/binary_lens_cli.py. Run from repo root or set BINARY_LENS_ROOT." >&2
