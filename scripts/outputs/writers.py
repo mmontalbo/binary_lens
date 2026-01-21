@@ -11,6 +11,8 @@ from utils.text import is_help_marker_value as _is_help_marker_value
 from .io import pack_path, write_json
 
 MAX_HELP_DECOMP_LINES = 600
+MAX_HINT_DECOMP_LINES = 5000
+HINT_DECOMP_LINE_MULTIPLIER = 10
 
 
 def _looks_like_help_printer(func_id, string_refs_by_func, string_tags_by_id, string_value_by_id):
@@ -31,12 +33,13 @@ def write_decomp_excerpts(
     full_functions,
     bounds: Bounds,
     string_refs_by_func,
-    selected_string_ids,
     string_tags_by_id,
     string_value_by_id,
     evidence_decomp_dir,
     monitor,
+    hinted_function_ids=None,
 ):
+    hinted_function_ids = set(hinted_function_ids or [])
     decomp_interface = DecompInterface()
     decomp_interface.openProgram(program)
     entries = []
@@ -55,12 +58,28 @@ def write_decomp_excerpts(
 
         # Decompiler excerpts are bounded to keep evidence lightweight.
         timeout_seconds = 30
+        max_lines_applied = bounds.max_decomp_lines
         try:
             func_size = func.getBody().getNumAddresses()
         except Exception:
             func_size = 0
         if func_size > DEFAULT_MAX_DECOMPILE_FUNCTION_SIZE:
             timeout_seconds = 1
+        if entry_addr in hinted_function_ids:
+            max_lines_applied = max(
+                max_lines_applied,
+                min(MAX_HINT_DECOMP_LINES, max_lines_applied * HINT_DECOMP_LINE_MULTIPLIER),
+            )
+        if _looks_like_help_printer(
+            entry_addr,
+            string_refs_by_func,
+            string_tags_by_id,
+            string_value_by_id,
+        ):
+            max_lines_applied = max(
+                max_lines_applied,
+                min(MAX_HELP_DECOMP_LINES, max_lines_applied * 3),
+            )
         result = profiled_decompile(
             decomp_interface,
             func,
@@ -85,19 +104,8 @@ def write_decomp_excerpts(
             if decomp_text:
                 lines = decomp_text.splitlines()
                 decomp_excerpt["line_count"] = len(lines)
-                max_lines = bounds.max_decomp_lines
-                if _looks_like_help_printer(
-                    entry_addr,
-                    string_refs_by_func,
-                    string_tags_by_id,
-                    string_value_by_id,
-                ):
-                    max_lines = max(
-                        max_lines,
-                        min(MAX_HELP_DECOMP_LINES, max_lines * 3),
-                    )
-                if len(lines) > max_lines:
-                    decomp_excerpt["lines"] = lines[:max_lines]
+                if len(lines) > max_lines_applied:
+                    decomp_excerpt["lines"] = lines[:max_lines_applied]
                     decomp_excerpt["truncated"] = True
                 else:
                     decomp_excerpt["lines"] = lines
@@ -105,11 +113,15 @@ def write_decomp_excerpts(
             decomp_excerpt["error"] = "decompile_failed"
         write_json(os.path.join(evidence_decomp_dir, decomp_filename), decomp_excerpt)
 
+        excerpt_line_count = len(decomp_excerpt.get("lines") or [])
         entries.append({
             "function_id": entry_addr,
             "name": func_name,
             "decomp_ref": decomp_ref,
             "line_count": decomp_excerpt.get("line_count", 0),
+            "truncated": bool(decomp_excerpt.get("truncated")),
+            "excerpt_line_count": excerpt_line_count,
+            "max_lines_applied": max_lines_applied,
         })
 
     entries.sort(key=lambda entry: addr_to_int(entry.get("function_id")))

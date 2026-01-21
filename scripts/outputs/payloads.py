@@ -163,6 +163,7 @@ def build_manifest(
     *,
     binary_info: dict[str, object] | None = None,
     coverage_summary: dict[str, object] | None = None,
+    evidence_hints: dict[str, object] | None = None,
 ) -> dict[str, object]:
     repo_root = Path(__file__).resolve().parents[2]
     created_at = _resolve_created_at()
@@ -215,5 +216,6 @@ def build_manifest(
     }
     if coverage_summary:
         manifest["coverage_summary"] = coverage_summary
+    if evidence_hints:
+        manifest["evidence_hints"] = evidence_hints
     return manifest
-

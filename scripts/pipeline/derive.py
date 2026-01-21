@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from collections.abc import Mapping
 from typing import Any
 
@@ -19,7 +20,7 @@ from export_config import (
     CALLGRAPH_SIGNAL_RULES,
     FORMAT_VERSION,
 )
-from export_primitives import addr_to_int
+from export_primitives import addr_str, addr_to_int
 from outputs.payloads import build_manifest, build_pack_index_payload
 from pipeline.phases import phase
 from pipeline.types import CollectedData, DerivedPayloads, FactTable
@@ -27,6 +28,148 @@ from pipeline.types import CollectedData, DerivedPayloads, FactTable
 
 def _addr_sort_key(value: str | None) -> int:
     return addr_to_int(value)
+
+
+def _function_id(func: Any) -> str | None:
+    try:
+        return addr_str(func.getEntryPoint())
+    except Exception:
+        return None
+
+
+def _parse_evidence_include_ids(value: Any) -> list[str]:
+    if value is None:
+        return []
+    items: list[str] = []
+    if isinstance(value, (list, tuple, set)):
+        sources = value
+    else:
+        sources = [value]
+    for source in sources:
+        if source is None:
+            continue
+        text = str(source)
+        if not text.strip():
+            continue
+        items.extend(re.split(r"[,\s]+", text.strip()))
+    return [item for item in items if item]
+
+
+def _compile_evidence_name_regex(value: Any) -> tuple[str | None, re.Pattern | None, str | None]:
+    if value is None:
+        return None, None, None
+    pattern = str(value).strip()
+    if not pattern:
+        return None, None, None
+    try:
+        return pattern, re.compile(pattern), None
+    except re.error as exc:
+        return pattern, None, str(exc)
+
+
+def _sort_functions_by_addr(funcs: list[Any]) -> list[Any]:
+    return sorted(
+        funcs,
+        key=lambda func: (_addr_sort_key(_function_id(func)), _function_id(func) or ""),
+    )
+
+
+def _apply_evidence_hints(
+    functions: list[Any],
+    base_selection: list[Any],
+    max_count: int,
+    *,
+    include_name_regex: str | None,
+    name_regex: re.Pattern | None,
+    include_function_ids: list[str],
+    regex_error: str | None,
+) -> tuple[list[Any], dict[str, Any] | None]:
+    if not include_name_regex and not include_function_ids and not regex_error:
+        return base_selection, None
+
+    funcs_by_addr_int: dict[int, Any] = {}
+    for func in functions:
+        func_id = _function_id(func)
+        if not func_id:
+            continue
+        funcs_by_addr_int[_addr_sort_key(func_id)] = func
+
+    requested_ids = sorted(
+        set(include_function_ids),
+        key=lambda item: (_addr_sort_key(item), str(item)),
+    )
+    missing_ids: list[str] = []
+    invalid_ids: list[str] = []
+    matched_by_id: list[Any] = []
+    for raw_id in requested_ids:
+        addr_int = _addr_sort_key(raw_id)
+        if addr_int < 0:
+            invalid_ids.append(raw_id)
+            continue
+        func = funcs_by_addr_int.get(addr_int)
+        if func is None:
+            missing_ids.append(raw_id)
+            continue
+        matched_by_id.append(func)
+
+    matched_by_name: list[Any] = []
+    if include_name_regex and regex_error is None and name_regex is not None:
+        for func in functions:
+            try:
+                name = func.getName()
+            except Exception:
+                name = None
+            if isinstance(name, str) and name_regex.search(name):
+                matched_by_name.append(func)
+
+    seen_ids: set[str] = set()
+    hint_funcs: list[Any] = []
+    for func in matched_by_id + matched_by_name:
+        func_id = _function_id(func)
+        if not func_id or func_id in seen_ids:
+            continue
+        seen_ids.add(func_id)
+        hint_funcs.append(func)
+
+    hint_funcs = _sort_functions_by_addr(hint_funcs)
+    base_order = base_selection
+
+    selected: list[Any] = []
+    selected_ids: set[str] = set()
+    applied_hint_ids: list[str] = []
+
+    def _maybe_add(func: Any, *, is_hint: bool) -> None:
+        if len(selected) >= max_count:
+            return
+        func_id = _function_id(func)
+        if not func_id or func_id in selected_ids:
+            return
+        selected.append(func)
+        selected_ids.add(func_id)
+        if is_hint:
+            applied_hint_ids.append(func_id)
+
+    for func in hint_funcs:
+        _maybe_add(func, is_hint=True)
+    for func in base_order:
+        _maybe_add(func, is_hint=False)
+
+    hint_truncated = len(hint_funcs) > max_count
+    hints_payload: dict[str, Any] = {
+        "include_function_ids": requested_ids,
+        "applied_function_ids": sorted(applied_hint_ids, key=_addr_sort_key),
+        "missing_function_ids": sorted(missing_ids, key=_addr_sort_key),
+    }
+    if include_name_regex:
+        hints_payload["include_name_regex"] = include_name_regex
+    if invalid_ids:
+        hints_payload["invalid_function_ids"] = sorted(invalid_ids)
+    if regex_error:
+        hints_payload["include_name_regex_error"] = regex_error
+    if hint_truncated:
+        hints_payload["truncated"] = True
+        hints_payload["max_full_functions"] = max_count
+    return selected, hints_payload
 
 
 def _collect_callsite_ids(
@@ -283,6 +426,8 @@ def derive_payloads(
     collected: CollectedData,
     bounds: Bounds,
     profiler: Any,
+    *,
+    options: Mapping[str, Any] | None = None,
 ) -> DerivedPayloads:
     with phase(profiler, "derive_function_metrics"):
         metrics_by_addr = build_function_metrics(
@@ -295,6 +440,21 @@ def derive_payloads(
             collected.functions,
             metrics_by_addr,
             bounds.max_full_functions,
+        )
+        include_name_regex, name_regex, regex_error = _compile_evidence_name_regex(
+            (options or {}).get("evidence_include_name_regex")
+        )
+        include_function_ids = _parse_evidence_include_ids(
+            (options or {}).get("evidence_include_function_ids")
+        )
+        full_functions, evidence_hints = _apply_evidence_hints(
+            collected.functions,
+            full_functions,
+            bounds.max_full_functions,
+            include_name_regex=include_name_regex,
+            name_regex=name_regex,
+            include_function_ids=include_function_ids,
+            regex_error=regex_error,
         )
 
     with phase(profiler, "derive_callgraph"):
@@ -325,6 +485,7 @@ def derive_payloads(
         callsite_id_set = set(callsite_ids)
 
     with phase(profiler, "derive_facts"):
+        callsite_arg_table = _build_callsite_arg_observations_table(callsites_by_id, callsite_id_set)
         fact_tables = [
             _build_callgraph_nodes_table(
                 callgraph_nodes,
@@ -333,14 +494,10 @@ def derive_payloads(
             ),
             _build_call_edges_table(call_edges),
             _build_callsites_table(collected.callsite_records, callsite_ids, callsites_by_id),
-            _build_callsite_arg_observations_table(callsites_by_id, callsite_id_set),
+            callsite_arg_table,
             _build_strings_table(collected.strings, collected.string_tags_by_id),
         ]
-        callsite_arg_count = 0
-        for table in fact_tables:
-            if table.name == "callsite_arg_observations":
-                callsite_arg_count = len(table.rows)
-                break
+        callsite_arg_count = len(callsite_arg_table.rows)
 
     coverage_summary = {
         "full_functions": {
@@ -388,6 +545,7 @@ def derive_payloads(
         FORMAT_VERSION,
         binary_info=collected.binary_info,
         coverage_summary=coverage_summary,
+        evidence_hints=evidence_hints,
     )
     pack_index_payload = build_pack_index_payload(FORMAT_VERSION)
     return DerivedPayloads(
@@ -395,4 +553,5 @@ def derive_payloads(
         facts=fact_tables,
         pack_index_payload=pack_index_payload,
         manifest=manifest,
+        evidence_hints=evidence_hints,
     )

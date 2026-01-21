@@ -79,7 +79,7 @@ def write_context_pack(
         )
 
     collected = collect_pipeline_inputs(program, bounds, monitor, profiler)
-    derived = derive_payloads(collected, bounds, profiler)
+    derived = derive_payloads(collected, bounds, profiler, options=options)
     write_outputs(program, collected, derived, layout, bounds, monitor, profiler)
 
     if profiler is not None:

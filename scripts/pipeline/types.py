@@ -45,3 +45,4 @@ class DerivedPayloads:
     facts: list[FactTable]
     pack_index_payload: dict[str, Any]
     manifest: dict[str, Any]
+    evidence_hints: dict[str, Any] | None = None

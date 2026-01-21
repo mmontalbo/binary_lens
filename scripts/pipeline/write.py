@@ -240,17 +240,25 @@ def write_outputs(
     monitor: Any,
     profiler: Any,
 ) -> None:
+    hinted_function_ids = set()
+    evidence_hints = derived.evidence_hints
+    if isinstance(evidence_hints, dict):
+        applied_ids = evidence_hints.get("applied_function_ids")
+        if isinstance(applied_ids, list):
+            hinted_function_ids = {
+                item for item in applied_ids if isinstance(item, str) and item.strip()
+            }
     with phase(profiler, "write_evidence_decomp"):
         evidence_entries = write_decomp_excerpts(
             program,
             derived.full_functions,
             bounds,
             collected.string_refs_by_func,
-            collected.selected_string_ids,
             collected.string_tags_by_id,
             collected.string_value_by_id,
             layout.evidence_decomp_dir,
             monitor,
+            hinted_function_ids,
         )
 
     with phase(profiler, "write_outputs"):
