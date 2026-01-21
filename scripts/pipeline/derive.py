@@ -1,4 +1,4 @@
-"""Derivation stage for the context pack export pipeline."""
+"""Derivation stage for the context pack export pipeline (pack format v2)."""
 
 from __future__ import annotations
 
@@ -8,145 +8,275 @@ from typing import Any
 from collectors.callgraph import (
     build_callgraph_nodes,
     build_function_metrics,
-    build_minimal_call_edges,
     build_signal_set,
     select_call_edges,
     select_full_functions,
 )
-from contracts.views import build_contract_views
-from derivations.cli_surface import derive_cli_surface
-from errors.refs import attach_callsite_refs
+from derivations.accelerators import build_callsites_by_id
 from export_bounds import Bounds
 from export_config import (
     BINARY_LENS_VERSION,
     CALLGRAPH_SIGNAL_RULES,
-    DEFAULT_CALLGRAPH_EDGE_SHARD_SIZE,
     FORMAT_VERSION,
 )
-from export_primitives import addr_str, addr_to_int
-from interfaces.surface import attach_interface_callsite_refs
-from modes.refs import attach_mode_callsite_refs
-from modes.slices import build_mode_slices
-from outputs.pack_docs import build_pack_markdown_docs
-from outputs.payloads import (
-    build_callgraph_nodes_payload,
-    build_callgraph_payload,
-    build_cli_options_payload,
-    build_cli_parse_loops_payload,
-    build_manifest,
-    build_pack_index_payload,
-    build_pack_readme,
-    build_strings_payload,
-)
-from outputs.sharding import build_sharded_list_index
-from outputs.writers import build_callsite_records
+from export_primitives import addr_to_int
+from outputs.payloads import build_manifest, build_pack_index_payload
 from pipeline.phases import phase
-from pipeline.types import CollectedData, DerivedPayloads
-from utils.callsites import callsite_to_function_map
+from pipeline.types import CollectedData, DerivedPayloads, FactTable
 
 
-def _collect_callsite_values(value: Any, callsite_ids: set[str]) -> None:
-    if isinstance(value, str):
-        cleaned = value.strip()
-        if cleaned:
-            callsite_ids.add(cleaned)
-        return
-    if isinstance(value, list):
-        for entry in value:
-            _collect_callsite_values(entry, callsite_ids)
-        return
-    if isinstance(value, Mapping):
-        _collect_callsite_ids(value, callsite_ids)
+def _addr_sort_key(value: str | None) -> int:
+    return addr_to_int(value)
 
 
-_CALLSITE_KEYS = {
-    "dispatch_sites",
-    "parse_sites",
-}
-
-INTERFACE_SURFACES = ("env", "fs", "process", "net", "output")
-
-
-def _collect_callsite_ids(value: Any, callsite_ids: set[str]) -> None:
-    if isinstance(value, Mapping):
-        for key, entry in value.items():
-            if isinstance(key, str) and "ref" not in key and (
-                "callsite" in key or key in _CALLSITE_KEYS
-            ):
-                _collect_callsite_values(entry, callsite_ids)
-                continue
-            _collect_callsite_ids(entry, callsite_ids)
-        return
-    if isinstance(value, list):
-        for entry in value:
-            _collect_callsite_ids(entry, callsite_ids)
-
-
-def _collect_exported_callsites(*payloads: Any) -> list[str]:
+def _collect_callsite_ids(
+    call_edges: list[dict[str, Any]],
+    call_args_by_callsite: Mapping[str, Any] | None,
+) -> list[str]:
     callsite_ids: set[str] = set()
-    for payload in payloads:
-        _collect_callsite_ids(payload, callsite_ids)
-    return sorted(callsite_ids, key=addr_to_int)
+    for edge in call_edges:
+        callsite = edge.get("callsite")
+        if isinstance(callsite, str) and callsite.strip():
+            callsite_ids.add(callsite.strip())
+    if isinstance(call_args_by_callsite, Mapping):
+        for callsite in call_args_by_callsite.keys():
+            if isinstance(callsite, str) and callsite.strip():
+                callsite_ids.add(callsite.strip())
+    return sorted(callsite_ids, key=_addr_sort_key)
 
 
-_INDEX_DROP_PREFIXES = ("total_", "selected_", "max_")
-_INDEX_DROP_SUFFIXES = ("_truncated",)
-_INDEX_DROP_KEYS = {"truncated", "nodes_total"}
-
-
-def _strip_index_metadata(payload: Mapping[str, Any] | None) -> Mapping[str, Any] | None:
-    if not isinstance(payload, Mapping):
-        return payload
-    cleaned: dict[str, Any] = {}
-    for key, value in payload.items():
-        if key in _INDEX_DROP_KEYS:
+def _build_callgraph_nodes_table(
+    callgraph_nodes: list[dict[str, Any]],
+    function_meta_by_addr: Mapping[str, Any],
+    external_addrs: set[str] | None = None,
+) -> FactTable:
+    rows: list[dict[str, Any]] = []
+    for node in callgraph_nodes:
+        if not isinstance(node, Mapping):
             continue
-        if key.startswith(_INDEX_DROP_PREFIXES):
+        function_id = node.get("address")
+        if not isinstance(function_id, str) or not function_id.strip():
             continue
-        if key.endswith(_INDEX_DROP_SUFFIXES):
-            continue
-        cleaned[key] = value
-    return cleaned
-
-
-def _shard_payload(
-    payload: Mapping[str, Any] | None,
-    *,
-    list_key: str,
-    shard_dir: str,
-    item_kind: str,
-    item_id_key: str | None = None,
-    shard_size: int | None = None,
-) -> tuple[dict[str, Any], dict[str, Any]]:
-    cleaned = _strip_index_metadata(payload)
-    if shard_size is None:
-        return build_sharded_list_index(
-            cleaned or {},
-            list_key=list_key,
-            shard_dir=shard_dir,
-            item_id_key=item_id_key,
-            item_kind=item_kind,
-        )
-    return build_sharded_list_index(
-        cleaned or {},
-        list_key=list_key,
-        shard_dir=shard_dir,
-        item_id_key=item_id_key,
-        item_kind=item_kind,
-        shard_size=shard_size,
+        meta = function_meta_by_addr.get(function_id, {}) if isinstance(function_meta_by_addr, Mapping) else {}
+        is_external = meta.get("is_external")
+        if is_external is None and external_addrs and function_id in external_addrs:
+            is_external = True
+        row = {
+            "function_id": function_id,
+            "name": meta.get("name") or node.get("name"),
+            "signature": meta.get("signature") or node.get("signature"),
+            "is_external": is_external,
+            "is_thunk": meta.get("is_thunk"),
+            "size": meta.get("size"),
+        }
+        rows.append(row)
+    rows.sort(key=lambda entry: _addr_sort_key(entry.get("function_id")))
+    schema = [
+        ("function_id", "string"),
+        ("name", "string"),
+        ("signature", "string"),
+        ("is_external", "bool"),
+        ("is_thunk", "bool"),
+        ("size", "int64"),
+    ]
+    return FactTable(
+        name="callgraph_nodes",
+        rows=rows,
+        primary_key=["function_id"],
+        schema=schema,
+        description="Function nodes (address, name, signature metadata).",
     )
 
 
-def _interface_coverage(payload: Mapping[str, Any] | None) -> dict[str, Any]:
-    if not isinstance(payload, Mapping):
-        return {"total": None, "selected": 0, "truncated": None, "max": None}
-    entries = payload.get("entries") if isinstance(payload.get("entries"), list) else []
-    return {
-        "total": payload.get("total_candidates"),
-        "selected": len(entries),
-        "truncated": payload.get("truncated"),
-        "max": payload.get("max_entries"),
-    }
+def _build_call_edges_table(call_edges: list[dict[str, Any]]) -> FactTable:
+    rows: list[dict[str, Any]] = []
+    for edge in call_edges:
+        if not isinstance(edge, Mapping):
+            continue
+        callsite_id = edge.get("callsite")
+        from_entry = edge.get("from") or {}
+        to_entry = edge.get("to") or {}
+        from_function_id = from_entry.get("address") if isinstance(from_entry, Mapping) else None
+        to_function_id = to_entry.get("address") if isinstance(to_entry, Mapping) else None
+        if not (
+            isinstance(callsite_id, str)
+            and isinstance(from_function_id, str)
+            and isinstance(to_function_id, str)
+        ):
+            continue
+        rows.append(
+            {
+                "from_function_id": from_function_id,
+                "to_function_id": to_function_id,
+                "callsite_id": callsite_id,
+            }
+        )
+    rows.sort(
+        key=lambda entry: (
+            _addr_sort_key(entry.get("from_function_id")),
+            _addr_sort_key(entry.get("callsite_id")),
+            _addr_sort_key(entry.get("to_function_id")),
+        )
+    )
+    schema = [
+        ("from_function_id", "string"),
+        ("to_function_id", "string"),
+        ("callsite_id", "string"),
+    ]
+    return FactTable(
+        name="call_edges",
+        rows=rows,
+        primary_key=["from_function_id", "callsite_id", "to_function_id"],
+        schema=schema,
+        description="Callgraph edges with callsite witnesses.",
+    )
+
+
+def _build_callsites_table(
+    callsite_records: Mapping[str, Any],
+    callsite_ids: list[str],
+    callsites_by_id: Mapping[str, Any],
+) -> FactTable:
+    rows: list[dict[str, Any]] = []
+    for callsite_id in callsite_ids:
+        record = callsite_records.get(callsite_id, {}) if isinstance(callsite_records, Mapping) else {}
+        from_entry = record.get("from") if isinstance(record, Mapping) else None
+        from_function_id = from_entry.get("address") if isinstance(from_entry, Mapping) else None
+        instruction = record.get("instruction") if isinstance(record, Mapping) else None
+        arg_status = None
+        if isinstance(callsites_by_id, Mapping):
+            arg_status = (callsites_by_id.get(callsite_id) or {}).get("arg_recovery_status")
+        rows.append(
+            {
+                "callsite_id": callsite_id,
+                "from_function_id": from_function_id,
+                "instruction": instruction,
+                "arg_recovery_status": arg_status,
+            }
+        )
+    rows.sort(key=lambda entry: _addr_sort_key(entry.get("callsite_id")))
+    schema = [
+        ("callsite_id", "string"),
+        ("from_function_id", "string"),
+        ("instruction", "string"),
+        ("arg_recovery_status", "string"),
+    ]
+    return FactTable(
+        name="callsites",
+        rows=rows,
+        primary_key=["callsite_id"],
+        schema=schema,
+        description="Callsite inventory with owning function and instruction.",
+    )
+
+
+def _build_callsite_arg_observations_table(
+    callsites_by_id: Mapping[str, Any],
+    callsite_ids: set[str],
+) -> FactTable:
+    rows: list[dict[str, Any]] = []
+    for callsite_id, record in callsites_by_id.items() if isinstance(callsites_by_id, Mapping) else []:
+        if callsite_ids and callsite_id not in callsite_ids:
+            continue
+        observations = record.get("arg_observations") if isinstance(record, Mapping) else None
+        if not isinstance(observations, list):
+            continue
+        for idx, obs in enumerate(observations):
+            if not isinstance(obs, Mapping):
+                continue
+            row = {
+                "observation_id": f"{callsite_id}:{idx}",
+                "callsite_id": callsite_id,
+                "arg_index": obs.get("index"),
+                "kind": obs.get("kind"),
+                "status": obs.get("status"),
+                "basis": obs.get("basis"),
+                "string_id": obs.get("string_id"),
+                "string_value": None,
+                "int_value": None,
+                "address": obs.get("address"),
+                "name": obs.get("name"),
+                "provider_callsite_id": obs.get("provider_callsite_id"),
+            }
+            value = obs.get("value")
+            if isinstance(value, int):
+                row["int_value"] = value
+            elif value is not None:
+                row["string_value"] = value
+            rows.append(row)
+    rows.sort(
+        key=lambda entry: (
+            _addr_sort_key(entry.get("callsite_id")),
+            entry.get("arg_index") if isinstance(entry.get("arg_index"), int) else 1_000_000,
+            str(entry.get("kind") or ""),
+            str(entry.get("basis") or ""),
+            str(entry.get("observation_id") or ""),
+        )
+    )
+    schema = [
+        ("observation_id", "string"),
+        ("callsite_id", "string"),
+        ("arg_index", "int64"),
+        ("kind", "string"),
+        ("status", "string"),
+        ("basis", "string"),
+        ("string_id", "string"),
+        ("string_value", "string"),
+        ("int_value", "int64"),
+        ("address", "string"),
+        ("name", "string"),
+        ("provider_callsite_id", "string"),
+    ]
+    return FactTable(
+        name="callsite_arg_observations",
+        rows=rows,
+        primary_key=["observation_id"],
+        schema=schema,
+        description="Recovered constant arguments by callsite and arg index.",
+    )
+
+
+def _build_strings_table(
+    strings: list[dict[str, Any]],
+    string_tags_by_id: Mapping[str, Any],
+) -> FactTable:
+    rows: list[dict[str, Any]] = []
+    for entry in strings:
+        if not isinstance(entry, Mapping):
+            continue
+        string_id = entry.get("id")
+        value = entry.get("value")
+        if not isinstance(string_id, str) or not isinstance(value, str):
+            continue
+        tags = string_tags_by_id.get(string_id) if isinstance(string_tags_by_id, Mapping) else None
+        tags_list = sorted(list(tags)) if isinstance(tags, (set, list, tuple)) else []
+        row = {
+            "string_id": string_id,
+            "value": value,
+            "address": entry.get("address"),
+            "length": entry.get("length"),
+            "ref_count": entry.get("ref_count"),
+            "data_type": entry.get("data_type"),
+            "tags": tags_list,
+        }
+        rows.append(row)
+    rows.sort(key=lambda entry: _addr_sort_key(entry.get("address")))
+    schema = [
+        ("string_id", "string"),
+        ("value", "string"),
+        ("address", "string"),
+        ("length", "int64"),
+        ("ref_count", "int64"),
+        ("data_type", "string"),
+        ("tags", "list<string>"),
+    ]
+    return FactTable(
+        name="strings",
+        rows=rows,
+        primary_key=["string_id"],
+        schema=schema,
+        description="Selected string inventory with metadata and tags.",
+    )
 
 
 def derive_payloads(
@@ -154,286 +284,102 @@ def derive_payloads(
     bounds: Bounds,
     profiler: Any,
 ) -> DerivedPayloads:
-    callsites_ref = "evidence/callsites.json"
-    metrics_by_addr = build_function_metrics(
-        collected.functions,
-        collected.call_edges_all,
-        collected.string_refs_by_func,
-        collected.string_tags_by_id,
-    )
-
-    full_functions = select_full_functions(
-        collected.functions,
-        metrics_by_addr,
-        bounds.max_full_functions,
-    )
-
-    signal_set = build_signal_set(CALLGRAPH_SIGNAL_RULES)
-    call_edges, total_edges, truncated_edges = select_call_edges(
-        collected.call_edges_all,
-        signal_set,
-        bounds.max_call_edges,
-    )
-    callgraph_for_contracts = {"edges": call_edges}
-    callgraph_nodes = build_callgraph_nodes(call_edges, collected.function_meta_by_addr)
-    callgraph_edges = build_minimal_call_edges(call_edges)
-    with phase(profiler, "derive_cli_surface"):
-        cli_surface = derive_cli_surface(
-            collected.cli_inputs.parse_groups,
-            collected.cli_inputs.parse_details_by_callsite,
-            collected.cli_inputs.compare_details_by_callsite,
-            bounds,
+    with phase(profiler, "derive_function_metrics"):
+        metrics_by_addr = build_function_metrics(
+            collected.functions,
+            collected.call_edges_all,
+            collected.string_refs_by_func,
+            collected.string_tags_by_id,
         )
-    with phase(profiler, "build_mode_slices"):
-        callsite_to_function = callsite_to_function_map(collected.callsite_records)
-        modes_slices_payload = build_mode_slices(
-            collected.modes_payload,
-            cli_surface,
-            bounds,
-            string_refs_by_func=collected.string_refs_by_func,
+        full_functions = select_full_functions(
+            collected.functions,
+            metrics_by_addr,
+            bounds.max_full_functions,
+        )
+
+    with phase(profiler, "derive_callgraph"):
+        signal_set = build_signal_set(CALLGRAPH_SIGNAL_RULES)
+        call_edges, total_edges, truncated_edges = select_call_edges(
+            collected.call_edges_all,
+            signal_set,
+            bounds.max_call_edges,
+        )
+        external_addrs = {
+            edge.get("to", {}).get("address")
+            for edge in call_edges
+            if isinstance(edge, Mapping)
+            and isinstance(edge.get("to"), Mapping)
+            and edge.get("to", {}).get("external") is True
+            and isinstance(edge.get("to", {}).get("address"), str)
+        }
+        callgraph_nodes = build_callgraph_nodes(call_edges, collected.function_meta_by_addr)
+
+    with phase(profiler, "derive_callsites"):
+        callsite_ids = _collect_callsite_ids(call_edges, collected.call_args_by_callsite)
+        callsites_by_id = build_callsites_by_id(
+            collected.callsite_records,
+            call_args_by_callsite=collected.call_args_by_callsite,
+            string_addr_map_all=collected.string_addr_map_all,
             selected_string_ids=collected.selected_string_ids,
-            error_messages_payload=collected.error_messages_payload,
-            exit_paths_payload=collected.exit_paths_payload,
-            callsite_to_function=callsite_to_function,
         )
+        callsite_id_set = set(callsite_ids)
 
-    callsite_evidence_mode = (bounds.get("callsite_evidence") or "referenced").strip().lower()
-    if callsite_evidence_mode == "all":
-        # Ensure CLI evidence callsites are serialized even if they fall outside edge caps.
-        extra_callsites = (
-            collected.cli_inputs.parse_callsite_ids
-            + collected.cli_inputs.compare_callsite_ids
-            + collected.error_callsite_ids
-            + collected.mode_callsite_ids
-            + collected.interface_callsite_ids
-        )
-        callsite_evidence = build_callsite_records(
-            collected.callsite_records,
-            call_edges,
-            extra_callsites=extra_callsites,
-        )
-    else:
-        required_callsites = _collect_exported_callsites(
-            cli_surface,
-            collected.error_messages_payload,
-            collected.exit_paths_payload,
-            collected.error_sites_payload,
-            collected.interfaces_payloads,
-            collected.modes_payload,
-            modes_slices_payload,
-        )
-        callsite_evidence = build_callsite_records(
-            collected.callsite_records,
-            call_edges,
-            callsite_ids=required_callsites,
-        )
-
-    attach_callsite_refs(
-        collected.error_messages_payload,
-        collected.exit_paths_payload,
-        collected.error_sites_payload,
-        callsites_ref,
-    )
-    attach_mode_callsite_refs(collected.modes_payload, callsites_ref)
-    attach_interface_callsite_refs(collected.interfaces_payloads, callsites_ref)
-
-    callgraph = build_callgraph_payload(
-        callgraph_edges,
-        total_edges,
-        truncated_edges,
-        bounds,
-        collected.call_edge_stats,
-        nodes_ref="callgraph/nodes.json",
-        nodes_total=len(callgraph_nodes),
-    )
-
-    cli_options_payload = build_cli_options_payload(
-        cli_surface.get("options", []),
-        cli_surface.get("total_options", 0),
-        cli_surface.get("options_truncated", False),
-        bounds,
-    )
-    cli_options_payload["callsites_ref"] = callsites_ref
-    cli_parse_loops_payload = build_cli_parse_loops_payload(
-        cli_surface.get("parse_loops", []),
-        cli_surface.get("total_parse_loops", 0),
-        cli_surface.get("parse_loops_truncated", False),
-        bounds,
-    )
-    cli_parse_loops_payload["callsites_ref"] = callsites_ref
-    callsites_index, callsites_shards = _shard_payload(
-        {"callsites": callsite_evidence},
-        list_key="callsites",
-        shard_dir="evidence/callsites",
-        item_kind="callsites",
-    )
-    cli_parse_loops_index, cli_parse_loops_shards = _shard_payload(
-        cli_parse_loops_payload,
-        list_key="parse_loops",
-        shard_dir="cli/parse_loops",
-        item_id_key="id",
-        item_kind="cli_parse_loops",
-    )
-    modes_slices_index, modes_slices_shards = _shard_payload(
-        modes_slices_payload,
-        list_key="slices",
-        shard_dir="modes/slices",
-        item_kind="mode_slices",
-    )
-
-    strings_payload = build_strings_payload(
-        collected.strings,
-        collected.total_strings,
-        collected.strings_truncated,
-        bounds,
-        collected.string_bucket_counts,
-        collected.string_bucket_limits,
-    )
-    strings_index, strings_shards = _shard_payload(
-        strings_payload,
-        list_key="strings",
-        shard_dir="strings",
-        item_kind="strings",
-    )
-    callgraph_index, callgraph_shards = _shard_payload(
-        callgraph,
-        list_key="edges",
-        shard_dir="callgraph/edges",
-        item_kind="callgraph_edges",
-        shard_size=DEFAULT_CALLGRAPH_EDGE_SHARD_SIZE,
-    )
-    callgraph_nodes_payload = build_callgraph_nodes_payload(callgraph_nodes)
-    callgraph_nodes_index, callgraph_nodes_shards = _shard_payload(
-        callgraph_nodes_payload,
-        list_key="nodes",
-        shard_dir="callgraph/nodes",
-        item_kind="callgraph_nodes",
-    )
-    cli_options_index, cli_options_shards = _shard_payload(
-        cli_options_payload,
-        list_key="options",
-        shard_dir="cli/options",
-        item_kind="cli_options",
-    )
-    error_messages_index, error_messages_shards = _shard_payload(
-        collected.error_messages_payload,
-        list_key="messages",
-        shard_dir="errors/messages",
-        item_kind="error_messages",
-    )
-    exit_paths_index, exit_paths_shards = _shard_payload(
-        collected.exit_paths_payload,
-        list_key="direct_calls",
-        shard_dir="errors/exit_paths",
-        item_kind="exit_calls",
-    )
-    error_sites_index, error_sites_shards = _shard_payload(
-        collected.error_sites_payload,
-        list_key="sites",
-        shard_dir="errors/error_sites",
-        item_kind="error_sites",
-    )
-    interface_indices: dict[str, dict[str, Any]] = {}
-    interface_shards: dict[str, dict[str, Any]] = {}
-    for surface in INTERFACE_SURFACES:
-        index, shards = _shard_payload(
-            collected.interfaces_payloads.get(surface, {}),
-            list_key="entries",
-            shard_dir=f"interfaces/{surface}",
-            item_kind=f"interfaces_{surface}",
-        )
-        interface_indices[surface] = index
-        interface_shards[surface] = shards
-    interfaces_env_index = interface_indices["env"]
-    interfaces_fs_index = interface_indices["fs"]
-    interfaces_process_index = interface_indices["process"]
-    interfaces_net_index = interface_indices["net"]
-    interfaces_output_index = interface_indices["output"]
-    interfaces_env_shards = interface_shards["env"]
-    interfaces_fs_shards = interface_shards["fs"]
-    interfaces_process_shards = interface_shards["process"]
-    interfaces_net_shards = interface_shards["net"]
-    interfaces_output_shards = interface_shards["output"]
-    error_candidates = collected.error_messages_payload.get("total_candidates")
-    error_total = collected.error_messages_payload.get("total_messages")
-    error_excluded = None
-    if isinstance(error_candidates, int) and isinstance(error_total, int):
-        error_excluded = max(0, error_candidates - error_total)
-
-    mode_candidates = collected.modes_payload.get("total_mode_candidates")
-    mode_excluded = collected.modes_payload.get("filtered_out_modes")
-    if not isinstance(mode_excluded, int):
-        mode_excluded = None
+    with phase(profiler, "derive_facts"):
+        fact_tables = [
+            _build_callgraph_nodes_table(
+                callgraph_nodes,
+                collected.function_meta_by_addr,
+                external_addrs=external_addrs,
+            ),
+            _build_call_edges_table(call_edges),
+            _build_callsites_table(collected.callsite_records, callsite_ids, callsites_by_id),
+            _build_callsite_arg_observations_table(callsites_by_id, callsite_id_set),
+            _build_strings_table(collected.strings, collected.string_tags_by_id),
+        ]
+        callsite_arg_count = 0
+        for table in fact_tables:
+            if table.name == "callsite_arg_observations":
+                callsite_arg_count = len(table.rows)
+                break
 
     coverage_summary = {
-        "strings": {
-            "total": strings_payload.get("total_strings"),
-            "selected": len(strings_payload.get("strings") or []),
-            "truncated": strings_payload.get("truncated"),
-            "max": strings_payload.get("max_strings"),
-        },
         "full_functions": {
+            "total": len(collected.functions),
             "selected": len(full_functions),
             "truncated": len(collected.functions) > bounds.max_full_functions,
             "max": bounds.max_full_functions,
         },
         "callgraph_edges": {
-            "total": callgraph.get("total_edges"),
-            "selected": callgraph.get("selected_edges"),
-            "truncated": callgraph.get("truncated"),
-            "max": callgraph.get("max_edges"),
+            "total": total_edges,
+            "selected": len(call_edges),
+            "truncated": truncated_edges,
+            "max": bounds.optional("max_call_edges"),
         },
-        "cli_options": {
-            "total": cli_options_payload.get("total_options"),
-            "selected": cli_options_payload.get("selected_options"),
-            "truncated": cli_options_payload.get("truncated"),
-            "max": cli_options_payload.get("max_options"),
+        "callgraph_nodes": {
+            "total": None,
+            "selected": len(callgraph_nodes),
+            "truncated": None,
+            "max": None,
         },
-        "cli_parse_loops": {
-            "total": cli_parse_loops_payload.get("total_parse_loops"),
-            "selected": cli_parse_loops_payload.get("selected_parse_loops"),
-            "truncated": cli_parse_loops_payload.get("truncated"),
-            "max": cli_parse_loops_payload.get("max_parse_loops"),
+        "callsites": {
+            "total": len(collected.callsite_records),
+            "selected": len(callsite_ids),
+            "truncated": len(callsite_ids) < len(collected.callsite_records),
+            "max": None,
         },
-        "modes_index": {
-            "total": collected.modes_payload.get("total_modes"),
-            "selected": collected.modes_payload.get("selected_modes"),
-            "truncated": collected.modes_payload.get("truncated"),
-            "max": collected.modes_payload.get("max_modes"),
-            "candidate_total": mode_candidates,
-            "excluded": mode_excluded,
+        "callsite_arg_observations": {
+            "total": None,
+            "selected": callsite_arg_count,
+            "truncated": None,
+            "max": None,
         },
-        "mode_slices": {
-            "total": modes_slices_payload.get("total_modes"),
-            "selected": modes_slices_payload.get("selected_slices"),
-            "truncated": modes_slices_payload.get("truncated"),
-            "max": modes_slices_payload.get("max_slices"),
-        },
-        "error_messages": {
-            "total": error_total,
-            "selected": collected.error_messages_payload.get("selected_messages"),
-            "truncated": collected.error_messages_payload.get("truncated"),
-            "max": collected.error_messages_payload.get("max_messages"),
-            "candidate_total": error_candidates,
-            "excluded": error_excluded,
-        },
-        "error_sites": {
-            "total": collected.error_sites_payload.get("total_sites"),
-            "selected": collected.error_sites_payload.get("selected_sites"),
-            "truncated": collected.error_sites_payload.get("truncated"),
-            "max": collected.error_sites_payload.get("max_sites"),
-        },
-        "exit_calls": {
-            "total": collected.exit_paths_payload.get("total_exit_calls"),
-            "selected": collected.exit_paths_payload.get("selected_exit_calls"),
-            "truncated": collected.exit_paths_payload.get("truncated"),
-            "max": collected.exit_paths_payload.get("max_exit_calls"),
+        "strings": {
+            "total": collected.total_strings,
+            "selected": len(collected.strings),
+            "truncated": collected.strings_truncated,
+            "max": bounds.optional("max_strings"),
         },
     }
-    for surface in INTERFACE_SURFACES:
-        coverage_summary[f"interfaces_{surface}"] = _interface_coverage(
-            collected.interfaces_payloads.get(surface)
-        )
 
     manifest = build_manifest(
         bounds,
@@ -444,85 +390,9 @@ def derive_payloads(
         coverage_summary=coverage_summary,
     )
     pack_index_payload = build_pack_index_payload(FORMAT_VERSION)
-    pack_readme = build_pack_readme()
-    pack_docs = build_pack_markdown_docs(
-        pack_index=pack_index_payload,
-        manifest=manifest,
-        binary_info=collected.binary_info,
-        modes=collected.modes_payload,
-        interfaces_index=collected.interfaces_index_payload,
-        interfaces=collected.interfaces_payloads,
-        strings=strings_payload,
-        cli_options=cli_options_payload,
-        error_messages=collected.error_messages_payload,
-    )
-    exported_function_ids = {
-        addr
-        for func in full_functions
-        if (addr := addr_str(func.getEntryPoint())) is not None
-    }
-    contracts_payload, contract_docs = build_contract_views(
-        collected.modes_payload,
-        modes_slices_payload,
-        cli_options_payload,
-        cli_parse_loops_payload,
-        collected.interfaces_payloads,
-        collected.error_messages_payload,
-        collected.error_sites_payload,
-        collected.exit_paths_payload,
-        collected.string_tags_by_id,
-        collected.string_value_by_id,
-        collected.string_refs_by_func,
-        callsite_evidence,
-        callgraph_for_contracts,
-        callgraph_nodes,
-        exported_function_ids,
-        name_hints_source=bounds,
-    )
-    contracts_index, contracts_shards = _shard_payload(
-        contracts_payload,
-        list_key="modes",
-        shard_dir="contracts/index",
-        item_kind="mode_contracts",
-    )
-
     return DerivedPayloads(
         full_functions=full_functions,
-        callsites_index=callsites_index,
-        callsites_shards=callsites_shards,
-        cli_options_index=cli_options_index,
-        cli_parse_loops_index=cli_parse_loops_index,
-        modes_slices_index=modes_slices_index,
-        strings_index=strings_index,
-        callgraph_index=callgraph_index,
-        callgraph_nodes_index=callgraph_nodes_index,
-        error_messages_index=error_messages_index,
-        exit_paths_index=exit_paths_index,
-        error_sites_index=error_sites_index,
-        interfaces_env_index=interfaces_env_index,
-        interfaces_fs_index=interfaces_fs_index,
-        interfaces_process_index=interfaces_process_index,
-        interfaces_net_index=interfaces_net_index,
-        interfaces_output_index=interfaces_output_index,
-        contracts_index=contracts_index,
-        cli_parse_loops_shards=cli_parse_loops_shards,
-        modes_slices_shards=modes_slices_shards,
-        strings_shards=strings_shards,
-        callgraph_shards=callgraph_shards,
-        callgraph_nodes_shards=callgraph_nodes_shards,
-        cli_options_shards=cli_options_shards,
-        error_messages_shards=error_messages_shards,
-        exit_paths_shards=exit_paths_shards,
-        error_sites_shards=error_sites_shards,
-        interfaces_env_shards=interfaces_env_shards,
-        interfaces_fs_shards=interfaces_fs_shards,
-        interfaces_process_shards=interfaces_process_shards,
-        interfaces_net_shards=interfaces_net_shards,
-        interfaces_output_shards=interfaces_output_shards,
-        contracts_shards=contracts_shards,
+        facts=fact_tables,
         pack_index_payload=pack_index_payload,
         manifest=manifest,
-        pack_readme=pack_readme,
-        pack_docs=pack_docs,
-        contract_docs=contract_docs,
     )

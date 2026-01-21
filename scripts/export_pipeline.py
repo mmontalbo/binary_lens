@@ -36,7 +36,8 @@ def ensure_profiler_enabled(pack_root: str, options: dict[str, Any]):
         ensure_profiler = None
     if ensure_profiler is None:
         return None
-    return ensure_profiler(pack_root, enabled=True)
+    profile_root = Path(pack_root).parent / "profile"
+    return ensure_profiler(str(profile_root), enabled=True)
 
 
 def _clear_pack_root(pack_root: str) -> None:

@@ -19,8 +19,6 @@ def _default_options() -> dict[str, Any]:
     options: dict[str, Any] = {
         "profile": 0,
         "analysis_profile": "full",
-        "name_hints_wordlist": "",
-        "callsite_evidence": "referenced",
     }
     for key, default in BOUND_OPTION_DEFAULTS:
         options[key] = default
@@ -52,12 +50,6 @@ def parse_args(args: list[str]) -> tuple[str | None, dict[str, Any], bool]:
             if key == "analysis_profile":
                 options[key] = (value or "").strip() or "full"
                 continue
-            if key == "name_hints_wordlist":
-                options[key] = value
-                continue
-            if key == "callsite_evidence":
-                options[key] = (value or "").strip() or "referenced"
-                continue
             if key in options:
                 try:
                     options[key] = int(value)
@@ -81,8 +73,6 @@ def print_usage():
     print("Options:")
     print("  profile=0|1")
     print("  analysis_profile=full|minimal|none")
-    print("  name_hints_wordlist=/path/to/file.json")
-    print("  callsite_evidence=referenced|all")
     for key, default in BOUND_OPTION_DEFAULTS:
         print("  %s=%d" % (key, default))
 

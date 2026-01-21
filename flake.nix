@@ -17,6 +17,8 @@
         binaryLensCli = pkgs.writeShellApplication {
           name = "binary_lens";
           runtimeInputs = [
+            pkgs.jdk21
+            pkgs.stdenv.cc.cc.lib
             pythonEnv
           ] ++ lib.optionals pkgs.stdenv.isLinux [
             ghidraPkg
@@ -32,6 +34,28 @@
             fi
 
             export BINARY_LENS_ROOT="$root"
+            ${lib.optionalString pkgs.stdenv.isLinux ''
+            if [ -z "''${GHIDRA_INSTALL_DIR:-}" ]; then
+              export GHIDRA_INSTALL_DIR="${ghidraInstallDir}"
+            fi
+            if [ -z "''${BINARY_LENS_GHIDRA_HEADLESS:-}" ]; then
+              export BINARY_LENS_GHIDRA_HEADLESS="${ghidraHeadless}"
+            fi
+            if [ -z "''${BINARY_LENS_GHIDRA_VERSION:-}" ]; then
+              export BINARY_LENS_GHIDRA_VERSION="${ghidraPkg.version}"
+            fi
+            ''}
+            libdir="${pkgs.stdenv.cc.cc.lib}/lib"
+            case ":''${LD_LIBRARY_PATH:-}:" in
+              *":$libdir:"*) ;;
+              *)
+                if [ -z "''${LD_LIBRARY_PATH:-}" ]; then
+                  export LD_LIBRARY_PATH="$libdir"
+                else
+                  export LD_LIBRARY_PATH="$libdir:$LD_LIBRARY_PATH"
+                fi
+                ;;
+            esac
             exec python "$cli_path" "$@"
           '';
         };
@@ -71,6 +95,8 @@
           };
         pythonEnv = pkgs.python312.withPackages (ps: [
           ps.pip
+          ps.duckdb
+          ps.pyarrow
           pyghidraPkg
         ]);
       in
@@ -79,10 +105,10 @@
           packages =
             [
               pkgs.jdk21
+              pkgs.duckdb
               pythonEnv
               pkgs.ruff
               pkgs.ripgrep
-              pkgs.jq
               pkgs.stdenv.cc.cc.lib
             ]
             ++ lib.optionals pkgs.stdenv.isLinux [

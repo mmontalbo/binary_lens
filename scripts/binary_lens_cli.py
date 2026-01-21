@@ -169,7 +169,10 @@ def main(argv):
         exit_seconds = time.perf_counter() - exit_start
 
     if profile_enabled:
-        profile_dir = pack_root / "profile"
+        if pack_root == out_dir_path:
+            profile_dir = out_dir_path.parent / "profile"
+        else:
+            profile_dir = out_dir_path / "profile"
         try:
             profile_dir.mkdir(parents=True, exist_ok=True)
         except Exception:

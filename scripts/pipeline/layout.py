@@ -14,31 +14,22 @@ class PackLayout:
     root: Path
     docs_dir: Path
     schema_dir: Path
-    functions_dir: Path
-    contracts_dir: Path
-    cli_dir: Path
-    errors_dir: Path
-    modes_dir: Path
-    interfaces_dir: Path
+    views_dir: Path
+    facts_dir: Path
+    evidence_dir: Path
     evidence_decomp_dir: Path
-    evidence_callsites_dir: Path
 
     @classmethod
     def from_root(cls, pack_root: str | Path) -> "PackLayout":
         root = Path(pack_root)
-        evidence_dir = root / "evidence"
         return cls(
             root=root,
             docs_dir=root / "docs",
             schema_dir=root / "schema",
-            functions_dir=root / "functions",
-            contracts_dir=root / "contracts",
-            cli_dir=root / "cli",
-            errors_dir=root / "errors",
-            modes_dir=root / "modes",
-            interfaces_dir=root / "interfaces",
-            evidence_decomp_dir=evidence_dir / "decomp",
-            evidence_callsites_dir=evidence_dir / "callsites",
+            views_dir=root / "views",
+            facts_dir=root / "facts",
+            evidence_dir=root / "evidence",
+            evidence_decomp_dir=root / "evidence" / "decomp",
         )
 
     def iter_dirs(self) -> Iterable[Path]:
@@ -46,12 +37,8 @@ class PackLayout:
             self.root,
             self.docs_dir,
             self.schema_dir,
-            self.functions_dir,
-            self.contracts_dir,
-            self.cli_dir,
-            self.errors_dir,
-            self.modes_dir,
-            self.interfaces_dir,
+            self.views_dir,
+            self.facts_dir,
+            self.evidence_dir,
             self.evidence_decomp_dir,
-            self.evidence_callsites_dir,
         )

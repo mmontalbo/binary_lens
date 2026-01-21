@@ -1,8 +1,9 @@
 """Profiling helpers for the exporter.
 
 When `profile=1` is passed, the exporter writes timing + decompiler statistics
-under `binary.lens/profile/`. This output is not part of the milestone goldens,
-but is useful for debugging headless runs and tracking exporter hotspots.
+under the output directory's `profile/` (outside the pack). This output is not
+part of the milestone goldens, but is useful for debugging headless runs and
+tracking exporter hotspots.
 """
 
 from __future__ import annotations
@@ -53,18 +54,18 @@ def get_profiler():
     return _ACTIVE_PROFILER
 
 
-def ensure_profiler(pack_root=None, enabled=False):
+def ensure_profiler(profile_root=None, enabled=False):
     global _ACTIVE_PROFILER
     if _ACTIVE_PROFILER is None and enabled:
-        _ACTIVE_PROFILER = ExportProfiler(pack_root=pack_root)
-    if _ACTIVE_PROFILER is not None and pack_root and not _ACTIVE_PROFILER.pack_root:
-        _ACTIVE_PROFILER.pack_root = pack_root
+        _ACTIVE_PROFILER = ExportProfiler(profile_root=profile_root)
+    if _ACTIVE_PROFILER is not None and profile_root and not _ACTIVE_PROFILER.profile_root:
+        _ACTIVE_PROFILER.profile_root = profile_root
     return _ACTIVE_PROFILER
 
 
 class ExportProfiler:
-    def __init__(self, pack_root=None):
-        self.pack_root = pack_root
+    def __init__(self, profile_root=None):
+        self.profile_root = profile_root
         self.timings: dict[str, dict[str, Any]] = {}
         self.metadata: dict[str, Any] = {}
         self.analysis: dict[str, Any] = {}
@@ -149,9 +150,9 @@ class ExportProfiler:
         self.analysis = snapshot
 
     def write_profile(self):
-        if not self.pack_root:
+        if not self.profile_root:
             return
-        profile_dir = os.path.join(self.pack_root, "profile")
+        profile_dir = os.path.join(self.profile_root)
         try:
             os.makedirs(profile_dir, exist_ok=True)
         except Exception:

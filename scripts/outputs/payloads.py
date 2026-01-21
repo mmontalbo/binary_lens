@@ -61,60 +61,6 @@ def build_binary_info(program):
     return info, hashes
 
 
-def build_callgraph_payload(
-    call_edges,
-    total_edges,
-    truncated_edges,
-    bounds: Bounds,
-    call_edge_stats,
-    *,
-    nodes_ref: str | None = None,
-    nodes_total: int | None = None,
-):
-    payload = {
-        "total_edges": total_edges,
-        "selected_edges": len(call_edges),
-        "truncated": truncated_edges,
-        "max_edges": bounds.optional("max_call_edges"),
-        "edges": call_edges,
-    }
-    if nodes_ref:
-        payload["nodes_ref"] = nodes_ref
-    if nodes_total is not None:
-        payload["nodes_total"] = nodes_total
-    return payload
-
-
-def build_callgraph_nodes_payload(nodes):
-    return {
-        "total_nodes": len(nodes),
-        "nodes": nodes,
-    }
-
-
-def build_cli_options_payload(options_list, total_options, truncated, bounds: Bounds):
-    return {
-        "total_options": total_options,
-        "selected_options": len(options_list),
-        "truncated": truncated,
-        "max_options": bounds.optional("max_cli_options"),
-        "options": options_list,
-    }
-
-
-def build_cli_parse_loops_payload(parse_loops, total_parse_loops, truncated, bounds: Bounds):
-    selected = len(parse_loops)
-    if not isinstance(total_parse_loops, int) or total_parse_loops < selected:
-        total_parse_loops = selected
-    return {
-        "total_parse_loops": total_parse_loops,
-        "selected_parse_loops": selected,
-        "truncated": False,
-        "max_parse_loops": bounds.optional("max_cli_parse_loops"),
-        "parse_loops": parse_loops,
-    }
-
-
 @dataclass(frozen=True)
 class ExportCreatedAt:
     iso8601: str
@@ -179,45 +125,32 @@ def build_pack_index_payload(format_version: str) -> dict[str, object]:
             "version": format_version,
         },
         "start_here": {
-            "docs_overview_ref": "docs/overview.md",
+            "readme_ref": "README.md",
             "manifest_ref": "manifest.json",
-            "contracts_index_ref": "contracts/index.json",
+            "facts_index_ref": "facts/index.json",
+            "views_index_ref": "views/index.json",
+            "evidence_index_ref": "evidence/index.json",
         },
         "entrypoints": {
-            "docs_readme_ref": "docs/README.md",
-            "docs_overview_ref": "docs/overview.md",
-            "docs_navigation_ref": "docs/navigation.md",
-            "docs_surfaces_ref": "docs/surfaces.md",
-            "docs_field_guide_ref": "docs/field_guide.md",
+            "readme_ref": "README.md",
             "docs_examples_ref": "docs/examples.md",
             "schema_readme_ref": "schema/README.md",
             "manifest_ref": "manifest.json",
-            "modes_index_ref": "modes/index.json",
-            "modes_slices_ref": "modes/slices.json",
-            "interfaces_index_ref": "interfaces/index.json",
-            "interfaces_env_ref": "interfaces/env.json",
-            "interfaces_fs_ref": "interfaces/fs.json",
-            "interfaces_process_ref": "interfaces/process.json",
-            "interfaces_net_ref": "interfaces/net.json",
-            "interfaces_output_ref": "interfaces/output.json",
-            "cli_options_ref": "cli/options.json",
-            "cli_parse_loops_ref": "cli/parse_loops.json",
-            "errors_messages_ref": "errors/messages.json",
-            "errors_exit_paths_ref": "errors/exit_paths.json",
-            "errors_error_sites_ref": "errors/error_sites.json",
-            "contracts_index_ref": "contracts/index.json",
-            "strings_ref": "strings.json",
-            "callgraph_ref": "callgraph.json",
-            "callgraph_nodes_ref": "callgraph/nodes.json",
-            "callsites_ref": "evidence/callsites.json",
+            "facts_index_ref": "facts/index.json",
+            "views_index_ref": "views/index.json",
+            "views_runner_ref": "views/run.py",
+            "execution_roots_ref": "execution/roots.json",
+            "execution_sinks_ref": "execution/sinks.json",
+            "evidence_index_ref": "evidence/index.json",
         },
         "conventions": {
             "refs": "Paths in *_ref / *_refs are relative to the pack root.",
-            "sharding": (
-                "Large inventories use format=sharded_list/v1; follow shards[*].path to enumerate the full list."
-            ),
-            "callsites": "callsite_id values resolve via callsites_ref (sharded list).",
+            "facts": "Canonical facts live under facts/ as Parquet tables; see facts/index.json.",
+            "tables": "Join on explicit *_id columns (function_id, callsite_id, string_id).",
+            "views": "Rendered view outputs embed _lens metadata; sources live under views/.",
+            "sql": "Default lenses are derived via DuckDB SQL (see views/queries/*.sql).",
             "truncation": "truncated=true means that record/list was bounded; missing entries may exist.",
+            "evidence": "Evidence excerpts live under evidence/; evidence/index.json is a bounded registry.",
         },
     }
 
@@ -284,57 +217,3 @@ def build_manifest(
         manifest["coverage_summary"] = coverage_summary
     return manifest
 
-
-def build_strings_payload(
-    strings,
-    total_strings,
-    strings_truncated,
-    bounds: Bounds,
-    string_bucket_counts,
-    string_bucket_limits,
-):
-    slim_strings = []
-    for entry in strings or []:
-        if not isinstance(entry, dict):
-            continue
-        string_id = entry.get("id")
-        value = entry.get("value")
-        if string_id is None or value is None:
-            continue
-        slim_strings.append({
-            "id": string_id,
-            "value": value,
-        })
-    return {
-        "total_strings": total_strings,
-        "truncated": strings_truncated,
-        "max_strings": bounds.optional("max_strings"),
-        "strings": slim_strings,
-    }
-
-
-def build_pack_readme():
-    return (
-        "# `binary_lens` context pack\n\n"
-        "This pack contains observed facts and mechanically derived structure.\n"
-        "JSON files are authoritative; evidence files are bounded excerpts.\n"
-        "Large inventories are sharded (see `docs/navigation.md`).\n\n"
-        "Start here:\n\n"
-        "- docs/overview.md\n"
-        "- docs/navigation.md\n"
-        "- docs/field_guide.md\n"
-        "- docs/examples.md\n"
-        "- contracts/index.json\n"
-        "- index.json\n"
-        "\n"
-        "Key sections:\n\n"
-        "- contracts/\n"
-        "- modes/\n"
-        "- interfaces/\n"
-        "- cli/\n"
-        "- errors/\n"
-        "- functions/\n"
-        "- evidence/\n\n"
-        "Pack format notes:\n\n"
-        "- schema/README.md\n"
-    )

@@ -1,5 +1,5 @@
 """Collector subsystems for `binary_lens`.
 
-This package hosts the collector implementations (callgraph, strings, CLI
-surface, etc.) used by the export pipeline.
+This package hosts the collector implementations (callgraph, strings, call
+arguments) used by the export pipeline.
 """

@@ -6,7 +6,7 @@ This module isolates the "Ghidra glue" needed to:
 - kick off analysis in both GUI and headless contexts
 
 The returned payloads are JSON-serializable and intended to be written under
-`binary.lens/profile/analyzers.json` when profiling is enabled.
+`profile/analyzers.json` under the output directory when profiling is enabled.
 """
 
 from __future__ import annotations
