@@ -4,6 +4,46 @@ This document defines near-term milestones for adding **LM-tailored interface le
 
 ---
 
+## Milestone 6 — Custom Lenses + Evidence Steering (binary_man UX)
+
+Status: planned
+
+### Goal
+Make it straightforward for downstream consumers (e.g., `binary_man`) to **author, run, and iterate on custom lenses** using only a generated pack, with clear guidance on when to use facts vs evidence and a small mechanism to steer decompiler evidence extraction without bloating the default pack.
+
+### Deliverables
+1) **“Create your first lens” guide (in-pack)**
+- Document the minimal workflow: add a SQL file → register it in `views/index.json` → render with `views/run.py` → inspect outputs.
+- Show expected output layout under the pack (e.g., `man/*.json`, `docs/*.md`, `execution/*.json`), and where `_lens` metadata appears.
+
+2) **Evidence usage is explicit and reproducible**
+- Add at least one example lens recipe that reads `evidence/decomp/*.json` (e.g., usage/help string extraction).
+- Clarify path expectations for `read_json_auto('evidence/decomp/*.json')` and how to run queries so relative paths resolve (pack root as CWD, or via the shipped runner).
+
+3) **Lens “cookbook” recipes for multicall binaries**
+- Provide example patterns for:
+  - `_usage_*` functions (usage/help extraction and line splitting)
+  - `single_binary_main_*` functions (per-command “main” candidates)
+  - argv0/mode token candidates from string-compare callsites (`strcmp`/`strncmp` family)
+- Keep these as recipes/lenses (not canonical facts) and label heuristics clearly.
+
+4) **Document `callsite_arg_observations` limitations**
+- Explicitly list what call types are targeted for arg recovery and what “status”/“basis” mean.
+- Document common failure modes (wrappers like `__printf_chk`, non-constant pointers, table indirection) and when to fall back to `strings.tags` and/or `evidence/decomp/`.
+
+5) **Decompiler hint overrides via existing `key=value` options**
+- Support user-provided hints to include additional functions in `evidence/decomp/` on re-export (e.g., include-by-name pattern and/or `function_id` list).
+- Keep selection bounded and deterministic; record the applied hints in `manifest.json`.
+- Ensure re-running `binary_lens` with updated hints cleanly regenerates the pack.
+
+6) **Minimal runtime notes**
+- Document the minimal dependencies to run `views/run.py` (Python + `duckdb`), and the supported nix invocation path.
+
+### Non-goals (explicit)
+- No new subcommands or flag-driven CLI surface; use the existing `key=value` override style.
+- No baking `binary_man`-specific schemas into canonical facts; prefer reusable recipes + evidence.
+- No unbounded evidence export by default; packs remain size-bounded and diff-friendly.
+
 ## Milestone 5 — Queryable Evidence Graph (Table Pack + SQL Lenses)
 
 Status: complete
