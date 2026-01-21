@@ -1,63 +1,58 @@
 # DuckDB recipes: `{{binary_name}}`
 
-These examples show how to query Parquet facts with DuckDB.
+These examples show how to query Parquet facts with DuckDB. Prefer `views/run.py`;
+it chdirs to the pack root so evidence paths resolve.
 
-Before running queries, load tables:
+Recommended:
 
 ```sh
+python views/run.py --pack .
+```
+
+If you use `nix develop`:
+
+```sh
+nix develop -c python views/run.py --pack .
+```
+
+Advanced/manual DuckDB (requires `cd` to pack root first):
+
+```sh
+cd /path/to/binary.lens
 duckdb -c ".read views/queries/load_tables.sql"
 ```
+
+Schema details (including `function_addr_int` and `callsite_addr_int`) are in
+`schema/README.md`.
+
+SQL blocks below point to the canonical query sources under `views/queries/`.
 
 ## Example: execution roots
 
 ```sql
-with in_degree as (
-  select to_function_id as function_id, count(*) as in_degree
-  from call_edges
-  group by to_function_id
-)
-select
-  n.function_id,
-  n.name,
-  case
-    when lower(n.name) = 'main' then 'main'
-    when lower(n.name) in ('_start', 'start', 'entry') then 'entrypoint'
-    when coalesce(d.in_degree, 0) = 0 then 'root_candidate'
-    else 'unknown'
-  end as kind
-from callgraph_nodes n
-left join in_degree d on d.function_id = n.function_id
-where lower(n.name) in ('main', '_start', 'start', 'entry')
-   or coalesce(d.in_degree, 0) = 0
-order by kind, n.function_id
-limit 25;
+-- SQL: views/queries/examples_execution_roots.sql
 ```
 
 Results (first 25 rows):
 
 {{example_execution_roots_table}}
 
+## Recipe: canonical ordering by address
+
+Use the numeric address helpers for stable ordering.
+
+```sql
+-- SQL: views/queries/examples_canonical_ordering.sql
+```
+
+Results (first 25 rows):
+
+{{example_canonical_ordering_table}}
+
 ## Recipe: reachability from roots
 
 ```sql
-with recursive
-roots as (
-  select function_id
-  from callgraph_nodes
-  where lower(name) = 'main'
-),
-reach(function_id) as (
-  select function_id from roots
-  union
-  select e.to_function_id
-  from reach r
-  join call_edges e on e.from_function_id = r.function_id
-)
-select distinct r.function_id, n.name
-from reach r
-left join callgraph_nodes n on n.function_id = r.function_id
-order by r.function_id
-limit 25;
+-- SQL: views/queries/examples_reachability.sql
 ```
 
 Results (first 25 rows):
@@ -67,20 +62,7 @@ Results (first 25 rows):
 ## Recipe: env vars touched
 
 ```sql
-select distinct
-  s.value as env_var,
-  e.callsite_id
-from call_edges e
-join callgraph_nodes n on n.function_id = e.to_function_id
-join callsite_arg_observations a
-  on a.callsite_id = e.callsite_id
- and a.kind = 'string'
- and a.arg_index = 0
- and a.status = 'resolved'
-join strings s on s.string_id = a.string_id
-where lower(n.name) in ('getenv', 'secure_getenv', '__getenv', 'getenv_s')
-order by env_var
-limit 25;
+-- SQL: views/queries/examples_env_vars.sql
 ```
 
 Results (first 25 rows):
@@ -90,20 +72,7 @@ Results (first 25 rows):
 ## Recipe: stderr/output templates (heuristic)
 
 ```sql
-select
-  e.callsite_id,
-  n.name as callee,
-  s.value as template
-from call_edges e
-join callgraph_nodes n on n.function_id = e.to_function_id
-join callsite_arg_observations a
-  on a.callsite_id = e.callsite_id
- and a.kind = 'string'
- and a.status = 'resolved'
-join strings s on s.string_id = a.string_id
-where lower(n.name) in ('fprintf', 'printf', 'vfprintf', 'vprintf', 'puts', 'fputs')
-order by e.callsite_id
-limit 25;
+-- SQL: views/queries/examples_output_templates.sql
 ```
 
 Results (first 25 rows):
@@ -113,34 +82,107 @@ Results (first 25 rows):
 ## Recipe: usage-marker strings
 
 ```sql
-select string_id, value
-from strings
-where list_contains(tags, 'usage')
-order by string_id
-limit 25;
+-- SQL: views/queries/examples_usage_strings.sql
 ```
 
 Results (first 25 rows):
 
 {{example_usage_strings_table}}
 
+## Recipe: observed arg-recovery call targets
+
+Shows which callees had argument recovery applied in this pack.
+
+```sql
+-- SQL: views/queries/examples_observed_arg_targets.sql
+```
+
+Results (first 25 rows):
+
+{{example_observed_arg_targets_table}}
+
+## Recipe: ordered help-text strings from evidence (decoded)
+
+Run via `views/run.py` (preferred). This focuses on gettext-family callsites
+(`dcgettext` line + the following line) to reduce unrelated literals.
+
+```sql
+-- SQL: views/queries/examples_evidence_usage_text.sql
+```
+
+Results (first 50 rows):
+
+{{example_evidence_usage_text_table}}
+
+`literal_display` re-escapes newlines/tabs/returns for Markdown tables; use `literal_decoded` to reconstruct output.
+
+## Recipe: quoted usage/help strings from evidence
+
+Run via `views/run.py` (preferred) so `evidence/decomp/*.json` resolves. If using DuckDB
+directly, `cd` to the pack root first.
+
+```sql
+-- SQL: views/queries/examples_evidence_usage_quotes.sql
+```
+
+Results (first 25 rows):
+
+{{example_evidence_usage_quotes_table}}
+
+## Recipe: usage/help coverage snapshot
+
+Run via `views/run.py` (preferred) so `evidence/index.json` resolves. If using DuckDB
+directly, `cd` to the pack root first. Adjust the `usage_help_functions` view
+definition (or replace it) to match the functions you care about.
+
+```sql
+-- SQL: views/queries/examples_usage_coverage.sql
+```
+
+Results (first 25 rows):
+
+{{example_usage_coverage_table}}
+
+## Cookbook: multicall heuristics
+
+These are heuristics for common multicall patterns; expect false negatives.
+
+### `_usage_*` helpers
+
+```sql
+-- SQL: views/queries/examples_usage_functions.sql
+```
+
+Results (first 25 rows):
+
+{{example_usage_functions_table}}
+
+### `single_binary_main_*` dispatch
+
+```sql
+-- SQL: views/queries/examples_single_binary_main.sql
+```
+
+Results (first 25 rows):
+
+{{example_single_binary_main_table}}
+
+### argv0/mode token candidates (strcmp/strncmp)
+
+Uses best-effort `callsite_arg_observations` for the strcmp/strncmp family.
+
+```sql
+-- SQL: views/queries/examples_argv0_tokens.sql
+```
+
+Results (first 25 rows):
+
+{{example_argv0_tokens_table}}
+
 ## Recipe: exit callsites
 
 ```sql
-select
-  e.callsite_id,
-  n.name as callee,
-  a.int_value as exit_code
-from call_edges e
-join callgraph_nodes n on n.function_id = e.to_function_id
-left join callsite_arg_observations a
-  on a.callsite_id = e.callsite_id
- and a.kind = 'int'
- and a.arg_index = 0
- and a.status = 'known'
-where lower(n.name) in ('exit', '_exit', 'exit_group', '_exit_group', 'abort')
-order by e.callsite_id
-limit 25;
+-- SQL: views/queries/examples_exit_callsites.sql
 ```
 
 Results (first 25 rows):
@@ -150,13 +192,7 @@ Results (first 25 rows):
 ## Recipe: top external calls
 
 ```sql
-select n.name, count(*) as callsites
-from call_edges e
-join callgraph_nodes n on n.function_id = e.to_function_id
-where n.is_external = true
-group by n.name
-order by callsites desc
-limit 25;
+-- SQL: views/queries/examples_top_external_calls.sql
 ```
 
 Results (first 25 rows):
