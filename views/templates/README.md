@@ -12,6 +12,8 @@ This pack contains Parquet facts, DuckDB SQL lenses, and bounded evidence excerp
 - binary_lens_version: {{binary_lens_version}}
 - pack_format_version: {{pack_format_version}}
 
+Quick health check: start with `pack_summary.json` (bounds, coverage summary, and row counts).
+
 ## Facts summary (row counts)
 
 - callgraph_nodes: {{callgraph_nodes_count}}
@@ -88,8 +90,10 @@ Applied hints are recorded in `manifest.json` and remain bounded by
 ## Entry points
 
 - index.json
+- pack_summary.json
 - facts/index.json
 - views/index.json
+- views/queries/string_occurrences.sql
 - execution/roots.json
 - execution/sinks.json
 - docs/examples.md

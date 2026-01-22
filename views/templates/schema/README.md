@@ -10,8 +10,9 @@ This pack uses Parquet facts + DuckDB SQL lenses.
 
 - `facts/index.json` declares table paths, primary keys, and schema versions.
 - `function_id`, `callsite_id`, and `string_id` are stable join keys.
-- Rendered view outputs include `_lens` metadata (sources + reproduce command).
+- Rendered view outputs include `_lens` metadata (sources + reproduce command + lens_schema_version).
 - `manifest.json` records export metadata and coverage summary.
+- `pack_summary.json` is a quick health check (bounds + coverage + row counts).
 - `evidence/index.json` lists bounded evidence excerpts (see `evidence/decomp/`).
 - Evidence entries include `truncated`, `excerpt_line_count`, and `max_lines_applied` so you can tell if a `_usage_*` excerpt is complete (`line_count` is full decomp size).
 
@@ -21,6 +22,8 @@ This pack uses Parquet facts + DuckDB SQL lenses.
 - `callsite_id` is the call instruction address (Ghidra address string).
 - Canonical ordering is increasing numeric address. Use `function_addr_int` and
   `callsite_addr_int` for ordering instead of lexicographic string sort.
+- The string provenance recipe (`views/queries/string_occurrences.sql`) orders by
+  `callsite_addr_int`, `arg_index`, `callsite_id`, `to_function_id`, and `observation_id`.
 - Symbol-name normalization (leading underscores, `__*_chk` wrappers, etc.)
   affects call target names, not these address keys.
 
@@ -29,6 +32,7 @@ This pack uses Parquet facts + DuckDB SQL lenses.
 - `views/index.json`: view definitions
 - `views/run.py`: view renderer
 - `views/queries/`: SQL sources
+- `views/queries/string_occurrences.sql`: string provenance join recipe
 - `execution/sinks.json`: termination sinks (`kind`: `exit`, `abort`, `return_from_main`)
 
 ## `callsite_arg_observations` notes

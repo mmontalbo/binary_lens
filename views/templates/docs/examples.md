@@ -25,6 +25,12 @@ duckdb -c ".read views/queries/load_tables.sql"
 Schema details (including `function_addr_int` and `callsite_addr_int`) are in
 `schema/README.md`.
 
+Quick pointers:
+- `pack_summary.json` for bounds + coverage + row counts.
+- `facts/index.json` for tables + columns.
+- `views/index.json` for available views + runner reference.
+- `views/queries/string_occurrences.sql` for string-argument provenance joins.
+
 SQL blocks below point to the canonical query sources under `views/queries/`.
 
 ## Example: execution roots
