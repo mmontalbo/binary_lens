@@ -137,6 +137,7 @@ def build_pack_index_payload(format_version: str) -> dict[str, object]:
             "docs_examples_ref": "docs/examples.md",
             "schema_readme_ref": "schema/README.md",
             "manifest_ref": "manifest.json",
+            "pack_summary_ref": "pack_summary.json",
             "facts_index_ref": "facts/index.json",
             "views_index_ref": "views/index.json",
             "views_runner_ref": "views/run.py",

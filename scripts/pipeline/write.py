@@ -118,6 +118,63 @@ def _write_load_tables_sql(views_dir: Path, facts_index: dict[str, Any]) -> None
     (views_dir / "queries" / "load_tables.sql").write_text(content)
 
 
+def _build_pack_summary(
+    facts_index: dict[str, Any],
+    evidence_index: dict[str, Any],
+    manifest: dict[str, Any],
+) -> dict[str, Any]:
+    tables = facts_index.get("tables") if isinstance(facts_index, dict) else None
+    table_entries = []
+    total_rows = 0
+    if isinstance(tables, list):
+        for table in tables:
+            if not isinstance(table, dict):
+                continue
+            name = table.get("name")
+            row_count = table.get("row_count")
+            if not isinstance(name, str) or not name.strip():
+                continue
+            table_entries.append(
+                {
+                    "name": name,
+                    "row_count": row_count if isinstance(row_count, int) else None,
+                }
+            )
+            if isinstance(row_count, int):
+                total_rows += row_count
+
+    evidence_entries = evidence_index.get("entries") if isinstance(evidence_index, dict) else None
+    truncated_count = 0
+    entry_count = 0
+    if isinstance(evidence_entries, list):
+        entry_count = len(evidence_entries)
+        for entry in evidence_entries:
+            if not isinstance(entry, dict):
+                continue
+            if entry.get("truncated") is True:
+                truncated_count += 1
+
+    return {
+        "schema": {"name": "binary_lens_pack_summary", "version": "v1"},
+        "facts": {
+            "table_count": facts_index.get("table_count")
+            if isinstance(facts_index, dict)
+            else None,
+            "total_row_count": total_rows,
+            "tables": table_entries,
+        },
+        "evidence": {
+            "entry_count": entry_count,
+            "truncated_entries": truncated_count,
+            "has_truncated_entries": truncated_count > 0,
+        },
+        "bounds": manifest.get("bounds") if isinstance(manifest, dict) else None,
+        "coverage_summary": manifest.get("coverage_summary")
+        if isinstance(manifest, dict)
+        else None,
+    }
+
+
 def _render_views(pack_root: Path) -> None:
     repo_root = Path(__file__).resolve().parents[2]
     runner_path = repo_root / "views" / "run.py"
@@ -302,6 +359,13 @@ def write_outputs(
             "entries": evidence_entries,
         }
         write_json(layout.evidence_dir / "index.json", evidence_index_payload)
+
+        pack_summary = _build_pack_summary(
+            facts_index,
+            evidence_index_payload,
+            derived.manifest,
+        )
+        write_json(layout.root / "pack_summary.json", pack_summary)
 
         views_index = _build_views_index()
         write_json(layout.views_dir / "index.json", views_index)
