@@ -63,6 +63,8 @@ def _copy_view_sources(views_dir: Path, views_index: dict[str, Any]) -> None:
                     if isinstance(entry, str) and entry.strip():
                         refs.add(entry)
 
+    refs.add("views/queries/string_occurrences.sql")
+
     for ref in sorted(refs):
         if ref == "views/queries/load_tables.sql":
             continue
