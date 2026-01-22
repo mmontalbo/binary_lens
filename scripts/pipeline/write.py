@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Any, Iterable
 
 from export_bounds import Bounds
-from export_config import BINARY_LENS_VERSION
+from export_config import BINARY_LENS_VERSION, LENS_SCHEMA_VERSION
 from outputs.facts import write_fact_tables
 from outputs.io import ensure_dir, write_json
 from outputs.writers import write_decomp_excerpts
@@ -246,6 +246,7 @@ def _build_views_index() -> dict[str, Any]:
             "version": "v2",
         },
         "views_version": BINARY_LENS_VERSION,
+        "lens_schema_version": LENS_SCHEMA_VERSION,
         "runner_ref": "views/run.py",
         "load_tables_ref": "views/queries/load_tables.sql",
         "views": view_entries,

@@ -208,6 +208,7 @@ def _render_view(
     view: dict[str, Any],
     *,
     views_version: str | None,
+    lens_schema_version: str | None,
     load_tables_ref: str | None,
     con: duckdb.DuckDBPyConnection,
 ) -> None:
@@ -246,6 +247,7 @@ def _render_view(
 
     lens_hash = _view_hash(view, query_path, template_path, extra_query_paths)
     version = views_version or "unknown"
+    lens_schema = lens_schema_version or "unknown"
     reproduce_runner = f"python views/run.py --pack . --view {view_id}"
     reproduce_duckdb = None
     if load_tables_ref:
@@ -258,6 +260,7 @@ def _render_view(
         "query_ref": view_query_ref,
         "template_ref": template_ref,
         "version": version,
+        "lens_schema_version": lens_schema,
         "hash": lens_hash,
         "reproduce": reproduce_runner,
         "reproduce_duckdb": reproduce_duckdb,
@@ -298,6 +301,7 @@ def _render_view(
             f"query_ref={view_query_ref}; "
             f"template_ref={template_ref or ''}; "
             f"version={version}; "
+            f"lens_schema_version={lens_schema}; "
             f"hash={lens_hash}; "
             f"reproduce={reproduce_runner}; "
             f"reproduce_duckdb={reproduce_duckdb or ''} "
@@ -323,6 +327,7 @@ def render_views(
     if not isinstance(views, list):
         raise ValueError("views/index.json missing views list")
     views_version = views_index.get("views_version")
+    lens_schema_version = views_index.get("lens_schema_version")
     load_tables_ref = views_index.get("load_tables_ref")
     output_root = (output_root or pack_root).resolve()
     with _chdir(pack_root):
@@ -338,6 +343,7 @@ def render_views(
                 output_root,
                 view,
                 views_version=views_version,
+                lens_schema_version=lens_schema_version,
                 load_tables_ref=load_tables_ref,
                 con=con,
             )

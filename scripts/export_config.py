@@ -1,5 +1,13 @@
 BINARY_LENS_VERSION = "0.1.0-dev"
+
+# Pack format version: bump when the core on-disk layout or fact table schemas change.
 FORMAT_VERSION = "v2"
+
+# Pack schema version: bump when pack-level JSON contracts change (manifest/index/pack_summary fields).
+PACK_SCHEMA_VERSION = "v1"
+
+# Lens schema version: bump when rendered lens outputs or _lens metadata shape changes.
+LENS_SCHEMA_VERSION = "v1"
 
 # Defaults cap export size to keep packs bounded and diff-friendly.
 DEFAULT_MAX_FULL_FUNCTIONS = 50

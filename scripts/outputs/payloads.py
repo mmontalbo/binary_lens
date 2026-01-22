@@ -7,6 +7,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from export_bounds import Bounds
+from export_config import PACK_SCHEMA_VERSION
 from export_primitives import addr_str
 from ghidra.framework import Application
 
@@ -179,6 +180,7 @@ def build_manifest(
         },
         "binary_lens_version": binary_lens_version,
         "format_version": format_version,
+        "pack_schema_version": PACK_SCHEMA_VERSION,
         "ghidra_version": str(Application.getApplicationVersion()),
         "created_at": created_at.iso8601,
         "created_at_epoch_seconds": created_at.epoch_seconds,
