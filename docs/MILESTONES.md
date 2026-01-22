@@ -4,6 +4,46 @@ This document defines near-term milestones for adding **LM-tailored interface le
 
 ---
 
+## Milestone 7 — Runtime Scenarios (Sandboxed Runs + Trace Overlay)
+
+Status: planned
+
+Acceptance snapshot (target):
+- Scenario runs: `binary.lens/runs/<run_id>/manifest.json` records argv/env/cwd/timeouts + sandbox config + exit status/timings.
+- Captures: `binary.lens/runs/<run_id>/stdout.txt`, `stderr.txt`, and `strace/` logs (per pid via `-ff`) are present for each run.
+- Pack integration: `binary.lens/runs/index.json` lists runs + minimal summaries; pack `index.json` links a `runs_index_ref`.
+- Safe defaults (Linux): runs execute under a filesystem/network sandbox (Bubblewrap) when available; run artifacts record whether sandboxing was enabled or degraded.
+
+### Goal
+Add a **runtime overlay** to `binary_lens` packs so downstream consumers can validate “what actually happened” when running real scenarios against a binary, while keeping the feature general-purpose and joinable to static facts later.
+
+### Deliverables
+1) **Scenario spec + run manifest**
+- Define a minimal scenario description (argv/env/cwd/stdin policy/timeout) and how it maps to a `runs/<run_id>/manifest.json`.
+- Record tool versions, binary hash/name, and any sandbox/tracing configuration used.
+
+2) **Linux sandbox backend (first pass)**
+- Run scenarios via Bubblewrap (`bwrap`) with safe-by-default settings (restricted mounts, fresh tmp, limited write locations, optional no-network).
+- Keep UX flat: reuse the existing `binary_lens` entrypoint and prefer `key=value` configuration rather than new subcommands.
+
+3) **First-pass capture: syscall trace + I/O**
+- Capture stdout/stderr and exit status.
+- Capture a syscall trace via `strace` (including child processes), written into the run directory.
+- Optionally capture `/proc/<pid>/maps` (or equivalent) as a future-proof join key for PIE/ASLR-aware address mapping.
+
+4) **Pack-level run index**
+- Add `runs/index.json` that lists available runs and provides a small summary (exit code, duration, sandbox enabled, trace paths).
+- Link the run index from the pack root `index.json` entrypoints.
+
+5) **Docs**
+- Document the “run a scenario” workflow inside the pack README and show where to look for results.
+- Make limitations explicit (runtime data is observational; sandboxing reduces risk but is not a security boundary).
+
+### Non-goals (explicit)
+- No callsite/basic-block coverage tracing in this milestone (leave DBI/`rr`/`perf` for later).
+- No man/help/documentation-specific dynamic features; keep outputs general-purpose.
+- No Windows/macOS support beyond design notes; Linux-first implementation is acceptable.
+
 ## Milestone 6 — Custom Lenses + Evidence Steering (binary_man UX)
 
 Status: complete
