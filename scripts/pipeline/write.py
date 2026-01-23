@@ -24,6 +24,7 @@ def _ensure_pack_dirs(layout: PackLayout) -> None:
         layout.views_dir,
         layout.views_dir / "queries",
         layout.views_dir / "templates",
+        layout.runs_dir,
         layout.facts_dir,
         layout.evidence_dir,
         layout.evidence_decomp_dir,
@@ -174,6 +175,14 @@ def _build_pack_summary(
         "coverage_summary": manifest.get("coverage_summary")
         if isinstance(manifest, dict)
         else None,
+    }
+
+
+def _build_runs_index() -> dict[str, Any]:
+    return {
+        "schema": {"name": "binary_lens_runs_index", "version": "v1"},
+        "run_count": 0,
+        "runs": [],
     }
 
 
@@ -368,6 +377,9 @@ def write_outputs(
             derived.manifest,
         )
         write_json(layout.root / "pack_summary.json", pack_summary)
+
+        runs_index = _build_runs_index()
+        write_json(layout.runs_dir / "index.json", runs_index)
 
         views_index = _build_views_index()
         write_json(layout.views_dir / "index.json", views_index)

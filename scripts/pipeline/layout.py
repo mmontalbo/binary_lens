@@ -15,6 +15,7 @@ class PackLayout:
     docs_dir: Path
     schema_dir: Path
     views_dir: Path
+    runs_dir: Path
     facts_dir: Path
     evidence_dir: Path
     evidence_decomp_dir: Path
@@ -27,6 +28,7 @@ class PackLayout:
             docs_dir=root / "docs",
             schema_dir=root / "schema",
             views_dir=root / "views",
+            runs_dir=root / "runs",
             facts_dir=root / "facts",
             evidence_dir=root / "evidence",
             evidence_decomp_dir=root / "evidence" / "decomp",
@@ -38,6 +40,7 @@ class PackLayout:
             self.docs_dir,
             self.schema_dir,
             self.views_dir,
+            self.runs_dir,
             self.facts_dir,
             self.evidence_dir,
             self.evidence_decomp_dir,
