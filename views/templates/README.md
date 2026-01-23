@@ -87,10 +87,29 @@ into `evidence/decomp/`:
 Applied hints are recorded in `manifest.json` and remain bounded by
 `max_full_functions`.
 
+## Runtime scenarios
+
+Runtime runs live under `runs/`, with the index at `runs/index.json`. Capture a
+scenario during export (options before the binary; everything after is scenario
+argv):
+
+```sh
+binary_lens -o /path/to/out run=1 run_timeout_seconds=10 /path/to/binary --version
+```
+
+The legacy `--` separator is still accepted before scenario args (it is stripped).
+
+Artifacts include `runs/<run_id>/manifest.json`, `stdout.txt`, `stderr.txt`,
+and `strace/`. Run manifests record a redacted environment snapshot
+(allowlist + keys); the full environment is still passed to the process.
+Sandboxing is best-effort and not a security boundary. Temporary mountpoints
+under `/tmp` are internal details but recorded in the manifest for audit/debug.
+
 ## Entry points
 
 - index.json
 - pack_summary.json
+- runs/index.json
 - facts/index.json
 - views/index.json
 - views/queries/string_occurrences.sql
