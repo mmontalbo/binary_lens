@@ -6,9 +6,9 @@ This document defines near-term milestones for adding **LM-tailored interface le
 
 ## Milestone 7 — Runtime Scenarios (Sandboxed Runs + Trace Overlay)
 
-Status: planned
+Status: complete
 
-Acceptance snapshot (target):
+Acceptance snapshot:
 - Scenario runs: `binary.lens/runs/<run_id>/manifest.json` records argv/env/cwd/timeouts + sandbox config + exit status/timings.
 - Captures: `binary.lens/runs/<run_id>/stdout.txt`, `stderr.txt`, and `strace/` logs (per pid via `-ff`) are present for each run.
 - Pack integration: `binary.lens/runs/index.json` lists runs + minimal summaries; pack `index.json` links a `runs_index_ref`.
