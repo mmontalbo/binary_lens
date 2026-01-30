@@ -152,6 +152,18 @@
         drv = binaryLensCli;
       };
 
+      checks.binary_lens_smoke = pkgs.runCommand "binary-lens-smoke" {} ''
+        set -euo pipefail
+        export HOME="$TMPDIR"
+        ${binaryLensCli}/bin/binary_lens --help > /dev/null
+        config="$TMPDIR/export_config.json"
+        cat > "$config" <<'JSON'
+        { "schema": { "name": "binary_lens_config", "version": "v1" } }
+        JSON
+        ${binaryLensCli}/bin/binary_lens /bin/ls --config "$config" --explain > /dev/null
+        touch "$out"
+      '';
+
       formatter = pkgs.alejandra;
     });
 }
