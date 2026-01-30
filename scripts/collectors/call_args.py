@@ -375,7 +375,13 @@ def extract_call_args(program, callsite_addr, monitor=None, purpose=None):
     }
 
 
-def extract_call_args_for_callsites(program, callsite_addrs, monitor=None, purpose=None):
+def extract_call_args_for_callsites(
+    program,
+    callsite_addrs,
+    monitor=None,
+    purpose=None,
+    timeout_seconds=None,
+):
     results = {}
     if not callsite_addrs:
         return results
@@ -421,10 +427,18 @@ def extract_call_args_for_callsites(program, callsite_addrs, monitor=None, purpo
         func = group["function"]
         callsites = sorted(set(group["callsites"]), key=addr_to_int)
         callsite_set = set(callsites)
+        timeout_value = 30
+        if timeout_seconds is not None:
+            try:
+                timeout_value = int(timeout_seconds)
+            except Exception:
+                timeout_value = 30
+        if timeout_value <= 0:
+            timeout_value = 30
         decomp_result = profiled_decompile(
             decomp,
             func,
-            30,
+            timeout_value,
             monitor,
             purpose=purpose,
         )

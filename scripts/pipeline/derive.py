@@ -432,6 +432,7 @@ def derive_payloads(
     profiler: Any,
     *,
     options: Mapping[str, Any] | None = None,
+    export_settings: Any | None = None,
 ) -> DerivedPayloads:
     with phase(profiler, "derive_function_metrics"):
         metrics_by_addr = build_function_metrics(
@@ -542,6 +543,12 @@ def derive_payloads(
         },
     }
 
+    export_config = None
+    if export_settings is not None:
+        export_config = {
+            "requested": getattr(export_settings, "requested", None),
+            "resolved": getattr(export_settings, "resolved", None),
+        }
     manifest = build_manifest(
         bounds,
         collected.hashes,
@@ -550,6 +557,7 @@ def derive_payloads(
         binary_info=collected.binary_info,
         coverage_summary=coverage_summary,
         evidence_hints=evidence_hints,
+        export_config=export_config,
     )
     pack_index_payload = build_pack_index_payload(FORMAT_VERSION)
     return DerivedPayloads(

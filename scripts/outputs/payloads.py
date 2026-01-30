@@ -9,6 +9,7 @@ from pathlib import Path
 from export_bounds import Bounds
 from export_config import PACK_SCHEMA_VERSION
 from export_primitives import addr_str
+from export_settings import build_export_config_record
 from ghidra.framework import Application
 
 
@@ -167,6 +168,7 @@ def build_manifest(
     binary_info: dict[str, object] | None = None,
     coverage_summary: dict[str, object] | None = None,
     evidence_hints: dict[str, object] | None = None,
+    export_config: dict[str, object] | None = None,
 ) -> dict[str, object]:
     repo_root = Path(__file__).resolve().parents[2]
     created_at = _resolve_created_at()
@@ -222,4 +224,14 @@ def build_manifest(
         manifest["coverage_summary"] = coverage_summary
     if evidence_hints:
         manifest["evidence_hints"] = evidence_hints
+    if export_config:
+        export_payload = build_export_config_record(
+            export_config.get("requested") if isinstance(export_config, dict) else None,
+            export_config.get("resolved") if isinstance(export_config, dict) else None,
+            binary_hashes=hashes if isinstance(hashes, dict) else None,
+            ghidra_version=manifest.get("ghidra_version"),
+            tool_info=manifest.get("tool") if isinstance(manifest.get("tool"), dict) else None,
+        )
+        if export_payload:
+            manifest.update(export_payload)
     return manifest

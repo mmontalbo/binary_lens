@@ -3,7 +3,7 @@ with decomp as (
     j."function".address as function_id,
     u.name as function_name,
     j.lines
-  from read_json_auto('evidence/decomp/*.json') as j
+  from evidence_decomp as j
   join usage_help_functions u on u.function_id = j."function".address
   where j.lines is not null
 ),

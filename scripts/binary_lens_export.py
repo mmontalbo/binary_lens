@@ -4,6 +4,7 @@
 #@menupath Tools.BinaryLens.Export Context Pack
 #@toolbar
 
+import json
 import os
 import sys
 import traceback
@@ -17,15 +18,19 @@ if script_dir and script_dir not in sys.path:
 
 from export_cli import parse_args, print_usage, resolve_pack_root
 from export_pipeline import ensure_profiler_enabled, write_context_pack
+from export_settings import build_export_explain_payload
 from ghidra.util import SystemUtilities
 from outputs.io import ensure_dir
 
 
 def main():
     args = getScriptArgs()
-    out_dir, options, show_help = parse_args(args)
+    out_dir, settings, show_help, explain = parse_args(args)
     if show_help:
         print_usage()
+        return
+    if settings is None:
+        print("Failed to resolve export settings.")
         return
     if out_dir is None:
         if SystemUtilities.isInHeadlessMode():
@@ -34,12 +39,16 @@ def main():
             return
         out_dir = askDirectory("Binary Lens export directory", "Select").getAbsolutePath()
     pack_root = resolve_pack_root(out_dir)
-    profiler = ensure_profiler_enabled(pack_root, options)
+    if explain:
+        payload = build_export_explain_payload(settings)
+        print(json.dumps(payload, indent=2, sort_keys=True))
+        return
+    profiler = ensure_profiler_enabled(pack_root, settings.options)
     try:
         write_context_pack(
             pack_root,
             currentProgram,
-            options,
+            settings,
             monitor,
             profiler=profiler,
             analyze_all=globals().get("analyzeAll"),

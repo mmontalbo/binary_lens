@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import shutil
 from pathlib import Path
-from typing import Any, Callable
+from typing import TYPE_CHECKING, Any, Callable
 
 from export_bounds import Bounds
 from ghidra_analysis import run_program_analysis
@@ -19,6 +19,8 @@ from pipeline.derive import derive_payloads
 from pipeline.layout import PackLayout
 from pipeline.write import write_outputs
 
+if TYPE_CHECKING:
+    from export_settings import ExportSettings
 
 def is_profiling_enabled(options: dict[str, Any]) -> bool:
     try:
@@ -51,12 +53,13 @@ def _clear_pack_root(pack_root: str) -> None:
 def write_context_pack(
     pack_root: str,
     program: Any,
-    options: dict[str, Any],
+    settings: ExportSettings,
     monitor: Any,
     *,
     profiler: Any = None,
     analyze_all: Callable[[Any], None] | None = None,
 ) -> None:
+    options = dict(settings.options)
     bounds = Bounds.from_options(options)
     options.update(bounds.to_options())
     if profiler is None:
@@ -78,9 +81,25 @@ def write_context_pack(
             analyze_all=analyze_all,
         )
 
-    collected = collect_pipeline_inputs(program, bounds, monitor, profiler)
-    derived = derive_payloads(collected, bounds, profiler, options=options)
-    write_outputs(program, collected, derived, layout, bounds, monitor, profiler)
+    collected = collect_pipeline_inputs(program, bounds, monitor, profiler, options=options)
+    derived = derive_payloads(
+        collected,
+        bounds,
+        profiler,
+        options=options,
+        export_settings=settings,
+    )
+    write_outputs(
+        program,
+        collected,
+        derived,
+        layout,
+        bounds,
+        monitor,
+        profiler,
+        options=options,
+        export_settings=settings,
+    )
 
     if profiler is not None:
         profiler.write_profile()

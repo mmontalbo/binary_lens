@@ -107,6 +107,50 @@ def _sql_string(value: str) -> str:
     return "'" + value.replace("'", "''") + "'"
 
 
+def _collect_evidence_decomp_paths(pack_root: Path) -> list[str]:
+    index_path = pack_root / "evidence" / "index.json"
+    if not index_path.is_file():
+        return []
+    payload = _load_json(index_path)
+    if not isinstance(payload, dict):
+        return []
+    entries = payload.get("entries")
+    if not isinstance(entries, list):
+        return []
+    paths: list[str] = []
+    for entry in entries:
+        if not isinstance(entry, dict):
+            continue
+        ref = entry.get("decomp_ref")
+        if not isinstance(ref, str) or not ref.strip():
+            continue
+        candidate = pack_root / ref
+        if candidate.is_file():
+            paths.append(str(candidate))
+    return paths
+
+
+def _create_evidence_decomp_view(con: duckdb.DuckDBPyConnection, pack_root: Path) -> None:
+    paths = _collect_evidence_decomp_paths(pack_root)
+    if paths:
+        if len(paths) == 1:
+            source = f"read_json_auto({_sql_string(paths[0])})"
+        else:
+            source = "read_json_auto([" + ", ".join(_sql_string(path) for path in paths) + "])"
+        con.execute(f"CREATE OR REPLACE VIEW evidence_decomp AS SELECT * FROM {source}")
+        return
+    con.execute(
+        "CREATE OR REPLACE VIEW evidence_decomp AS "
+        "SELECT "
+        "CAST(NULL AS STRUCT(name VARCHAR, address VARCHAR)) AS \"function\", "
+        "CAST(NULL AS BOOLEAN) AS truncated, "
+        "CAST(NULL AS BIGINT) AS line_count, "
+        "CAST(NULL AS VARCHAR[]) AS lines, "
+        "CAST(NULL AS VARCHAR) AS error "
+        "WHERE FALSE"
+    )
+
+
 @contextmanager
 def _chdir(path: Path):
     prev = Path.cwd()
@@ -153,6 +197,7 @@ def _connect_duckdb(pack_root: Path) -> duckdb.DuckDBPyConnection:
             + _sql_string(str(manifest_path))
             + ")"
         )
+    _create_evidence_decomp_view(con, pack_root)
     con.execute(
         "CREATE OR REPLACE VIEW usage_help_functions AS "
         "SELECT function_id, function_addr_int, name, signature "

@@ -124,8 +124,8 @@ Results (first 50 rows):
 
 ## Recipe: quoted usage/help strings from evidence
 
-Run via `views/run.py` (preferred) so `evidence/decomp/*.json` resolves. If using DuckDB
-directly, `cd` to the pack root first.
+Run via `views/run.py` (preferred) so the `evidence_decomp` view is created. If using
+DuckDB directly, `cd` to the pack root first and create the view (see `views/run.py`).
 
 ```sql
 -- SQL: views/queries/examples_evidence_usage_quotes.sql

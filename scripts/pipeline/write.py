@@ -329,6 +329,9 @@ def write_outputs(
     bounds: Bounds,
     monitor: Any,
     profiler: Any,
+    *,
+    options: dict[str, Any] | None = None,
+    export_settings: Any | None = None,
 ) -> None:
     hinted_function_ids = set()
     evidence_hints = derived.evidence_hints
@@ -338,18 +341,27 @@ def write_outputs(
             hinted_function_ids = {
                 item for item in applied_ids if isinstance(item, str) and item.strip()
             }
+    artifact_evidence = True
+    if isinstance(options, dict) and options.get("artifact_evidence_decomp") is False:
+        artifact_evidence = False
     with phase(profiler, "write_evidence_decomp"):
-        evidence_entries = write_decomp_excerpts(
-            program,
-            derived.full_functions,
-            bounds,
-            collected.string_refs_by_func,
-            collected.string_tags_by_id,
-            collected.string_value_by_id,
-            layout.evidence_decomp_dir,
-            monitor,
-            hinted_function_ids,
-        )
+        if artifact_evidence:
+            evidence_entries = write_decomp_excerpts(
+                program,
+                derived.full_functions,
+                bounds,
+                collected.string_refs_by_func,
+                collected.string_tags_by_id,
+                collected.string_value_by_id,
+                layout.evidence_decomp_dir,
+                monitor,
+                hinted_function_ids,
+                decompile_timeout_seconds=(
+                    options.get("decompile_timeout_seconds") if isinstance(options, dict) else None
+                ),
+            )
+        else:
+            evidence_entries = []
 
     with phase(profiler, "write_outputs"):
         _ensure_pack_dirs(layout)
@@ -366,7 +378,7 @@ def write_outputs(
 
         evidence_index_payload = {
             "schema": {"name": "binary_lens_evidence_index", "version": "v1"},
-            "bounded": True,
+            "bounded": bool(artifact_evidence),
             "entries": evidence_entries,
         }
         write_json(layout.evidence_dir / "index.json", evidence_index_payload)

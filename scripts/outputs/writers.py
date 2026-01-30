@@ -1,7 +1,7 @@
 import os
 
 from export_bounds import Bounds
-from export_config import DEFAULT_MAX_DECOMPILE_FUNCTION_SIZE
+from export_config import DEFAULT_DECOMPILE_TIMEOUT_SECONDS, DEFAULT_MAX_DECOMPILE_FUNCTION_SIZE
 from export_primitives import addr_filename, addr_str, addr_to_int
 from export_profile import profiled_decompile
 from ghidra.app.decompiler import DecompInterface
@@ -38,6 +38,8 @@ def write_decomp_excerpts(
     evidence_decomp_dir,
     monitor,
     hinted_function_ids=None,
+    *,
+    decompile_timeout_seconds: int | None = None,
 ):
     hinted_function_ids = set(hinted_function_ids or [])
     decomp_interface = DecompInterface()
@@ -57,7 +59,14 @@ def write_decomp_excerpts(
             func_name = "unknown"
 
         # Decompiler excerpts are bounded to keep evidence lightweight.
-        timeout_seconds = 30
+        timeout_seconds = DEFAULT_DECOMPILE_TIMEOUT_SECONDS
+        if decompile_timeout_seconds is not None:
+            try:
+                timeout_seconds = int(decompile_timeout_seconds)
+            except Exception:
+                timeout_seconds = DEFAULT_DECOMPILE_TIMEOUT_SECONDS
+        if timeout_seconds <= 0:
+            timeout_seconds = DEFAULT_DECOMPILE_TIMEOUT_SECONDS
         max_lines_applied = bounds.max_decomp_lines
         try:
             func_size = func.getBody().getNumAddresses()

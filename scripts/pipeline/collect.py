@@ -88,19 +88,28 @@ def _collect_binary_and_strings(
     bounds: Bounds,
     monitor: Any,
     profiler: Any,
+    *,
+    collect_strings_enabled: bool,
 ) -> tuple[BinaryCollection, StringCollection]:
     with phase(profiler, "collect_strings"):
         binary_info, hashes = build_binary_info(program)
-        (
-            strings,
-            _string_addr_map_selected,
-            total_strings,
-            strings_truncated,
-            string_addr_map_all,
-            string_tags_by_id,
-            _string_bucket_counts,
-            _string_bucket_limits,
-        ) = collect_strings(program, bounds.max_strings)
+        if collect_strings_enabled:
+            (
+                strings,
+                _string_addr_map_selected,
+                total_strings,
+                strings_truncated,
+                string_addr_map_all,
+                string_tags_by_id,
+                _string_bucket_counts,
+                _string_bucket_limits,
+            ) = collect_strings(program, bounds.max_strings)
+        else:
+            strings = []
+            total_strings = 0
+            strings_truncated = False
+            string_addr_map_all = {}
+            string_tags_by_id = {}
     selected_string_ids = {entry["id"] for entry in strings}
     string_value_by_id = {entry["id"]: entry.get("value") for entry in strings}
     return (
@@ -122,17 +131,22 @@ def _collect_functions(
     string_addr_map_all: dict[str, Any],
     monitor: Any,
     profiler: Any,
+    *,
+    collect_string_refs: bool,
 ) -> FunctionCollection:
     with phase(profiler, "collect_functions"):
         functions = collect_functions(program)
         function_meta_by_addr = build_function_meta(functions)
         listing = program.getListing()
-        string_refs_by_func = collect_string_refs_by_func(
-            listing,
-            functions,
-            string_addr_map_all,
-            monitor,
-        )
+        if collect_string_refs:
+            string_refs_by_func = collect_string_refs_by_func(
+                listing,
+                functions,
+                string_addr_map_all,
+                monitor,
+            )
+        else:
+            string_refs_by_func = {}
     return FunctionCollection(
         functions=functions,
         function_meta_by_addr=function_meta_by_addr,
@@ -145,13 +159,19 @@ def _collect_call_edges(
     functions: list[Any],
     monitor: Any,
     profiler: Any,
+    *,
+    collect_callgraph: bool,
 ) -> CallEdgeCollection:
     with phase(profiler, "collect_call_edges"):
-        call_edges_all, callsite_records, _call_edge_stats = collect_call_edges(
-            program,
-            functions,
-            monitor,
-        )
+        if collect_callgraph:
+            call_edges_all, callsite_records, _call_edge_stats = collect_call_edges(
+                program,
+                functions,
+                monitor,
+            )
+        else:
+            call_edges_all = []
+            callsite_records = {}
     return CallEdgeCollection(
         call_edges_all=call_edges_all,
         callsite_records=callsite_records,
@@ -163,6 +183,11 @@ def _collect_call_args_for_lenses(
     call_edges_all: list[dict[str, Any]],
     monitor: Any,
     call_args_cache: dict[str, Any] | None,
+    *,
+    extra_target_names: set[str] | None,
+    extra_target_ids: set[str] | None,
+    max_callsites: int | None,
+    timeout_seconds: int | None,
 ):
     if call_args_cache is None:
         call_args_cache = {}
@@ -177,21 +202,52 @@ def _collect_call_args_for_lenses(
         target = edge.get("to") or {}
         target_name = target.get("name") if isinstance(target, dict) else None
         normalized = normalize_symbol_name(target_name, policy=IMPORT_SYMBOL_POLICY)
-        if normalized and normalized in _LENS_CALL_ARG_TARGETS_NORMALIZED:
+        target_addr = None
+        if isinstance(target, dict):
+            target_addr = target.get("address")
+        matches_name = bool(
+            normalized
+            and (
+                normalized in _LENS_CALL_ARG_TARGETS_NORMALIZED
+                or (extra_target_names and normalized in extra_target_names)
+            )
+        )
+        matches_addr = bool(
+            target_addr
+            and isinstance(target_addr, str)
+            and extra_target_ids
+            and target_addr in extra_target_ids
+        )
+        if matches_name or matches_addr:
             callsite_ids.append(callsite_id)
             seen.add(callsite_id)
     if not callsite_ids:
         return call_args_cache
-    callsite_ids.sort(key=addr_to_int)
+    callsite_ids = sorted(set(callsite_ids), key=addr_to_int)
+    if max_callsites is not None and max_callsites > 0:
+        callsite_ids = callsite_ids[:max_callsites]
     call_args_cache.update(
         extract_call_args_for_callsites(
             program,
             callsite_ids,
             monitor,
             purpose="binary_lens_export.collect_call_args_for_lenses",
+            timeout_seconds=timeout_seconds,
         )
     )
     return call_args_cache
+
+
+def _artifact_enabled(options: dict[str, Any] | None, key: str) -> bool:
+    if not isinstance(options, dict):
+        return True
+    value = options.get(f"artifact_{key}")
+    if value is None:
+        return True
+    try:
+        return bool(value)
+    except Exception:
+        return True
 
 
 def collect_pipeline_inputs(
@@ -199,17 +255,74 @@ def collect_pipeline_inputs(
     bounds: Bounds,
     monitor: Any,
     profiler: Any,
+    *,
+    options: dict[str, Any] | None = None,
 ) -> CollectedData:
     call_args_cache: dict[str, Any] = {}
-    binary, strings = _collect_binary_and_strings(program, bounds, monitor, profiler)
-    functions = _collect_functions(program, strings.string_addr_map_all, monitor, profiler)
-    call_edges = _collect_call_edges(program, functions.functions, monitor, profiler)
-    call_args_cache = _collect_call_args_for_lenses(
+    collect_strings_enabled = _artifact_enabled(options, "strings")
+    collect_callgraph_enabled = _artifact_enabled(options, "callgraph")
+    collect_call_args_enabled = _artifact_enabled(options, "call_args")
+
+    binary, strings = _collect_binary_and_strings(
         program,
-        call_edges.call_edges_all,
+        bounds,
         monitor,
-        call_args_cache,
+        profiler,
+        collect_strings_enabled=collect_strings_enabled,
     )
+    functions = _collect_functions(
+        program,
+        strings.string_addr_map_all,
+        monitor,
+        profiler,
+        collect_string_refs=collect_strings_enabled,
+    )
+    call_edges = _collect_call_edges(
+        program,
+        functions.functions,
+        monitor,
+        profiler,
+        collect_callgraph=collect_callgraph_enabled,
+    )
+    if collect_call_args_enabled and collect_callgraph_enabled:
+        targets = options.get("call_args_targets") if isinstance(options, dict) else None
+        extra_names = set()
+        extra_ids = set()
+        if isinstance(targets, dict):
+            names = targets.get("symbol_names")
+            if isinstance(names, (list, tuple, set)):
+                for item in names:
+                    norm = normalize_symbol_name(item, policy=IMPORT_SYMBOL_POLICY)
+                    if norm:
+                        extra_names.add(norm)
+            ids = targets.get("function_ids")
+            if isinstance(ids, (list, tuple, set)):
+                for item in ids:
+                    text = str(item).strip()
+                    if text:
+                        extra_ids.add(text)
+        max_callsites = None
+        if isinstance(options, dict) and options.get("call_args_max_callsites") is not None:
+            try:
+                max_callsites = int(options.get("call_args_max_callsites"))
+            except Exception:
+                max_callsites = None
+        timeout_seconds = None
+        if isinstance(options, dict) and options.get("decompile_timeout_seconds") is not None:
+            try:
+                timeout_seconds = int(options.get("decompile_timeout_seconds"))
+            except Exception:
+                timeout_seconds = None
+        call_args_cache = _collect_call_args_for_lenses(
+            program,
+            call_edges.call_edges_all,
+            monitor,
+            call_args_cache,
+            extra_target_names=extra_names or None,
+            extra_target_ids=extra_ids or None,
+            max_callsites=max_callsites,
+            timeout_seconds=timeout_seconds,
+        )
 
     return CollectedData(
         binary_info=binary.binary_info,
