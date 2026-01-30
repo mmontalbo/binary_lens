@@ -6,7 +6,7 @@ This document defines near-term milestones for adding **LM-tailored interface le
 
 ## Milestone 8 — Export Configuration UX (Progressive, Bounded Packs)
 
-Status: planned
+Status: complete
 
 Acceptance snapshot (target):
 - Export config: `binary_lens` accepts a versioned, JSON config with a **small base surface** (artifact toggles + a few global budgets/timeouts) and an `advanced` section for less-common knobs.
