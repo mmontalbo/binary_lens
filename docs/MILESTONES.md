@@ -4,6 +4,52 @@ This document defines near-term milestones for adding **LM-tailored interface le
 
 ---
 
+## Milestone 8 — Export Configuration UX (Progressive, Bounded Packs)
+
+Status: planned
+
+Acceptance snapshot (target):
+- Export config: `binary_lens` accepts a versioned, JSON config with a **small base surface** (artifact toggles + a few global budgets/timeouts) and an `advanced` section for less-common knobs.
+- Consumer requests: `binary_lens` accepts a versioned, JSON request overlay for additive “ask for more” inputs (e.g., include these `function_id`s in `evidence/decomp/`, enable call-arg recovery for specific targets with a budget). Requests are strictly typed to avoid schema sprawl.
+- Single-file option: `binary_lens` also accepts a single “export plan” JSON that contains both `{config, requests}` so small LMs/tools have one file to edit.
+- Resolution + audit: the pack `manifest.json` records `export_config.requested`, `export_config.resolved`, and a top-level `export_config_digest` derived from **resolved settings + versions + binary hash**, with canonical normalization.
+- Explainability: `binary_lens` can print the resolved settings (including implied dependencies) without running Ghidra (e.g. `--explain` / `--dry-run`).
+- Capability report: `binary_lens inspect <pack> --json` emits a stable, machine-readable capability report with per-artifact fields `{present, reason_missing, bounded, truncated, budget_used}`.
+- Re-export loop: `binary_lens` can re-export from an existing pack as the anchor (reads `manifest.json` for the binary path and prior settings; supports `--binary` override) so downstream tools can iterate: start bounded → request more → re-export.
+
+### Goal
+Give downstream consumers an explicit, non-overwhelming way to trade time vs. completeness and to progressively request deeper exports as their needs become clearer, while keeping packs bounded, diff-friendly, and reproducible.
+
+### Deliverables
+1) **Small base config (with an advanced section)**
+- Define a `binary_lens_config` JSON schema (name + version).
+- Keep the base surface small: a handful of artifact toggles and a few global budgets/timeouts; push less-common knobs into `advanced`.
+- Document every key with defaults, types, and which pack artifacts it affects.
+
+2) **Narrow, additive request schema**
+- Define a `binary_lens_requests` JSON schema (name + version) for consumer-authored “add more” inputs.
+- Keep requests narrowly typed (e.g., evidence inclusion by function ID/name regex, call-arg target enablement with budget) to avoid a second, sprawling config system.
+- Optionally support a single `binary_lens_export_plan` JSON schema (`{config, requests}`) to reduce “which file do I edit?” confusion.
+
+3) **Deterministic resolution + pack audit trail**
+- Define precedence rules (defaults → config → requests → CLI overrides) and record both requested/resolved settings in `binary.lens/manifest.json`.
+- Emit a top-level `export_config_digest` derived from resolved settings + tool versions + Ghidra version + binary hash, with canonical normalization (stable ordering).
+- Avoid parallel UX surfaces: map the existing `analysis_profile` concept into the config (or deprecate it in favor of config while keeping compatibility).
+
+4) **Tooling for small-LM interaction**
+- Standardize a capability report schema for `binary_lens inspect <pack> --json`:
+  - per artifact: `{present, reason_missing, bounded, truncated, budget_used}`
+  - `reason_missing` uses a fixed enum (e.g., `disabled`, `dependency_disabled`, `budget_exhausted`, `not_supported`, `error`)
+- Add an “explain” mode that prints the resolved settings and implied dependencies without running Ghidra.
+
+5) **Progressive re-export workflow**
+- Support re-exporting from an existing pack as an anchor (reuse prior output directory layout and/or Ghidra project where available) while producing a fresh pack by default for consistency.
+
+### Non-goals (explicit)
+- No consumer-specific presets baked into the canonical UX (avoid `docpack`/`binary_man` naming).
+- No “magic” profiles like `fast|deep` as the primary interface; prefer explicit toggles + budgets.
+- No in-place mutation of an existing pack by default; require an explicit flag for destructive updates.
+
 ## Milestone 7 — Runtime Scenarios (Sandboxed Runs + Trace Overlay)
 
 Status: complete
@@ -64,7 +110,7 @@ Make it straightforward for downstream consumers (e.g., `binary_man`) to **autho
 
 2) **Evidence usage is explicit and reproducible**
 - Add at least one example lens recipe that reads `evidence/decomp/*.json` (e.g., usage/help string extraction).
-- Clarify path expectations for `read_json_auto('evidence/decomp/*.json')` and how to run queries so relative paths resolve (pack root as CWD, or via the shipped runner).
+- Clarify path expectations for evidence decomp (prefer the `evidence_decomp` view created by `views/run.py`) and how to run queries so relative paths resolve (pack root as CWD, or via the shipped runner).
 
 3) **Lens “cookbook” recipes for multicall binaries**
 - Provide example patterns for:

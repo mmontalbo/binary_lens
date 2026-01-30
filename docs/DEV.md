@@ -36,6 +36,32 @@ You can pass exporter bounds as `key=value` arguments:
 nix run .#binary_lens -- /path/to/binary -o /path/to/out max_full_functions=50 max_strings=200
 ```
 
+Structured config/requests (or a single export plan) are also supported:
+
+```sh
+nix run .#binary_lens -- /path/to/binary -o /path/to/out --config export_config.json --requests export_requests.json
+nix run .#binary_lens -- /path/to/binary -o /path/to/out --plan export_plan.json
+```
+
+Resolve settings without running Ghidra:
+
+```sh
+nix run .#binary_lens -- /path/to/binary --config export_config.json --explain
+```
+
+Inspect pack capabilities:
+
+```sh
+nix run .#binary_lens -- inspect /path/to/out/binary.lens --json
+```
+
+Re-export from an existing pack (fresh pack by default):
+
+```sh
+nix run .#binary_lens -- --from-pack /path/to/out/binary.lens --requests more.json -o /path/to/out/reexport
+nix run .#binary_lens -- --from-pack /path/to/out/binary.lens --in-place --requests more.json
+```
+
 Output is written to `/path/to/out/binary.lens/`.
 
 ## Re-render views from an existing pack
